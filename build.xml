@@ -1,0 +1,38 @@
+<!-- ======================================================================
+     description: main build file for pentaho  . .                                                    
+     ====================================================================== -->
+<project name="pentaho-commons-mql" default="compile">
+	<description>Pentaho BI Platform build process..</description>
+
+	<property file="build.properties" />
+
+	<path id="classpath">
+		<fileset dir="lib">
+			<include name="**/*.jar" />
+			<include name="**/*.zip" />
+		</fileset>
+	</path>
+
+	<!-- ===================================================================
+        target: clean              
+       =================================================================== -->
+	<target name="clean" depends="">
+		<delete dir="bin" />
+	</target>
+
+
+	<!-- ===================================================================
+        target: init              
+       =================================================================== -->
+	<target name="init">
+		<mkdir dir="bin" />
+	</target>
+
+	<target name="compile" depends="init">
+		<javac destdir="bin" debug="${debug}" optimize="${optimize}" deprecation="${deprecation}" compiler="modern" source="1.4" target="1.4" fork="true">
+			<src path="src" />
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+	
+</project>
