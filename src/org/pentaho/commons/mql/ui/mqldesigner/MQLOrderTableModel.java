@@ -3,11 +3,8 @@ package org.pentaho.commons.mql.ui.mqldesigner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
-
 import org.eclipse.swt.graphics.Point;
-import org.pentaho.designstudio.editors.actionsequence.mql.Messages;
 import org.pentaho.pms.schema.OrderBy;
-
 import de.kupzog.ktable.KTableCellEditor;
 import de.kupzog.ktable.KTableCellRenderer;
 import de.kupzog.ktable.KTableDefaultModel;

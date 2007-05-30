@@ -8,7 +8,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.pentaho.designstudio.editors.actionsequence.mql.Messages;
 import org.pentaho.pms.mql.MQLQuery;
 
 public class MQLQueryBuilderDialog extends Dialog {
@@ -93,4 +92,8 @@ public class MQLQueryBuilderDialog extends Dialog {
     return mqlQuery;
   }
 
+  public static void main(String args[]) {
+    
+  }
+  
 }

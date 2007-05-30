@@ -53,12 +53,12 @@ public class BusinessTablesTree extends TreeViewer implements ITreeContentProvid
       Image image = null;
       if (obj instanceof BusinessTable) {
         if (FOLDER_IMAGE == null) {
-          FOLDER_IMAGE = loadImageResource("icons/folder.gif");
+          FOLDER_IMAGE = loadImageResource("folder.gif");
         }
         image = FOLDER_IMAGE;
       } else {
         if (RESOURCE_IMAGE == null) {
-          RESOURCE_IMAGE = loadImageResource("icons/resource.gif");
+          RESOURCE_IMAGE = loadImageResource("resource.gif");
         }
         image = RESOURCE_IMAGE;
       }

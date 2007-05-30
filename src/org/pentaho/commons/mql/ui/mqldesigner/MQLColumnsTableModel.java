@@ -1,12 +1,9 @@
-package org.pentaho.commons.mql.ui.mqldesigner
+package org.pentaho.commons.mql.ui.mqldesigner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import org.eclipse.swt.graphics.Point;
-import org.pentaho.designstudio.editors.actionsequence.mql.Messages;
 import org.pentaho.pms.schema.BusinessColumn;
-
 import de.kupzog.ktable.KTableCellEditor;
 import de.kupzog.ktable.KTableCellRenderer;
 import de.kupzog.ktable.KTableDefaultModel;
@@ -123,7 +120,9 @@ public class MQLColumnsTableModel extends KTableDefaultModel {
   }
   
   protected void remove(int row) {
-    businessColumns.remove(row - getFixedHeaderRowCount());
+    if (businessColumns.size() > 0) {
+      businessColumns.remove(row - getFixedHeaderRowCount());
+    }
   }
   
   protected void add(BusinessColumn businessColumn) {
