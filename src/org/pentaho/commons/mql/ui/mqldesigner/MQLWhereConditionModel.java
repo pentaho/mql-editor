@@ -3,9 +3,9 @@ package org.pentaho.commons.mql.ui.mqldesigner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.pentaho.pms.schema.BusinessCategory;
 import org.pentaho.pms.schema.BusinessColumn;
 import org.pentaho.pms.schema.BusinessModel;
-import org.pentaho.pms.schema.BusinessTable;
 import org.pentaho.pms.schema.WhereCondition;
 
 public class MQLWhereConditionModel {
@@ -18,11 +18,12 @@ public class MQLWhereConditionModel {
     Pattern p = Pattern.compile("\\[([^\\]]*)\\.([^\\]]*)\\] (.*)"); //$NON-NLS-1$
     Matcher m = p.matcher(whereCondition.getCondition());
     if (m.find()) {
-      String tbl = m.group(1);
+      String cat = m.group(1);
       String col = m.group(2);
-      BusinessTable biztbl = model.findBusinessTable(tbl);
-      field = biztbl.findBusinessColumn(col);
+      BusinessCategory bizCat = model.getRootCategory().findBusinessCategory(cat);
+      field = bizCat.findBusinessColumn(col);
       condition = m.group(3);
+      operator = whereCondition.getOperator();
     } else {
       // log error?
     }

@@ -25,9 +25,9 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
+import org.pentaho.pms.schema.BusinessCategory;
 import org.pentaho.pms.schema.BusinessColumn;
 import org.pentaho.pms.schema.BusinessModel;
-import org.pentaho.pms.schema.BusinessTable;
 
 /**
  * Tree viewer used for viewing and modifying the "actions" and "action-definition"
@@ -51,7 +51,7 @@ public class BusinessTablesTree extends TreeViewer implements ITreeContentProvid
 
     public Image getImage(Object obj) {
       Image image = null;
-      if (obj instanceof BusinessTable) {
+      if (obj instanceof BusinessCategory) {
         if (FOLDER_IMAGE == null) {
           FOLDER_IMAGE = loadImageResource("folder.gif");
         }
@@ -73,8 +73,8 @@ public class BusinessTablesTree extends TreeViewer implements ITreeContentProvid
      */
     public String getText(Object obj) {
       String text = obj.toString();
-      if (obj instanceof BusinessTable) {
-        text = ((BusinessTable) obj).getDisplayName("en_US"); //$NON-NLS-1$
+      if (obj instanceof BusinessCategory) {
+        text = ((BusinessCategory) obj).getDisplayName("en_US"); //$NON-NLS-1$
       } else if (obj instanceof BusinessColumn) {
         text = ((BusinessColumn) obj).getDisplayName("en_US"); //$NON-NLS-1$
       }
@@ -106,9 +106,9 @@ public class BusinessTablesTree extends TreeViewer implements ITreeContentProvid
   }
 
   public Object[] getChildren(Object parent) {
-    List list = ((BusinessTable)parent).getBusinessColumns().getList();
-    if (parent instanceof BusinessTable) {
-      list = ((BusinessTable)parent).getBusinessColumns().getList();
+    List list = ((BusinessCategory)parent).getBusinessColumns().getList();
+    if (parent instanceof BusinessCategory) {
+      list = ((BusinessCategory)parent).getBusinessColumns().getList();
     }
     return list == null ? new Object[0] : list.toArray();
   }
@@ -122,17 +122,17 @@ public class BusinessTablesTree extends TreeViewer implements ITreeContentProvid
   }
 
   public boolean hasChildren(Object node) {
-    return (node instanceof BusinessTable) 
-      && (((BusinessTable)node).getBusinessColumns().size() > 0);
+    return (node instanceof BusinessCategory) 
+      && (((BusinessCategory)node).getBusinessColumns().size() > 0);
   }  
 
   public Object[] getElements(Object inputElement) {
     BusinessModel businessModel = (BusinessModel)getInput();
-    List businessTables = null;
+    List businessCategories = null;
     if (businessModel != null) {
-      businessTables = businessModel.getBusinessTables().getList();
+      businessCategories = businessModel.getRootCategory().getBusinessCategories().getList();
     }
-    return businessTables != null ? businessTables.toArray() : new Object[0];
+    return businessCategories != null ? businessCategories.toArray() : new Object[0];
   }
 
   public void dispose() {

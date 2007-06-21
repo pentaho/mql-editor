@@ -9,23 +9,20 @@ import java.util.List;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.CoolBar;
-import org.eclipse.swt.widgets.CoolItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.core.exception.CWMException;
 import org.pentaho.pms.factory.CwmSchemaFactory;
 import org.pentaho.pms.mql.MQLQuery;
+import org.pentaho.pms.schema.BusinessCategory;
 import org.pentaho.pms.schema.BusinessColumn;
 import org.pentaho.pms.schema.BusinessModel;
 import org.pentaho.pms.schema.OrderBy;
@@ -47,21 +44,11 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   MQLConditionsTable mqlFiltersTable;
   BusinessTablesTree businessTablesTree;
   ArrayList businessModels = new ArrayList();
-  OSSpecificCombo viewCombo;
+  Combo viewCombo;
   SchemaMeta schemaMeta;
-  
   
   public MQLQueryBuilderComposite(Composite parent, int style) {
     super(parent, style);
-    createComposite(new DefaultToolkit(getDisplay()));
-  }
-  
-  public MQLQueryBuilderComposite(FormToolkit toolkit, Composite parent, int style) {
-    super(parent, style);
-    createComposite(toolkit);
-  }
-  
-  private void createComposite(FormToolkit toolkit) {
     if (MOVE_TO_ICON == null) {
       MOVE_TO_ICON = loadImageResource("icons/e_forward.gif");
     }
@@ -74,28 +61,20 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     if (REMOVE_ACTION_ICON == null) {
       REMOVE_ACTION_ICON = loadImageResource("icons/delete.gif");
     }
-    toolkit.adapt(this);
-    toolkit.paintBordersFor(this);
     setLayout(new GridLayout(3, false));
     
     GridData gridData = new GridData();
     gridData.horizontalSpan = 3;
-    toolkit.createLabel(this, Messages.getString("MQLColumnSelectorComposite.BUSINESS_VIEW")).setLayoutData(gridData); //$NON-NLS-1$
-    
-    viewCombo = OSSpecificCombo.createCombo(this, SWT.FLAT | toolkit.getBorderStyle());
-    if (viewCombo.getControl() instanceof CCombo) {
-      toolkit.adapt((Composite)viewCombo.getControl());
-    } else {
-      toolkit.adapt(viewCombo.getControl(), true, true);
-    }
-    
+    WidgetFactory.createLabel(this, Messages.getString("MQLColumnSelectorComposite.BUSINESS_VIEW")).setLayoutData(gridData); //$NON-NLS-1$
+    viewCombo = WidgetFactory.createCombo(this, SWT.NONE);
     gridData = new GridData();
     gridData.horizontalAlignment = SWT.FILL;
-    viewCombo.getControl().setLayoutData(gridData);
+    viewCombo.setLayoutData(gridData);
     viewCombo.addSelectionListener(this);
     
     String[] domains = null;
     ArrayList items = new ArrayList();
+    BusinessModel businessModelToSelect = null;
     try {
       domains = CWM.getDomainNames();
       if (domains.length > 0) {
@@ -115,17 +94,15 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     } catch (CWMException e) {
       e.printStackTrace();
     }
-    
     viewCombo.setItems((String[])items.toArray(new String[0]));
     
     gridData = new GridData();
     gridData.horizontalSpan = 2;
-    toolkit.createLabel(this, "").setLayoutData(gridData); //$NON-NLS-1$
+    WidgetFactory.createLabel(this, "").setLayoutData(gridData); //$NON-NLS-1$
     
-    toolkit.createLabel(this, Messages.getString("MQLColumnSelectorComposite.AVAILABLE_ITEMS")); //$NON-NLS-1$
+    WidgetFactory.createLabel(this, Messages.getString("MQLColumnSelectorComposite.AVAILABLE_ITEMS")); //$NON-NLS-1$
     
     ToolBar toolBar = new ToolBar(this, SWT.FLAT);
-    toolkit.adapt(toolBar, false, false);
     ToolItem toolItem = new ToolItem(toolBar, SWT.NULL);
     toolItem.setImage(MOVE_TO_ICON);
     toolItem.setToolTipText(Messages.getString("MQLColumnSelectorComposite.MOVE_TO_DETAILS"));  //$NON-NLS-1$
@@ -144,7 +121,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData.verticalAlignment = SWT.CENTER;
     toolBar.setLayoutData(gridData);
   
-    Composite composite = toolkit.createComposite(this);
+    Composite composite = WidgetFactory.createComposite(this);
     GridLayout gridLayout = new GridLayout(2, false);
     gridLayout.marginHeight = 0;
     gridLayout.marginWidth = 0;
@@ -154,14 +131,12 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     
     gridData = new GridData();
     gridData.verticalAlignment = SWT.END;
-    toolkit.createLabel(composite, Messages.getString("MQLColumnSelectorComposite.SELECTED_ITEMS")).setLayoutData(gridData); //$NON-NLS-1$
+    WidgetFactory.createLabel(composite, Messages.getString("MQLColumnSelectorComposite.SELECTED_ITEMS")).setLayoutData(gridData); //$NON-NLS-1$
     
-    CoolBar coolbar = createDetailsCoolbar(toolkit, composite);
-    coolbar.pack();
     gridData = new GridData();
     gridData.grabExcessHorizontalSpace = true;
     gridData.horizontalAlignment = GridData.END;
-    coolbar.setLayoutData(gridData);
+    createDetailsToolbar(composite).setLayoutData(gridData);
         
     businessTablesTree = new BusinessTablesTree(this, SWT.BORDER | SWT.MULTI);
     gridData = new GridData(GridData.FILL_VERTICAL);
@@ -174,7 +149,6 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     mqlDetailsTable.setLayoutData(gridData);
     
     toolBar = new ToolBar(this, SWT.FLAT);
-    toolkit.adapt(toolBar, false, false);
     toolItem = new ToolItem(toolBar, SWT.NULL);
     toolItem.setImage(MOVE_TO_ICON);
     toolItem.setToolTipText(Messages.getString("MQLColumnSelectorComposite.MOVE_TO_FILTERS"));  //$NON-NLS-1$
@@ -192,7 +166,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData.verticalAlignment = SWT.CENTER;
     toolBar.setLayoutData(gridData);
     
-    composite = toolkit.createComposite(this);
+    composite = WidgetFactory.createComposite(this);
     gridLayout = new GridLayout(2, false);
     gridLayout.marginHeight = 0;
     gridLayout.marginWidth = 0;
@@ -200,21 +174,18 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData = new GridData(GridData.FILL_HORIZONTAL);
     composite.setLayoutData(gridData);
     
-    toolkit.createLabel(composite, Messages.getString("MQLColumnSelectorComposite.FILTERS")); //$NON-NLS-1$
+    WidgetFactory.createLabel(composite, Messages.getString("MQLColumnSelectorComposite.FILTERS")); //$NON-NLS-1$
     
-    coolbar = createFiltersCoolbar(toolkit, composite);
-    coolbar.pack();
     gridData = new GridData();
     gridData.grabExcessHorizontalSpace = true;
     gridData.horizontalAlignment = GridData.END;
-    coolbar.setLayoutData(gridData);
+    createFiltersToolbar(composite).setLayoutData(gridData);
     
     mqlFiltersTable = new MQLConditionsTable(this);
     gridData = new GridData(GridData.FILL_BOTH);
     mqlFiltersTable.setLayoutData(gridData);
       
     toolBar = new ToolBar(this, SWT.FLAT);
-    toolkit.adapt(toolBar, false, false);
     toolItem = new ToolItem(toolBar, SWT.NULL);
     toolItem.setImage(MOVE_TO_ICON);
     toolItem.setToolTipText(Messages.getString("MQLColumnSelectorComposite.MOVE_TO_ORDER_BY"));  //$NON-NLS-1$
@@ -232,7 +203,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData.verticalAlignment = SWT.CENTER;
     toolBar.setLayoutData(gridData);
     
-    composite = toolkit.createComposite(this);
+    composite = WidgetFactory.createComposite(this);
     gridLayout = new GridLayout(2, false);
     gridLayout.marginHeight = 0;
     gridLayout.marginWidth = 0;
@@ -240,18 +211,21 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData = new GridData(GridData.FILL_HORIZONTAL);
     composite.setLayoutData(gridData);
     
-    toolkit.createLabel(composite, Messages.getString("MQLColumnSelectorComposite.ORDER_BY")); //$NON-NLS-1$
+    WidgetFactory.createLabel(composite, Messages.getString("MQLColumnSelectorComposite.ORDER_BY")); //$NON-NLS-1$
     
-    coolbar = createSortCoolbar(toolkit, composite);
-    coolbar.pack();
     gridData = new GridData();
     gridData.grabExcessHorizontalSpace = true;
     gridData.horizontalAlignment = GridData.END;
-    coolbar.setLayoutData(gridData);
+    createSortToolbar(composite).setLayoutData(gridData);
     
     mqlOrderTable = new MQLOrderTable(this);
     gridData = new GridData(GridData.FILL_BOTH);
     mqlOrderTable.setLayoutData(gridData);
+    
+    if (businessModels.size() == 1) {
+      setSelectedBusinessModel((BusinessModel)businessModels.get(0));
+    }
+
   }
   
   protected void moveSelectedColumnsToDetails() {
@@ -282,8 +256,8 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     }
   }
   
-  public Composite createAvailItemsComposite(FormToolkit toolkit, Composite parent) {
-    Composite composite = toolkit.createComposite(parent);
+  public Composite createAvailItemsComposite(Composite parent) {
+    Composite composite = WidgetFactory.createComposite(parent);
     composite.setLayout(new GridLayout());
     composite.setLayoutData(new GridData(GridData.FILL_BOTH));
     return composite;
@@ -307,12 +281,8 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     }      
   }
   
-  protected CoolBar createFiltersCoolbar(FormToolkit toolkit, Composite parent) {
-    CoolBar coolBar = new CoolBar(parent, SWT.NONE);
-    toolkit.adapt(coolBar);
-
-    ToolBar toolBar = new ToolBar(coolBar, SWT.FLAT);
-    toolkit.adapt(toolBar, false, false);
+  protected ToolBar createFiltersToolbar(Composite parent) {
+    ToolBar toolBar = new ToolBar(parent, SWT.FLAT);
     ToolItem toolItem = new ToolItem(toolBar, SWT.NULL);
     toolItem.setImage(MOVE_DOWN_ICON);
     toolItem.setToolTipText(Messages.getString("MQLColumnSelectorComposite.MOVE_DOWN")); //$NON-NLS-1$
@@ -345,14 +315,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
       }
     });
     
-    CoolItem coolItem = new CoolItem(coolBar, SWT.NULL);
-    coolItem.setControl(toolBar);
-    Point pt = toolBar.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-    pt = coolItem.computeSize(pt.x, pt.y);
-    coolItem.setSize(pt);
-
-    toolBar = new ToolBar(coolBar, SWT.FLAT);
-    toolkit.adapt(toolBar, false, false);
+    toolItem = new ToolItem(toolBar, SWT.SEPARATOR);
 
     toolItem = new ToolItem(toolBar, SWT.NULL);
     toolItem.setImage(REMOVE_ACTION_ICON);
@@ -365,21 +328,11 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
         mqlFiltersTable.removeSelectedRows();
       }
     });
-    coolItem = new CoolItem(coolBar, SWT.NULL);
-    coolItem.setControl(toolBar);
-    pt = toolBar.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-    pt = coolItem.computeSize(pt.x, pt.y);
-    coolItem.setSize(pt);
-    coolBar.setLocked(true);
-    return coolBar;
+    return toolBar;
   }
   
-  protected CoolBar createSortCoolbar(FormToolkit toolkit, Composite parent) {
-    CoolBar coolBar = new CoolBar(parent, SWT.NONE);
-    toolkit.adapt(coolBar);
-
-    ToolBar toolBar = new ToolBar(coolBar, SWT.FLAT);
-    toolkit.adapt(toolBar, false, false);
+  protected ToolBar createSortToolbar(Composite parent) {
+    ToolBar toolBar = new ToolBar(parent, SWT.FLAT);
     ToolItem toolItem = new ToolItem(toolBar, SWT.NULL);
     toolItem.setImage(MOVE_DOWN_ICON);
     toolItem.setToolTipText(Messages.getString("MQLColumnSelectorComposite.MOVE_DOWN")); //$NON-NLS-1$
@@ -388,8 +341,8 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
       }
 
       public void widgetSelected(SelectionEvent e) {
-        int[] rows = mqlDetailsTable.getRowSelection();
-        if ((rows.length == 1) && (rows[0] != mqlDetailsTable.getModel().getRowCount() - 1)) {
+        int[] rows = mqlOrderTable.getRowSelection();
+        if ((rows.length == 1) && (rows[0] != mqlOrderTable.getModel().getRowCount() - 1)) {
           mqlOrderTable.move(rows[0], rows[0] + 1);
           mqlOrderTable.setSelection(0, rows[0] + 1, true);
         }
@@ -404,22 +357,15 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
       }
 
       public void widgetSelected(SelectionEvent e) {
-        int[] rows = mqlDetailsTable.getRowSelection();
-        if ((rows.length == 1) && (rows[0] != mqlDetailsTable.getModel().getFixedHeaderRowCount())) {
+        int[] rows = mqlOrderTable.getRowSelection();
+        if ((rows.length == 1) && (rows[0] != mqlOrderTable.getModel().getFixedHeaderRowCount())) {
           mqlOrderTable.move(rows[0], rows[0] - 1);
           mqlOrderTable.setSelection(0, rows[0] - 1, true);
         }
       }
     });
     
-    CoolItem coolItem = new CoolItem(coolBar, SWT.NULL);
-    coolItem.setControl(toolBar);
-    Point pt = toolBar.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-    pt = coolItem.computeSize(pt.x, pt.y);
-    coolItem.setSize(pt);
-
-    toolBar = new ToolBar(coolBar, SWT.FLAT);
-    toolkit.adapt(toolBar, false, false);
+    new ToolItem(toolBar, SWT.SEPARATOR);
 
     toolItem = new ToolItem(toolBar, SWT.NULL);
     toolItem.setImage(REMOVE_ACTION_ICON);
@@ -432,21 +378,11 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
         mqlOrderTable.removeSelectedRows();
       }
     });
-    coolItem = new CoolItem(coolBar, SWT.NULL);
-    coolItem.setControl(toolBar);
-    pt = toolBar.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-    pt = coolItem.computeSize(pt.x, pt.y);
-    coolItem.setSize(pt);
-    coolBar.setLocked(true);
-    return coolBar;
+    return toolBar;
   }
   
-  protected CoolBar createDetailsCoolbar(FormToolkit toolkit, Composite parent) {
-    CoolBar coolBar = new CoolBar(parent, SWT.NONE);
-    toolkit.adapt(coolBar);
-
-    ToolBar toolBar = new ToolBar(coolBar, SWT.FLAT);
-    toolkit.adapt(toolBar, false, false);
+  protected ToolBar createDetailsToolbar(Composite parent) {
+    ToolBar toolBar = new ToolBar(parent, SWT.FLAT);
     ToolItem toolItem = new ToolItem(toolBar, SWT.NULL);
     toolItem.setImage(MOVE_DOWN_ICON);
     toolItem.setToolTipText(Messages.getString("MQLColumnSelectorComposite.MOVE_DOWN")); //$NON-NLS-1$
@@ -479,14 +415,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
       }
     });
     
-    CoolItem coolItem = new CoolItem(coolBar, SWT.NULL);
-    coolItem.setControl(toolBar);
-    Point pt = toolBar.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-    pt = coolItem.computeSize(pt.x, pt.y);
-    coolItem.setSize(pt);
-
-    toolBar = new ToolBar(coolBar, SWT.FLAT);
-    toolkit.adapt(toolBar, false, false);
+    new ToolItem(toolBar, SWT.SEPARATOR);
 
     toolItem = new ToolItem(toolBar, SWT.NULL);
     toolItem.setImage(REMOVE_ACTION_ICON);
@@ -499,13 +428,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
         mqlDetailsTable.removeSelectedRows();
       }
     });
-    coolItem = new CoolItem(coolBar, SWT.NULL);
-    coolItem.setControl(toolBar);
-    pt = toolBar.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-    pt = coolItem.computeSize(pt.x, pt.y);
-    coolItem.setSize(pt);
-    coolBar.setLocked(true);
-    return coolBar;
+    return toolBar;
   }
   
   public BusinessColumn[] getDetailColumns() {
@@ -538,8 +461,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   }
 
   public void widgetSelected(SelectionEvent e) {
-    CCombo combo = (CCombo)e.getSource();
-    int index = combo.getSelectionIndex();
+    int index = viewCombo.getSelectionIndex();
     if (index >= 0) {
       viewCombo.removeSelectionListener(this);
       setSelectedBusinessModel((BusinessModel)businessModels.get(index));
@@ -558,10 +480,14 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
         mqlQuery.setSelections(Arrays.asList(businessColumns));
         MQLWhereConditionModel wherelist[] = getConditions();
         ArrayList constraints = new ArrayList();
+        BusinessCategory rootCat = businessModel.getRootCategory();
+
         for (int i = 0; i < wherelist.length; i++) {
+          BusinessCategory businessCategory = rootCat.findBusinessCategoryForBusinessColumn(wherelist[i].getField());
+          
           constraints.add(
               new WhereCondition(businessModel, wherelist[i].getOperator(),
-                  "[" + wherelist[i].getField().getBusinessTable().getId() + "." + //$NON-NLS-1$ //$NON-NLS-2$
+                  "[" + businessCategory.getId() + "." + //$NON-NLS-1$ //$NON-NLS-2$
                   wherelist[i].getField().getId() +"] " + wherelist[i].getCondition()) //$NON-NLS-1$
           );
         }
@@ -579,7 +505,6 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   
   public void setMqlQuery(MQLQuery mqlQuery) {
     setSelectedBusinessModel(mqlQuery.getModel());
-
     if (viewCombo.getSelectionIndex() != -1) {
       List businessColumns = mqlQuery.getSelections();
       setDetailColumns((BusinessColumn[])businessColumns.toArray(new BusinessColumn[0]));
