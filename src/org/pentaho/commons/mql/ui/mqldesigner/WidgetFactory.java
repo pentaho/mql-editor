@@ -9,7 +9,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.forms.widgets.Section;
 
 public class WidgetFactory {
 
@@ -81,17 +80,8 @@ public class WidgetFactory {
     return tree;
   }
   
-  public static Section createSection(Composite parent, int sectionStyle) {
-    Section section = new Section(parent, sectionStyle);
-    section.setMenu(parent.getMenu());
-    adapt(section);
-    return section;
-  }
-  
   public static Label createSeparator(final Composite parent) {
     Label separator = new Label(parent, SWT.HORIZONTAL | SWT.SEPARATOR);
-    if (parent instanceof Section)
-      ((Section) parent).setSeparatorControl(separator);
     return separator;
   }
 }

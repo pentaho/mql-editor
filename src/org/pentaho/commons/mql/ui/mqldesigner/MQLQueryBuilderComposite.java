@@ -47,8 +47,41 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   Combo viewCombo;
   SchemaMeta schemaMeta;
   
+  public MQLQueryBuilderComposite(Composite parent, int style, MQLQuery mqlQuery) {
+    super(parent, style);
+    buildGui();
+    setMqlQuery(mqlQuery);
+  }
+  
+  public MQLQueryBuilderComposite(Composite parent, int style, SchemaMeta schemaMeta) {
+    super(parent, style);
+    buildGui();
+    setSchemaMeta(schemaMeta);
+    if (businessModels.size() == 1) {
+      setSelectedBusinessModel((BusinessModel)businessModels.get(0));
+    }
+  }
+  
   public MQLQueryBuilderComposite(Composite parent, int style) {
     super(parent, style);
+    buildGui();
+    String[] domains = null;
+    try {
+      domains = CWM.getDomainNames();
+      if (domains.length > 0) {
+        CWM cwm = CWM.getInstance(domains[0], false);
+        CwmSchemaFactory cwmSchemaFactory = new CwmSchemaFactory();
+        setSchemaMeta(cwmSchemaFactory.getSchemaMeta(cwm));
+        if (businessModels.size() == 1) {
+          setSelectedBusinessModel((BusinessModel)businessModels.get(0));
+        }
+      }
+    } catch (CWMException e) {
+      e.printStackTrace();
+    }
+  }
+  
+  private void buildGui() {
     if (MOVE_TO_ICON == null) {
       MOVE_TO_ICON = loadImageResource("icons/e_forward.gif");
     }
@@ -71,31 +104,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData.horizontalAlignment = SWT.FILL;
     viewCombo.setLayoutData(gridData);
     viewCombo.addSelectionListener(this);
-    
-    String[] domains = null;
-    ArrayList items = new ArrayList();
-    BusinessModel businessModelToSelect = null;
-    try {
-      domains = CWM.getDomainNames();
-      if (domains.length > 0) {
-        CWM cwm = CWM.getInstance(domains[0], false);
-        CwmSchemaFactory cwmSchemaFactory = new CwmSchemaFactory();
-        schemaMeta = cwmSchemaFactory.getSchemaMeta(cwm);
-        schemaMeta.setActiveLocale("en_US"); //$NON-NLS-1$
-        UniqueList uniqueList = schemaMeta.getBusinessModels();
-        if (uniqueList != null) {
-          for (Iterator iter = uniqueList.iterator(); iter.hasNext();) {
-            BusinessModel businessModel = (BusinessModel)iter.next();
-            businessModels.add(businessModel);
-            items.add(businessModel.getDisplayName(LOCALE));
-          }
-        }
-      }
-    } catch (CWMException e) {
-      e.printStackTrace();
-    }
-    viewCombo.setItems((String[])items.toArray(new String[0]));
-    
+         
     gridData = new GridData();
     gridData.horizontalSpan = 2;
     WidgetFactory.createLabel(this, "").setLayoutData(gridData); //$NON-NLS-1$
@@ -222,10 +231,25 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData = new GridData(GridData.FILL_BOTH);
     mqlOrderTable.setLayoutData(gridData);
     
-    if (businessModels.size() == 1) {
-      setSelectedBusinessModel((BusinessModel)businessModels.get(0));
+  }
+  
+  private void setSchemaMeta(SchemaMeta schemaMeta) {
+    this.schemaMeta = schemaMeta;
+    this.schemaMeta.setActiveLocale("en_US"); //$NON-NLS-1$
+    businessModels.clear();
+    viewCombo.removeAll();
+    ArrayList items = new ArrayList();
+    UniqueList uniqueList = schemaMeta.getBusinessModels();
+    if (uniqueList != null) {
+      for (Iterator iter = uniqueList.iterator(); iter.hasNext();) {
+        BusinessModel businessModel = (BusinessModel)iter.next();
+        businessModels.add(businessModel);
+        items.add(businessModel.getDisplayName(LOCALE));
+      }
     }
-
+    viewCombo.setItems((String[])items.toArray(new String[0]));
+    businessTablesTree.setInput(null);
+    clearQuery();
   }
   
   protected void moveSelectedColumnsToDetails() {
@@ -275,9 +299,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
         }
       }
       businessTablesTree.setInput(businessModel);
-      mqlDetailsTable.clear();
-      mqlFiltersTable.clear();
-      mqlOrderTable.clear();
+      clearQuery();
     }      
   }
   
@@ -502,25 +524,47 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   }
   
   
+  protected void refreshQuery(MQLQuery mqlQuery) {
+    List businessColumns = mqlQuery.getSelections();
+    setDetailColumns((BusinessColumn[])businessColumns.toArray(new BusinessColumn[0]));
+    List constraints = mqlQuery.getConstraints();
+    // convert over to where conditions
+    MQLWhereConditionModel whereConditions[] = new MQLWhereConditionModel[constraints.size()];
+    for (int i = 0; i < constraints.size(); i++) {
+      WhereCondition cond = (WhereCondition)constraints.get(i);
+      
+      whereConditions[i] = new MQLWhereConditionModel(mqlQuery.getModel(), cond);
+    }
+    
+    setConditions(whereConditions);
+    List orderBy = mqlQuery.getOrder();
+    setOrderBy((OrderBy[])orderBy.toArray(new OrderBy[0]));
+  }
+  
+  protected void clearQuery() {
+    mqlDetailsTable.clear();
+    mqlFiltersTable.clear();
+    mqlOrderTable.clear();
+  }
+  
+  public void setMqlQuery(MQLQuery mqlQuery, boolean updateSchema) {
+    if (mqlQuery != null) {
+      if (updateSchema) {
+        setSchemaMeta(mqlQuery.getSchemaMeta());
+      }
+      setSelectedBusinessModel(mqlQuery.getModel());
+      if (viewCombo.getSelectionIndex() != -1) {
+        refreshQuery(mqlQuery);
+      } else {
+        clearQuery();
+      }
+    } else {
+      clearQuery();
+    }
+  }
   
   public void setMqlQuery(MQLQuery mqlQuery) {
-    setSelectedBusinessModel(mqlQuery.getModel());
-    if (viewCombo.getSelectionIndex() != -1) {
-      List businessColumns = mqlQuery.getSelections();
-      setDetailColumns((BusinessColumn[])businessColumns.toArray(new BusinessColumn[0]));
-      List constraints = mqlQuery.getConstraints();
-      // convert over to where conditions
-      MQLWhereConditionModel whereConditions[] = new MQLWhereConditionModel[constraints.size()];
-      for (int i = 0; i < constraints.size(); i++) {
-        WhereCondition cond = (WhereCondition)constraints.get(i);
-        
-        whereConditions[i] = new MQLWhereConditionModel(mqlQuery.getModel(), cond);
-      }
-      
-      setConditions(whereConditions);
-      List orderBy = mqlQuery.getOrder();
-      setOrderBy((OrderBy[])orderBy.toArray(new OrderBy[0]));
-    }    
+    setMqlQuery(mqlQuery, true);
   }
   
   private Image loadImageResource(String name) {

@@ -15,6 +15,7 @@ import org.pentaho.pms.schema.BusinessColumn;
 import de.kupzog.ktable.KTable;
 import de.kupzog.ktable.SWTX;
 
+
 public class MQLColumnsTable extends KTable {
 
   public MQLColumnsTable(Composite parent) {

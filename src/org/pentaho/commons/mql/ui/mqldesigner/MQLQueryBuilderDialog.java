@@ -8,15 +8,24 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.pentaho.pms.mql.MQLQuery;
+import org.pentaho.pms.schema.SchemaMeta;
 
 public class MQLQueryBuilderDialog extends Dialog {
 
   MQLQueryBuilderComposite mqlQueryBuilderComposite;
   MQLQuery mqlQuery;
+  SchemaMeta schemaMeta;
+  
+  public MQLQueryBuilderDialog(Shell parentShell, SchemaMeta schemaMeta) {
+    super(parentShell);
+    this.schemaMeta = schemaMeta;
+    setShellStyle(SWT.RESIZE | SWT.DIALOG_TRIM);
+  }
   
   public MQLQueryBuilderDialog(Shell parentShell, MQLQuery mqlQuery) {
     super(parentShell);
     this.mqlQuery = mqlQuery;
+    schemaMeta = mqlQuery.getSchemaMeta();
     setShellStyle(SWT.RESIZE | SWT.DIALOG_TRIM);
   }
 
@@ -39,8 +48,13 @@ public class MQLQueryBuilderDialog extends Dialog {
 
   protected Control createDialogArea(Composite parent) {
       Composite composite = (Composite) super.createDialogArea(parent);      
-      
-      mqlQueryBuilderComposite = new MQLQueryBuilderComposite(composite, SWT.NONE);
+      if (mqlQuery != null) {
+        mqlQueryBuilderComposite = new MQLQueryBuilderComposite(composite, SWT.NONE, mqlQuery);
+      } else if (schemaMeta != null){
+        mqlQueryBuilderComposite = new MQLQueryBuilderComposite(composite, SWT.NONE, schemaMeta);
+      } else {
+        mqlQueryBuilderComposite = new MQLQueryBuilderComposite(composite, SWT.NONE);
+      }
       mqlQueryBuilderComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
       if (mqlQuery != null) {
         mqlQueryBuilderComposite.setMqlQuery(mqlQuery);
@@ -66,7 +80,18 @@ public class MQLQueryBuilderDialog extends Dialog {
   }
 
   public MQLQuery getMqlQuery() {
-    return mqlQuery;
+    // If the dialog has been closed, return the query that was cached when the 
+    // user hit the OK button, otherwise build the query from the info currently
+    // displayed in the dialog.
+    return getShell() == null ? mqlQuery : mqlQueryBuilderComposite.getMqlQuery(); 
+  }
+  
+  public void setMqlQuery(MQLQuery mqlQuery) {
+    mqlQueryBuilderComposite.setMqlQuery(mqlQuery);
   }
 
+  public void setMqlQuery(MQLQuery mqlQuery, boolean updateSchema) {
+    mqlQueryBuilderComposite.setMqlQuery(mqlQuery, updateSchema);
+  }
+  
 }
