@@ -92,7 +92,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
       MOVE_DOWN_ICON = loadImageResource("icons/move_down.gif");
     }
     if (REMOVE_ACTION_ICON == null) {
-      REMOVE_ACTION_ICON = loadImageResource("icons/delete.gif");
+      REMOVE_ACTION_ICON = loadImageResource("icons/delete.png");
     }
     setLayout(new GridLayout(3, false));
     
