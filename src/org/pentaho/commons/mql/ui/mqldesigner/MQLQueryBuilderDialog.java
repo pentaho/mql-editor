@@ -6,6 +6,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.pentaho.pms.mql.MQLQuery;
 import org.pentaho.pms.schema.SchemaMeta;
@@ -76,6 +77,11 @@ public class MQLQueryBuilderDialog extends Dialog {
       mqlQuery = query;
       setReturnCode(OK);
       close();
+    } else {
+      MessageBox mb = new MessageBox(this.getShell());
+      mb.setMessage("Could not build query with the current selections.");
+      mb.setText("Error");
+      mb.open();
     }
   }
 
