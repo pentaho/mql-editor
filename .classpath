@@ -26,6 +26,6 @@
 	<classpathentry kind="lib" path="lib/libformula-0.1.7.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon-1.0.8.jar"/>
 	<classpathentry kind="lib" path="lib/kettle-2.5.jar"/>
-	<classpathentry kind="lib" path="lib/pentaho-meta-1.6.0-RC2.jar"/>
+	<classpathentry kind="lib" path="lib/pentaho-meta-1.6.0-RC2.106.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
