@@ -4,7 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/ktable_2.1.3.jar"/>
 	<classpathentry kind="lib" path="lib/pentaho-cwm-1.5.4.jar"/>
-	<classpathentry kind="lib" path="lib/swt-linux/linux-swt.jar"/>
 	<classpathentry kind="lib" path="lib/jface-3.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.core.runtime_3.2.0.v20060603.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.core.commands_3.2.0.I20060605-1400.jar"/>
@@ -25,7 +24,8 @@
 	<classpathentry kind="lib" path="lib/commons-lang-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/libformula-0.1.7.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon-1.0.8.jar"/>
-	<classpathentry kind="lib" path="lib/kettle-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/pentaho-meta-1.6.0-RC2.106.jar"/>
+	<classpathentry kind="lib" path="lib/kettle-2.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/swt-win32/swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
