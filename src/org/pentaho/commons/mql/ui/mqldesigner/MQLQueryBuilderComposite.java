@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -39,9 +40,9 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   private static Image REMOVE_ACTION_ICON = null;
   static final String LOCALE = Locale.getDefault().toString();
   
-  MQLColumnsTable mqlDetailsTable;
-  MQLOrderTable mqlOrderTable;
-  MQLConditionsTable mqlFiltersTable;
+  NewMQLColumnsTable mqlDetailsTable;
+  NewMQLOrderTable mqlOrderTable;
+  NewMQLConditionsTable mqlFiltersTable;
   BusinessTablesTree businessTablesTree;
   ArrayList businessModels = new ArrayList();
   Combo viewCombo;
@@ -153,9 +154,9 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData.widthHint = 200;
     businessTablesTree.getControl().setLayoutData(gridData);
     
-    mqlDetailsTable = new MQLColumnsTable(this);
+    mqlDetailsTable = new NewMQLColumnsTable(this);
     gridData = new GridData(GridData.FILL_BOTH);
-    mqlDetailsTable.setLayoutData(gridData);
+    mqlDetailsTable.getTable().setLayoutData(gridData);
     
     toolBar = new ToolBar(this, SWT.FLAT);
     toolItem = new ToolItem(toolBar, SWT.NULL);
@@ -190,9 +191,9 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData.horizontalAlignment = GridData.END;
     createFiltersToolbar(composite).setLayoutData(gridData);
     
-    mqlFiltersTable = new MQLConditionsTable(this);
+    mqlFiltersTable = new NewMQLConditionsTable(this);
     gridData = new GridData(GridData.FILL_BOTH);
-    mqlFiltersTable.setLayoutData(gridData);
+    mqlFiltersTable.getTable().setLayoutData(gridData);
       
     toolBar = new ToolBar(this, SWT.FLAT);
     toolItem = new ToolItem(toolBar, SWT.NULL);
@@ -227,9 +228,9 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData.horizontalAlignment = GridData.END;
     createSortToolbar(composite).setLayoutData(gridData);
     
-    mqlOrderTable = new MQLOrderTable(this);
+    mqlOrderTable = new NewMQLOrderTable(this);
     gridData = new GridData(GridData.FILL_BOTH);
-    mqlOrderTable.setLayoutData(gridData);
+    mqlOrderTable.getTable().setLayoutData(gridData);
     
   }
   
@@ -311,12 +312,11 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     toolItem.addSelectionListener(new SelectionListener() {
       public void widgetDefaultSelected(SelectionEvent e) {
       }
-
       public void widgetSelected(SelectionEvent e) {
-        int[] rows = mqlFiltersTable.getRowSelection();
-        if ((rows.length == 1) && (rows[0] != mqlFiltersTable.getModel().getRowCount() - 1)) {
+        int[] rows = mqlFiltersTable.getTable().getSelectionIndices();
+        if ((rows.length == 1) && (rows[0] != mqlFiltersTable.getTable().getItemCount() - 1)) {
           mqlFiltersTable.move(rows[0], rows[0] + 1);
-          mqlFiltersTable.setSelection(0, rows[0] + 1, true);
+          mqlFiltersTable.getTable().setSelection(rows[0] + 1);
         }
       }
     });
@@ -329,10 +329,10 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
       }
 
       public void widgetSelected(SelectionEvent e) {
-        int[] rows = mqlFiltersTable.getRowSelection();
-        if ((rows.length == 1) && (rows[0] != mqlFiltersTable.getModel().getFixedHeaderRowCount())) {
+        int[] rows = mqlFiltersTable.getTable().getSelectionIndices();
+        if ((rows.length == 1) && (rows[0] != 0)) {
           mqlFiltersTable.move(rows[0], rows[0] - 1);
-          mqlFiltersTable.setSelection(0, rows[0] - 1, true);
+          mqlFiltersTable.getTable().setSelection(rows[0] - 1);
         }
       }
     });
@@ -363,10 +363,10 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
       }
 
       public void widgetSelected(SelectionEvent e) {
-        int[] rows = mqlOrderTable.getRowSelection();
-        if ((rows.length == 1) && (rows[0] != mqlOrderTable.getModel().getRowCount() - 1)) {
+        int[] rows = mqlOrderTable.getTable().getSelectionIndices();
+        if ((rows.length == 1) && (rows[0] != mqlOrderTable.getTable().getItemCount())) {
           mqlOrderTable.move(rows[0], rows[0] + 1);
-          mqlOrderTable.setSelection(0, rows[0] + 1, true);
+          mqlOrderTable.getTable().setSelection(rows[0] + 1);
         }
       }
     });
@@ -379,10 +379,10 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
       }
 
       public void widgetSelected(SelectionEvent e) {
-        int[] rows = mqlOrderTable.getRowSelection();
-        if ((rows.length == 1) && (rows[0] != mqlOrderTable.getModel().getFixedHeaderRowCount())) {
+        int[] rows = mqlOrderTable.getTable().getSelectionIndices();
+        if ((rows.length == 1) && (rows[0] != 0)) {
           mqlOrderTable.move(rows[0], rows[0] - 1);
-          mqlOrderTable.setSelection(0, rows[0] - 1, true);
+          mqlOrderTable.getTable().setSelection(rows[0] - 1);
         }
       }
     });
@@ -413,10 +413,10 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
       }
 
       public void widgetSelected(SelectionEvent e) {
-        int[] rows = mqlDetailsTable.getRowSelection();
-        if ((rows.length == 1) && (rows[0] != mqlDetailsTable.getModel().getRowCount() - 1)) {
+        int[] rows = mqlDetailsTable.getTable().getSelectionIndices();
+        if ((rows.length == 1) && (rows[0] != mqlDetailsTable.getTable().getItemCount() - 1)) {
           mqlDetailsTable.move(rows[0], rows[0] + 1);
-          mqlDetailsTable.setSelection(0, rows[0] + 1, true);
+          mqlDetailsTable.getTable().setSelection(rows[0] + 1);
         }
       }
     });
@@ -429,10 +429,10 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
       }
 
       public void widgetSelected(SelectionEvent e) {
-        int[] rows = mqlDetailsTable.getRowSelection();
-        if ((rows.length == 1) && (rows[0] != mqlDetailsTable.getModel().getFixedHeaderRowCount())) {
+        int[] rows = mqlDetailsTable.getTable().getSelectionIndices();
+        if ((rows.length == 1) && (rows[0] != 0)) {
           mqlDetailsTable.move(rows[0], rows[0] - 1);
-          mqlDetailsTable.setSelection(0, rows[0] - 1, true);
+          mqlDetailsTable.getTable().setSelection(rows[0] - 1);
         }
       }
     });
@@ -448,6 +448,9 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
 
       public void widgetSelected(SelectionEvent e) {
         mqlDetailsTable.removeSelectedRows();
+        if (((StructuredSelection)mqlDetailsTable.getSelection()).size() > 0) {
+          mqlDetailsTable.getTable().forceFocus();
+        }
       }
     });
     return toolBar;
