@@ -207,6 +207,11 @@ public class NewMQLConditionsTable extends TableViewer implements IStructuredCon
       MQLWhereConditionModel condition = (MQLWhereConditionModel)conditions.get(row);
       conditions.remove(row);
       super.remove(condition);
+      if ((row == 0) && (conditions.size() > 0)) {
+        condition = (MQLWhereConditionModel)conditions.get(0);
+        condition.setOperator(null);
+        refresh(condition);
+      }
     }
   }
   
