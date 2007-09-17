@@ -19,8 +19,12 @@ import de.kupzog.ktable.SWTX;
 public class MQLColumnsTable extends KTable {
 
   public MQLColumnsTable(Composite parent) {
+    this(parent, "en_US"); //$NON-NLS-1$
+  }
+  
+  public MQLColumnsTable(Composite parent, String locale) {
     super(parent, SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL | SWTX.FILL_WITH_LASTCOL | SWT.MULTI);
-    setModel(new MQLColumnsTableModel());
+    setModel(new MQLColumnsTableModel(locale));
     if (SWT.getPlatform().equals("win32")) { //$NON-NLS-1$
 
       // Cross

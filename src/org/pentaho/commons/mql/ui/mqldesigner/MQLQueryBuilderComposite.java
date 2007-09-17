@@ -50,13 +50,13 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   
   public MQLQueryBuilderComposite(Composite parent, int style, MQLQuery mqlQuery) {
     super(parent, style);
-    buildGui();
+    buildGui(mqlQuery.getSchemaMeta().getActiveLocale());
     setMqlQuery(mqlQuery);
   }
   
   public MQLQueryBuilderComposite(Composite parent, int style, SchemaMeta schemaMeta) {
     super(parent, style);
-    buildGui();
+    buildGui(schemaMeta.getActiveLocale());
     setSchemaMeta(schemaMeta);
     if (businessModels.size() == 1) {
       setSelectedBusinessModel((BusinessModel)businessModels.get(0));
@@ -65,24 +65,33 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   
   public MQLQueryBuilderComposite(Composite parent, int style) {
     super(parent, style);
-    buildGui();
+    SchemaMeta schemaMeta = null;
+    CwmSchemaFactory cwmSchemaFactory = null;
+    CWM cwm = null;
+    buildGui(schemaMeta.getActiveLocale());
     String[] domains = null;
     try {
       domains = CWM.getDomainNames();
       if (domains.length > 0) {
-        CWM cwm = CWM.getInstance(domains[0], false);
-        CwmSchemaFactory cwmSchemaFactory = new CwmSchemaFactory();
-        setSchemaMeta(cwmSchemaFactory.getSchemaMeta(cwm));
-        if (businessModels.size() == 1) {
-          setSelectedBusinessModel((BusinessModel)businessModels.get(0));
-        }
+        cwm = CWM.getInstance(domains[0], false);
+        cwmSchemaFactory = new CwmSchemaFactory();
+        schemaMeta = cwmSchemaFactory.getSchemaMeta(cwm);
       }
     } catch (CWMException e) {
       e.printStackTrace();
     }
+    if (schemaMeta != null) {
+      buildGui(schemaMeta.getActiveLocale());
+      setSchemaMeta(cwmSchemaFactory.getSchemaMeta(cwm));
+      if (businessModels.size() == 1) {
+        setSelectedBusinessModel((BusinessModel)businessModels.get(0));
+      }
+    } else {
+      buildGui("en_US");
+    }
   }
   
-  private void buildGui() {
+  private void buildGui(String locale) {
     if (MOVE_TO_ICON == null) {
       MOVE_TO_ICON = loadImageResource("icons/e_forward.gif");
     }
@@ -148,13 +157,13 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData.horizontalAlignment = GridData.END;
     createDetailsToolbar(composite).setLayoutData(gridData);
         
-    businessTablesTree = new BusinessTablesTree(this, SWT.BORDER | SWT.MULTI);
+    businessTablesTree = new BusinessTablesTree(this, SWT.BORDER | SWT.MULTI, locale);
     gridData = new GridData(GridData.FILL_VERTICAL);
     gridData.verticalSpan = 5;
     gridData.widthHint = 200;
     businessTablesTree.getControl().setLayoutData(gridData);
     
-    mqlDetailsTable = new NewMQLColumnsTable(this);
+    mqlDetailsTable = new NewMQLColumnsTable(this, locale);
     gridData = new GridData(GridData.FILL_BOTH);
     mqlDetailsTable.getTable().setLayoutData(gridData);
     
@@ -236,7 +245,6 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   
   private void setSchemaMeta(SchemaMeta schemaMeta) {
     this.schemaMeta = schemaMeta;
-    this.schemaMeta.setActiveLocale("en_US"); //$NON-NLS-1$
     businessModels.clear();
     viewCombo.removeAll();
     ArrayList items = new ArrayList();
@@ -501,7 +509,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
       BusinessColumn[] businessColumns = getDetailColumns();
       if (businessColumns.length > 0) {
         BusinessModel businessModel = (BusinessModel)businessTablesTree.getInput();
-        mqlQuery = new MQLQuery(schemaMeta, businessModel, "en_US"); //$NON-NLS-1$
+        mqlQuery = new MQLQuery(schemaMeta, businessModel, schemaMeta.getActiveLocale()); //$NON-NLS-1$
         mqlQuery.setSelections(Arrays.asList(businessColumns));
         MQLWhereConditionModel wherelist[] = getConditions();
         ArrayList constraints = new ArrayList();

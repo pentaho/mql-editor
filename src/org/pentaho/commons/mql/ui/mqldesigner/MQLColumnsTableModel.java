@@ -20,8 +20,14 @@ public class MQLColumnsTableModel extends KTableDefaultModel {
   private final FixedCellRenderer m_fixedRenderer = new FixedCellRenderer(FixedCellRenderer.STYLE_FLAT);
   private final TextCellRenderer m_textRenderer = new TextCellRenderer(TextCellRenderer.INDICATION_FOCUS);
   ArrayList businessColumns = new ArrayList();
+  String locale;
   
   public MQLColumnsTableModel() {
+    this("en_US");
+  } 
+  
+  public MQLColumnsTableModel(String locale) {
+    this.locale = locale;
     initialize();
   }
 
@@ -37,9 +43,9 @@ public class MQLColumnsTableModel extends KTableDefaultModel {
       } else {
         BusinessColumn businessColumn = (BusinessColumn)businessColumns.get(row - getFixedRowCount());
         if (col == BUSINESS_COLUMN_INDEX) {
-          value = businessColumn.getDisplayName("en_US"); //$NON-NLS-1$
+          value = businessColumn.getDisplayName(locale); 
         } else if (col == BUSINESS_TABLE_INDEX) {
-          value = businessColumn.getBusinessTable().getDisplayName("en_US"); //$NON-NLS-1$
+          value = businessColumn.getBusinessTable().getDisplayName(locale); 
         }
       }
     }

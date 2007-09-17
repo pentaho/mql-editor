@@ -45,6 +45,7 @@ public class NewMQLColumnsTable extends TableViewer implements IStructuredConten
   static final int BUSINESS_TABLE_INDEX = 0;
 
   ArrayList businessColumns = new ArrayList();
+  String locale;
   
   List listeners = new ArrayList();
 //  static final String NAME_COLUMN_PROP = "NAME"; //$NON-NLS-1$
@@ -52,14 +53,19 @@ public class NewMQLColumnsTable extends TableViewer implements IStructuredConten
 //  static final String TYPE_COLUMN_PROP = "TYPE"; //$NON-NLS-1$
 
 
+  public NewMQLColumnsTable(Composite parent) {
+    this(parent, "en_US");
+  }
+  
   /** 
    * Creates an viewer
    * @param parent   the parent of this viewer.
    * @param toolkit  the form toolkit.
    */
-  public NewMQLColumnsTable(Composite parent) {
+  public NewMQLColumnsTable(Composite parent, String locale) {
     super(WidgetFactory.createTable(parent, SWT.FULL_SELECTION | SWT.BORDER));
     
+    this.locale = locale;
     Table table = getTable();
     table.setHeaderVisible(true);
     createTableColumns();
@@ -109,10 +115,10 @@ public class NewMQLColumnsTable extends TableViewer implements IStructuredConten
       BusinessColumn businessColumn = (BusinessColumn) element;
       switch (columnIndex) {
         case BUSINESS_TABLE_INDEX:
-          columnText = businessColumn.getBusinessTable().getDisplayName("en_US"); //$NON-NLS-1$
+          columnText = businessColumn.getBusinessTable().getDisplayName(locale); //$NON-NLS-1$
           break;
         case BUSINESS_COLUMN_INDEX:
-          columnText = businessColumn.getDisplayName("en_US"); //$NON-NLS-1$
+          columnText = businessColumn.getDisplayName(locale); //$NON-NLS-1$
           break;
       }
     }

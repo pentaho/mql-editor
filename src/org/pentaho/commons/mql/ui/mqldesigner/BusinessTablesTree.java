@@ -41,12 +41,13 @@ public class BusinessTablesTree extends TreeViewer implements ITreeContentProvid
   private static Image RESOURCE_IMAGE = null;
   
   public class DefaultLabelProvider extends LabelProvider {
-
+    String locale = null;
     /** 
      * Creates a label provider Tress which display action sequence contents.
      */
-    public DefaultLabelProvider() {
+    public DefaultLabelProvider(String locale) {
       super();
+      this.locale = locale;
     }
 
     public Image getImage(Object obj) {
@@ -74,9 +75,9 @@ public class BusinessTablesTree extends TreeViewer implements ITreeContentProvid
     public String getText(Object obj) {
       String text = obj.toString();
       if (obj instanceof BusinessCategory) {
-        text = ((BusinessCategory) obj).getDisplayName("en_US"); //$NON-NLS-1$
+        text = ((BusinessCategory) obj).getDisplayName(locale); //$NON-NLS-1$
       } else if (obj instanceof BusinessColumn) {
-        text = ((BusinessColumn) obj).getDisplayName("en_US"); //$NON-NLS-1$
+        text = ((BusinessColumn) obj).getDisplayName(locale); //$NON-NLS-1$
       }
       return text;
     }
@@ -91,18 +92,26 @@ public class BusinessTablesTree extends TreeViewer implements ITreeContentProvid
   }
 
   public BusinessTablesTree(Composite parent, int style) {
+    this(parent, style, "en_US");
+  }
+
+  public BusinessTablesTree(Composite parent, int style, String locale) {
     super(parent, style);
-    init();
+    init(locale);
   }
-
+  
   public BusinessTablesTree(Tree tree) {
-    super(tree);
-    init();
+    this(tree, "en_US");
   }
 
-  protected void init() {
+  public BusinessTablesTree(Tree tree, String locale) {
+    super(tree);
+    init(locale);
+  }
+  
+  protected void init(String locale) {
     setContentProvider(this);
-    setLabelProvider(new DefaultLabelProvider());
+    setLabelProvider(new DefaultLabelProvider(locale));
   }
 
   public Object[] getChildren(Object parent) {
