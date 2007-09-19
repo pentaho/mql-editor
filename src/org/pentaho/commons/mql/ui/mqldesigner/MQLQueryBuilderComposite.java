@@ -15,6 +15,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
@@ -47,6 +48,8 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   ArrayList businessModels = new ArrayList();
   Combo viewCombo;
   SchemaMeta schemaMeta;
+  Button distinctSelections;
+  
   
   public MQLQueryBuilderComposite(Composite parent, int style, MQLQuery mqlQuery) {
     super(parent, style);
@@ -68,7 +71,8 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     SchemaMeta schemaMeta = null;
     CwmSchemaFactory cwmSchemaFactory = null;
     CWM cwm = null;
-    buildGui(schemaMeta.getActiveLocale());
+//    buildGui(schemaMeta.getActiveLocale());
+//    buildGui(null);
     String[] domains = null;
     try {
       domains = CWM.getDomainNames();
@@ -156,13 +160,13 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData.grabExcessHorizontalSpace = true;
     gridData.horizontalAlignment = GridData.END;
     createDetailsToolbar(composite).setLayoutData(gridData);
-        
+    
     businessTablesTree = new BusinessTablesTree(this, SWT.BORDER | SWT.MULTI, locale);
     gridData = new GridData(GridData.FILL_VERTICAL);
     gridData.verticalSpan = 5;
     gridData.widthHint = 200;
     businessTablesTree.getControl().setLayoutData(gridData);
-    
+
     mqlDetailsTable = new NewMQLColumnsTable(this, locale);
     gridData = new GridData(GridData.FILL_BOTH);
     mqlDetailsTable.getTable().setLayoutData(gridData);
@@ -240,6 +244,20 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     mqlOrderTable = new NewMQLOrderTable(this);
     gridData = new GridData(GridData.FILL_BOTH);
     mqlOrderTable.getTable().setLayoutData(gridData);
+
+    gridData = new GridData();
+    distinctSelections = WidgetFactory.createButton(this, Messages.getString("MQLColumnSelectorComposite.DISTINCT_SELECTIONS"), SWT.CHECK | SWT.SELECTED); //$NON-NLS-1$
+    distinctSelections.setLayoutData(gridData);
+    distinctSelections.setSelection(true);
+    distinctSelections.addSelectionListener( new SelectionListener() {
+      public void widgetDefaultSelected(SelectionEvent e) {
+      }
+
+      public void widgetSelected(SelectionEvent e) {
+        // will get it's state when generating MQL...
+      }
+    });
+    
     
   }
   
@@ -514,7 +532,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
         MQLWhereConditionModel wherelist[] = getConditions();
         ArrayList constraints = new ArrayList();
         BusinessCategory rootCat = businessModel.getRootCategory();
-
+        mqlQuery.setDisableDistinct(!this.distinctSelections.getSelection());
         for (int i = 0; i < wherelist.length; i++) {
           BusinessCategory businessCategory = rootCat.findBusinessCategoryForBusinessColumn(wherelist[i].getField());
           
