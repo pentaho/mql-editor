@@ -16,6 +16,7 @@ public class MQLQueryBuilderDialog extends Dialog {
   MQLQueryBuilderComposite mqlQueryBuilderComposite;
   MQLQuery mqlQuery;
   SchemaMeta schemaMeta;
+  IMQLQueryCallback callback;
   
   public MQLQueryBuilderDialog(Shell parentShell, SchemaMeta schemaMeta) {
     super(parentShell);
@@ -67,6 +68,9 @@ public class MQLQueryBuilderDialog extends Dialog {
       return composite;
   }
 
+  public void setCallback(IMQLQueryCallback callback) {
+      this.callback = callback;
+  }
   
   public void dispose() {
   }
@@ -75,6 +79,9 @@ public class MQLQueryBuilderDialog extends Dialog {
     MQLQuery query = mqlQueryBuilderComposite.getMqlQuery();
     if ((query != null) && (query.getSelections().size() > 0)) {
       mqlQuery = query;
+      if (this.callback != null) {
+        callback.queryGenerated(mqlQuery.getXML());
+      }
       setReturnCode(OK);
       close();
     } else {
