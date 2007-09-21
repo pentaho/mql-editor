@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.pentaho.pms.schema.WhereCondition;
+import org.pentaho.pms.schema.concept.types.datatype.DataTypeSettings;
 
 /**
  * Abstract table viewer used for viewing and modifying the inputs and outputs of an action
@@ -332,7 +333,22 @@ public class NewMQLConditionsTable extends TableViewer implements IStructuredCon
       int index = ((Integer)value).intValue();
       condition.setOperator(WhereCondition.operators[index]);
     } else if (VALUE_PROP.equals(property)) {
-      if (value.toString().trim().length() > 0) {
+      if (condition.getField().getDataType().getType() == DataTypeSettings.DATA_TYPE_STRING) {
+        String stringValue = value.toString().trim();
+        if (stringValue.length() == 0) {
+          stringValue = "\"\"";
+        } else if (stringValue.equals("\"")) {
+          stringValue = "\\\"";
+        } else {
+          if (!stringValue.startsWith("\"")) {
+            stringValue = "\"" + stringValue;
+          }
+          if (!stringValue.endsWith("\"")) {
+            stringValue = stringValue + "\"";
+          }
+        }
+        condition.setCondition(getConditionType(condition) + stringValue);
+      } else if (value.toString().trim().length() > 0) {
         condition.setCondition(getConditionType(condition) + value.toString().trim());
       }
     }
