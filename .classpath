@@ -22,7 +22,7 @@
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.2.jar"/>
-	<classpathentry kind="lib" path="lib/libformula-0.1.7.jar"/>
+	<classpathentry kind="lib" path="lib/libformula-0.1.12.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon-1.0.8.jar"/>
 	<classpathentry kind="lib" path="lib/swt-win32/swt.jar"/>
 	<classpathentry kind="lib" path="lib/kettle-2.5.1.jar"/>
