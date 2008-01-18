@@ -10,7 +10,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.pentaho.pms.schema.OrderBy;
+import org.pentaho.pms.mql.OrderBy;
 
 import de.kupzog.ktable.KTable;
 import de.kupzog.ktable.SWTX;

@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.TreeSet;
 import org.eclipse.swt.graphics.Point;
-import org.pentaho.pms.schema.WhereCondition;
+import org.pentaho.pms.mql.WhereCondition;
 import de.kupzog.ktable.KTableCellEditor;
 import de.kupzog.ktable.KTableCellRenderer;
 import de.kupzog.ktable.KTableDefaultModel;

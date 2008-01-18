@@ -24,12 +24,15 @@ import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.core.exception.CWMException;
 import org.pentaho.pms.factory.CwmSchemaFactory;
 import org.pentaho.pms.mql.MQLQuery;
+import org.pentaho.pms.mql.MQLQueryImpl;
+import org.pentaho.pms.mql.Selection;
+import org.pentaho.pms.mql.OrderBy;
+import org.pentaho.pms.mql.WhereCondition;
+
 import org.pentaho.pms.schema.BusinessCategory;
 import org.pentaho.pms.schema.BusinessColumn;
 import org.pentaho.pms.schema.BusinessModel;
-import org.pentaho.pms.schema.OrderBy;
 import org.pentaho.pms.schema.SchemaMeta;
-import org.pentaho.pms.schema.WhereCondition;
 
 import be.ibridge.kettle.core.list.UniqueList;
 
@@ -527,10 +530,15 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
       BusinessColumn[] businessColumns = getDetailColumns();
       if (businessColumns.length > 0) {
         BusinessModel businessModel = (BusinessModel)businessTablesTree.getInput();
-        mqlQuery = new MQLQuery(schemaMeta, businessModel, schemaMeta.getActiveLocale()); //$NON-NLS-1$
-        mqlQuery.setSelections(Arrays.asList(businessColumns));
+        mqlQuery = new MQLQueryImpl(schemaMeta, businessModel, null, schemaMeta.getActiveLocale()); //$NON-NLS-1$
+        List<Selection> selections = new ArrayList<Selection>();
+        for (int i = 0; i < businessColumns.length; i++) {
+          selections.add(new Selection(businessColumns[i]));
+        }
+
+        mqlQuery.setSelections(selections);
         MQLWhereConditionModel wherelist[] = getConditions();
-        ArrayList constraints = new ArrayList();
+        ArrayList<WhereCondition> constraints = new ArrayList<WhereCondition>();
         BusinessCategory rootCat = businessModel.getRootCategory();
         mqlQuery.setDisableDistinct(!this.distinctSelections.getSelection());
         for (int i = 0; i < wherelist.length; i++) {
@@ -554,7 +562,12 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   
   
   protected void refreshQuery(MQLQuery mqlQuery) {
-    List businessColumns = mqlQuery.getSelections();
+    List<? extends Selection> selections = mqlQuery.getSelections();
+    List businessColumns = new ArrayList();
+    for (Selection selection : selections) {
+      businessColumns.add(selection.getBusinessColumn());
+    }
+    
     setDetailColumns((BusinessColumn[])businessColumns.toArray(new BusinessColumn[0]));
     List constraints = mqlQuery.getConstraints();
     // convert over to where conditions

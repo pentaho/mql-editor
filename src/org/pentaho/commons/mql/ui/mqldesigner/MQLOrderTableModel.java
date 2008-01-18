@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import org.eclipse.swt.graphics.Point;
-import org.pentaho.pms.schema.OrderBy;
+import org.pentaho.pms.mql.OrderBy;
 import de.kupzog.ktable.KTableCellEditor;
 import de.kupzog.ktable.KTableCellRenderer;
 import de.kupzog.ktable.KTableDefaultModel;

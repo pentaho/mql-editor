@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.pentaho.pms.schema.OrderBy;
+import org.pentaho.pms.mql.OrderBy;
 
 /**
  * Abstract table viewer used for viewing and modifying the inputs and outputs of an action

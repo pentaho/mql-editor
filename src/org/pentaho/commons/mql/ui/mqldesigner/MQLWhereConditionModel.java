@@ -3,10 +3,10 @@ package org.pentaho.commons.mql.ui.mqldesigner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.pentaho.pms.mql.WhereCondition;
 import org.pentaho.pms.schema.BusinessCategory;
 import org.pentaho.pms.schema.BusinessColumn;
 import org.pentaho.pms.schema.BusinessModel;
-import org.pentaho.pms.schema.WhereCondition;
 
 public class MQLWhereConditionModel {
   

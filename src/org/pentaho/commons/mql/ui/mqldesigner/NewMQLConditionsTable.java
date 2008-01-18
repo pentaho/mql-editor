@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.pentaho.pms.schema.WhereCondition;
+import org.pentaho.pms.mql.WhereCondition;
 import org.pentaho.pms.schema.concept.types.datatype.DataTypeSettings;
 
 /**
