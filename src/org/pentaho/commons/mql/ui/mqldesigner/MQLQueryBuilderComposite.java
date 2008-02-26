@@ -34,7 +34,7 @@ import org.pentaho.pms.schema.BusinessColumn;
 import org.pentaho.pms.schema.BusinessModel;
 import org.pentaho.pms.schema.SchemaMeta;
 
-import be.ibridge.kettle.core.list.UniqueList;
+import org.pentaho.pms.util.UniqueList;
 
 public class MQLQueryBuilderComposite extends Composite implements SelectionListener {
 
