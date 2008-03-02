@@ -2,11 +2,15 @@
      description: main build file for pentaho  . .                                                    
      ====================================================================== -->
 <project name="pentaho-commons-mql" default="dist">
-	<description>Pentaho BI Platform build process..</description>
+	<description>Pentaho Commons MQL Editor build file</description>
 
 	<property file="build.properties" />
-	<property file="version.properties" />
+	<property file="src/build-res/version.properties" />
 
+    <tstamp>
+       <format property="compile.timestamp" pattern="yyyy-MM-dd HH.mm.ss" />
+    </tstamp>
+	
 	<path id="classpath">
 		<fileset dir="lib">
 			<include name="**/*.jar" />
@@ -18,8 +22,8 @@
         target: clean              
        =================================================================== -->
 	<target name="clean" depends="">
-		<delete dir="bin" />
-		<delete dir="dist" />
+		<delete dir="${bin.dir}" />
+		<delete dir="${dist.dir}" />
 	</target>
 
 
@@ -27,24 +31,34 @@
         target: init              
        =================================================================== -->
 	<target name="init">
-		<mkdir dir="bin" />
-		<mkdir dir="dist" />
-		<copy todir="bin">
+		<mkdir dir="${bin.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<copy todir="${bin.dir}">
 		  <fileset dir="src" includes="**/*.properties"/>
 		  <fileset dir="src" includes="**/*.gif"/>
 		</copy>
+        <propertyfile file="src/build-res/version.properties"  comment="Version Property File">
+          <entry  key="release.build.date" type="string" value="${compile.timestamp}"/>
+          <entry  key="release.build.number" type="int" default="0" operation="+"/>
+        </propertyfile>
 	</target>
 
 	<target name="compile" depends="init">
-		<javac destdir="bin" debug="${debug}" optimize="${optimize}" deprecation="${deprecation}" compiler="modern" source="1.5" target="1.5" fork="true">
+		<javac destdir="${bin.dir}" debug="${debug}" optimize="${optimize}" deprecation="${deprecation}" compiler="modern" source="1.5" target="1.5" fork="true">
 			<src path="src" />
 			<classpath refid="classpath" />
 		</javac>
 	</target>
 	
 	<target name="dist" depends="compile">
-		<jar basedir="bin" destfile="dist/pentaho-mql-builder-${release.major.number}.${release.minor.number}.${release.milestone.number}.jar" />
+		<jar destfile="${dist.dir}/pentaho-mql-builder-${impl.version}.jar">
+			<manifest>
+				<attribute name="Implementation-Title" value="${impl.title}" />
+				<attribute name="Implementation-Version" value="${impl.version}" />
+				<attribute name="Implementation-Vendor" value="${impl.vendor}" />
+				<attribute name="Implementation-ProductID" value="${impl.productID}" />
+			</manifest>
+			<fileset dir="${bin.dir}"/>
+		</jar>
 	</target>
-	
-	
 </project>

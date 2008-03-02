@@ -34,7 +34,7 @@ import org.pentaho.pms.schema.BusinessColumn;
 import org.pentaho.pms.schema.BusinessModel;
 import org.pentaho.pms.schema.SchemaMeta;
 
-import be.ibridge.kettle.core.list.UniqueList;
+import org.pentaho.pms.util.UniqueList;
 
 public class MQLQueryBuilderComposite extends Composite implements SelectionListener {
 
@@ -48,7 +48,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   NewMQLOrderTable mqlOrderTable;
   NewMQLConditionsTable mqlFiltersTable;
   BusinessTablesTree businessTablesTree;
-  ArrayList businessModels = new ArrayList();
+  ArrayList<BusinessModel> businessModels = new ArrayList<BusinessModel>();
   Combo viewCombo;
   SchemaMeta schemaMeta;
   Button distinctSelections;
@@ -65,13 +65,13 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     buildGui(schemaMeta.getActiveLocale());
     setSchemaMeta(schemaMeta);
     if (businessModels.size() == 1) {
-      setSelectedBusinessModel((BusinessModel)businessModels.get(0));
+      setSelectedBusinessModel(businessModels.get(0));
     }
   }
   
   public MQLQueryBuilderComposite(Composite parent, int style) {
     super(parent, style);
-    SchemaMeta schemaMeta = null;
+    SchemaMeta tmpSchemaMeta = null;
     CwmSchemaFactory cwmSchemaFactory = null;
     CWM cwm = null;
 //    buildGui(schemaMeta.getActiveLocale());
@@ -82,34 +82,34 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
       if (domains.length > 0) {
         cwm = CWM.getInstance(domains[0], false);
         cwmSchemaFactory = new CwmSchemaFactory();
-        schemaMeta = cwmSchemaFactory.getSchemaMeta(cwm);
+        tmpSchemaMeta = cwmSchemaFactory.getSchemaMeta(cwm);
       }
     } catch (CWMException e) {
       e.printStackTrace();
     }
-    if (schemaMeta != null) {
-      buildGui(schemaMeta.getActiveLocale());
+    if (tmpSchemaMeta != null) {
+      buildGui(tmpSchemaMeta.getActiveLocale());
       setSchemaMeta(cwmSchemaFactory.getSchemaMeta(cwm));
       if (businessModels.size() == 1) {
-        setSelectedBusinessModel((BusinessModel)businessModels.get(0));
+        setSelectedBusinessModel(businessModels.get(0));
       }
     } else {
-      buildGui("en_US");
+      buildGui("en_US"); //$NON-NLS-1$
     }
   }
   
   private void buildGui(String locale) {
     if (MOVE_TO_ICON == null) {
-      MOVE_TO_ICON = loadImageResource("icons/e_forward.gif");
+      MOVE_TO_ICON = loadImageResource("icons/e_forward.gif"); //$NON-NLS-1$
     }
     if (MOVE_UP_ICON == null) {
-      MOVE_UP_ICON = loadImageResource("icons/move_up.gif");
+      MOVE_UP_ICON = loadImageResource("icons/move_up.gif"); //$NON-NLS-1$
     }
     if (MOVE_DOWN_ICON == null) {
-      MOVE_DOWN_ICON = loadImageResource("icons/move_down.gif");
+      MOVE_DOWN_ICON = loadImageResource("icons/move_down.gif"); //$NON-NLS-1$
     }
     if (REMOVE_ACTION_ICON == null) {
-      REMOVE_ACTION_ICON = loadImageResource("icons/delete.png");
+      REMOVE_ACTION_ICON = loadImageResource("icons/delete.png"); //$NON-NLS-1$
     }
     setLayout(new GridLayout(3, false));
     
@@ -268,7 +268,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     this.schemaMeta = schemaMeta;
     businessModels.clear();
     viewCombo.removeAll();
-    ArrayList items = new ArrayList();
+    ArrayList<String> items = new ArrayList<String>();
     UniqueList uniqueList = schemaMeta.getBusinessModels();
     if (uniqueList != null) {
       for (Iterator iter = uniqueList.iterator(); iter.hasNext();) {
@@ -277,7 +277,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
         items.add(businessModel.getDisplayName(LOCALE));
       }
     }
-    viewCombo.setItems((String[])items.toArray(new String[0]));
+    viewCombo.setItems(items.toArray(new String[0]));
     businessTablesTree.setInput(null);
     clearQuery();
   }
@@ -518,7 +518,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     int index = viewCombo.getSelectionIndex();
     if (index >= 0) {
       viewCombo.removeSelectionListener(this);
-      setSelectedBusinessModel((BusinessModel)businessModels.get(index));
+      setSelectedBusinessModel(businessModels.get(index));
       viewCombo.addSelectionListener(this);
     }   
   }
@@ -562,13 +562,13 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   
   
   protected void refreshQuery(MQLQuery mqlQuery) {
-    List<? extends Selection> selections = mqlQuery.getSelections();
-    List businessColumns = new ArrayList();
+    List<Selection> selections = mqlQuery.getSelections();
+    List<BusinessColumn> businessColumns = new ArrayList<BusinessColumn>();
     for (Selection selection : selections) {
       businessColumns.add(selection.getBusinessColumn());
     }
     
-    setDetailColumns((BusinessColumn[])businessColumns.toArray(new BusinessColumn[0]));
+    setDetailColumns(businessColumns.toArray(new BusinessColumn[0]));
     List constraints = mqlQuery.getConstraints();
     // convert over to where conditions
     MQLWhereConditionModel whereConditions[] = new MQLWhereConditionModel[constraints.size()];
@@ -579,8 +579,8 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     }
     
     setConditions(whereConditions);
-    List orderBy = mqlQuery.getOrder();
-    setOrderBy((OrderBy[])orderBy.toArray(new OrderBy[0]));
+    List<OrderBy> orderBy = mqlQuery.getOrder();
+    setOrderBy(orderBy.toArray(new OrderBy[0]));
   }
   
   protected void clearQuery() {
