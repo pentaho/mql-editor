@@ -52,10 +52,10 @@ public class MQLOrderTableModel extends KTableDefaultModel {
         OrderBy orderBy = (OrderBy)orderList.get(row - getFixedRowCount());
         switch (col) {
           case 0:
-            value = orderBy.getBusinessColumn().getBusinessTable().getDisplayName(LOCALE);
+            value = orderBy.getSelection().getBusinessColumn().getBusinessTable().getDisplayName(LOCALE);
             break;
           case 1:
-            value = orderBy.getBusinessColumn().getDisplayName(LOCALE);
+            value = orderBy.getSelection().getBusinessColumn().getDisplayName(LOCALE);
             break;
           case 2:
             value = orderBy.isAscending() ? ASCENDING_ORDER : DESCENDING_ORDER;

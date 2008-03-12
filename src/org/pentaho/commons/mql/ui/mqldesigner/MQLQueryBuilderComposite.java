@@ -305,7 +305,7 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
   protected void moveSelectedColumnsToSortOrder() {
     BusinessColumn[] businessColumns = businessTablesTree.getSelectedBusinessColumns();
     for (int i = 0; i < businessColumns.length; i++) {
-      OrderBy orderBy = new OrderBy(businessColumns[i]);
+      OrderBy orderBy = new OrderBy(new Selection(businessColumns[i]));
       mqlOrderTable.add(orderBy);
     }
   }

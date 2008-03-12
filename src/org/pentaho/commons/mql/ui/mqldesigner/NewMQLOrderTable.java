@@ -136,10 +136,10 @@ public class NewMQLOrderTable extends TableViewer implements IStructuredContentP
       OrderBy orderBy = (OrderBy) element;
       switch (columnIndex) {
         case 0:
-          columnText = orderBy.getBusinessColumn().getBusinessTable().getDisplayName(LOCALE);
+          columnText = orderBy.getSelection().getBusinessColumn().getBusinessTable().getDisplayName(LOCALE);
           break;
         case 1:
-          columnText = orderBy.getBusinessColumn().getDisplayName(LOCALE);
+          columnText = orderBy.getSelection().getBusinessColumn().getDisplayName(LOCALE);
           break;
         case 2:
           columnText = orderBy.isAscending() ? ASCENDING_ORDER : DESCENDING_ORDER;
