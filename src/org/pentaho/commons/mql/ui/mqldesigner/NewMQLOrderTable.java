@@ -9,7 +9,7 @@
  * Software distributed under the Mozilla Public License is distributed on an "AS IS" 
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to 
  * the license for the specific language governing your rights and limitations.
-*/
+ */
 package org.pentaho.commons.mql.ui.mqldesigner;
 
 import java.util.ArrayList;
@@ -29,77 +29,71 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Widget;
 import org.pentaho.pms.mql.OrderBy;
+import org.pentaho.pms.mql.WhereCondition;
 
 /**
- * Abstract table viewer used for viewing and modifying the inputs and outputs of an action
- * definition element.
+ * Abstract table viewer used for viewing and modifying the inputs and outputs of an action definition element.
  * 
  * @author Angelo Rodriguez
  */
-public class NewMQLOrderTable extends TableViewer implements IStructuredContentProvider, ITableLabelProvider, ICellModifier {
+public class NewMQLOrderTable extends Composite {
 
   static final String ORDER_LABEL = Messages.getString("MQLOrderTableModel.SORT_ORDER"); //$NON-NLS-1$
   static final String COLUMN_LABEL = Messages.getString("MQLOrderTableModel.SORT_COLUMN"); //$NON-NLS-1$
   static final String TABLE_LABEL = Messages.getString("MQLOrderTableModel.SORT_TABLE"); //$NON-NLS-1$
-  
+
   static final String ORDER_PROP = "Order"; //$NON-NLS-1$
   static final String COLUMN_PROP = "Column"; //$NON-NLS-1$
   static final String TABLE_PROP = "Table"; //$NON-NLS-1$
-  
+
   static final String ASCENDING_ORDER = Messages.getString("MQLOrderTableModel.ASCENDING_SORT_ORDER"); //$NON-NLS-1$
   static final String DESCENDING_ORDER = Messages.getString("MQLOrderTableModel.DESCENDING_SORT_ORDER"); //$NON-NLS-1$
-  
-  static final String[] ORDER_ITEMS = new String[] {ASCENDING_ORDER, DESCENDING_ORDER};
-  
+
+  static final String[] ORDER_ITEMS = new String[] { ASCENDING_ORDER, DESCENDING_ORDER };
+
   static final String LOCALE = Locale.getDefault().toString();
-  
-  ArrayList orderList = new ArrayList();
-  
+
+  List<OrderBy> orderList = new ArrayList();
+
   ComboBoxCellEditor directionCellEditor;
-  
-  List listeners = new ArrayList();
-//  static final String NAME_COLUMN_PROP = "NAME"; //$NON-NLS-1$
-//
-//  static final String TYPE_COLUMN_PROP = "TYPE"; //$NON-NLS-1$
 
+  Table table = null;
 
-  /** 
+  // static final String NAME_COLUMN_PROP = "NAME"; //$NON-NLS-1$
+  //
+  // static final String TYPE_COLUMN_PROP = "TYPE"; //$NON-NLS-1$
+
+  /**
    * Creates an viewer
-   * @param parent   the parent of this viewer.
-   * @param toolkit  the form toolkit.
+   * 
+   * @param parent
+   *          the parent of this viewer.
+   * @param toolkit
+   *          the form toolkit.
    */
-  public NewMQLOrderTable(Composite parent) {
-    super(WidgetFactory.createTable(parent, SWT.FULL_SELECTION | SWT.BORDER));
-    
-    Table table = getTable();
+  public NewMQLOrderTable(Composite parent, int flags) {
+    super(parent, flags);
+    setLayout(new FillLayout());
+    table = new Table(this, SWT.FULL_SELECTION | SWT.HIDE_SELECTION | SWT.BORDER);
     table.setHeaderVisible(true);
     createTableColumns();
-    setContentProvider(this);
-    setLabelProvider(this);
-    createCellEditors();
   }
 
-  /** 
-   * Initializes this viewer with the appropriate cell editors.
-   */
-  protected void createCellEditors() {
-    Table table = getTable();
-    
-    directionCellEditor = new ComboBoxCellEditor(table, new String[] {ASCENDING_ORDER, DESCENDING_ORDER}, SWT.READ_ONLY);
-    
-    CellEditor[] editors = new CellEditor[] {directionCellEditor, directionCellEditor, directionCellEditor};
-    setCellEditors(editors);
-    setCellModifier(this);
-    setColumnProperties(new String[] { TABLE_PROP, COLUMN_PROP, ORDER_PROP});
-  }
-
-  /** 
+  /**
    * Creates the table columns for this table viewer.
    */
   protected void createTableColumns() {
@@ -114,128 +108,123 @@ public class NewMQLOrderTable extends TableViewer implements IStructuredContentP
     tableColumn.setText(ORDER_LABEL);
     tableColumn.setWidth(200);
   }
-  
-  /* (non-Javadoc)
-   * @see org.eclipse.jface.viewers.Viewer#inputChanged(java.lang.Object, java.lang.Object)
-   */
-  public void inputChanged(Viewer viewer, Object input, Object oldInput) {
-    this.orderList.clear();
-    if (input instanceof OrderBy[]) {
-      this.orderList.addAll(Arrays.asList((OrderBy[])input));
-    }
-    super.inputChanged(input, oldInput);
-  }
-  
-  public Image getColumnImage(Object element, int columnIndex) {
-    return null;
-  }
 
   public String getColumnText(Object element, int columnIndex) {
     String columnText = ""; //$NON-NLS-1$
     if (element instanceof OrderBy) {
       OrderBy orderBy = (OrderBy) element;
       switch (columnIndex) {
-        case 0:
-          columnText = orderBy.getBusinessColumn().getBusinessTable().getDisplayName(LOCALE);
-          break;
-        case 1:
-          columnText = orderBy.getBusinessColumn().getDisplayName(LOCALE);
-          break;
-        case 2:
-          columnText = orderBy.isAscending() ? ASCENDING_ORDER : DESCENDING_ORDER;
-          break;
+      case 0:
+        columnText = orderBy.getBusinessColumn().getBusinessTable().getDisplayName(LOCALE);
+        break;
+      case 1:
+        columnText = orderBy.getBusinessColumn().getDisplayName(LOCALE);
+        break;
+      case 2:
+        columnText = orderBy.isAscending() ? ASCENDING_ORDER : DESCENDING_ORDER;
+        break;
       }
     }
     return columnText;
   }
 
-  public void addListener(ILabelProviderListener listener) {
-    listeners.add(listener);
+  List editors = new ArrayList();
+
+  public void loadOrders() {
+
+    table.removeAll();
+    for (int i = 0; i < editors.size(); i++) {
+      if (editors.get(i) instanceof Widget) {
+        Widget widget = (Widget) editors.get(i);
+        widget.dispose();
+      } else if (editors.get(i) instanceof TableEditor) {
+        TableEditor editor = (TableEditor) editors.get(i);
+        editor.dispose();
+      }
+    }
+    for (int i = 0; i < table.getItemCount(); i++) {
+      TableItem item = table.getItem(i);
+      item.dispose();
+    }
+
+    editors.clear();
+    for (int j = 0; j < orderList.size(); j++) {
+      final OrderBy orderBy = orderList.get(j);
+      TableItem tableItem = new TableItem(table, SWT.NONE);
+      tableItem.setText(0, orderBy.getBusinessColumn().getBusinessTable().getDisplayName(LOCALE));
+      tableItem.setText(1, orderBy.getBusinessColumn().getDisplayName(LOCALE));
+
+      TableEditor editor = new TableEditor(table);
+      final CCombo sortCombo = new CCombo(table, SWT.NONE);
+      sortCombo.addSelectionListener(new SelectionListener() {
+
+        public void widgetDefaultSelected(SelectionEvent arg0) {
+        }
+
+        public void widgetSelected(SelectionEvent arg0) {
+          orderBy.setAscending(sortCombo.getSelectionIndex() == 0 ? true : false);
+        }
+
+      });
+      sortCombo.setEditable(false);
+      sortCombo.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+      sortCombo.add(ASCENDING_ORDER);
+      sortCombo.add(DESCENDING_ORDER);
+      sortCombo.select(orderBy.isAscending() ? 0 : 1);
+      editor.grabHorizontal = true;
+      editor.setEditor(sortCombo, tableItem, 2);
+      editors.add(editor);
+      editors.add(sortCombo);
+
+      tableItem.setText(2, orderBy.isAscending() ? ASCENDING_ORDER : DESCENDING_ORDER);
+
+    }
   }
 
-  public void dispose() {
+  public void setOrderBy(OrderBy[] orderBys) {
+    this.orderList.clear();
+    for (OrderBy order : orderBys) {
+      this.orderList.add(order);
+    }
+    loadOrders();
   }
 
-  public boolean isLabelProperty(Object element, String property) {
-    return true;
-  }
-
-  public void removeListener(ILabelProviderListener listener) {
-    listeners.add(listener);
-  }
-  
-  public void setOrderBy(OrderBy[] orderBy) {
-    setInput(orderBy);
-  }
-  
   public OrderBy[] getOrderBy() {
-    return (OrderBy[])orderList.toArray(new OrderBy[0]);
+    return (OrderBy[]) orderList.toArray(new OrderBy[0]);
   }
-  
+
   public void add(OrderBy orderBy) {
     if (!orderList.contains(orderBy)) {
       orderList.add(orderBy);
-      super.add(orderBy);
+      loadOrders();
     }
   }
-  
-  public void add(int row, OrderBy orderBy) {
-    if (!orderList.contains(orderBy)) {
-      orderList.add(row, orderBy);
-      super.insert(orderBy, row);
-    }
-  }
-  
-  public void remove(int row) {
-    if (orderList.size() > row) {
-      OrderBy orderBy = (OrderBy)orderList.get(row);
-      orderList.remove(row);
-      super.remove(orderBy);
-    }
-  }
-  
-  public OrderBy getOrderBy(int row) {
-    return (OrderBy)orderList.get(row);
-  }
-  
+
   public void move(int fromRow, int toRow) {
-    if ((fromRow < 0)
-        || (fromRow >= orderList.size())
-        || (toRow < 0)
-        || (toRow >= orderList.size()))
-    {
+    if ((fromRow < 0) || (fromRow >= orderList.size()) || (toRow < 0) || (toRow >= orderList.size())) {
       throw new IndexOutOfBoundsException();
     }
-    
+
     if (fromRow != toRow) {
-      OrderBy orderBy = (OrderBy)orderList.get(fromRow);
-      remove(fromRow);
+      OrderBy orderBy = (OrderBy) orderList.get(fromRow);
+      orderList.remove(fromRow);
       if (toRow == orderList.size()) {
         add(orderBy);
       } else {
-        add(toRow, orderBy);
+        orderList.add(toRow, orderBy);
       }
     }
-  }
-  
-  public void clear() {
-    setSelection(new StructuredSelection());
-    orderList.clear();
-    refresh();
-  }
-  
-  public Object[] getElements(Object arg0) {
-    return getOrderBy();
+    loadOrders();
   }
 
   protected void removeSelectedRows() {
     int[] rows = getTable().getSelectionIndices();
     TreeSet set = new TreeSet();
-    
+
     for (int i = 0; i < rows.length; i++) {
       set.add(new Integer(rows[i]));
     }
-    
+
     ArrayList list = new ArrayList();
     for (Iterator iterator = set.iterator(); iterator.hasNext();) {
       if (list.size() == 0) {
@@ -244,13 +233,13 @@ public class NewMQLOrderTable extends TableViewer implements IStructuredContentP
         list.add(0, iterator.next());
       }
     }
-    
+
     for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-      remove(((Integer)iterator.next()).intValue());
+      orderList.remove(((Integer) iterator.next()).intValue());
     }
-    
+
     if (list.size() == 1) {
-      int deletedRow = ((Integer)list.get(0)).intValue();
+      int deletedRow = ((Integer) list.get(0)).intValue();
       while (deletedRow >= getTable().getItemCount()) {
         deletedRow--;
       }
@@ -258,26 +247,19 @@ public class NewMQLOrderTable extends TableViewer implements IStructuredContentP
         getTable().select(deletedRow);
       }
     }
+    loadOrders();
   }
 
-  public boolean canModify(Object element, String property) {
-    return property.equals(ORDER_PROP);
-  }
-  
-  /* (non-Javadoc)
-   * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
-   */
-  public Object getValue(Object tableObject, String property) {
-    OrderBy orderBy = (OrderBy)tableObject;
-    String direction = orderBy.isAscending() ? ASCENDING_ORDER : DESCENDING_ORDER;
-    return new Integer(Arrays.asList(ORDER_ITEMS).indexOf(direction));
+  public void clear() {
+    orderList.clear();
+    loadOrders();
   }
 
-  public void modify(Object tableObject, String property, Object value) {
-    TableItem tableItem = (TableItem)tableObject;
-    OrderBy orderBy = (OrderBy)tableItem.getData();
-    int index = ((Integer)value).intValue();
-    orderBy.setAscending(!DESCENDING_ORDER.equals(ORDER_ITEMS[index]));
-    refresh(orderBy);
+  public Table getTable() {
+    return table;
+  }
+
+  public void setTable(Table table) {
+    this.table = table;
   }
 }

@@ -24,11 +24,11 @@
 	<classpathentry kind="lib" path="lib/commons-lang-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/libformula-0.1.12.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon-1.0.8.jar"/>
-	<classpathentry kind="lib" path="lib/swt-linux/linux-swt.jar"/>
 	<classpathentry kind="lib" path="lib/kettle-engine-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/pentaho-connections-1.7.0.24.jar"/>
 	<classpathentry kind="lib" path="lib/pentaho-meta-1.7.0.300.jar"/>
 	<classpathentry kind="lib" path="lib/commons-vfs-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jug-lgpl-2.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/swt-win32/swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

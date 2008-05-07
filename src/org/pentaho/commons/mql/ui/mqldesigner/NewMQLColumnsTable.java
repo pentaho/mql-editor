@@ -9,7 +9,7 @@
  * Software distributed under the Mozilla Public License is distributed on an "AS IS" 
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to 
  * the license for the specific language governing your rights and limitations.
-*/
+ */
 package org.pentaho.commons.mql.ui.mqldesigner;
 
 import java.util.ArrayList;
@@ -32,8 +32,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.pentaho.pms.schema.BusinessColumn;
 
 /**
- * Abstract table viewer used for viewing and modifying the inputs and outputs of an action
- * definition element.
+ * Abstract table viewer used for viewing and modifying the inputs and outputs of an action definition element.
  * 
  * @author Angelo Rodriguez
  */
@@ -46,25 +45,28 @@ public class NewMQLColumnsTable extends TableViewer implements IStructuredConten
 
   ArrayList businessColumns = new ArrayList();
   String locale;
-  
-  List listeners = new ArrayList();
-//  static final String NAME_COLUMN_PROP = "NAME"; //$NON-NLS-1$
-//
-//  static final String TYPE_COLUMN_PROP = "TYPE"; //$NON-NLS-1$
 
+  List listeners = new ArrayList();
+
+  // static final String NAME_COLUMN_PROP = "NAME"; //$NON-NLS-1$
+  //
+  // static final String TYPE_COLUMN_PROP = "TYPE"; //$NON-NLS-1$
 
   public NewMQLColumnsTable(Composite parent) {
     this(parent, "en_US");
   }
-  
-  /** 
+
+  /**
    * Creates an viewer
-   * @param parent   the parent of this viewer.
-   * @param toolkit  the form toolkit.
+   * 
+   * @param parent
+   *          the parent of this viewer.
+   * @param toolkit
+   *          the form toolkit.
    */
   public NewMQLColumnsTable(Composite parent, String locale) {
     super(WidgetFactory.createTable(parent, SWT.FULL_SELECTION | SWT.BORDER));
-    
+
     this.locale = locale;
     Table table = getTable();
     table.setHeaderVisible(true);
@@ -74,14 +76,14 @@ public class NewMQLColumnsTable extends TableViewer implements IStructuredConten
     createCellEditors();
   }
 
-  /** 
+  /**
    * Initializes this viewer with the appropriate cell editors.
    */
   protected void createCellEditors() {
-    
+
   }
 
-  /** 
+  /**
    * Creates the table columns for this table viewer.
    */
   protected void createTableColumns() {
@@ -93,18 +95,20 @@ public class NewMQLColumnsTable extends TableViewer implements IStructuredConten
     tableColumn.setText(COLUMN_LABEL);
     tableColumn.setWidth(200);
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.eclipse.jface.viewers.Viewer#inputChanged(java.lang.Object, java.lang.Object)
    */
   public void inputChanged(Viewer viewer, Object input, Object oldInput) {
     this.businessColumns.clear();
     if (input instanceof BusinessColumn[]) {
-      this.businessColumns.addAll(Arrays.asList((BusinessColumn[])input));
+      this.businessColumns.addAll(Arrays.asList((BusinessColumn[]) input));
     }
     super.inputChanged(input, oldInput);
   }
-  
+
   public Image getColumnImage(Object element, int columnIndex) {
     return null;
   }
@@ -114,12 +118,12 @@ public class NewMQLColumnsTable extends TableViewer implements IStructuredConten
     if (element instanceof BusinessColumn) {
       BusinessColumn businessColumn = (BusinessColumn) element;
       switch (columnIndex) {
-        case BUSINESS_TABLE_INDEX:
-          columnText = businessColumn.getBusinessTable().getDisplayName(locale); //$NON-NLS-1$
-          break;
-        case BUSINESS_COLUMN_INDEX:
-          columnText = businessColumn.getDisplayName(locale); //$NON-NLS-1$
-          break;
+      case BUSINESS_TABLE_INDEX:
+        columnText = businessColumn.getBusinessTable().getDisplayName(locale); //$NON-NLS-1$
+        break;
+      case BUSINESS_COLUMN_INDEX:
+        columnText = businessColumn.getDisplayName(locale); //$NON-NLS-1$
+        break;
       }
     }
     return columnText;
@@ -139,52 +143,48 @@ public class NewMQLColumnsTable extends TableViewer implements IStructuredConten
   public void removeListener(ILabelProviderListener listener) {
     listeners.add(listener);
   }
-  
+
   void setBusinessColumns(BusinessColumn[] businessColumns) {
     setInput(businessColumns);
   }
-  
+
   public BusinessColumn[] getBusinessColumns() {
-    return (BusinessColumn[])businessColumns.toArray(new BusinessColumn[0]);
+    return (BusinessColumn[]) businessColumns.toArray(new BusinessColumn[0]);
   }
-  
+
   public void add(BusinessColumn businessColumn) {
     if (!businessColumns.contains(businessColumn)) {
       businessColumns.add(businessColumn);
       super.add(businessColumn);
     }
   }
-  
+
   public void add(int row, BusinessColumn businessColumn) {
     if (!businessColumns.contains(businessColumn)) {
       businessColumns.add(row, businessColumn);
       super.insert(businessColumn, row);
     }
   }
-  
+
   public void remove(int row) {
     if (businessColumns.size() > row) {
-      BusinessColumn businessColumn = (BusinessColumn)businessColumns.get(row);
+      BusinessColumn businessColumn = (BusinessColumn) businessColumns.get(row);
       businessColumns.remove(row);
       super.remove(businessColumn);
     }
   }
-  
+
   public BusinessColumn getBusinessColumn(int row) {
-    return (BusinessColumn)businessColumns.get(row);
+    return (BusinessColumn) businessColumns.get(row);
   }
-  
+
   public void move(int fromRow, int toRow) {
-    if ((fromRow < 0)
-        || (fromRow >= businessColumns.size())
-        || (toRow < 0)
-        || (toRow >= businessColumns.size()))
-    {
+    if ((fromRow < 0) || (fromRow >= businessColumns.size()) || (toRow < 0) || (toRow >= businessColumns.size())) {
       throw new IndexOutOfBoundsException();
     }
-    
+
     if (fromRow != toRow) {
-      BusinessColumn businessColumn = (BusinessColumn)businessColumns.get(fromRow);
+      BusinessColumn businessColumn = (BusinessColumn) businessColumns.get(fromRow);
       remove(fromRow);
       if (toRow == businessColumns.size()) {
         add(businessColumn);
@@ -193,13 +193,13 @@ public class NewMQLColumnsTable extends TableViewer implements IStructuredConten
       }
     }
   }
-  
+
   public void clear() {
     setSelection(new StructuredSelection());
     businessColumns.clear();
     refresh();
   }
-  
+
   public Object[] getElements(Object arg0) {
     return getBusinessColumns();
   }
@@ -207,11 +207,11 @@ public class NewMQLColumnsTable extends TableViewer implements IStructuredConten
   protected void removeSelectedRows() {
     int[] rows = getTable().getSelectionIndices();
     TreeSet set = new TreeSet();
-    
+
     for (int i = 0; i < rows.length; i++) {
       set.add(new Integer(rows[i]));
     }
-    
+
     ArrayList list = new ArrayList();
     for (Iterator iterator = set.iterator(); iterator.hasNext();) {
       if (list.size() == 0) {
@@ -220,13 +220,13 @@ public class NewMQLColumnsTable extends TableViewer implements IStructuredConten
         list.add(0, iterator.next());
       }
     }
-    
+
     for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-      remove(((Integer)iterator.next()).intValue());
+      remove(((Integer) iterator.next()).intValue());
     }
-    
+
     if (list.size() == 1) {
-      int deletedRow = ((Integer)list.get(0)).intValue();
+      int deletedRow = ((Integer) list.get(0)).intValue();
       while (deletedRow >= getTable().getItemCount()) {
         deletedRow--;
       }

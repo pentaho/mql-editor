@@ -9,7 +9,7 @@
  * Software distributed under the Mozilla Public License is distributed on an "AS IS" 
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to 
  * the license for the specific language governing your rights and limitations.
-*/
+ */
 package org.pentaho.commons.mql.ui.mqldesigner;
 
 import java.util.ArrayList;
@@ -20,92 +20,62 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TreeSet;
 
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
-import org.eclipse.jface.viewers.ICellModifier;
-import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Widget;
+import org.pentaho.pms.mql.OrderBy;
 import org.pentaho.pms.mql.WhereCondition;
 import org.pentaho.pms.schema.concept.types.datatype.DataTypeSettings;
 
 /**
- * Abstract table viewer used for viewing and modifying the inputs and outputs of an action
- * definition element.
+ * Abstract table viewer used for viewing and modifying the inputs and outputs of an action definition element.
  * 
- * @author Angelo Rodriguez
  */
-public class NewMQLConditionsTable extends TableViewer implements IStructuredContentProvider, ITableLabelProvider, ICellModifier {
+public class NewMQLConditionsTable extends Composite {
 
   static final String VALUE_LABEL = Messages.getString("MQLConditionsTableModel.COMPARE_VALUE"); //$NON-NLS-1$
   static final String LOGICAL_OPERATOR_LABEL = Messages.getString("MQLConditionsTableModel.LOGICAL_OPERATION"); //$NON-NLS-1$
   static final String COMPARISON_LABEL = Messages.getString("MQLConditionsTableModel.COMPARISON_OPERATION"); //$NON-NLS-1$
   static final String COLUMN_LABEL = Messages.getString("MQLConditionsTableModel.DB_COLUMN"); //$NON-NLS-1$
   static final String TABLE_LABEL = Messages.getString("MQLConditionsTableModel.DB_TABLE"); //$NON-NLS-1$
-  
+
   static final String COMPARISON_PROP = "Comparison"; //$NON-NLS-1$
   static final String COLUMN_PROP = "Column"; //$NON-NLS-1$
   static final String TABLE_PROP = "Table"; //$NON-NLS-1$
   static final String LOGICAL_OP_PROP = "LogicalOp"; //$NON-NLS-1$
   static final String VALUE_PROP = "Value"; //$NON-NLS-1$
-  
+
   static final String LOCALE = Locale.getDefault().toString();
-  
-  ArrayList conditions = new ArrayList();
-  
-  ComboBoxCellEditor comparisonEditor;
-  ComboBoxCellEditor logicalOpEditor;
-  TextCellEditor valueEditor;
-  
-  List listeners = new ArrayList();
 
+  List<MQLWhereConditionModel> conditions = new ArrayList();
 
-  /** 
-   * Creates an viewer
-   * @param parent   the parent of this viewer.
-   * @param toolkit  the form toolkit.
-   */
-  public NewMQLConditionsTable(Composite parent) {
-    super(WidgetFactory.createTable(parent, SWT.FULL_SELECTION | SWT.BORDER));
-    
-    Table table = getTable();
+  Table table = null;
+
+  public NewMQLConditionsTable(Composite parent, int flags) {
+    super(parent, flags);
+    setLayout(new FillLayout());
+    table = new Table(this, SWT.FULL_SELECTION | SWT.HIDE_SELECTION | SWT.BORDER);
     table.setHeaderVisible(true);
     createTableColumns();
-    setContentProvider(this);
-    setLabelProvider(this);
-    createCellEditors();
   }
 
-  /** 
-   * Initializes this viewer with the appropriate cell editors.
-   */
-  protected void createCellEditors() {
-    Table table = getTable();
-    
-    comparisonEditor = new ComboBoxCellEditor(table, WhereCondition.comparators, SWT.READ_ONLY);
-    logicalOpEditor = new ComboBoxCellEditor(table, WhereCondition.operators, SWT.READ_ONLY);
-    valueEditor = new TextCellEditor(table);
-    
-    CellEditor[] editors = new CellEditor[] {logicalOpEditor, null, null, comparisonEditor, valueEditor};
-    setCellEditors(editors);
-    setCellModifier(this);
-    setColumnProperties(new String[] {LOGICAL_OP_PROP, TABLE_PROP, COLUMN_PROP, COMPARISON_PROP, VALUE_PROP});
-  }
-
-  /** 
+  /**
    * Creates the table columns for this table viewer.
    */
-  protected void createTableColumns() {
+  public void createTableColumns() {
     Table table = getTable();
     TableColumn tableColumn = new TableColumn(table, SWT.LEFT);
     tableColumn.setText(LOGICAL_OPERATOR_LABEL);
@@ -123,155 +93,205 @@ public class NewMQLConditionsTable extends TableViewer implements IStructuredCon
     tableColumn.setText(VALUE_LABEL);
     tableColumn.setWidth(100);
   }
-  
-  /* (non-Javadoc)
-   * @see org.eclipse.jface.viewers.Viewer#inputChanged(java.lang.Object, java.lang.Object)
-   */
-  public void inputChanged(Viewer viewer, Object input, Object oldInput) {
-    this.conditions.clear();
-    if (input instanceof MQLWhereConditionModel[]) {
-      this.conditions.addAll(Arrays.asList((MQLWhereConditionModel[])input));
-    }
-    super.inputChanged(input, oldInput);
-  }
-  
-  public Image getColumnImage(Object element, int columnIndex) {
-    return null;
+
+  public void clear() {
+    conditions.clear();
+    loadConditions();
   }
 
-  public String getColumnText(Object element, int columnIndex) {
-    String columnText = ""; //$NON-NLS-1$
-    if (element instanceof MQLWhereConditionModel) {
-      MQLWhereConditionModel condition = (MQLWhereConditionModel) element;
-      switch (columnIndex) {
-        case 0:
-          if (conditions.indexOf(condition) != 0) {
-            columnText = condition.getOperator();
-          }
-          break;
-        case 1:
-          columnText = condition.getField().getBusinessTable().getDisplayName(LOCALE);
-          break;
-        case 2:
-          columnText = condition.getField().getDisplayName(LOCALE);
-          break;
-        case 3:
-          columnText = getConditionType(condition); 
-          break;
-        case 4:
-          columnText = getConditionValue(condition);
-          break;
-      }
-    }
-    return columnText;
+  public Table getTable() {
+    return table;
   }
 
-  public void addListener(ILabelProviderListener listener) {
-    listeners.add(listener);
-  }
-
-  public void dispose() {
-  }
-
-  public boolean isLabelProperty(Object element, String property) {
-    return true;
-  }
-
-  public void removeListener(ILabelProviderListener listener) {
-    listeners.add(listener);
-  }
-  
-  public void setConditions(MQLWhereConditionModel[] conditions) {
-    setInput(conditions);
-  }
-  
   public MQLWhereConditionModel[] getConditions() {
-    return (MQLWhereConditionModel[])conditions.toArray(new MQLWhereConditionModel[0]);
+    return (MQLWhereConditionModel[]) conditions.toArray(new MQLWhereConditionModel[] {});
   }
-  
-  public void add(MQLWhereConditionModel condition) {
-    if (!conditions.contains(condition)) {
-      conditions.add(condition);
-      super.add(condition);
+
+  public void setConditions(MQLWhereConditionModel[] conditions) {
+    this.conditions.clear();
+    for (MQLWhereConditionModel where : conditions) {
+      this.conditions.add(where);
     }
+    loadConditions();
   }
-  
-  public void add(int row, MQLWhereConditionModel condition) {
-    if (!conditions.contains(condition)) {
-      conditions.add(row, condition);
-      super.insert(condition, row);
-    }
-  }
-  
-  public void remove(int row) {
-    if (conditions.size() > row) {
-      MQLWhereConditionModel condition = (MQLWhereConditionModel)conditions.get(row);
-      conditions.remove(row);
-      super.remove(condition);
-      if ((row == 0) && (conditions.size() > 0)) {
-        condition = (MQLWhereConditionModel)conditions.get(0);
-        condition.setOperator(null);
-        refresh(condition);
+
+  List editors = new ArrayList();
+
+  public void loadConditions() {
+    table.removeAll();
+    for (int i = 0; i < editors.size(); i++) {
+      if (editors.get(i) instanceof Widget) {
+        Widget widget = (Widget) editors.get(i);
+        widget.dispose();
+      } else if (editors.get(i) instanceof TableEditor) {
+        TableEditor editor = (TableEditor) editors.get(i);
+        editor.dispose();
       }
     }
-  }
-  
-  public MQLWhereConditionModel getCondition(int row) {
-    return (MQLWhereConditionModel)conditions.get(row);
-  }
-  
-  public void move(int fromRow, int toRow) {
-    if ((fromRow < 0)
-        || (fromRow >= conditions.size())
-        || (toRow < 0)
-        || (toRow >= conditions.size()))
-    {
-      throw new IndexOutOfBoundsException();
+    for (int i = 0; i < table.getItemCount(); i++) {
+      TableItem item = table.getItem(i);
+      item.dispose();
     }
-    
-    if (fromRow != toRow) {
-      if (fromRow == 0) {
-        MQLWhereConditionModel whereCondition = (MQLWhereConditionModel)conditions.get(0);
-        whereCondition.setOperator("AND"); //$NON-NLS-1$
-        if (conditions.size() > 1) {
-          whereCondition = (MQLWhereConditionModel)conditions.get(1);
-          whereCondition.setOperator(null);
+
+    editors.clear();
+    for (int j = 0; j < conditions.size(); j++) {
+      final MQLWhereConditionModel condition = (MQLWhereConditionModel) conditions.get(j);
+      TableItem tableItem = new TableItem(table, SWT.NONE);
+
+      TableEditor editor = new TableEditor(table);
+      final CCombo operatorCombo = new CCombo(table, SWT.NONE);
+      operatorCombo.addSelectionListener(new SelectionListener() {
+
+        public void widgetDefaultSelected(SelectionEvent arg0) {
         }
-      } else if (toRow == 0) {
-        MQLWhereConditionModel whereCondition = (MQLWhereConditionModel)conditions.get(0);
-        whereCondition.setOperator("AND"); //$NON-NLS-1$
-        whereCondition = (MQLWhereConditionModel)conditions.get(fromRow);
+
+        public void widgetSelected(SelectionEvent arg0) {
+          condition.setOperator(operatorCombo.getItem(operatorCombo.getSelectionIndex()));
+        }
+
+      });
+      operatorCombo.setEditable(false);
+      operatorCombo.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+      for (int i = 0; i < WhereCondition.operators.length; i++) {
+        operatorCombo.add(WhereCondition.operators[i]);
+        if (condition.getOperator() != null && condition.getOperator().equals(WhereCondition.operators[i])) {
+          operatorCombo.select(i);
+        }
+      }
+      editor.grabHorizontal = true;
+      editor.setEditor(operatorCombo, tableItem, 0);
+      editors.add(editor);
+      editors.add(operatorCombo);
+
+      tableItem.setText(1, condition.getField().getBusinessTable().getDisplayName(Locale.getDefault().getDisplayName()));
+      tableItem.setText(2, condition.getField().getDisplayName(Locale.getDefault().getDisplayName()));
+
+      final Text valueText = new Text(table, SWT.NONE);
+      final CCombo comparisonCombo = new CCombo(table, SWT.NONE);
+      comparisonCombo.setEditable(false);
+      comparisonCombo.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+      for (int i = 0; i < WhereCondition.comparators.length; i++) {
+        comparisonCombo.add(WhereCondition.comparators[i]);
+        String conditionStr = getConditionType(condition);
+        if (conditionStr != null && conditionStr.equals(WhereCondition.comparators[i])) {
+          comparisonCombo.select(i);
+        }
+      }
+      editor = new TableEditor(table);
+      editor.grabHorizontal = true;
+      editor.setEditor(comparisonCombo, tableItem, 3);
+      editors.add(editor);
+      editors.add(comparisonCombo);
+
+      valueText.setText(getConditionValue(condition));
+      editor = new TableEditor(table);
+      editor.grabHorizontal = true;
+      editor.setEditor(valueText, tableItem, 4);
+      editor = new TableEditor(table);
+      editors.add(editor);
+      editors.add(valueText);
+
+      valueText.addModifyListener(new ModifyListener() {
+
+        @Override
+        public void modifyText(ModifyEvent arg0) {
+          String conditionStr = getConditionType(condition);
+          String value = valueText.getText();
+          if (condition.getField().getDataType().getType() == DataTypeSettings.DATA_TYPE_STRING) {
+            String stringValue = value.toString().trim();
+            if (stringValue.length() == 0) {
+              stringValue = "\"\"";
+            } else if (stringValue.equals("\"")) {
+              stringValue = "\\\"";
+            } else {
+              if (!stringValue.startsWith("\"")) {
+                stringValue = "\"" + stringValue;
+              }
+              if (!stringValue.endsWith("\"")) {
+                stringValue = stringValue + "\"";
+              }
+            }
+
+            condition.setCondition(conditionStr + stringValue);
+          } else if (value.toString().trim().length() > 0) {
+            condition.setCondition(conditionStr + value.toString().trim());
+          }
+        }
+
+      });
+
+      comparisonCombo.addSelectionListener(new SelectionListener() {
+
+        public void widgetDefaultSelected(SelectionEvent arg0) {
+        }
+
+        public void widgetSelected(SelectionEvent arg0) {
+          String value = valueText.getText();
+          if (condition.getField().getDataType().getType() == DataTypeSettings.DATA_TYPE_STRING) {
+            String stringValue = value.toString().trim();
+            if (stringValue.length() == 0) {
+              stringValue = "\"\"";
+            } else if (stringValue.equals("\"")) {
+              stringValue = "\\\"";
+            } else {
+              if (!stringValue.startsWith("\"")) {
+                stringValue = "\"" + stringValue;
+              }
+              if (!stringValue.endsWith("\"")) {
+                stringValue = stringValue + "\"";
+              }
+            }
+
+            System.out.println("[from]comparisonCombo index=" + comparisonCombo.getSelectionIndex());
+
+            if (comparisonCombo.getSelectionIndex() >= 0 && comparisonCombo.getSelectionIndex() < comparisonCombo.getItemCount()) {
+              condition.setCondition(comparisonCombo.getItem(comparisonCombo.getSelectionIndex()) + stringValue);
+            }
+          } else if (value.toString().trim().length() > 0) {
+            if (comparisonCombo.getSelectionIndex() >= 0 && comparisonCombo.getSelectionIndex() < comparisonCombo.getItemCount()) {
+              condition.setCondition(comparisonCombo.getItem(comparisonCombo.getSelectionIndex()) + value.toString().trim());
+            }
+          }
+        }
+
+      });
+
+    }
+  }
+
+  public void add(MQLWhereConditionModel condition) {
+    conditions.add(condition);
+    loadConditions();
+  }
+
+  public void move(int rowFrom, int rowTo) {
+    MQLWhereConditionModel from = conditions.get(rowFrom);
+    if (rowFrom == 0) {
+      MQLWhereConditionModel whereCondition = (MQLWhereConditionModel) conditions.get(0);
+      whereCondition.setOperator("AND"); //$NON-NLS-1$
+      if (conditions.size() > 1) {
+        whereCondition = (MQLWhereConditionModel) conditions.get(1);
         whereCondition.setOperator(null);
       }
-      
-      MQLWhereConditionModel condition = (MQLWhereConditionModel)conditions.get(fromRow);
-      remove(fromRow);
-      if (toRow == conditions.size()) {
-        add(condition);
-      } else {
-        add(toRow, condition);
-      }
+    } else if (rowTo == 0) {
+      MQLWhereConditionModel whereCondition = (MQLWhereConditionModel) conditions.get(0);
+      whereCondition.setOperator("AND"); //$NON-NLS-1$
+      whereCondition = (MQLWhereConditionModel) conditions.get(rowFrom);
+      whereCondition.setOperator(null);
     }
-  }
-  
-  public void clear() {
-    setSelection(new StructuredSelection());
-    conditions.clear();
-    refresh();
-  }
-  
-  public Object[] getElements(Object arg0) {
-    return getConditions();
+    conditions.remove(rowFrom);
+    conditions.add(rowTo, from);
+    loadConditions();
   }
 
   protected void removeSelectedRows() {
     int[] rows = getTable().getSelectionIndices();
     TreeSet set = new TreeSet();
-    
+
     for (int i = 0; i < rows.length; i++) {
       set.add(new Integer(rows[i]));
     }
-    
+
     ArrayList list = new ArrayList();
     for (Iterator iterator = set.iterator(); iterator.hasNext();) {
       if (list.size() == 0) {
@@ -280,13 +300,13 @@ public class NewMQLConditionsTable extends TableViewer implements IStructuredCon
         list.add(0, iterator.next());
       }
     }
-    
+
     for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-      remove(((Integer)iterator.next()).intValue());
+      conditions.remove(((Integer) iterator.next()).intValue());
     }
-    
+
     if (list.size() == 1) {
-      int deletedRow = ((Integer)list.get(0)).intValue();
+      int deletedRow = ((Integer) list.get(0)).intValue();
       while (deletedRow >= getTable().getItemCount()) {
         deletedRow--;
       }
@@ -294,67 +314,9 @@ public class NewMQLConditionsTable extends TableViewer implements IStructuredCon
         getTable().select(deletedRow);
       }
     }
+    loadConditions();
   }
 
-  public boolean canModify(Object element, String property) {
-    return COMPARISON_PROP.equals(property) 
-      || (LOGICAL_OP_PROP.equals(property) && (conditions.indexOf(element) != 0))
-      || VALUE_PROP.equals(property); 
-  }
-  
-  /* (non-Javadoc)
-   * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
-   */
-  public Object getValue(Object tableObject, String property) {
-    MQLWhereConditionModel condition = (MQLWhereConditionModel)tableObject;
-    Object value = null;
-    if (COMPARISON_PROP.equals(property)) {
-      value = new Integer(Arrays.asList(WhereCondition.comparators).indexOf(getConditionType(condition)));
-    } else if (LOGICAL_OP_PROP.equals(property)) {
-      value = new Integer(Arrays.asList(WhereCondition.operators).indexOf(condition.getOperator()));
-    } else if (VALUE_PROP.equals(property)) {
-      value = getConditionValue(condition);
-    }
-    return value;
-  }
-
-  public void modify(Object tableObject, String property, Object value) {
-    TableItem tableItem = (TableItem)tableObject;
-    MQLWhereConditionModel condition = (MQLWhereConditionModel)tableItem.getData();
-    if (COMPARISON_PROP.equals(property)) {
-      int index = ((Integer)value).intValue();
-      String conditionString = WhereCondition.comparators[index];
-      String conditionValue = getConditionValue(condition);
-      if (conditionValue != null) {
-        conditionString = conditionString  + conditionValue;
-      }
-      condition.setCondition(conditionString);
-    } else if (LOGICAL_OP_PROP.equals(property)) {
-      int index = ((Integer)value).intValue();
-      condition.setOperator(WhereCondition.operators[index]);
-    } else if (VALUE_PROP.equals(property)) {
-      if (condition.getField().getDataType().getType() == DataTypeSettings.DATA_TYPE_STRING) {
-        String stringValue = value.toString().trim();
-        if (stringValue.length() == 0) {
-          stringValue = "\"\"";
-        } else if (stringValue.equals("\"")) {
-          stringValue = "\\\"";
-        } else {
-          if (!stringValue.startsWith("\"")) {
-            stringValue = "\"" + stringValue;
-          }
-          if (!stringValue.endsWith("\"")) {
-            stringValue = stringValue + "\"";
-          }
-        }
-        condition.setCondition(getConditionType(condition) + stringValue);
-      } else if (value.toString().trim().length() > 0) {
-        condition.setCondition(getConditionType(condition) + value.toString().trim());
-      }
-    }
-    refresh(condition);
-  }
-  
   private String getConditionType(MQLWhereConditionModel whereCondition) {
     String value = null;
     TreeSet treeSet = new TreeSet(new Comparator() {
@@ -370,7 +332,7 @@ public class NewMQLConditionsTable extends TableViewer implements IStructuredCon
         return value;
       }
     });
-    
+
     treeSet.addAll(Arrays.asList(WhereCondition.comparators));
     for (Iterator iter = treeSet.iterator(); iter.hasNext() && (value == null);) {
       String comparator = iter.next().toString().toUpperCase();
@@ -381,11 +343,11 @@ public class NewMQLConditionsTable extends TableViewer implements IStructuredCon
     }
     return value;
   }
-  
+
   private String getConditionValue(MQLWhereConditionModel whereCondition) {
     String value = null;
     String comparator = getConditionType(whereCondition);
-    if (comparator != null){
+    if (comparator != null) {
       String condition = whereCondition.getCondition();
       if (condition.length() > comparator.length()) {
         value = condition.substring(comparator.length()).trim();
@@ -393,4 +355,5 @@ public class NewMQLConditionsTable extends TableViewer implements IStructuredCon
     }
     return value;
   }
+
 }

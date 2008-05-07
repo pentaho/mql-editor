@@ -207,9 +207,9 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData.horizontalAlignment = GridData.END;
     createFiltersToolbar(composite).setLayoutData(gridData);
     
-    mqlFiltersTable = new NewMQLConditionsTable(this);
+    mqlFiltersTable = new NewMQLConditionsTable(this, SWT.NONE);
     gridData = new GridData(GridData.FILL_BOTH);
-    mqlFiltersTable.getTable().setLayoutData(gridData);
+    mqlFiltersTable.setLayoutData(gridData);
       
     toolBar = new ToolBar(this, SWT.FLAT);
     toolItem = new ToolItem(toolBar, SWT.NULL);
@@ -244,9 +244,9 @@ public class MQLQueryBuilderComposite extends Composite implements SelectionList
     gridData.horizontalAlignment = GridData.END;
     createSortToolbar(composite).setLayoutData(gridData);
     
-    mqlOrderTable = new NewMQLOrderTable(this);
+    mqlOrderTable = new NewMQLOrderTable(this, SWT.NONE);
     gridData = new GridData(GridData.FILL_BOTH);
-    mqlOrderTable.getTable().setLayoutData(gridData);
+    mqlOrderTable.setLayoutData(gridData);
 
     gridData = new GridData();
     distinctSelections = WidgetFactory.createButton(this, Messages.getString("MQLColumnSelectorComposite.DISTINCT_SELECTIONS"), SWT.CHECK | SWT.SELECTED); //$NON-NLS-1$
