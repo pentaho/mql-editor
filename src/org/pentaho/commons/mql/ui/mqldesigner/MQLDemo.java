@@ -1,12 +1,7 @@
 package org.pentaho.commons.mql.ui.mqldesigner;
 
-import java.io.IOException;
-
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
-import org.pentaho.pms.core.exception.PentahoMetadataException;
-import org.pentaho.pms.factory.CwmSchemaFactory;
-import org.pentaho.pms.mql.MQLQuery;
 
 public class MQLDemo {
   public static void main(String args[]) {
