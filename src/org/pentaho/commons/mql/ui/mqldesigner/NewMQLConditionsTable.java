@@ -193,7 +193,6 @@ public class NewMQLConditionsTable extends Composite {
 
       valueText.addModifyListener(new ModifyListener() {
 
-        @Override
         public void modifyText(ModifyEvent arg0) {
           String conditionStr = getConditionType(condition);
           String value = valueText.getText();
