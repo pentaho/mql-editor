@@ -15,6 +15,7 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
@@ -29,13 +30,17 @@ import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MouseListener;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
 /**
@@ -49,7 +54,7 @@ public class FileChooser extends VerticalPanel {
   int mode = OPEN;
   String selectedPath;
   String previousPath;
-  
+
   ListBox navigationListBox;
   Tree repositoryTree;
   TreeItem selectedTreeItem;
@@ -57,6 +62,8 @@ public class FileChooser extends VerticalPanel {
   boolean showLocalizedFileNames = false;
   com.google.gwt.user.client.Element lastSelectedFileElement;
   TextBox fileNameTextBox = new TextBox();
+  DateTimeFormat dateFormat = DateTimeFormat.getShortDateTimeFormat();
+  Document solutionRepositoryDocument;
 
   ArrayList<FileChooserListener> listeners = new ArrayList<FileChooserListener>();
 
@@ -81,6 +88,15 @@ public class FileChooser extends VerticalPanel {
     DOM.setStyleAttribute(getElement(), "border", "1px solid #707070");
   }
 
+  public FileChooser(int mode, String selectedPath, Document solutionRepositoryDocument) {
+    this();
+    this.mode = mode;
+    this.selectedPath = selectedPath;
+    this.solutionRepositoryDocument = solutionRepositoryDocument;
+    repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames);
+    initUI(false);
+  }
+
   public FileChooser(int mode, String selectedPath) {
     this();
     this.mode = mode;
@@ -93,7 +109,8 @@ public class FileChooser extends VerticalPanel {
   }
 
   public void fetchRepositoryDocument(final IDialogCallback completedCallback) throws RequestException {
-    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url");
+     RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+        "/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url");
 //    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
 //        "http://localhost:8080/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&userid=joe&password=password");
 
@@ -106,8 +123,8 @@ public class FileChooser extends VerticalPanel {
       public void onResponseReceived(Request request, Response response) {
         // ok, we have a repository document, we can build the GUI
         // consider caching the document
-        Document doc = (Document) XMLParser.parse((String) response.getText());
-        repositoryTree = TreeBuilder.buildSolutionTree(doc, showHiddenFiles, showLocalizedFileNames);
+        solutionRepositoryDocument = (Document) XMLParser.parse((String) response.getText());
+        repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames);
         initUI(false);
         if (completedCallback != null) {
           completedCallback.okPressed();
@@ -118,6 +135,21 @@ public class FileChooser extends VerticalPanel {
     builder.sendRequest(null, callback);
   }
 
+  private void buildOracleValues(List<String> oracleValues, Element element) {
+    String name = element.getAttribute("name");
+    String localizedName = element.getAttribute("localized-name");
+    if (name != null) {
+      oracleValues.add(name);
+    }
+    if (localizedName != null) {
+      oracleValues.add(localizedName);
+    }
+    NodeList children = element.getChildNodes();
+    for (int i = 0; i < children.getLength(); i++) {
+      buildOracleValues(oracleValues, (Element) children.item(i));
+    }
+  }
+
   public void initUI(final boolean fromSearch) {
 
     String path = this.selectedPath;
@@ -125,7 +157,7 @@ public class FileChooser extends VerticalPanel {
       path = previousPath;
     }
     final String finalPath = path;
-    
+
     // find the selected item from the list
     List<String> pathSegments = new ArrayList<String>();
     if (path != null) {
@@ -158,7 +190,7 @@ public class FileChooser extends VerticalPanel {
     if (fromSearch) {
       navigationListBox.addItem("Search Results", "Search Results");
     }
-    
+
     navigationListBox.setSelectedIndex(navigationListBox.getItemCount() - 1);
     navigationListBox.addChangeListener(new ChangeListener() {
       public void onChange(Widget sender) {
@@ -209,7 +241,13 @@ public class FileChooser extends VerticalPanel {
     searchImage.addClickListener(new ClickListener() {
       public void onClick(Widget sender) {
         // bring up a search
+        MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
+        List<String> oracleValues = new ArrayList<String>();
+        buildOracleValues(oracleValues, solutionRepositoryDocument.getDocumentElement());
+        oracle.addAll(oracleValues);
+
         final TextBox searchTextBox = new TextBox();
+        SuggestBox suggestTextBox = new SuggestBox(oracle, searchTextBox);
         IDialogCallback callback = new IDialogCallback() {
 
           public void cancelPressed() {
@@ -237,7 +275,7 @@ public class FileChooser extends VerticalPanel {
           }
 
         };
-        PromptDialogBox searchDialog = new PromptDialogBox("Search", searchTextBox, "OK", "Cancel", callback, false, true);
+        PromptDialogBox searchDialog = new PromptDialogBox("Search", suggestTextBox, "OK", "Cancel", callback, false, true);
         searchDialog.setFocusWidget(searchTextBox);
         searchDialog.center();
       }
@@ -279,7 +317,7 @@ public class FileChooser extends VerticalPanel {
         while (tmpItem != null) {
           HashMap<String, Object> attributeMap = (HashMap<String, Object>) tmpItem.getUserObject();
           if (attributeMap.get("name") != null) {
-            parentSegments.add((String)attributeMap.get("name"));
+            parentSegments.add((String) attributeMap.get("name"));
           }
           tmpItem = tmpItem.getParentItem();
         }
@@ -325,8 +363,8 @@ public class FileChooser extends VerticalPanel {
       final TreeItem childItem = parentItem.getChild(i);
       HashMap<String, Object> attributeMap = (HashMap<String, Object>) childItem.getUserObject();
       final boolean isDir = "true".equals(attributeMap.get("isDirectory"));
-      String name = ((String)attributeMap.get("name")).toLowerCase();
-      String localizedName = ((String)attributeMap.get("localized-name")).toLowerCase();
+      String name = ((String) attributeMap.get("name")).toLowerCase();
+      String localizedName = ((String) attributeMap.get("localized-name")).toLowerCase();
       if (isDir) {
         findMatchingTreeItems(rootItem, childItem, searchText);
       }
@@ -337,10 +375,10 @@ public class FileChooser extends VerticalPanel {
         attributeMap.put("original", childItem);
         copyItem.setUserObject(attributeMap);
         rootItem.addItem(copyItem);
-      } 
+      }
     }
   }
-  
+
   public Widget buildFilesList(TreeItem parentTreeItem) {
     VerticalPanel filesListPanel = new VerticalPanel();
     filesListPanel.setWidth("100%");
@@ -397,24 +435,24 @@ public class FileChooser extends VerticalPanel {
   private void addFileToList(final HashMap<String, String> attributeMap, final TreeItem item, final FlexTable filesListTable, int row) {
     Date lastModDate = new Date(Long.parseLong(attributeMap.get("lastModifiedDate")));
     final boolean isDir = "true".equals(attributeMap.get("isDirectory"));
-    Label myDateLabel = new Label(lastModDate.toLocaleString());
+    Label myDateLabel = new Label(dateFormat.format(lastModDate));
     myDateLabel.setWordWrap(false);
 
     Label myNameLabel = new Label(attributeMap.get("name")) {
       public void onBrowserEvent(Event event) {
         HashMap<String, Object> attributeMap = (HashMap<String, Object>) item.getUserObject();
-        TreeItem originalItem = (TreeItem)attributeMap.get("original");
+        TreeItem originalItem = (TreeItem) attributeMap.get("original");
         TreeItem tmpItem = originalItem;
         if (originalItem == null) {
           tmpItem = item;
         }
         selectedTreeItem = tmpItem;
-        
+
         List<String> parentSegments = new ArrayList<String>();
         while (tmpItem != null) {
           HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) tmpItem.getUserObject();
           if (tmpAttributeMap.get("name") != null) {
-            parentSegments.add((String)tmpAttributeMap.get("name"));
+            parentSegments.add((String) tmpAttributeMap.get("name"));
           }
           tmpItem = tmpItem.getParentItem();
         }
@@ -427,7 +465,7 @@ public class FileChooser extends VerticalPanel {
         if (!isDir) {
           HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) selectedTreeItem.getUserObject();
           if (tmpAttributeMap.get("name") != null) {
-            fileNameTextBox.setText((String)tmpAttributeMap.get("name"));
+            fileNameTextBox.setText((String) tmpAttributeMap.get("name"));
           }
         }
 
@@ -454,7 +492,7 @@ public class FileChooser extends VerticalPanel {
     myNameLabel.sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
     myNameLabel.setWordWrap(false);
     myNameLabel.setTitle(getTitle(item));
-    
+
     HorizontalPanel fileNamePanel = new HorizontalPanel();
     Image fileImage = new Image();
     if (isDir) {
@@ -479,9 +517,9 @@ public class FileChooser extends VerticalPanel {
     while (item != null) {
       HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) item.getUserObject();
       if (tmpAttributeMap.get("name") != null) {
-        parentSegments.add((String)tmpAttributeMap.get("name"));
+        parentSegments.add((String) tmpAttributeMap.get("name"));
       }
-      TreeItem originalItem = (TreeItem)tmpAttributeMap.get("original");
+      TreeItem originalItem = (TreeItem) tmpAttributeMap.get("original");
       if (originalItem != null) {
         item = originalItem.getParentItem();
       } else {
@@ -499,7 +537,7 @@ public class FileChooser extends VerticalPanel {
     }
     return myPath;
   }
-  
+
   public TreeItem getTreeItem(List<String> pathSegments) {
     // find the tree node whose location matches the pathSegment paths
     TreeItem selectedItem = repositoryTree.getItem(0);
@@ -514,7 +552,7 @@ public class FileChooser extends VerticalPanel {
     }
 
     HashMap<String, Object> attributeMap = (HashMap<String, Object>) selectedItem.getUserObject();
-    TreeItem originalItem = (TreeItem)attributeMap.get("original");
+    TreeItem originalItem = (TreeItem) attributeMap.get("original");
     if (originalItem != null) {
       selectedItem = originalItem;
     }
