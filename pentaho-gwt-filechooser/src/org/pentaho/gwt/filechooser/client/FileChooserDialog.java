@@ -10,7 +10,7 @@ public class FileChooserDialog extends PromptDialogBox {
   FileChooser fileChooser;
 
   public FileChooserDialog(int mode, String selectedPath, boolean autoHide, boolean modal) {
-    super(mode == FileChooser.OPEN ? "Open" : "Save", null, new FileChooser(mode, selectedPath), mode == FileChooser.OPEN ? "Open" : "Save", "Cancel", null,
+    super(mode == FileChooser.OPEN ? "Open" : "Save", new FileChooser(mode, selectedPath), mode == FileChooser.OPEN ? "Open" : "Save", "Cancel", null,
         autoHide, modal);
     fileChooser = (FileChooser) getContent();
     IDialogCallback callback = new IDialogCallback() {
@@ -28,7 +28,7 @@ public class FileChooserDialog extends PromptDialogBox {
   }
   
   public FileChooserDialog(int mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal) {
-    super(mode == FileChooser.OPEN ? "Open" : "Save", null, new FileChooser(), mode == FileChooser.OPEN ? "Open" : "Save", "Cancel", null,
+    super(mode == FileChooser.OPEN ? "Open" : "Save", new FileChooser(), mode == FileChooser.OPEN ? "Open" : "Save", "Cancel", null,
         autoHide, modal);
     fileChooser = (FileChooser) getContent();
     fileChooser.setMode(mode);

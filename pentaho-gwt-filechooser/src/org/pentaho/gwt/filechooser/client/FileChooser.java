@@ -36,8 +36,6 @@ import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
 /**
@@ -95,9 +93,9 @@ public class FileChooser extends VerticalPanel {
   }
 
   public void fetchRepositoryDocument(final IDialogCallback completedCallback) throws RequestException {
-    // RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc");
-    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-        "http://localhost:8080/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&userid=joe&password=password");
+    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url");
+//    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+//        "http://localhost:8080/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&userid=joe&password=password");
 
     RequestCallback callback = new RequestCallback() {
 
@@ -239,7 +237,7 @@ public class FileChooser extends VerticalPanel {
           }
 
         };
-        PromptDialogBox searchDialog = new PromptDialogBox("Search", null, searchTextBox, "OK", "Cancel", callback, false, true);
+        PromptDialogBox searchDialog = new PromptDialogBox("Search", searchTextBox, "OK", "Cancel", callback, false, true);
         searchDialog.setFocusWidget(searchTextBox);
         searchDialog.center();
       }

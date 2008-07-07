@@ -19,7 +19,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FocusWidget;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -31,7 +30,7 @@ public class PromptDialogBox extends DialogBox {
   IDialogCallback callback;
   Widget content;
 
-  public PromptDialogBox(String title, String message, Widget content, String okText, String cancelText, IDialogCallback inCallback, boolean autoHide,
+  public PromptDialogBox(String title, Widget content, String okText, String cancelText, IDialogCallback inCallback, boolean autoHide,
       boolean modal) {
     super(autoHide, modal);
     this.callback = inCallback;
@@ -62,11 +61,6 @@ public class PromptDialogBox extends DialogBox {
         }
       });
       dialogButtonPanel.add(cancel);
-    }
-    if (message != null) {
-      HTML messageLabel = new HTML(message, true);
-      messageLabel.setWidth("100%");
-      content = messageLabel;
     }
     FlexTable dialogContent = new FlexTable();
     // dialogContent.setWidth("400px");
