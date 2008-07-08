@@ -18,7 +18,7 @@ public class FileChooserDialog extends PromptDialogBox {
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
         boolean isValid = fileChooser.getName() != null && !"".equals(fileChooser.getName());
-        if (isValid) {
+        if (!isValid) {
           MessageDialogBox dialogBox = new MessageDialogBox("Error", "No filename has been entered.", false, null, false, true);
           dialogBox.center();
         }
@@ -49,7 +49,7 @@ public class FileChooserDialog extends PromptDialogBox {
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
         boolean isValid = fileChooser.getName() != null && !"".equals(fileChooser.getName());
-        if (isValid) {
+        if (!isValid) {
           MessageDialogBox dialogBox = new MessageDialogBox("Error", "No filename has been entered.", false, null, false, true);
           dialogBox.center();
         }

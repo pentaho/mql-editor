@@ -109,10 +109,10 @@ public class FileChooser extends VerticalPanel {
   }
 
   public void fetchRepositoryDocument(final IDialogCallback completedCallback) throws RequestException {
-     RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-        "/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url");
-//    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-//        "http://localhost:8080/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&userid=joe&password=password");
+    // RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+    // "/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url");
+    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+        "http://localhost:8080/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&userid=joe&password=password");
 
     RequestCallback callback = new RequestCallback() {
 
@@ -568,27 +568,29 @@ public class FileChooser extends VerticalPanel {
   /**
    * This is the entry point method.
    */
-   public void onModuleLoad() {
+  public void onModuleLoad() {
+    // final FileChooserDialog dialogBox = new FileChooserDialog(FileChooser.SAVE, "/samples/reporting", true, true);
+    // dialogBox.addFileChooserListener(new FileChooserListener() {
+    // public void fileSelected(String solution, String path, String file) {
+    // Window.alert("fileSelected: solution=" + solution + " path=" + path + " file=" + file);
+    // dialogBox.hide();
+    // Window.alert("file exists? " + dialogBox.fileChooser.doesSelectedFileExist());
+    // }
+    // });
+    //    dialogBox.center();
+  }
+
+  // public void onModuleLoad() {
   // final FileChooserDialog dialogBox = new FileChooserDialog(FileChooser.SAVE, "/samples/reporting", true, true);
   // dialogBox.addFileChooserListener(new FileChooserListener() {
-  // public void fileSelected(String path, String file) {
-  // Window.alert("fileSelected: path=" + path + " file=" + file);
-  // dialogBox.hide();
+  // public void fileSelected(String solution, String path, String name) {
+  // Window.alert(solution);
+  // Window.alert(path);
+  // Window.alert(name);
   // }
   // });
   // dialogBox.center();
-   }
-//  public void onModuleLoad() {
-//    final FileChooserDialog dialogBox = new FileChooserDialog(FileChooser.SAVE, "/samples/reporting", true, true);
-//    dialogBox.addFileChooserListener(new FileChooserListener() {
-//      public void fileSelected(String solution, String path, String name) {
-//        Window.alert(solution);
-//        Window.alert(path);
-//        Window.alert(name);
-//      }
-//    });
-//    dialogBox.center();
-//  }
+  // }
 
   public int getMode() {
     return mode;
@@ -611,7 +613,7 @@ public class FileChooser extends VerticalPanel {
       listener.fileSelected(getSolution(), getPath(), getName());
     }
   }
-  
+
   public String getSolution() {
     return getSelectedPath().substring(1, getSelectedPath().indexOf("/", 1));
   }
@@ -624,12 +626,41 @@ public class FileChooser extends VerticalPanel {
     return fileNameTextBox.getText();
   }
 
+  public String getFullPath() {
+    return getSolution() + getPath() + "/" + getName();
+  }
+
   public void addFileChooserListener(FileChooserListener listener) {
     listeners.add(listener);
   }
 
   public void removeFileChooserListener(FileChooserListener listener) {
     listeners.remove(listener);
+  }
+
+  public boolean doesSelectedFileExist() {
+    String path = getFullPath();
+    // find the selected item from the list
+    List<String> pathSegments = new ArrayList<String>();
+    if (path != null) {
+      int index = path.indexOf("/", 0);
+      while (index >= 0) {
+        int oldIndex = index;
+        index = path.indexOf("/", oldIndex + 1);
+        if (index >= 0) {
+          pathSegments.add(path.substring(oldIndex + 1, index));
+        }
+      }
+      pathSegments.add(path.substring(path.lastIndexOf("/") + 1));
+    }
+    TreeItem treeItem = getTreeItem(pathSegments);
+    if (treeItem != null) {
+      HashMap<String, Object> attributeMap = (HashMap<String, Object>) treeItem.getUserObject();
+      if (getName().equals(attributeMap.get("name"))) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }
