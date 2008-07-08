@@ -6,9 +6,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.pentaho.gwt.filechooser.client.dialogs.IDialogCallback;
-import org.pentaho.gwt.filechooser.client.dialogs.PromptDialogBox;
 import org.pentaho.gwt.filechooser.client.images.FileChooserImagesSingleton;
+import org.pentaho.gwt.widgets.client.dialogs.IDialogCallback;
+import org.pentaho.gwt.widgets.client.dialogs.PromptDialogBox;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -281,7 +281,7 @@ public class FileChooser extends VerticalPanel {
           }
 
         };
-        PromptDialogBox searchDialog = new PromptDialogBox("Search", suggestTextBox, "OK", "Cancel", callback, false, true);
+        PromptDialogBox searchDialog = new PromptDialogBox("Search", suggestTextBox, "OK", "Cancel", callback, null, false, true);
         searchDialog.setFocusWidget(searchTextBox);
         searchDialog.center();
       }
