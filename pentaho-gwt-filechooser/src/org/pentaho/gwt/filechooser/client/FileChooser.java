@@ -110,9 +110,9 @@ public class FileChooser extends VerticalPanel {
 
   public void fetchRepositoryDocument(final IDialogCallback completedCallback) throws RequestException {
      RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-     "/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url");
-    // RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-    // "http://localhost:8080/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&userid=joe&password=password");
+        "/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url");
+//    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+//        "http://localhost:8080/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&userid=joe&password=password");
 
     RequestCallback callback = new RequestCallback() {
 
@@ -247,11 +247,11 @@ public class FileChooser extends VerticalPanel {
         MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
         List<String> oracleValues = new ArrayList<String>();
         Element documentElement = solutionRepositoryDocument.getDocumentElement();
-        for (int i=0;i<documentElement.getChildNodes().getLength();i++) {
-          buildOracleValues(oracleValues, (Element)documentElement.getChildNodes().item(i));
+        for (int i = 0; i < documentElement.getChildNodes().getLength(); i++) {
+          buildOracleValues(oracleValues, (Element) documentElement.getChildNodes().item(i));
         }
         oracle.addAll(oracleValues);
-        
+
         final TextBox searchTextBox = new TextBox();
         SuggestBox suggestTextBox = new SuggestBox(oracle, searchTextBox);
         IDialogCallback callback = new IDialogCallback() {
@@ -568,16 +568,27 @@ public class FileChooser extends VerticalPanel {
   /**
    * This is the entry point method.
    */
-  public void onModuleLoad() {
+   public void onModuleLoad() {
+  // final FileChooserDialog dialogBox = new FileChooserDialog(FileChooser.SAVE, "/samples/reporting", true, true);
+  // dialogBox.addFileChooserListener(new FileChooserListener() {
+  // public void fileSelected(String path, String file) {
+  // Window.alert("fileSelected: path=" + path + " file=" + file);
+  // dialogBox.hide();
+  // }
+  // });
+  // dialogBox.center();
+   }
+//  public void onModuleLoad() {
 //    final FileChooserDialog dialogBox = new FileChooserDialog(FileChooser.SAVE, "/samples/reporting", true, true);
 //    dialogBox.addFileChooserListener(new FileChooserListener() {
-//      public void fileSelected(String path, String file) {
-//        Window.alert("fileSelected: path=" + path + " file=" + file);
-//        dialogBox.hide();
+//      public void fileSelected(String solution, String path, String name) {
+//        Window.alert(solution);
+//        Window.alert(path);
+//        Window.alert(name);
 //      }
 //    });
 //    dialogBox.center();
-  }
+//  }
 
   public int getMode() {
     return mode;
@@ -597,8 +608,20 @@ public class FileChooser extends VerticalPanel {
 
   public void fireFileSelected() {
     for (FileChooserListener listener : listeners) {
-      listener.fileSelected(getSelectedPath(), fileNameTextBox.getText());
+      listener.fileSelected(getSolution(), getPath(), getName());
     }
+  }
+  
+  public String getSolution() {
+    return getSelectedPath().substring(1, getSelectedPath().indexOf("/", 1));
+  }
+
+  public String getPath() {
+    return "/" + getSelectedPath().substring(getSelectedPath().indexOf(getSolution()));
+  }
+
+  public String getName() {
+    return fileNameTextBox.getText();
   }
 
   public void addFileChooserListener(FileChooserListener listener) {
