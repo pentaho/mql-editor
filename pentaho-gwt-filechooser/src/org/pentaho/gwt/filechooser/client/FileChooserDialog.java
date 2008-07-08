@@ -33,6 +33,7 @@ public class FileChooserDialog extends PromptDialogBox {
     fileChooser = (FileChooser) getContent();
     fileChooser.setMode(mode);
     fileChooser.setSelectedPath(selectedPath);
+    fileChooser.solutionRepositoryDocument = repositoryDocument;
     fileChooser.repositoryTree = TreeBuilder.buildSolutionTree(repositoryDocument, fileChooser.showHiddenFiles, fileChooser.showLocalizedFileNames);
     IDialogCallback callback = new IDialogCallback() {
 

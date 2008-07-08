@@ -110,9 +110,9 @@ public class FileChooser extends VerticalPanel {
 
   public void fetchRepositoryDocument(final IDialogCallback completedCallback) throws RequestException {
      RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-        "/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url");
-//    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-//        "http://localhost:8080/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&userid=joe&password=password");
+     "/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url");
+    // RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+    // "http://localhost:8080/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&userid=joe&password=password");
 
     RequestCallback callback = new RequestCallback() {
 
@@ -138,15 +138,18 @@ public class FileChooser extends VerticalPanel {
   private void buildOracleValues(List<String> oracleValues, Element element) {
     String name = element.getAttribute("name");
     String localizedName = element.getAttribute("localized-name");
-    if (name != null) {
-      oracleValues.add(name);
-    }
-    if (localizedName != null) {
-      oracleValues.add(localizedName);
-    }
-    NodeList children = element.getChildNodes();
-    for (int i = 0; i < children.getLength(); i++) {
-      buildOracleValues(oracleValues, (Element) children.item(i));
+    boolean isVisible = "true".equals(element.getAttribute("visible"));
+    if (isVisible || showHiddenFiles) {
+      if (name != null) {
+        oracleValues.add(name);
+      }
+      if (localizedName != null) {
+        oracleValues.add(localizedName);
+      }
+      NodeList children = element.getChildNodes();
+      for (int i = 0; i < children.getLength(); i++) {
+        buildOracleValues(oracleValues, (Element) children.item(i));
+      }
     }
   }
 
@@ -243,9 +246,12 @@ public class FileChooser extends VerticalPanel {
         // bring up a search
         MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
         List<String> oracleValues = new ArrayList<String>();
-        buildOracleValues(oracleValues, solutionRepositoryDocument.getDocumentElement());
+        Element documentElement = solutionRepositoryDocument.getDocumentElement();
+        for (int i=0;i<documentElement.getChildNodes().getLength();i++) {
+          buildOracleValues(oracleValues, (Element)documentElement.getChildNodes().item(i));
+        }
         oracle.addAll(oracleValues);
-
+        
         final TextBox searchTextBox = new TextBox();
         SuggestBox suggestTextBox = new SuggestBox(oracle, searchTextBox);
         IDialogCallback callback = new IDialogCallback() {
