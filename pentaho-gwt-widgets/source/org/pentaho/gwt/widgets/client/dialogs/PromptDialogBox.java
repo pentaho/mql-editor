@@ -42,7 +42,7 @@ public class PromptDialogBox extends DialogBox {
     ok.addClickListener(new ClickListener() {
 
       public void onClick(Widget sender) {
-        if (validatorCallback != null && validatorCallback.validate()) {
+        if (validatorCallback == null || (validatorCallback != null && validatorCallback.validate())) {
           hide();
           if (callback != null) {
             callback.okPressed();
