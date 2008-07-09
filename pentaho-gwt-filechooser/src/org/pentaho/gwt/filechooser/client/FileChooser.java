@@ -10,6 +10,7 @@ import org.pentaho.gwt.filechooser.client.images.FileChooserImagesSingleton;
 import org.pentaho.gwt.widgets.client.dialogs.IDialogCallback;
 import org.pentaho.gwt.widgets.client.dialogs.PromptDialogBox;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -23,7 +24,6 @@ import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.KeyboardListener;
@@ -62,7 +62,7 @@ public class FileChooser extends VerticalPanel {
   boolean showLocalizedFileNames = false;
   com.google.gwt.user.client.Element lastSelectedFileElement;
   TextBox fileNameTextBox = new TextBox();
-  DateTimeFormat dateFormat = DateTimeFormat.getShortDateTimeFormat();
+  DateTimeFormat dateFormat = DateTimeFormat.getMediumDateTimeFormat();
   Document solutionRepositoryDocument;
 
   ArrayList<FileChooserListener> listeners = new ArrayList<FileChooserListener>();
@@ -109,11 +109,13 @@ public class FileChooser extends VerticalPanel {
   }
 
   public void fetchRepositoryDocument(final IDialogCallback completedCallback) throws RequestException {
-    // RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-    // "/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url");
-    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-        "http://localhost:8080/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&userid=joe&password=password");
-
+    RequestBuilder builder = null;
+    if (GWT.isScript()) {
+      builder = new RequestBuilder(RequestBuilder.GET, "/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url");
+    } else {
+      builder = new RequestBuilder(RequestBuilder.GET,
+          "http://localhost:8080/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&userid=joe&password=password");
+    }
     RequestCallback callback = new RequestCallback() {
 
       public void onError(Request request, Throwable exception) {
@@ -354,13 +356,9 @@ public class FileChooser extends VerticalPanel {
 
     add(locationBar);
     add(buildFilesList(selectedTreeItem));
-    HorizontalPanel fileNamePanel = new HorizontalPanel();
-    fileNamePanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-    fileNamePanel.add(new Label("Filename:"));
+    add(new Label("Filename:"));
     fileNameTextBox.setWidth("300px");
-    fileNamePanel.add(fileNameTextBox);
-    add(fileNamePanel);
-    setWidth("400px");
+    add(fileNameTextBox);
   }
 
   public void findMatchingTreeItems(TreeItem rootItem, TreeItem parentItem, String searchText) {
@@ -397,6 +395,7 @@ public class FileChooser extends VerticalPanel {
     Label dateLabel = new Label("Date Modified");
 
     filesListTable.setWidget(0, 0, nameLabel);
+    filesListTable.getCellFormatter().setWidth(0, 0, "100%");
     filesListTable.setWidget(0, 1, typeLabel);
     filesListTable.setWidget(0, 2, dateLabel);
 
@@ -513,9 +512,6 @@ public class FileChooser extends VerticalPanel {
     filesListTable.setWidget(row + 1, 0, fileNamePanel);
     filesListTable.setWidget(row + 1, 1, new Label(isDir ? "Folder" : "File"));
     filesListTable.setWidget(row + 1, 2, myDateLabel);
-    filesListTable.getCellFormatter().setWidth(row + 1, 0, "100px");
-    filesListTable.getCellFormatter().setWidth(row + 1, 1, "100px");
-    filesListTable.getCellFormatter().setWidth(row + 1, 2, "100px");
   }
 
   private String getTitle(TreeItem item) {
@@ -577,7 +573,7 @@ public class FileChooser extends VerticalPanel {
     // Window.alert("file exists? " + dialogBox.fileChooser.doesSelectedFileExist());
     // }
     // });
-    //    dialogBox.center();
+    // dialogBox.center();
   }
 
   // public void onModuleLoad() {
