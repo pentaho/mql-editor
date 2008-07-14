@@ -12,14 +12,14 @@ public class FileChooserDialog extends PromptDialogBox {
   FileChooser fileChooser;
 
   public FileChooserDialog(int mode, String selectedPath, boolean autoHide, boolean modal) {
-    super(mode == FileChooser.OPEN ? "Open" : "Save", new FileChooser(mode, selectedPath), mode == FileChooser.OPEN ? "Open" : "Save", "Cancel", null, null,
+    super(mode == FileChooser.OPEN ? "Open" : "Save", new FileChooser(mode, selectedPath), mode == FileChooser.OPEN ? "Open" : "Save", "Cancel",
         autoHide, modal);
     fileChooser = (FileChooser) getContent();
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
         boolean isValid = fileChooser.getName() != null && !"".equals(fileChooser.getName());
         if (!isValid) {
-          MessageDialogBox dialogBox = new MessageDialogBox("Error", "No filename has been entered.", false, null, false, true);
+          MessageDialogBox dialogBox = new MessageDialogBox("Error", "No filename has been entered.", false, false, true);
           dialogBox.center();
         }
         return isValid;
@@ -40,7 +40,7 @@ public class FileChooserDialog extends PromptDialogBox {
   }
 
   public FileChooserDialog(int mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal) {
-    super(mode == FileChooser.OPEN ? "Open" : "Save", new FileChooser(), mode == FileChooser.OPEN ? "Open" : "Save", "Cancel", null, null, autoHide, modal);
+    super(mode == FileChooser.OPEN ? "Open" : "Save", new FileChooser(), mode == FileChooser.OPEN ? "Open" : "Save", "Cancel", autoHide, modal);
     fileChooser = (FileChooser) getContent();
     fileChooser.setMode(mode);
     fileChooser.setSelectedPath(selectedPath);
@@ -50,7 +50,7 @@ public class FileChooserDialog extends PromptDialogBox {
       public boolean validate() {
         boolean isValid = fileChooser.getName() != null && !"".equals(fileChooser.getName());
         if (!isValid) {
-          MessageDialogBox dialogBox = new MessageDialogBox("Error", "No filename has been entered.", false, null, false, true);
+          MessageDialogBox dialogBox = new MessageDialogBox("Error", "No filename has been entered.", false, false, true);
           dialogBox.center();
         }
         return isValid;

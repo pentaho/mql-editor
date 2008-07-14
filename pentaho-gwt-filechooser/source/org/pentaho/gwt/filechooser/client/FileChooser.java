@@ -281,7 +281,8 @@ public class FileChooser extends VerticalPanel {
           }
 
         };
-        PromptDialogBox searchDialog = new PromptDialogBox("Search", suggestTextBox, "OK", "Cancel", callback, null, false, true);
+        PromptDialogBox searchDialog = new PromptDialogBox("Search", suggestTextBox, "OK", "Cancel", false, true);
+        searchDialog.setCallback(callback);
         searchDialog.setFocusWidget(searchTextBox);
         searchDialog.center();
       }
