@@ -83,9 +83,7 @@ public class FileChooser extends VerticalPanel {
       }
 
     });
-    setSpacing(2);
-    DOM.setStyleAttribute(getElement(), "background", "#ffffff");
-    DOM.setStyleAttribute(getElement(), "border", "1px solid #707070");
+    setSpacing(3);
   }
 
   public FileChooser(int mode, String selectedPath, Document solutionRepositoryDocument) {
@@ -354,11 +352,11 @@ public class FileChooser extends VerticalPanel {
     locationBar.add(navigationBar);
     locationBar.setWidth("100%");
 
-    add(locationBar);
-    add(buildFilesList(selectedTreeItem));
     add(new Label("Filename:"));
     fileNameTextBox.setWidth("300px");
     add(fileNameTextBox);
+    add(locationBar);
+    add(buildFilesList(selectedTreeItem));
   }
 
   public void findMatchingTreeItems(TreeItem rootItem, TreeItem parentItem, String searchText) {
@@ -388,6 +386,9 @@ public class FileChooser extends VerticalPanel {
     filesListPanel.setWidth("100%");
 
     ScrollPanel filesScroller = new ScrollPanel();
+    DOM.setStyleAttribute(filesScroller.getElement(), "background", "#ffffff");
+    DOM.setStyleAttribute(filesScroller.getElement(), "border", "1px solid #707070");
+
     FlexTable filesListTable = new FlexTable();
     filesListTable.setCellSpacing(0);
     Label nameLabel = new Label("Name");
@@ -565,28 +566,18 @@ public class FileChooser extends VerticalPanel {
    * This is the entry point method.
    */
   public void onModuleLoad() {
-    // final FileChooserDialog dialogBox = new FileChooserDialog(FileChooser.SAVE, "/samples/reporting", true, true);
-    // dialogBox.addFileChooserListener(new FileChooserListener() {
-    // public void fileSelected(String solution, String path, String file) {
-    // Window.alert("fileSelected: solution=" + solution + " path=" + path + " file=" + file);
-    // dialogBox.hide();
-    // Window.alert("file exists? " + dialogBox.fileChooser.doesSelectedFileExist());
-    // }
-    // });
-    // dialogBox.center();
+    if (!GWT.isScript()) {
+      final FileChooserDialog dialogBox = new FileChooserDialog(FileChooser.SAVE, "/samples/reporting", true, true);
+      dialogBox.addFileChooserListener(new FileChooserListener() {
+        public void fileSelected(String solution, String path, String file) {
+          Window.alert("fileSelected: solution=" + solution + " path=" + path + " file=" + file);
+          dialogBox.hide();
+          Window.alert("file exists? " + dialogBox.fileChooser.doesSelectedFileExist());
+        }
+      });
+      dialogBox.center();
+    }
   }
-
-  // public void onModuleLoad() {
-  // final FileChooserDialog dialogBox = new FileChooserDialog(FileChooser.SAVE, "/samples/reporting", true, true);
-  // dialogBox.addFileChooserListener(new FileChooserListener() {
-  // public void fileSelected(String solution, String path, String name) {
-  // Window.alert(solution);
-  // Window.alert(path);
-  // Window.alert(name);
-  // }
-  // });
-  // dialogBox.center();
-  // }
 
   public int getMode() {
     return mode;
