@@ -51,11 +51,6 @@ public class PromptDialogBox extends DialogBox {
       }
     });
     final HorizontalPanel dialogButtonPanel = new HorizontalPanel();
-    if (okText != null && cancelText != null) {
-      dialogButtonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-    } else {
-      dialogButtonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-    }
     dialogButtonPanel.add(ok);
     if (cancelText != null) {
       Button cancel = new Button(cancelText);
@@ -86,7 +81,11 @@ public class PromptDialogBox extends DialogBox {
     dialogContent.getFlexCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_LEFT);
     // add button panel
     dialogContent.setWidget(2, 0, dialogButtonPanel);
-    dialogContent.getFlexCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER);
+    if (okText != null && cancelText != null) {
+      dialogContent.getFlexCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+    } else {
+      dialogContent.getFlexCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER);
+    }
     dialogContent.getCellFormatter().setVerticalAlignment(2, 0, HasVerticalAlignment.ALIGN_BOTTOM);
     // dialogContent.getFlexCellFormatter().setColSpan(2, 0, 2);
     dialogContent.setWidth("100%");
