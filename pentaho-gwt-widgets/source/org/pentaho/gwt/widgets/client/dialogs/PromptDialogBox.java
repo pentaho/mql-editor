@@ -31,11 +31,8 @@ public class PromptDialogBox extends DialogBox {
   IDialogValidatorCallback validatorCallback;
   Widget content;
 
-  public PromptDialogBox(String title, Widget content, String okText, String cancelText, IDialogCallback inCallback,
-      IDialogValidatorCallback inValidatorCallback, boolean autoHide, boolean modal) {
+  public PromptDialogBox(String title, Widget content, String okText, String cancelText, boolean autoHide, boolean modal) {
     super(autoHide, modal);
-    this.callback = inCallback;
-    this.validatorCallback = inValidatorCallback;
     this.content = content;
     setText(title);
     Button ok = new Button(okText);

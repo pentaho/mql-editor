@@ -15,56 +15,12 @@
  */
 package org.pentaho.gwt.widgets.client.dialogs;
 
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Widget;
 
-public class MessageDialogBox extends DialogBox {
+public class MessageDialogBox extends PromptDialogBox {
 
-  public MessageDialogBox(String title, String message, boolean isHTML, final IDialogCallback callback, boolean autoHide, boolean modal) {
-    super(autoHide, modal);
-
-    setText(title);
-    Button ok = new Button("OK");
-
-    ok.addClickListener(new ClickListener() {
-
-      public void onClick(Widget sender) {
-        hide();
-        if (callback != null) {
-          callback.okPressed();
-        }
-      }
-    });
-    final HorizontalPanel dialogButtonPanel = new HorizontalPanel();
-    dialogButtonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-    dialogButtonPanel.add(ok);
-    Widget messageLabel = null;
-    if (isHTML) {
-      messageLabel = new HTML(message, true);
-    } else {
-      messageLabel = new Label(message, true);
-    }
-    messageLabel.setWidth("100%");
-    FlexTable dialogContent = new FlexTable();
-    dialogContent.setStyleName("dialogContentPanel");
-    dialogContent.setWidth("400px");
-    dialogContent.getFlexCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_TOP);
-    dialogContent.getFlexCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT);
-    dialogContent.setWidget(0, 0, messageLabel);
-    dialogContent.getFlexCellFormatter().setVerticalAlignment(1, 0, HasVerticalAlignment.ALIGN_TOP);
-    dialogContent.getFlexCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_LEFT);
-    // add button panel
-    dialogContent.setWidget(2, 0, dialogButtonPanel);
-    dialogContent.getFlexCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER);
-    dialogContent.getCellFormatter().setVerticalAlignment(2, 0, HasVerticalAlignment.ALIGN_BOTTOM);
-    // dialogContent.getFlexCellFormatter().setColSpan(2, 0, 2);
-    setWidget(dialogContent);
+  public MessageDialogBox(String title, String message, boolean isHTML, boolean autoHide, boolean modal) {
+    super(title, isHTML?new HTML(message):new Label(message), "OK", null, autoHide, modal);
   }
 }
