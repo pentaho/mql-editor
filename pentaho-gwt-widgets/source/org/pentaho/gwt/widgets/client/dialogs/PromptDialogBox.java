@@ -94,7 +94,7 @@ public class PromptDialogBox extends DialogBox {
     // enter or escape is pressed.
     switch (key) {
     case KeyboardListener.KEY_ENTER:
-      if (validatorCallback != null && validatorCallback.validate()) {
+      if (validatorCallback == null || (validatorCallback != null && validatorCallback.validate())) {
         hide();
         if (callback != null) {
           callback.okPressed();
@@ -102,7 +102,9 @@ public class PromptDialogBox extends DialogBox {
       }
       break;
     case KeyboardListener.KEY_ESCAPE:
-      callback.cancelPressed();
+      if (callback != null) {
+        callback.cancelPressed();
+      }
       hide();
       break;
     }
