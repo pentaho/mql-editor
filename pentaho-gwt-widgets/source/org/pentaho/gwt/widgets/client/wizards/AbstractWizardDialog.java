@@ -229,6 +229,7 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
   public boolean wasCancelled() {
     return canceled;
   }
+  
   /**
    * abstract onFinish()
    * 
