@@ -56,14 +56,20 @@
 			<arg value="${gwt.app}" />
 		</java>
 	</target>
+
+	<target name="dist" depends="clean, dirty-dist"/>
 	
-	<target name="dist" depends="clean, compile-gwt">
+	<target name="dirty-dist" depends="compile-gwt">
 		<mkdir dir="dist" />
 		<copy todir="dist/bin">
 			<fileset dir="source" includes="**/*" />
 			<fileset dir="bin" includes="**/*" />
 		</copy>
-		<jar basedir="dist/bin" destfile="dist/pentaho-gwt-widgets-${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}.jar" />
+		<jar basedir="dist/bin" destfile="dist/pentaho-gwt-widgets-${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}.jar">
+			<fileset dir="source">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
     </target>
 
 </project>
