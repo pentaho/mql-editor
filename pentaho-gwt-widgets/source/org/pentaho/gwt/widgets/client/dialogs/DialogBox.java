@@ -60,7 +60,7 @@ public class DialogBox extends com.google.gwt.user.client.ui.DialogBox implement
     // pageBackground.setSize("100%", "100%");
     if (pageBackground == null) {
       pageBackground = new FocusPanel();
-      pageBackground.setStyleName("modalDialogPageBackground");
+      pageBackground.setStyleName("modalDialogPageBackground"); //$NON-NLS-1$
       pageBackground.addClickListener(new ClickListener() {
 
         public void onClick(Widget sender) {
@@ -75,7 +75,7 @@ public class DialogBox extends com.google.gwt.user.client.ui.DialogBox implement
     }
     super.center();
     if (modal && !centerCalled) {
-      pageBackground.setSize("100%", Window.getClientHeight() + Window.getScrollTop() + "px");
+      pageBackground.setSize("100%", Window.getClientHeight() + Window.getScrollTop() + "px"); //$NON-NLS-1$
       pageBackground.setVisible(true);
       dialogDepthCount++;
       centerCalled = true;
