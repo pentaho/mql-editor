@@ -143,7 +143,7 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
     // Shows the current IWizardPanel
     wizardDeckPanel.showWidget(index);
     // Enables the next button if the current IWizardPanel can continue and we're not at the last IWizardPanel
-    nextButton.setEnabled(((IWizardPanel)wizardDeckPanel.getWidget(index)).canContinue() && index < wizardDeckPanel.getWidgetCount()-1);
+    nextButton.setEnabled(((IWizardPanel)wizardDeckPanel.getWidget(index)).canContinue() && index < wizardDeckPanel.getWidgetCount() -1);
     // Back button always enabled unless we're on the first IWizardPanel
     backButton.setEnabled(index > 0);
     // Current IWizardPanel can finish at any step.
@@ -222,7 +222,10 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
    * @see org.pentaho.gwt.widgets.client.wizards.IWizardPanelListener#panelChanged(org.pentaho.gwt.widgets.client.wizards.IWizardPanel)
    */
   public void panelUpdated(IWizardPanel wizardPanel) {
-    nextButton.setEnabled(wizardPanel.canContinue());
+    int index = wizardDeckPanel.getVisibleWidget();
+    int lastPanelIndex = wizardDeckPanel.getWidgetCount() -1;
+    
+    nextButton.setEnabled(wizardPanel.canContinue() && index < lastPanelIndex);
     finishButton.setEnabled(wizardPanel.canFinish());
   }
   
