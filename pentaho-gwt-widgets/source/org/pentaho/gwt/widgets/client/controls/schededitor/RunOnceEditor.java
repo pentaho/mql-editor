@@ -65,4 +65,12 @@ public class RunOnceEditor extends VerticalPanel{
   public void setStartDateError( String errorMsg ) {
     startDateLabel.setErrorMsg( errorMsg );
   }
+
+  public TimePicker getStartTimePicker() {
+    return startTimePicker;
+  }
+
+  public DatePickerEx getStartDatePicker() {
+    return startDatePicker;
+  }
 }

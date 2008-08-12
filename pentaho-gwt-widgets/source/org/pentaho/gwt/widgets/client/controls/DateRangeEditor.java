@@ -23,7 +23,7 @@ public class DateRangeEditor extends SimpleGroupBox {
   private static final String END_DATE_RB_GROUP = "end-date-group"; //$NON-NLS-1$
 
   private DatePickerEx startDatePicker = null;
-  private EndDatePanel endDatePanel = null;
+  protected EndDatePanel endDatePanel = null;
   
   private ErrorLabel startLabel = null;
 
@@ -95,7 +95,7 @@ public class DateRangeEditor extends SimpleGroupBox {
     endDatePanel.setEndByError( errorMsg );
   }
 
-  private class EndDatePanel extends VerticalPanel {
+  public class EndDatePanel extends VerticalPanel {
 
     private DatePickerEx endDatePicker = null;
     private RadioButton noEndDateRb = null;
@@ -179,5 +179,21 @@ public class DateRangeEditor extends SimpleGroupBox {
     public void setEndByError( String errorMsg ) {
       endByLabel.setErrorMsg( errorMsg );
     }
+
+    public RadioButton getNoEndDateRb() {
+      return noEndDateRb;
+    }
+
+    public RadioButton getEndByRb() {
+      return endByRb;
+    }
+  }
+
+  public DatePickerEx getStartDatePicker() {
+    return startDatePicker;
+  }
+
+  public EndDatePanel getEndDatePanel() {
+    return endDatePanel;
   }
 }

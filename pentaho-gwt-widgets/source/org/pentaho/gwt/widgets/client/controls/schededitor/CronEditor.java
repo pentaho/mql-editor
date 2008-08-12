@@ -96,4 +96,8 @@ public class CronEditor extends VerticalPanel {
   public void setCronError( String errorMsg ) {
     cronLabel.setErrorMsg( errorMsg );
   }
+
+  public TextBox getCronTb() {
+    return cronTb;
+  }
 }

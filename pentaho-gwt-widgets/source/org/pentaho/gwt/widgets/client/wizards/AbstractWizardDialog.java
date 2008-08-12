@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -47,6 +48,7 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
 
   ListBox steps = new ListBox();
   DeckPanel wizardDeckPanel = new DeckPanel();
+  VerticalPanel stepsList = new VerticalPanel();
 
   private IWizardPanel[] wizardPanels;
   
@@ -138,6 +140,9 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
    * (IWizardPanel) that will be shown (index).
    */
   protected void updateGUI(int index) {
+    stepsList.setVisible(wizardDeckPanel.getWidgetCount() > 1);
+    backButton.setVisible(wizardDeckPanel.getWidgetCount() > 1);
+    nextButton.setVisible(wizardDeckPanel.getWidgetCount() > 1);
     // Updates the selected step
     steps.setSelectedIndex(index);
     // Shows the current IWizardPanel
@@ -161,7 +166,7 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
     DockPanel content = new DockPanel();
     
     // Create the Steps and add it to the content
-    VerticalPanel stepsList = new VerticalPanel();
+    stepsList = new VerticalPanel();
     stepsList.add(new Label("Steps:"));
     steps.setVisibleItemCount(STEPS_COUNT);
     stepsList.add(steps);
@@ -174,12 +179,14 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
     
     // Add the control buttons
     HorizontalPanel buttonPanel = new HorizontalPanel();
+    // If we have only one button then we dont need to show the back and next button.
     buttonPanel.add(backButton);
     buttonPanel.add(nextButton);
     buttonPanel.add(finishButton);
     buttonPanel.add(cancelButton);
     content.add(buttonPanel, DockPanel.SOUTH);
     content.setCellHorizontalAlignment(buttonPanel, HasHorizontalAlignment.ALIGN_RIGHT);
+    content.setCellVerticalAlignment(buttonPanel, HasVerticalAlignment.ALIGN_BOTTOM);
     
     // Add the content to the dialog
     add(content);

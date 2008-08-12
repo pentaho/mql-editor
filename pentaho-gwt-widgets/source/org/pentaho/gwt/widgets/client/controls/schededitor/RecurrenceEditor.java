@@ -388,6 +388,10 @@ public class RecurrenceEditor extends VerticalPanel {
     public void setValueError( String errorMsg ) {
       valueLabel.setErrorMsg( errorMsg );
     }
+
+    public TextBox getValueTb() {
+      return valueTb;
+    }
   }
 
   public class SecondlyRecurrenceEditor extends SimpleRecurrencePanel {
@@ -470,6 +474,18 @@ public class RecurrenceEditor extends VerticalPanel {
     
     public void setRepeatError( String errorMsg ) {
       repeatLabel.setErrorMsg( errorMsg );
+    }
+
+    public TextBox getRepeatValueTb() {
+      return repeatValueTb;
+    }
+
+    public RadioButton getEveryNDaysRb() {
+      return everyNDaysRb;
+    }
+
+    public RadioButton getEveryWeekdayRb() {
+      return everyWeekdayRb;
     }
   }
 
@@ -563,6 +579,10 @@ public class RecurrenceEditor extends VerticalPanel {
     public void setEveryDayOnError( String errorMsg ) {
       everyWeekOnLabel.setErrorMsg( errorMsg );
     }
+
+    public Map<DayOfWeek, CheckBox> getDayToCheckBox() {
+      return dayToCheckBox;
+    }
   }
 
   public class MonthlyRecurrenceEditor extends VerticalPanel {
@@ -653,6 +673,26 @@ public class RecurrenceEditor extends VerticalPanel {
     
     public void setDayNOfMonthError( String errorMsg ) {
       dayNOfMonthLabel.setErrorMsg( errorMsg );
+    }
+
+    public RadioButton getDayNOfMonthRb() {
+      return dayNOfMonthRb;
+    }
+
+    public RadioButton getNthDayNameOfMonthRb() {
+      return nthDayNameOfMonthRb;
+    }
+
+    public TextBox getDayOfMonthTb() {
+      return dayOfMonthTb;
+    }
+
+    public ListBox getWhichWeekLb() {
+      return whichWeekLb;
+    }
+
+    public ListBox getDayOfWeekLb() {
+      return dayOfWeekLb;
     }
   }
 
@@ -763,6 +803,34 @@ public class RecurrenceEditor extends VerticalPanel {
     
     public void setDayOfMonthError( String errorMsg ) {
       dayOfMonthLabel.setErrorMsg( errorMsg );
+    }
+
+    public RadioButton getEveryMonthOnNthDayRb() {
+      return everyMonthOnNthDayRb;
+    }
+
+    public RadioButton getNthDayNameOfMonthNameRb() {
+      return nthDayNameOfMonthNameRb;
+    }
+
+    public TextBox getDayOfMonthTb() {
+      return dayOfMonthTb;
+    }
+
+    public ListBox getMonthOfYearLb0() {
+      return monthOfYearLb0;
+    }
+
+    public ListBox getMonthOfYearLb1() {
+      return monthOfYearLb1;
+    }
+
+    public ListBox getWhichWeekLb() {
+      return whichWeekLb;
+    }
+
+    public ListBox getDayOfWeekLb() {
+      return dayOfWeekLb;
     }
   }
   
@@ -1109,4 +1177,5 @@ public class RecurrenceEditor extends VerticalPanel {
   public YearlyRecurrenceEditor getYearlyEditor() {
     return yearlyEditor;
   }
+
 }

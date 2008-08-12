@@ -499,4 +499,21 @@ public class ScheduleEditor extends VerticalPanel {
     nameTb.setFocus( true );
     nameTb.setSelectionRange( 0, nameTb.getText().length() );
   }
+
+  public TextBox getNameTb() {
+    return nameTb;
+  }
+
+  public TextBox getGroupNameTb() {
+    return groupNameTb;
+  }
+
+  public TextBox getDescriptionTb() {
+    return descriptionTb;
+  }
+
+  public ListBox getScheduleCombo() {
+    return scheduleCombo;
+  }
+
 }

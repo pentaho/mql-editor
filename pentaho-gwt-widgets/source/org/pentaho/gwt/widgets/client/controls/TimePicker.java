@@ -139,4 +139,16 @@ public class TimePicker extends HorizontalPanel {
   public void setTimeOfDay(TimeUtil.TimeOfDay timeOfDay) {
     this.timeOfDayLB.setSelectedIndex( timeOfDay.value() );
   }
+
+  public ListBox getHourLB() {
+    return hourLB;
+  }
+
+  public ListBox getMinuteLB() {
+    return minuteLB;
+  }
+
+  public ListBox getTimeOfDayLB() {
+    return timeOfDayLB;
+  }
 }
