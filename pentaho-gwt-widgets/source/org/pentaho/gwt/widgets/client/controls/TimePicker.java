@@ -1,10 +1,14 @@
 package org.pentaho.gwt.widgets.client.controls;
 
+import org.pentaho.gwt.widgets.client.ui.ICallback;
+import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 import org.pentaho.gwt.widgets.client.utils.TimeUtil;
 import org.pentaho.gwt.widgets.client.utils.TimeUtil.TimeOfDay;
 
+import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Widget;
 
 // TODO sbarkdull, this code needs to be locale sensitive
 
@@ -16,10 +20,11 @@ import com.google.gwt.user.client.ui.ListBox;
  * @author Steven Barkdull
  * 
  */
-public class TimePicker extends HorizontalPanel {
+public class TimePicker extends HorizontalPanel implements IChangeHandler {
   private ListBox hourLB = new ListBox();
   private ListBox minuteLB = new ListBox();
   private ListBox timeOfDayLB = new ListBox();
+  private ICallback<IChangeHandler> onChangeHandler = null;
   
   public TimePicker() {
     
@@ -38,6 +43,7 @@ public class TimePicker extends HorizontalPanel {
     add( hourLB );
     add( minuteLB );
     add( timeOfDayLB );
+    configureOnChangeHandler();
   }
   
   /**
@@ -139,16 +145,27 @@ public class TimePicker extends HorizontalPanel {
   public void setTimeOfDay(TimeUtil.TimeOfDay timeOfDay) {
     this.timeOfDayLB.setSelectedIndex( timeOfDay.value() );
   }
-
-  public ListBox getHourLB() {
-    return hourLB;
+  
+  public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
+    this.onChangeHandler = handler;
   }
-
-  public ListBox getMinuteLB() {
-    return minuteLB;
+  
+  private void changeHandler() {
+    if ( null != onChangeHandler ) {
+      onChangeHandler.onHandle( this );
+    }
   }
-
-  public ListBox getTimeOfDayLB() {
-    return timeOfDayLB;
+  
+  private void configureOnChangeHandler() {
+    final TimePicker localThis = this;
+    
+    ChangeListener changeListener = new ChangeListener() {
+      public void onChange(Widget sender) {
+        localThis.changeHandler();
+      }
+    };
+    hourLB.addChangeListener( changeListener );
+    minuteLB.addChangeListener( changeListener );
+    timeOfDayLB.addChangeListener( changeListener );
   }
 }

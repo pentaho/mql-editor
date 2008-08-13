@@ -11,6 +11,8 @@ import org.pentaho.gwt.widgets.client.controls.DateRangeEditor;
 import org.pentaho.gwt.widgets.client.controls.ErrorLabel;
 import org.pentaho.gwt.widgets.client.controls.TimePicker;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
+import org.pentaho.gwt.widgets.client.ui.ICallback;
+import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 import org.pentaho.gwt.widgets.client.utils.CronParseException;
 import org.pentaho.gwt.widgets.client.utils.CronParser;
 import org.pentaho.gwt.widgets.client.utils.EnumException;
@@ -22,15 +24,19 @@ import org.pentaho.gwt.widgets.client.utils.TimeUtil.MonthOfYear;
 import org.pentaho.gwt.widgets.client.utils.TimeUtil.TimeOfDay;
 import org.pentaho.gwt.widgets.client.utils.TimeUtil.WeekOfMonth;
 
+import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 
 /**
@@ -38,7 +44,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  *
  */
 
-public class RecurrenceEditor extends VerticalPanel {
+public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
 
   private static final WidgetsLocalizedMessages MSGS = Widgets.getLocalizedMessages();
   
@@ -65,6 +71,7 @@ public class RecurrenceEditor extends VerticalPanel {
   private static final String SPACE = " "; //$NON-NLS-1$
   
   private static int VALUE_OF_SUNDAY = 1;
+  private ICallback<IChangeHandler> onChangeHandler;
 
   private Map<TemporalValue, Panel> temporalPanelMap = new HashMap<TemporalValue, Panel>();
 
@@ -139,8 +146,7 @@ public class RecurrenceEditor extends VerticalPanel {
     dateRangeEditor = new DateRangeEditor( now );
     add( dateRangeEditor );
     
-    // TODO sbarkdull, is this necessary?
-    //setTemporalState( TemporalValue.SECONDS );
+    configureOnChangeHandler();
   }
   
   public void reset( Date d ) {
@@ -349,9 +355,10 @@ public class RecurrenceEditor extends VerticalPanel {
     temporalPanelMap.put( TemporalValue.YEARLY, yearlyEditor);
   }
   
-  private class SimpleRecurrencePanel extends VerticalPanel {
+  private class SimpleRecurrencePanel extends VerticalPanel implements IChangeHandler {
     private TextBox valueTb = new TextBox();
     private ErrorLabel valueLabel = null;
+    private ICallback<IChangeHandler> onChangeHandler;
     
     public SimpleRecurrencePanel( String strLabel ) {
       setVisible(false);
@@ -371,6 +378,8 @@ public class RecurrenceEditor extends VerticalPanel {
       
       valueLabel = new ErrorLabel( hp );
       add( valueLabel );
+      
+      configureOnChangeHandler();
     }
     
     public String getValue() {
@@ -389,8 +398,30 @@ public class RecurrenceEditor extends VerticalPanel {
       valueLabel.setErrorMsg( errorMsg );
     }
 
-    public TextBox getValueTb() {
-      return valueTb;
+    public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
+      this.onChangeHandler = handler;
+    }
+    
+    private void changeHandler() {
+      if ( null != onChangeHandler ) {
+        onChangeHandler.onHandle( this );
+      }
+    }
+    
+    private void configureOnChangeHandler() {
+      final SimpleRecurrencePanel localThis = this;
+      
+      KeyboardListener keyboardListener = new KeyboardListener() {
+        public void onKeyDown(Widget sender, char keyCode, int modifiers) {
+        }
+        public void onKeyPress(Widget sender, char keyCode, int modifiers) {
+        }
+        public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+          localThis.changeHandler();
+        }
+      };
+      
+      valueTb.addKeyboardListener( keyboardListener );
     }
   }
 
@@ -412,12 +443,13 @@ public class RecurrenceEditor extends VerticalPanel {
     }
   }
 
-  public class DailyRecurrenceEditor extends VerticalPanel {
+  public class DailyRecurrenceEditor extends VerticalPanel implements IChangeHandler {
 
     private TextBox repeatValueTb = new TextBox();
     private RadioButton everyNDaysRb = new RadioButton(DAILY_RB_GROUP, MSGS.every() );
     private RadioButton everyWeekdayRb = new RadioButton(DAILY_RB_GROUP, MSGS.everyWeekDay() );
     private ErrorLabel repeatLabel = null;
+    private ICallback<IChangeHandler> onChangeHandler;
     
     public DailyRecurrenceEditor() {
       setVisible(false);
@@ -439,6 +471,7 @@ public class RecurrenceEditor extends VerticalPanel {
 
       everyWeekdayRb.setStyleName("recurrenceRadioButton"); //$NON-NLS-1$
       add(everyWeekdayRb);
+      configureOnChangeHandler();
     }
     
     public void reset() {
@@ -476,23 +509,48 @@ public class RecurrenceEditor extends VerticalPanel {
       repeatLabel.setErrorMsg( errorMsg );
     }
 
-    public TextBox getRepeatValueTb() {
-      return repeatValueTb;
+    public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
+      this.onChangeHandler = handler;
     }
-
-    public RadioButton getEveryNDaysRb() {
-      return everyNDaysRb;
+    
+    private void changeHandler() {
+      if ( null != onChangeHandler ) {
+        onChangeHandler.onHandle( this );
+      }
     }
-
-    public RadioButton getEveryWeekdayRb() {
-      return everyWeekdayRb;
+    
+    private void configureOnChangeHandler() {
+      final DailyRecurrenceEditor localThis = this;
+      
+      KeyboardListener keyboardListener = new KeyboardListener() {
+        public void onKeyDown(Widget sender, char keyCode, int modifiers) {
+        }
+        public void onKeyPress(Widget sender, char keyCode, int modifiers) {
+        }
+        public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+          localThis.changeHandler();
+        }
+      };
+      
+      ClickListener clickListener = new ClickListener() {
+        public void onClick(Widget sender) {
+          localThis.changeHandler();
+        }
+      };
+      
+      repeatValueTb.addKeyboardListener( keyboardListener );
+      everyNDaysRb.addClickListener( clickListener );
+      everyNDaysRb.addKeyboardListener( keyboardListener );
+      everyWeekdayRb.addClickListener( clickListener );
+      everyWeekdayRb.addKeyboardListener( keyboardListener );
     }
   }
 
-  public class WeeklyRecurrenceEditor extends VerticalPanel {
+  public class WeeklyRecurrenceEditor extends VerticalPanel implements IChangeHandler {
 
     private Map<DayOfWeek, CheckBox> dayToCheckBox = new HashMap<DayOfWeek, CheckBox>();
     private ErrorLabel everyWeekOnLabel = null;
+    private ICallback<IChangeHandler> onChangeHandler;
     
     public WeeklyRecurrenceEditor() {
       setStyleName("weeklyRecurrencePanel"); //$NON-NLS-1$
@@ -522,6 +580,7 @@ public class RecurrenceEditor extends VerticalPanel {
         dayToCheckBox.put(day, cb);
       }
       add(gp);
+      configureOnChangeHandler();
     }
     
     public void reset() {
@@ -580,12 +639,44 @@ public class RecurrenceEditor extends VerticalPanel {
       everyWeekOnLabel.setErrorMsg( errorMsg );
     }
 
-    public Map<DayOfWeek, CheckBox> getDayToCheckBox() {
-      return dayToCheckBox;
+    public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
+      this.onChangeHandler = handler;
+    }
+    
+    private void changeHandler() {
+      if ( null != onChangeHandler ) {
+        onChangeHandler.onHandle( this );
+      }
+    }
+    
+    private void configureOnChangeHandler() {
+
+      final WeeklyRecurrenceEditor localThis = this;
+      
+      KeyboardListener keyboardListener = new KeyboardListener() {
+        public void onKeyDown(Widget sender, char keyCode, int modifiers) {
+        }
+        public void onKeyPress(Widget sender, char keyCode, int modifiers) {
+        }
+        public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+          localThis.changeHandler();
+        }
+      };
+      
+      ClickListener clickListener = new ClickListener() {
+        public void onClick(Widget sender) {
+          localThis.changeHandler();
+        }
+      };
+      for ( DayOfWeek d : dayToCheckBox.keySet() ) {
+        CheckBox cb = dayToCheckBox.get( d );
+        cb.addClickListener( clickListener );
+        cb.addKeyboardListener( keyboardListener );
+      }
     }
   }
 
-  public class MonthlyRecurrenceEditor extends VerticalPanel {
+  public class MonthlyRecurrenceEditor extends VerticalPanel implements IChangeHandler {
     
     private RadioButton dayNOfMonthRb = new RadioButton(MONTHLY_RB_GROUP, MSGS.day());
     private RadioButton nthDayNameOfMonthRb = new RadioButton(MONTHLY_RB_GROUP, MSGS.the() );
@@ -593,6 +684,7 @@ public class RecurrenceEditor extends VerticalPanel {
     private ListBox whichWeekLb = createWhichWeekListBox();
     private ListBox dayOfWeekLb = createDayOfWeekListBox();
     private ErrorLabel dayNOfMonthLabel = null;
+    private ICallback<IChangeHandler> onChangeHandler;
     
     public MonthlyRecurrenceEditor() {
       setVisible(false);
@@ -620,6 +712,7 @@ public class RecurrenceEditor extends VerticalPanel {
       l.setStyleName("endLabel"); //$NON-NLS-1$
       hp.add(l);
       add(hp);
+      configureOnChangeHandler();
     }
     
     public void reset() {
@@ -675,28 +768,51 @@ public class RecurrenceEditor extends VerticalPanel {
       dayNOfMonthLabel.setErrorMsg( errorMsg );
     }
 
-    public RadioButton getDayNOfMonthRb() {
-      return dayNOfMonthRb;
+    public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
+      this.onChangeHandler = handler;
     }
-
-    public RadioButton getNthDayNameOfMonthRb() {
-      return nthDayNameOfMonthRb;
+    
+    private void changeHandler() {
+      if ( null != onChangeHandler ) {
+        onChangeHandler.onHandle( this );
+      }
     }
+    
+    private void configureOnChangeHandler() {
+      final MonthlyRecurrenceEditor localThis = this;
 
-    public TextBox getDayOfMonthTb() {
-      return dayOfMonthTb;
-    }
+      KeyboardListener keyboardListener = new KeyboardListener() {
+        public void onKeyDown(Widget sender, char keyCode, int modifiers) {
+        }
+        public void onKeyPress(Widget sender, char keyCode, int modifiers) {
+        }
+        public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+          localThis.changeHandler();
+        }
+      };
+      
+      ClickListener clickListener = new ClickListener() {
+        public void onClick(Widget sender) {
+          localThis.changeHandler();
+        }
+      };
 
-    public ListBox getWhichWeekLb() {
-      return whichWeekLb;
-    }
-
-    public ListBox getDayOfWeekLb() {
-      return dayOfWeekLb;
+      ChangeListener changeListener = new ChangeListener() {
+        public void onChange(Widget sender) {
+          localThis.changeHandler();
+        }
+      };
+      dayNOfMonthRb.addClickListener( clickListener );
+      dayNOfMonthRb.addKeyboardListener( keyboardListener );
+      nthDayNameOfMonthRb.addClickListener( clickListener );
+      nthDayNameOfMonthRb.addKeyboardListener( keyboardListener );
+      dayOfMonthTb.addKeyboardListener( keyboardListener );
+      whichWeekLb.addChangeListener( changeListener );
+      dayOfWeekLb.addChangeListener( changeListener );
     }
   }
 
-  public class YearlyRecurrenceEditor extends VerticalPanel {
+  public class YearlyRecurrenceEditor extends VerticalPanel implements IChangeHandler {
     
     private RadioButton everyMonthOnNthDayRb = new RadioButton(YEARLY_RB_GROUP, MSGS.every() );
     private RadioButton nthDayNameOfMonthNameRb = new RadioButton(YEARLY_RB_GROUP, MSGS.the() );
@@ -706,6 +822,7 @@ public class RecurrenceEditor extends VerticalPanel {
     private ListBox whichWeekLb = createWhichWeekListBox();
     private ListBox dayOfWeekLb = createDayOfWeekListBox();
     private ErrorLabel dayOfMonthLabel = null;
+    private ICallback<IChangeHandler> onChangeHandler;
 
     private static final String YEARLY_RB_GROUP = "yearly-group"; //$NON-NLS-1$
 
@@ -732,6 +849,7 @@ public class RecurrenceEditor extends VerticalPanel {
       p.add(l);
       p.add( monthOfYearLb1 );
       add(p);
+      configureOnChangeHandler();
     }
     
     public void reset() {
@@ -805,32 +923,54 @@ public class RecurrenceEditor extends VerticalPanel {
       dayOfMonthLabel.setErrorMsg( errorMsg );
     }
 
-    public RadioButton getEveryMonthOnNthDayRb() {
-      return everyMonthOnNthDayRb;
+    public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
+      this.onChangeHandler = handler;
+    }
+    
+    private void changeHandler() {
+      if ( null != onChangeHandler ) {
+        onChangeHandler.onHandle( this );
+      }
     }
 
-    public RadioButton getNthDayNameOfMonthNameRb() {
-      return nthDayNameOfMonthNameRb;
-    }
+    private void configureOnChangeHandler() {
 
-    public TextBox getDayOfMonthTb() {
-      return dayOfMonthTb;
-    }
+      final YearlyRecurrenceEditor localThis = this;
 
-    public ListBox getMonthOfYearLb0() {
-      return monthOfYearLb0;
-    }
+      KeyboardListener keyboardListener = new KeyboardListener() {
+        public void onKeyDown(Widget sender, char keyCode, int modifiers) {
+        }
+        public void onKeyPress(Widget sender, char keyCode, int modifiers) {
+        }
+        public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+          localThis.changeHandler();
+        }
+      };
+      
+      ClickListener clickListener = new ClickListener() {
+        public void onClick(Widget sender) {
+          localThis.changeHandler();
+        }
+      };
+      
+      ChangeListener changeListener = new ChangeListener() {
+        public void onChange(Widget sender) {
+          localThis.changeHandler();
+        }
+      };
+      
+      everyMonthOnNthDayRb.addClickListener( clickListener );
+      everyMonthOnNthDayRb.addKeyboardListener( keyboardListener );
 
-    public ListBox getMonthOfYearLb1() {
-      return monthOfYearLb1;
-    }
-
-    public ListBox getWhichWeekLb() {
-      return whichWeekLb;
-    }
-
-    public ListBox getDayOfWeekLb() {
-      return dayOfWeekLb;
+      nthDayNameOfMonthNameRb.addClickListener( clickListener );
+      nthDayNameOfMonthNameRb.addKeyboardListener( keyboardListener );
+      
+      dayOfMonthTb.addKeyboardListener( keyboardListener );
+      
+      monthOfYearLb0.addChangeListener( changeListener );
+      monthOfYearLb1.addChangeListener( changeListener );
+      whichWeekLb.addChangeListener( changeListener );
+      dayOfWeekLb.addChangeListener( changeListener );
     }
   }
   
@@ -1178,4 +1318,34 @@ public class RecurrenceEditor extends VerticalPanel {
     return yearlyEditor;
   }
 
+  public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
+    this.onChangeHandler = handler;
+  }
+  
+  private void changeHandler() {
+    if ( null != onChangeHandler ) {
+      onChangeHandler.onHandle( this );
+    }
+  }
+  
+  private void configureOnChangeHandler() {
+    final RecurrenceEditor localThis = this;
+    
+    ICallback<IChangeHandler> handler = new ICallback<IChangeHandler>() {
+      public void onHandle(IChangeHandler o) {
+        localThis.changeHandler();
+      }
+    };
+    
+    startTimePicker.setOnChangeHandler(handler);
+    dateRangeEditor.setOnChangeHandler(handler);
+    
+    secondlyEditor.setOnChangeHandler(handler);
+    minutelyEditor.setOnChangeHandler(handler);
+    hourlyEditor.setOnChangeHandler(handler);
+    dailyEditor.setOnChangeHandler(handler);
+    weeklyEditor.setOnChangeHandler(handler);
+    monthlyEditor.setOnChangeHandler(handler);
+    yearlyEditor.setOnChangeHandler(handler);
+  }
 }

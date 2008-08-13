@@ -315,28 +315,29 @@ public class CronParser {
   
   /**
    * 
-   * @return String the recurrence string, or null if the CRON string is a valid
-   * CRON String but it cannot be parsed into a recurrence string.
+   * @return The recurrence string corresponding to the cron string (this.cronStr).
    * 
    * @throws CronParseException if the CRON string is an invalid CRON string
    */
   public String parseToRecurrenceString() throws CronParseException {
     tokenizeForRecurrence(); // tokenizeForRecurrence() will set recurrenceType.
-    return ( RecurrenceType.Unknown == recurrenceType )
-      ? null
-      : getRecurrenceString();
+    return getRecurrenceString();
   }
   
+  /**
+   * 
+   * @throws CronParseException
+   */
   private void tokenizeForRecurrence() throws CronParseException {
-    
-    recurrenceType = getScheduleType();
-    if ( RecurrenceType.Unknown == recurrenceType ) {
-      return; // CRON string not parse-able into a recurrence string
-    }
     
     String[] tokens = cronStr.split( "\\s" ); // split on white space //$NON-NLS-1$
     if ( REQUIRED_NUM_TOKENS != tokens.length ) {
       throw new CronParseException( MSGS.invalidNumTokens() );
+    }
+    
+    recurrenceType = getScheduleType();
+    if ( RecurrenceType.Unknown == recurrenceType ) {
+      throw new CronParseException( MSGS.cronStringCannotTransformToRecurrenceString( this.cronStr ) );
     }
     
     if ( StringUtils.isPositiveInteger( tokens[CronField.SECONDS.value] ) ) {

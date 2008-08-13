@@ -5,9 +5,12 @@ import java.util.Date;
 import org.pentaho.gwt.widgets.client.Widgets;
 import org.pentaho.gwt.widgets.client.containers.SimpleGroupBox;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
+import org.pentaho.gwt.widgets.client.ui.ICallback;
+import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -17,15 +20,16 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Steven Barkdull
  *
  */
-public class DateRangeEditor extends SimpleGroupBox {
+public class DateRangeEditor extends SimpleGroupBox implements IChangeHandler {
 
   private static final WidgetsLocalizedMessages MSGS = Widgets.getLocalizedMessages();
   private static final String END_DATE_RB_GROUP = "end-date-group"; //$NON-NLS-1$
 
   private DatePickerEx startDatePicker = null;
-  protected EndDatePanel endDatePanel = null;
+  private EndDatePanel endDatePanel = null;
   
   private ErrorLabel startLabel = null;
+  private ICallback<IChangeHandler> onChangeHandler = null;
 
   public DateRangeEditor( Date date ) {
 
@@ -47,6 +51,7 @@ public class DateRangeEditor extends SimpleGroupBox {
     outerHP.add(endDatePanel);
     
     reset( date );
+    configureOnChangeHandler();
   }
   
   public void setStartDateError( String errorMsg ) {
@@ -95,12 +100,36 @@ public class DateRangeEditor extends SimpleGroupBox {
     endDatePanel.setEndByError( errorMsg );
   }
 
-  public class EndDatePanel extends VerticalPanel {
+  public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
+    this.onChangeHandler = handler;
+  }
+  
+  private void changeHandler() {
+    if ( null != onChangeHandler ) {
+      onChangeHandler.onHandle( this );
+    }
+  }
+  
+  private void configureOnChangeHandler() {
+    final DateRangeEditor localThis = this;
+    
+    ICallback<IChangeHandler> handler = new ICallback<IChangeHandler>() {
+      public void onHandle(IChangeHandler o) {
+        localThis.changeHandler();
+      }
+    };
+
+    startDatePicker.setOnChangeHandler(handler);
+    endDatePanel.setOnChangeHandler(handler);
+  }
+
+  private class EndDatePanel extends VerticalPanel implements IChangeHandler {
 
     private DatePickerEx endDatePicker = null;
     private RadioButton noEndDateRb = null;
     private RadioButton endByRb = null;
     private ErrorLabel endByLabel = null;
+    private ICallback<IChangeHandler> onChangeHandler = null;
     
     public EndDatePanel( Date date ) {
       final EndDatePanel localThis = this;
@@ -134,6 +163,7 @@ public class DateRangeEditor extends SimpleGroupBox {
         }
       });
       reset( date );
+      configureOnChangeHandler();
     }
     
     public void reset( Date d ) {
@@ -179,21 +209,46 @@ public class DateRangeEditor extends SimpleGroupBox {
     public void setEndByError( String errorMsg ) {
       endByLabel.setErrorMsg( errorMsg );
     }
-
-    public RadioButton getNoEndDateRb() {
-      return noEndDateRb;
+    
+    public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
+      this.onChangeHandler = handler;
     }
-
-    public RadioButton getEndByRb() {
-      return endByRb;
+    
+    private void changeHandler() {
+      if ( null != onChangeHandler ) {
+        onChangeHandler.onHandle( this );
+      }
     }
-  }
-
-  public DatePickerEx getStartDatePicker() {
-    return startDatePicker;
-  }
-
-  public EndDatePanel getEndDatePanel() {
-    return endDatePanel;
-  }
+    
+    private void configureOnChangeHandler() {
+      final EndDatePanel localThis = this;
+      
+      ICallback<IChangeHandler> handler = new ICallback<IChangeHandler>() {
+        public void onHandle(IChangeHandler o) {
+          localThis.changeHandler();
+        }
+      };
+      KeyboardListener keyboardListener = new KeyboardListener() {
+        public void onKeyDown(Widget sender, char keyCode, int modifiers) {
+        }
+        public void onKeyPress(Widget sender, char keyCode, int modifiers) {
+        }
+        public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+          localThis.changeHandler();
+        }
+      };
+      
+      ClickListener clickListener = new ClickListener() {
+        public void onClick(Widget sender) {
+          localThis.changeHandler();
+        }
+      };
+      
+      endDatePicker.setOnChangeHandler(handler);
+      noEndDateRb.addClickListener( clickListener );
+      noEndDateRb.addKeyboardListener( keyboardListener );
+      endByRb.addClickListener( clickListener );
+      endByRb.addKeyboardListener( keyboardListener );
+    }
+  } // end EndDatePanel
 }

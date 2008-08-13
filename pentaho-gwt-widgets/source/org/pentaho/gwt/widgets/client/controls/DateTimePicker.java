@@ -2,12 +2,15 @@ package org.pentaho.gwt.widgets.client.controls;
 
 import java.util.Date;
 
-import org.zenika.widget.client.datePicker.DatePicker;
+import org.pentaho.gwt.widgets.client.ui.ICallback;
+import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 
+import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 
 /**
@@ -15,10 +18,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  *
  */
 
-public class DateTimePicker extends FlowPanel {
+public class DateTimePicker extends FlowPanel implements IChangeHandler {
 
-  private DatePicker datePicker = new DatePicker();
+  private DatePickerEx datePicker = new DatePickerEx();
   private TimePicker timePicker = new TimePicker();
+  private ICallback<IChangeHandler> onChangeHandler = null;
   
   public enum Layout {
     HORIZONTAL, VERTICAL
@@ -35,6 +39,30 @@ public class DateTimePicker extends FlowPanel {
     p.add( datePicker );
     //timePicker.setWidth( "100%" );
     p.add( timePicker );
+    configureOnChangeHandler();
+  }
+
+  public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
+    this.onChangeHandler = handler;
+  }
+  
+  private void changeHandler() {
+    if ( null != onChangeHandler ) {
+      onChangeHandler.onHandle( this );
+    }
+  }
+  
+  private void configureOnChangeHandler() {
+    final DateTimePicker localThis = this;
+    
+    ICallback<IChangeHandler> handler = new ICallback<IChangeHandler>() {
+      public void onHandle(IChangeHandler o) {
+        localThis.changeHandler();
+      }
+    };
+    
+    datePicker.setOnChangeHandler(handler);
+    timePicker.setOnChangeHandler(handler);
   }
   
 }

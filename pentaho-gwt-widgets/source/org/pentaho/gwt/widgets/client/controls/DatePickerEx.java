@@ -17,6 +17,8 @@ package org.pentaho.gwt.widgets.client.controls;
 
 import java.util.Date;
 
+import org.pentaho.gwt.widgets.client.ui.ICallback;
+import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 import org.pentaho.gwt.widgets.client.utils.StringUtils;
 import org.pentaho.gwt.widgets.client.utils.TimeUtil;
 
@@ -27,10 +29,13 @@ import org.pentaho.gwt.widgets.client.utils.TimeUtil;
  *
  */
 
-public class DatePickerEx extends org.zenika.widget.client.datePicker.DatePicker {
+public class DatePickerEx extends org.zenika.widget.client.datePicker.DatePicker implements IChangeHandler {
 
+  private ICallback<IChangeHandler> onChangeHandler;
+  
   public DatePickerEx() {
     super();
+    configureOnChangeHandler();
   }
 
   /**
@@ -39,6 +44,7 @@ public class DatePickerEx extends org.zenika.widget.client.datePicker.DatePicker
    */
   public DatePickerEx(Date selectedDate) {
     super( selectedDate );
+    configureOnChangeHandler();
   }
   
   /**
@@ -55,6 +61,27 @@ public class DatePickerEx extends org.zenika.widget.client.datePicker.DatePicker
     return ( d == null || StringUtils.isEmpty( txt ) ) 
       ? null
       : TimeUtil.zeroTimePart( d );
+  }
+  
+  public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
+    this.onChangeHandler = handler;
+  }
+  
+  private void changeHandler() {
+    if ( null != onChangeHandler ) {
+      onChangeHandler.onHandle( this );
+    }
+  }
+  
+  private void configureOnChangeHandler() {
+    // currently doesnt need to do anything. synchronizeFromDate() gets called
+    // when the popup goes down, and populates the text box with the new
+    // date. So synchronizeFromDate() activates the change handler
+  }
+  
+  public void synchronizeFromDate() {
+    super.synchronizeFromDate();
+    changeHandler();
   }
   
 //  /**

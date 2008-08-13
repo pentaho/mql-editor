@@ -7,6 +7,8 @@ import org.pentaho.gwt.widgets.client.controls.DatePickerEx;
 import org.pentaho.gwt.widgets.client.controls.ErrorLabel;
 import org.pentaho.gwt.widgets.client.controls.TimePicker;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
+import org.pentaho.gwt.widgets.client.ui.ICallback;
+import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 import org.pentaho.gwt.widgets.client.utils.TimeUtil;
 
 import com.google.gwt.user.client.ui.Label;
@@ -18,7 +20,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  *
  */
 
-public class RunOnceEditor extends VerticalPanel{
+public class RunOnceEditor extends VerticalPanel implements IChangeHandler {
 
   private static final WidgetsLocalizedMessages MSGS = Widgets.getLocalizedMessages();
   private TimePicker startTimePicker = new TimePicker();
@@ -28,6 +30,7 @@ public class RunOnceEditor extends VerticalPanel{
   private static final String DEFAULT_START_HOUR = "12"; //$NON-NLS-1$
   private static final String DEFAULT_START_MINUTE = "00"; //$NON-NLS-1$
   private static final TimeUtil.TimeOfDay DEFAULT_TIME_OF_DAY = TimeUtil.TimeOfDay.AM;
+  private ICallback<IChangeHandler> onChangeHandler = null;
   
   public RunOnceEditor() {
     startTimeLabel = new Label( MSGS.startTimeColon() );
@@ -36,6 +39,7 @@ public class RunOnceEditor extends VerticalPanel{
     startDateLabel = new ErrorLabel( new Label( MSGS.startDate() ) );
     add( startDateLabel );
     add( startDatePicker );
+    configureOnChangeHandler();
   }
 
   public Date getStartDate() {
@@ -66,11 +70,25 @@ public class RunOnceEditor extends VerticalPanel{
     startDateLabel.setErrorMsg( errorMsg );
   }
 
-  public TimePicker getStartTimePicker() {
-    return startTimePicker;
+  public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
+    this.onChangeHandler = handler;
   }
-
-  public DatePickerEx getStartDatePicker() {
-    return startDatePicker;
+  
+  private void changeHandler() {
+    if ( null != onChangeHandler ) {
+      onChangeHandler.onHandle( this );
+    }
+  }
+  
+  private void configureOnChangeHandler() {
+    final RunOnceEditor localThis = this;
+    
+    ICallback<IChangeHandler> handler = new ICallback<IChangeHandler>() {
+      public void onHandle(IChangeHandler o) {
+        localThis.changeHandler();
+      }
+    };
+    startTimePicker.setOnChangeHandler(handler);
+    startDatePicker.setOnChangeHandler(handler);
   }
 }

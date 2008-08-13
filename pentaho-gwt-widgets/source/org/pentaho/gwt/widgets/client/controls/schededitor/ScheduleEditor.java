@@ -24,12 +24,15 @@ import org.pentaho.gwt.widgets.client.Widgets;
 import org.pentaho.gwt.widgets.client.controls.ErrorLabel;
 import org.pentaho.gwt.widgets.client.controls.schededitor.RecurrenceEditor.TemporalValue;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
+import org.pentaho.gwt.widgets.client.ui.ICallback;
+import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 import org.pentaho.gwt.widgets.client.utils.CronParseException;
 import org.pentaho.gwt.widgets.client.utils.CronParser;
 import org.pentaho.gwt.widgets.client.utils.EnumException;
 import org.pentaho.gwt.widgets.client.utils.TimeUtil;
 
 import com.google.gwt.user.client.ui.ChangeListener;
+import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
@@ -42,7 +45,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Steven Barkdull
  *
  */
-public class ScheduleEditor extends VerticalPanel {
+public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
 
   private static final WidgetsLocalizedMessages MSGS = Widgets.getLocalizedMessages();
 
@@ -127,6 +130,7 @@ public class ScheduleEditor extends VerticalPanel {
   private static final String DEFAULT_NAME = ""; //$NON-NLS-1$
   private static final String DEFAULT_GROUP_NAME = ""; //$NON-NLS-1$
   private static final String DEFAULT_DESCRIPTION = ""; //$NON-NLS-1$
+  private ICallback<IChangeHandler> onChangeHandler = null;
 
   public ScheduleEditor() {
     super();
@@ -177,6 +181,8 @@ public class ScheduleEditor extends VerticalPanel {
     vp.add( cronEditor );
     scheduleTypeMap.put( ScheduleType.CRON, cronEditor );
     cronEditor.setVisible( false );
+    
+    configureOnChangeHandler();
   }
 
   public void reset( Date now ) {
@@ -242,7 +248,14 @@ public class ScheduleEditor extends VerticalPanel {
 
     CronParser cp = new CronParser( cronStr );
     String recurrenceStr = null;
-    recurrenceStr = cp.parseToRecurrenceString(); // throws CronParseException
+    try {
+      recurrenceStr = cp.parseToRecurrenceString(); // throws CronParseException
+    } catch( CronParseException e ) {
+      if ( !CronParser.isValidCronString( cronStr ) ) {
+        throw e;
+      }
+      recurrenceStr = null; // valid cronstring, not parse-able to recurrence string
+    }
 
     if ( null != recurrenceStr ) {
       recurrenceEditor.inititalizeWithRecurrenceString( recurrenceStr );
@@ -499,21 +512,44 @@ public class ScheduleEditor extends VerticalPanel {
     nameTb.setFocus( true );
     nameTb.setSelectionRange( 0, nameTb.getText().length() );
   }
-
-  public TextBox getNameTb() {
-    return nameTb;
+  
+  public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
+    this.onChangeHandler = handler;
   }
-
-  public TextBox getGroupNameTb() {
-    return groupNameTb;
+  
+  private void changeHandler() {
+    if ( null != onChangeHandler ) {
+      onChangeHandler.onHandle( this );
+    }
   }
-
-  public TextBox getDescriptionTb() {
-    return descriptionTb;
+  
+  private void configureOnChangeHandler() {
+    final ScheduleEditor localThis = this;
+    KeyboardListener keyboardListener = new KeyboardListener() {
+      public void onKeyDown(Widget sender, char keyCode, int modifiers) {
+      }
+      public void onKeyPress(Widget sender, char keyCode, int modifiers) {
+      }
+      public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+        localThis.changeHandler();
+      }
+    };
+    ChangeListener changeListener = new ChangeListener() {
+      public void onChange(Widget sender) {
+        localThis.changeHandler();
+      }
+    };
+    ICallback<IChangeHandler> handler = new ICallback<IChangeHandler>() {
+      public void onHandle(IChangeHandler o) {
+        localThis.changeHandler();
+      }
+    };
+    nameTb.addKeyboardListener( keyboardListener );
+    groupNameTb.addKeyboardListener( keyboardListener );
+    descriptionTb.addKeyboardListener( keyboardListener );
+    scheduleCombo.addChangeListener( changeListener );
+    runOnceEditor.setOnChangeHandler( handler );
+    recurrenceEditor.setOnChangeHandler( handler );
+    cronEditor.setOnChangeHandler( handler );
   }
-
-  public ListBox getScheduleCombo() {
-    return scheduleCombo;
-  }
-
 }
