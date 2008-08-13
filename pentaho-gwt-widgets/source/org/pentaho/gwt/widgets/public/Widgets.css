@@ -1,0 +1,84 @@
+/** Add css rules here for your application. */
+body {
+  font-family:arial,sans-serif
+}
+
+div,td {
+  color:#000000
+}
+
+a:link {
+  color:#0000cc
+}
+     
+a:visited {
+  color:#551a8b
+}
+
+a:active {
+  color:#ff0000
+}
+
+button {
+  display: block;
+  font-size: 16pt
+}
+
+.widePanel {
+  width: 100%
+}
+
+img {
+  margin-top: 20px;
+}
+
+
+/* start snb */
+.simpleGroupBox {
+	padding: 5px;
+}
+/* begin recurrence dialog ------------------------------------------------------*/
+.startLabel {
+	padding-right: 1ex;
+	white-space: nowrap;
+	/*border:1px dotted red;*/
+}
+.middleLabel {
+	padding-right: 1ex;
+	padding-left: 1ex;
+	white-space: nowrap;
+	/*border:1px dotted red;*/
+}
+.endLabel {
+	padding-left: 1ex;
+	white-space: nowrap;
+	/*border:1px dotted red;*/
+}
+
+.recurrenceRadioButton label {
+	padding-right: 1ex;
+	white-space: nowrap;
+}
+
+.weeklyRecurrencePanel {
+}
+
+.scheduleEditor {
+	/* can't add a margin here, IE7 can't handle it */
+	/*margin: 10px;*/
+}
+
+/* begin schedule editor ------------------------------------------------------*/
+.scheduleCombo {
+	padding-right: 5px;
+	margin-right: 5px;
+}
+/* end schedule editor ----------------------------------------------------------*/
+/* end recurrence dialog ----------------------------------------------------------*/
+
+/* style for error message associated with dialog controls with invalid data */
+.errorLabel {
+	background-color: #FFDDDD;
+	color: #FF0000;
+}
+/* end snb */
