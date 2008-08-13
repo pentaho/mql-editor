@@ -3,7 +3,7 @@ package org.pentaho.gwt.widgets.client.i18n;
 
 /**
  * Interface to represent the messages contained in resource  bundle:
- * 	C:/projects/pentaho.2.trunk/pentaho-gwt-widgets/source/org/pentaho/gwt/widgets/client/i18n/WidgetsLocalizedMessages.properties'.
+ * 	C:/projects/pentaho.2.trunk/pentaho-gwt-widgets/bin/org/pentaho/gwt/widgets/client/i18n/WidgetsLocalizedMessages.properties'.
  */
 public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Messages {
   
@@ -750,6 +750,14 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
    * @gwt.key confirmDelete
    */
   String confirmDelete();
+
+  /**
+   * Translated "Unable to translate Cron string "{0}" into recurrence string.".
+   * 
+   * @return translated "Unable to translate Cron string "{0}" into recurrence string."
+   * @gwt.key cronStringCannotTransformToRecurrenceString
+   */
+  String cronStringCannotTransformToRecurrenceString(String arg0);
 
   /**
    * Translated "Attempt to initialize the Recurrence Dialog with an invalid CRON string: {0}. Error details: {1}.".
