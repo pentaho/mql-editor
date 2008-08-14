@@ -48,6 +48,8 @@ import com.google.gwt.xml.client.XMLParser;
  */
 public class FileChooser extends VerticalPanel {
 
+  public static boolean DEBUG = true;
+  
   public static final int OPEN = 0;
   public static final int SAVE = 1;
 
@@ -86,11 +88,12 @@ public class FileChooser extends VerticalPanel {
     setSpacing(3);
   }
 
-  public FileChooser(int mode, String selectedPath, Document solutionRepositoryDocument) {
+  public FileChooser(int mode, String selectedPath, boolean showLocalizedFileNames, Document solutionRepositoryDocument) {
     this();
     this.mode = mode;
     this.selectedPath = selectedPath;
     this.solutionRepositoryDocument = solutionRepositoryDocument;
+    this.showLocalizedFileNames = showLocalizedFileNames;
     repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames);
     initUI(false);
   }
@@ -567,7 +570,7 @@ public class FileChooser extends VerticalPanel {
    * This is the entry point method.
    */
   public void onModuleLoad() {
-    if (!GWT.isScript()) {
+    if (!GWT.isScript() && DEBUG) {
       final FileChooserDialog dialogBox = new FileChooserDialog(FileChooser.SAVE, "/samples/reporting", true, true);
       dialogBox.addFileChooserListener(new FileChooserListener() {
         public void fileSelected(String solution, String path, String file) {
