@@ -71,7 +71,7 @@
 			<fileset dir="bin" includes="**/*" />
 		</copy>
 		<delete dir="_source" />
-		<jar basedir="dist/bin" destfile="dist/filechooser-${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}.jar" />
+		<jar basedir="dist/bin" destfile="dist/pentaho-filechooser-${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}.jar" />
     </target>
 
 </project>
