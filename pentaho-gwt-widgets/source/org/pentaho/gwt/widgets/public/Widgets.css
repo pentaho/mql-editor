@@ -1,6 +1,9 @@
-/** Add css rules here for your application. */
+/** Add css rules here for your application.
+Please, please comment all entries so that it is clear
+which java class/code the style is associated with */
 
 /* start snb */
+/* default style for java class SimpleGroupBox */
 .simpleGroupBox {
 	padding: 5px;
 }
@@ -30,12 +33,19 @@
 .weeklyRecurrencePanel {
 }
 
+/* begin schedule editor ------------------------------------------------------*/
 .scheduleEditor {
 	/* can't add a margin here, IE7 can't handle it */
 	/*margin: 10px;*/
+	/*background-color: #CCCCFF; for testing*/
+	width: 100%;
 }
 
-/* begin schedule editor ------------------------------------------------------*/
+.scheduleDescription {
+	width: 85%;
+	/*background-color: red; for testing */
+}
+
 .scheduleCombo {
 	padding-right: 5px;
 	margin-right: 5px;

@@ -149,6 +149,7 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
     rowNum++;
     Label l = new Label( MSGS.descriptionColon() );
     add( l );
+    descriptionTb.setStyleName( "scheduleDescription" );
     add( descriptionTb );
 
     rowNum++;
