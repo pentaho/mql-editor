@@ -63,15 +63,18 @@
 		</java>
 		<delete dir="_source" />
 	</target>
+
+	<target name="dist" depends="clean, dev_dist">
+	</target>
 	
-	<target name="dist" depends="clean, compile-gwt">
+	<target name="dev_dist" depends="compile-gwt">
 		<mkdir dir="dist" />
 		<copy todir="dist/bin">
 			<fileset dir="source" includes="**/*" />
 			<fileset dir="bin" includes="**/*" />
 		</copy>
 		<delete dir="_source" />
-		<jar basedir="dist/bin" destfile="dist/pentaho-filechooser-${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}.jar" />
+		<jar basedir="dist/bin" destfile="dist/pentaho-gwt-filechooser-${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}.jar" />
     </target>
 
 </project>
