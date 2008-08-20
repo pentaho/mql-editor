@@ -86,14 +86,20 @@ public class FileChooser extends VerticalPanel {
     setSpacing(3);
   }
 
+  public FileChooser(int mode, String selectedPath, boolean showLocalizedFileNames ) {
+    this( mode, selectedPath, showLocalizedFileNames, null );
+  }
+
   public FileChooser(int mode, String selectedPath, boolean showLocalizedFileNames, Document solutionRepositoryDocument) {
     this();
     this.mode = mode;
     this.selectedPath = selectedPath;
     this.solutionRepositoryDocument = solutionRepositoryDocument;
     this.showLocalizedFileNames = showLocalizedFileNames;
-    repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames);
-    initUI(false);
+    if ( null != solutionRepositoryDocument ) {
+      repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames);
+      initUI(false);
+    }
   }
 
   public FileChooser(int mode, String selectedPath) {
@@ -580,6 +586,12 @@ public class FileChooser extends VerticalPanel {
     this.selectedPath = selectedPath;
   }
 
+  public void setSolutionRepositoryDocument( Document doc ) {
+    solutionRepositoryDocument = doc;
+    repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames);
+    initUI( false );
+  }
+  
   public void fireFileSelected() {
     for (FileChooserListener listener : listeners) {
       listener.fileSelected(getSolution(), getPath(), getName());
@@ -591,7 +603,8 @@ public class FileChooser extends VerticalPanel {
   }
 
   public String getPath() {
-    return "/" + getSelectedPath().substring(getSelectedPath().indexOf(getSolution()));
+    int startIdx = getSelectedPath().indexOf("/", 1) + 1;
+    return "/" + getSelectedPath().substring( startIdx );
   }
 
   public String getName() {
