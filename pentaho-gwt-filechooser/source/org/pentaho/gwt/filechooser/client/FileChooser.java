@@ -458,6 +458,7 @@ public class FileChooser extends VerticalPanel {
     Label myDateLabel = new Label(dateFormat.format(lastModDate));
     myDateLabel.setWordWrap(false);
 
+    
     final Label myNameLabel = new Label(attributeMap.get("name")) {
       public void onBrowserEvent(Event event) {
         handleFileClicked(item, isDir, event, this.getElement());
@@ -466,7 +467,11 @@ public class FileChooser extends VerticalPanel {
     myNameLabel.sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
     myNameLabel.setWordWrap(false);
     myNameLabel.setTitle(getTitle(item));
+    if (showLocalizedFileNames) {
+      myNameLabel.setText(attributeMap.get("localized-name"));
+    }
 
+    
     HorizontalPanel fileNamePanel = new HorizontalPanel();
     Image fileImage = new Image() {
       public void onBrowserEvent(Event event) {
@@ -630,6 +635,9 @@ public class FileChooser extends VerticalPanel {
   
   
   public String getSolution() {
+    if (getSelectedPath().indexOf("/", 1) == -1) {
+      return "/";
+    }
     return getSelectedPath().substring(1, getSelectedPath().indexOf("/", 1));
   }
 
@@ -677,6 +685,11 @@ public class FileChooser extends VerticalPanel {
       }
     }
     return false;
+  }
+
+  public void setShowLocalizedFileNames(boolean showLocalizedFileNames) {
+    this.showLocalizedFileNames = showLocalizedFileNames;
+    initUI(false);
   }
 
 }

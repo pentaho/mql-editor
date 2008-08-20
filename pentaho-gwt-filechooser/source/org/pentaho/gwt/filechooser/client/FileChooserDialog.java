@@ -46,6 +46,7 @@ public class FileChooserDialog extends PromptDialogBox {
     fileChooser.setSelectedPath(selectedPath);
     fileChooser.solutionRepositoryDocument = repositoryDocument;
     fileChooser.repositoryTree = TreeBuilder.buildSolutionTree(repositoryDocument, fileChooser.showHiddenFiles, fileChooser.showLocalizedFileNames);
+    fileChooser.setShowLocalizedFileNames(false);
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
         boolean isValid = fileChooser.getName() != null && !"".equals(fileChooser.getName());
