@@ -49,7 +49,8 @@ import com.google.gwt.xml.client.XMLParser;
 public class FileChooser extends VerticalPanel {
 
   public static final int OPEN = 0;
-  public static final int SAVE = 1;
+  public static final int OPEN_READ_ONLY = 1;
+  public static final int SAVE = 2;
 
   int mode = OPEN;
   String selectedPath;
@@ -86,8 +87,8 @@ public class FileChooser extends VerticalPanel {
     setSpacing(3);
   }
 
-  public FileChooser(int mode, String selectedPath, boolean showLocalizedFileNames ) {
-    this( mode, selectedPath, showLocalizedFileNames, null );
+  public FileChooser(int mode, String selectedPath, boolean showLocalizedFileNames) {
+    this(mode, selectedPath, showLocalizedFileNames, null);
   }
 
   public FileChooser(int mode, String selectedPath, boolean showLocalizedFileNames, Document solutionRepositoryDocument) {
@@ -96,7 +97,7 @@ public class FileChooser extends VerticalPanel {
     this.selectedPath = selectedPath;
     this.solutionRepositoryDocument = solutionRepositoryDocument;
     this.showLocalizedFileNames = showLocalizedFileNames;
-    if ( null != solutionRepositoryDocument ) {
+    if (null != solutionRepositoryDocument) {
       repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames);
       initUI(false);
     }
@@ -161,6 +162,10 @@ public class FileChooser extends VerticalPanel {
   }
 
   public void initUI(final boolean fromSearch) {
+
+    if (mode == OPEN_READ_ONLY) {
+      fileNameTextBox.setReadOnly(true);
+    }
 
     String path = this.selectedPath;
     if (fromSearch) {
@@ -345,6 +350,7 @@ public class FileChooser extends VerticalPanel {
           myPath = "/";
         }
         setSelectedPath(myPath);
+        fileNameTextBox.setText("");
         initUI(false);
 
       }
@@ -452,55 +458,9 @@ public class FileChooser extends VerticalPanel {
     Label myDateLabel = new Label(dateFormat.format(lastModDate));
     myDateLabel.setWordWrap(false);
 
-    Label myNameLabel = new Label(attributeMap.get("name")) {
+    final Label myNameLabel = new Label(attributeMap.get("name")) {
       public void onBrowserEvent(Event event) {
-        HashMap<String, Object> attributeMap = (HashMap<String, Object>) item.getUserObject();
-        TreeItem originalItem = (TreeItem) attributeMap.get("original");
-        TreeItem tmpItem = originalItem;
-        if (originalItem == null) {
-          tmpItem = item;
-        }
-        selectedTreeItem = tmpItem;
-
-        List<String> parentSegments = new ArrayList<String>();
-        while (tmpItem != null) {
-          HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) tmpItem.getUserObject();
-          if (tmpAttributeMap.get("name") != null) {
-            parentSegments.add((String) tmpAttributeMap.get("name"));
-          }
-          tmpItem = tmpItem.getParentItem();
-        }
-        Collections.reverse(parentSegments);
-        String myPath = "";
-        for (int i = 0; isDir ? i < parentSegments.size() : i < parentSegments.size() - 1; i++) {
-          myPath += "/" + parentSegments.get(i);
-        }
-        setSelectedPath(myPath);
-        if (!isDir) {
-          HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) selectedTreeItem.getUserObject();
-          if (tmpAttributeMap.get("name") != null) {
-            fileNameTextBox.setText((String) tmpAttributeMap.get("name"));
-          }
-        }
-
-        // double click
-        if ((DOM.eventGetType(event) & Event.ONDBLCLICK) == Event.ONDBLCLICK) {
-          if (isDir) {
-            initUI(false);
-          } else {
-            fireFileSelected();
-          }
-        } else if ((DOM.eventGetType(event) & Event.ONCLICK) == Event.ONCLICK) {
-          // single click
-          // highlight row
-          if (lastSelectedFileElement != null) {
-            DOM.setStyleAttribute(lastSelectedFileElement, "background", "white");
-            DOM.setStyleAttribute(lastSelectedFileElement, "color", "black");
-          }
-          DOM.setStyleAttribute(getElement(), "background", "#7070ff");
-          DOM.setStyleAttribute(getElement(), "color", "white");
-          lastSelectedFileElement = getElement();
-        }
+        handleFileClicked(item, isDir, event, this.getElement());
       }
     };
     myNameLabel.sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
@@ -508,7 +468,12 @@ public class FileChooser extends VerticalPanel {
     myNameLabel.setTitle(getTitle(item));
 
     HorizontalPanel fileNamePanel = new HorizontalPanel();
-    Image fileImage = new Image();
+    Image fileImage = new Image() {
+      public void onBrowserEvent(Event event) {
+        handleFileClicked(item, isDir, event, myNameLabel.getElement());
+      }
+    };
+    fileImage.sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
     if (isDir) {
       FileChooserImagesSingleton.getImages().folder().applyTo(fileImage);
     } else {
@@ -521,6 +486,65 @@ public class FileChooser extends VerticalPanel {
     filesListTable.setWidget(row + 1, 0, fileNamePanel);
     filesListTable.setWidget(row + 1, 1, new Label(isDir ? "Folder" : "File"));
     filesListTable.setWidget(row + 1, 2, myDateLabel);
+  }
+
+  private void handleFileClicked(final TreeItem item, final boolean isDir, final Event event, com.google.gwt.user.client.Element sourceElement) {
+    boolean eventWeCareAbout = false;
+    if ((DOM.eventGetType(event) & Event.ONDBLCLICK) == Event.ONDBLCLICK) {
+      eventWeCareAbout = true;
+    } else if ((DOM.eventGetType(event) & Event.ONCLICK) == Event.ONCLICK) {
+      eventWeCareAbout = true;
+    }
+    if (eventWeCareAbout) {
+      HashMap<String, Object> attributeMap = (HashMap<String, Object>) item.getUserObject();
+      TreeItem originalItem = (TreeItem) attributeMap.get("original");
+      TreeItem tmpItem = originalItem;
+      if (originalItem == null) {
+        tmpItem = item;
+      }
+      selectedTreeItem = tmpItem;
+
+      List<String> parentSegments = new ArrayList<String>();
+      while (tmpItem != null) {
+        HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) tmpItem.getUserObject();
+        if (tmpAttributeMap.get("name") != null) {
+          parentSegments.add((String) tmpAttributeMap.get("name"));
+        }
+        tmpItem = tmpItem.getParentItem();
+      }
+      Collections.reverse(parentSegments);
+      String myPath = "";
+      for (int i = 0; isDir ? i < parentSegments.size() : i < parentSegments.size() - 1; i++) {
+        myPath += "/" + parentSegments.get(i);
+      }
+      setSelectedPath(myPath);
+      if (!isDir) {
+        HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) selectedTreeItem.getUserObject();
+        if (tmpAttributeMap.get("name") != null) {
+          fileNameTextBox.setText((String) tmpAttributeMap.get("name"));
+        }
+      }
+    }
+    // double click
+    if ((DOM.eventGetType(event) & Event.ONDBLCLICK) == Event.ONDBLCLICK) {
+      if (isDir) {
+        fileNameTextBox.setText("");
+        initUI(false);
+      } else {
+        fireFileSelected();
+      }
+    } else if ((DOM.eventGetType(event) & Event.ONCLICK) == Event.ONCLICK) {
+      fireFileSelectionChanged();
+      // single click
+      // highlight row
+      if (lastSelectedFileElement != null) {
+        DOM.setStyleAttribute(lastSelectedFileElement, "background", "white");
+        DOM.setStyleAttribute(lastSelectedFileElement, "color", "black");
+      }
+      DOM.setStyleAttribute(sourceElement, "background", "#7070ff");
+      DOM.setStyleAttribute(sourceElement, "color", "white");
+      lastSelectedFileElement = sourceElement;
+    }
   }
 
   private String getTitle(TreeItem item) {
@@ -586,25 +610,32 @@ public class FileChooser extends VerticalPanel {
     this.selectedPath = selectedPath;
   }
 
-  public void setSolutionRepositoryDocument( Document doc ) {
+  public void setSolutionRepositoryDocument(Document doc) {
     solutionRepositoryDocument = doc;
     repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames);
-    initUI( false );
+    initUI(false);
   }
-  
+
   public void fireFileSelected() {
     for (FileChooserListener listener : listeners) {
       listener.fileSelected(getSolution(), getPath(), getName());
     }
   }
 
+  public void fireFileSelectionChanged() {
+    for (FileChooserListener listener : listeners) {
+      listener.fileSelectionChanged(getSolution(), getPath(), getName());
+    }
+  }
+  
+  
   public String getSolution() {
     return getSelectedPath().substring(1, getSelectedPath().indexOf("/", 1));
   }
 
   public String getPath() {
     int startIdx = getSelectedPath().indexOf("/", 1) + 1;
-    return "/" + getSelectedPath().substring( startIdx );
+    return "/" + getSelectedPath().substring(startIdx);
   }
 
   public String getName() {
