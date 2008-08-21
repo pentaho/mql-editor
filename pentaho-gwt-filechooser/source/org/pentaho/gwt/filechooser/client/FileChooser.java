@@ -657,7 +657,7 @@ public class FileChooser extends VerticalPanel {
     if ( !"".equals( name ) ) {
       name = "/" + name;
     }
-    return "/" + getSolution() + getPath() + name;
+    return getSolution() + getPath() + name;
   }
 
   public void addFileChooserListener(FileChooserListener listener) {
