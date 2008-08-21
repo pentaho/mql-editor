@@ -1,0 +1,73 @@
+
+.toolbar{
+	border: 1px dotted black;
+	background-color: #DDD;
+	width:100%;
+	height:100%;
+}
+
+.toolbar-group-label-disabled{	
+	color: #777;
+}
+
+.toolbar-group-label{	
+	color: #000;
+}
+
+.toolbar-button{
+	margin: 1px; 
+	padding:3px;
+}
+
+.toolbar-button-hovering{
+	background-color: #E8E8E8;
+	border: 1px solid #AAA;
+	cursor: pointer;
+	margin: 0px;
+}
+
+.toolbar-toggle-button{
+	margin: 1px;
+	padding:3px;
+}
+
+.toolbar-toggle-button-down{
+	border: 1px inset grey; 
+	background-color: #E8E8E8;
+	margin: 0px;
+}
+
+.toolbar-toggle-button-down-hovering{
+	background-color: #E8E8E8;
+	margin: 0px;
+	cursor: pointer;
+}
+
+.toolbar-toggle-button-hovering{
+	border: 1px solid #AAA;
+	background-color: #E8E8E8;
+	cursor: pointer;
+	padding:3px;
+	margin: 0px;
+}
+
+.toolbar-combo-button{
+	margin: 1px;
+	padding:3px;
+	padding-right:14px;
+	background-position: right center;
+	background-repeat: no-repeat;
+	background-image: url("style/images/comboArrow.png");
+}
+
+.toolbar-combo-button-hovering{
+	background-color: #E8E8E8;
+	border: 1px solid #AAA;
+	cursor: pointer;
+	margin: 0px;	
+}
+
+
+.toolbar-button-disabled{
+	background-color: #EEE;
+}
