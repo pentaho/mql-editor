@@ -7,7 +7,7 @@
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/pentaho-gwt-filechooser/source&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry id=&quot;org.eclipse.jdt.launching.classpathentry.defaultClasspath&quot;&gt;&#13;&#10;&lt;memento project=&quot;pentaho-gwt-filechooser&quot;/&gt;&#13;&#10;&lt;/runtimeClasspathEntry&gt;&#13;&#10;"/>
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/pentaho-gwt-widgets/source&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-<listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/pentaho-gwt-filechooser/lib/gwt/gwt-dev-windows.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/pentaho-gwt-filechooser/lib/gwt-win/gwt-dev-windows.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value=" -Xmx256M"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-out www org.pentaho.gwt.filechooser.FileChooser/FileChooser.html"/>

@@ -15,6 +15,7 @@
 
 	<path id="classpath">
 		<fileset dir="lib" includes="**/*.jar, **/*.zip" />
+		<fileset dir="../pentaho-gwt-widgets/lib" includes="**/*.jar, **/*.zip" />
 	</path>
 
 	<!-- ===================================================================
@@ -35,11 +36,13 @@
 		<mkdir dir="_source" />
 		<copy todir="_source">
 			<fileset dir="source" includes="**/*" />
+			<fileset dir="../pentaho-gwt-widgets/source" includes="**/*" />
 		</copy>
 		<replace file="_source/org/pentaho/gwt/filechooser/client/FileChooser.java" token="$VERSION$" value="${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}" />
 		<mkdir dir="bin" />
 		<copy todir="bin">
 			<fileset dir="_source" includes="**/*.png, **/*.jpg, **/*.gif, **/*.properties, **/*.xml" />
+			<fileset dir="../pentaho-gwt-widgets/source" includes="**/*.png, **/*.jpg, **/*.gif, **/*.properties, **/*.xml" />
 		</copy>
 	</target>
 
