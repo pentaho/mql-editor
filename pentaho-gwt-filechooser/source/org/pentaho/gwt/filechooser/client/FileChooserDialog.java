@@ -1,5 +1,6 @@
 package org.pentaho.gwt.filechooser.client;
 
+import org.pentaho.gwt.filechooser.client.FileChooser.FileChooserMode;
 import org.pentaho.gwt.widgets.client.dialogs.IDialogCallback;
 import org.pentaho.gwt.widgets.client.dialogs.IDialogValidatorCallback;
 import org.pentaho.gwt.widgets.client.dialogs.MessageDialogBox;
@@ -11,8 +12,8 @@ public class FileChooserDialog extends PromptDialogBox {
 
   FileChooser fileChooser;
 
-  public FileChooserDialog(int mode, String selectedPath, boolean autoHide, boolean modal) {
-    super(mode == FileChooser.OPEN ? "Open" : "Save", new FileChooser(mode, selectedPath), mode == FileChooser.OPEN ? "Open" : "Save", "Cancel",
+  public FileChooserDialog(FileChooserMode mode, String selectedPath, boolean autoHide, boolean modal) {
+    super(mode == FileChooserMode.OPEN ? "Open" : "Save", new FileChooser(mode, selectedPath), mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel",
         autoHide, modal);
     fileChooser = (FileChooser) getContent();
     setValidatorCallback(new IDialogValidatorCallback() {
@@ -39,8 +40,8 @@ public class FileChooserDialog extends PromptDialogBox {
     setAnimationEnabled(true);
   }
 
-  public FileChooserDialog(int mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal) {
-    super(mode == FileChooser.OPEN ? "Open" : "Save", new FileChooser(), mode == FileChooser.OPEN ? "Open" : "Save", "Cancel", autoHide, modal);
+  public FileChooserDialog(FileChooserMode mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal) {
+    super(mode == FileChooserMode.OPEN ? "Open" : "Save", new FileChooser(), mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel", autoHide, modal);
     fileChooser = (FileChooser) getContent();
     fileChooser.setMode(mode);
     fileChooser.setSelectedPath(selectedPath);
