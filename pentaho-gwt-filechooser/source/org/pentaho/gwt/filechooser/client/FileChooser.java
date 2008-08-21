@@ -48,11 +48,12 @@ import com.google.gwt.xml.client.XMLParser;
  */
 public class FileChooser extends VerticalPanel {
 
-  public static final int OPEN = 0;
-  public static final int OPEN_READ_ONLY = 1;
-  public static final int SAVE = 2;
-
-  int mode = OPEN;
+  public enum FileChooserMode {
+    OPEN,
+    OPEN_READ_ONLY,
+    SAVE
+  }
+  FileChooserMode mode = FileChooserMode.OPEN;
   String selectedPath;
   String previousPath;
 
@@ -87,11 +88,11 @@ public class FileChooser extends VerticalPanel {
     setSpacing(3);
   }
 
-  public FileChooser(int mode, String selectedPath, boolean showLocalizedFileNames) {
+  public FileChooser(FileChooserMode mode, String selectedPath, boolean showLocalizedFileNames) {
     this(mode, selectedPath, showLocalizedFileNames, null);
   }
 
-  public FileChooser(int mode, String selectedPath, boolean showLocalizedFileNames, Document solutionRepositoryDocument) {
+  public FileChooser(FileChooserMode mode, String selectedPath, boolean showLocalizedFileNames, Document solutionRepositoryDocument) {
     this();
     this.mode = mode;
     this.selectedPath = selectedPath;
@@ -103,7 +104,7 @@ public class FileChooser extends VerticalPanel {
     }
   }
 
-  public FileChooser(int mode, String selectedPath) {
+  public FileChooser(FileChooserMode mode, String selectedPath) {
     this();
     this.mode = mode;
     this.selectedPath = selectedPath;
@@ -163,7 +164,7 @@ public class FileChooser extends VerticalPanel {
 
   public void initUI(final boolean fromSearch) {
 
-    if (mode == OPEN_READ_ONLY) {
+    if (mode == FileChooserMode.OPEN_READ_ONLY) {
       fileNameTextBox.setReadOnly(true);
     }
 
@@ -209,8 +210,7 @@ public class FileChooser extends VerticalPanel {
     navigationListBox.setSelectedIndex(navigationListBox.getItemCount() - 1);
     navigationListBox.addChangeListener(new ChangeListener() {
       public void onChange(Widget sender) {
-        setSelectedPath(navigationListBox.getItemText(navigationListBox.getSelectedIndex()));
-        initUI(false);
+        changeToPath( navigationListBox.getItemText(navigationListBox.getSelectedIndex()) );
       }
     });
 
@@ -349,10 +349,8 @@ public class FileChooser extends VerticalPanel {
         if (myPath.equals("")) {
           myPath = "/";
         }
-        setSelectedPath(myPath);
         fileNameTextBox.setText("");
-        initUI(false);
-
+        changeToPath( myPath );
       }
     });
     navigationBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
@@ -599,11 +597,11 @@ public class FileChooser extends VerticalPanel {
     return selectedItem;
   }
 
-  public int getMode() {
+  public FileChooserMode getMode() {
     return mode;
   }
 
-  public void setMode(int mode) {
+  public void setMode(FileChooserMode mode) {
     this.mode = mode;
   }
 
@@ -633,17 +631,21 @@ public class FileChooser extends VerticalPanel {
     }
   }
   
-  
   public String getSolution() {
     if (getSelectedPath().indexOf("/", 1) == -1) {
-      return "/";
+      return getSelectedPath().substring(1);
+    } else {
+      return getSelectedPath().substring(1, getSelectedPath().indexOf("/", 1));
     }
-    return getSelectedPath().substring(1, getSelectedPath().indexOf("/", 1));
   }
 
   public String getPath() {
-    int startIdx = getSelectedPath().indexOf("/", 1) + 1;
-    return "/" + getSelectedPath().substring(startIdx);
+    int startIdx = getSelectedPath().indexOf("/", 1);
+    if ( -1 == startIdx ) {
+      return "";
+    } else {
+      return "/" + getSelectedPath().substring(startIdx+1);
+    }
   }
 
   public String getName() {
@@ -651,7 +653,11 @@ public class FileChooser extends VerticalPanel {
   }
 
   public String getFullPath() {
-    return getSolution() + getPath() + "/" + getName();
+    String name = getName();
+    if ( !"".equals( name ) ) {
+      name = "/" + name;
+    }
+    return "/" + getSolution() + getPath() + name;
   }
 
   public void addFileChooserListener(FileChooserListener listener) {
@@ -692,4 +698,9 @@ public class FileChooser extends VerticalPanel {
     initUI(false);
   }
 
+  public void changeToPath( String path ) {
+    setSelectedPath( path );
+    initUI( false );
+    fireFileSelectionChanged();
+  }
 }
