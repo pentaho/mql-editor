@@ -66,7 +66,6 @@
 			<fileset dir="bin" includes="**/*" />
 		</copy>
 		<jar basedir="dist/bin" destfile="dist/pentaho-gwt-widgets-${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}.jar">
-			<fileset dir="source" includes="**/*" />
 		</jar>
     </target>
 
