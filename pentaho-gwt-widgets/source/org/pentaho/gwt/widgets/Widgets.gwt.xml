@@ -20,4 +20,5 @@
     
       <!-- Specify the application specific style sheet.              -->
       <stylesheet src='Widgets.css' />
+      <stylesheet src='toolbar.css' />
 </module>

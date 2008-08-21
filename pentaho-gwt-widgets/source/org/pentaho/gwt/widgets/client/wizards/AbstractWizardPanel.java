@@ -32,7 +32,7 @@ public abstract class AbstractWizardPanel extends DockPanel implements IWizardPa
   private boolean canFinish = false;
   private Object userData;
   
-  private WizardPanelListenerCollection wizardPanelListenerCollection;
+  private WizardPanelListenerCollection wizardPanelListenerCollection = new WizardPanelListenerCollection();
   
   public AbstractWizardPanel() {
     super();
