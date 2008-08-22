@@ -8,20 +8,20 @@ package org.pentaho.gwt.widgets.client.i18n;
 public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Messages {
   
   /**
-   * Translated "End by:".
-   * 
-   * @return translated "End by:"
-   * @gwt.key endByLabel
-   */
-  String endByLabel();
-
-  /**
    * Translated "Invalid String for RecurrenceType: {0}. ".
    * 
    * @return translated "Invalid String for RecurrenceType: {0}. "
    * @gwt.key invalidStringForRecurrenceType
    */
   String invalidStringForRecurrenceType(String arg0);
+
+  /**
+   * Translated "End by:".
+   * 
+   * @return translated "End by:"
+   * @gwt.key endByLabel
+   */
+  String endByLabel();
 
   /**
    * Translated "Resume selected schedule(s)".
@@ -64,20 +64,20 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String friday();
 
   /**
-   * Translated "August".
-   * 
-   * @return translated "August"
-   * @gwt.key august
-   */
-  String august();
-
-  /**
    * Translated "Invalid day of month: {0}. ".
    * 
    * @return translated "Invalid day of month: {0}. "
    * @gwt.key invalidDayOfMonth
    */
   String invalidDayOfMonth(String arg0);
+
+  /**
+   * Translated "August".
+   * 
+   * @return translated "August"
+   * @gwt.key august
+   */
+  String august();
 
   /**
    * Translated "Run selected schedule(s) now".
@@ -88,20 +88,20 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String runSchedules();
 
   /**
-   * Translated "n/a".
-   * 
-   * @return translated "n/a"
-   * @gwt.key notApplicable
-   */
-  String notApplicable();
-
-  /**
    * Translated "July".
    * 
    * @return translated "July"
    * @gwt.key july
    */
   String july();
+
+  /**
+   * Translated "n/a".
+   * 
+   * @return translated "n/a"
+   * @gwt.key notApplicable
+   */
+  String notApplicable();
 
   /**
    * Translated "Day of month must be a number between 1 and 31.".
@@ -120,28 +120,20 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String allGroups();
 
   /**
-   * Translated "None".
-   * 
-   * @return translated "None"
-   * @gwt.key XmlSerializer.stateNone
-   */
-  String XmlSerializer_stateNone();
-
-  /**
-   * Translated "No schedules.".
-   * 
-   * @return translated "No schedules."
-   * @gwt.key noSchedules
-   */
-  String noSchedules();
-
-  /**
    * Translated "Invalid token, must be a list of integers: {0}.".
    * 
    * @return translated "Invalid token, must be a list of integers: {0}."
    * @gwt.key invalidIntegerListToken
    */
   String invalidIntegerListToken(String arg0);
+
+  /**
+   * Translated "None".
+   * 
+   * @return translated "None"
+   * @gwt.key XmlSerializer.stateNone
+   */
+  String XmlSerializer_stateNone();
 
   /**
    * Translated "Invalid TemporalValue in getCronString(): {0}".
@@ -152,14 +144,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String invalidTemporalValueInGetCronString(String arg0);
 
   /**
-   * Translated "Running".
-   * 
-   * @return translated "Running"
-   * @gwt.key running
-   */
-  String running();
-
-  /**
    * Translated "Invalid String for week of month: {0}. ".
    * 
    * @return translated "Invalid String for week of month: {0}. "
@@ -168,20 +152,20 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String invalidStringForWeekOfMonth(String arg0);
 
   /**
-   * Translated "Only allowed to specify one action sequence.".
-   * 
-   * @return translated "Only allowed to specify one action sequence."
-   * @gwt.key onlyOneActionSequence
-   */
-  String onlyOneActionSequence();
-
-  /**
    * Translated "Invalid month of year: {0}.".
    * 
    * @return translated "Invalid month of year: {0}."
    * @gwt.key invalidMonthOfYear
    */
   String invalidMonthOfYear(String arg0);
+
+  /**
+   * Translated "Only allowed to specify one action sequence.".
+   * 
+   * @return translated "Only allowed to specify one action sequence."
+   * @gwt.key onlyOneActionSequence
+   */
+  String onlyOneActionSequence();
 
   /**
    * Translated "The".
@@ -232,14 +216,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String day();
 
   /**
-   * Translated "Weekly".
-   * 
-   * @return translated "Weekly"
-   * @gwt.key weekly
-   */
-  String weekly();
-
-  /**
    * Translated "Saturday".
    * 
    * @return translated "Saturday"
@@ -248,20 +224,20 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String saturday();
 
   /**
-   * Translated "Next Fire Time".
-   * 
-   * @return translated "Next Fire Time"
-   * @gwt.key nextFireTime
-   */
-  String nextFireTime();
-
-  /**
    * Translated "Specify a name.".
    * 
    * @return translated "Specify a name."
    * @gwt.key specifyName
    */
   String specifyName();
+
+  /**
+   * Translated "Weekly".
+   * 
+   * @return translated "Weekly"
+   * @gwt.key weekly
+   */
+  String weekly();
 
   /**
    * Translated "Number of days to repeat.".
@@ -280,28 +256,12 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String createSchedule();
 
   /**
-   * Translated "Actions".
-   * 
-   * @return translated "Actions"
-   * @gwt.key actions
-   */
-  String actions();
-
-  /**
    * Translated "first".
    * 
    * @return translated "first"
    * @gwt.key first
    */
   String first();
-
-  /**
-   * Translated "Error".
-   * 
-   * @return translated "Error"
-   * @gwt.key error
-   */
-  String error();
 
   /**
    * Translated "Specify a start date.".
@@ -318,14 +278,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
    * @gwt.key second
    */
   String second();
-
-  /**
-   * Translated "Scheduler Status".
-   * 
-   * @return translated "Scheduler Status"
-   * @gwt.key schedulerStatus
-   */
-  String schedulerStatus();
 
   /**
    * Translated "Invalid String for time of day value: {0}. ".
@@ -368,14 +320,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String every();
 
   /**
-   * Translated "State".
-   * 
-   * @return translated "State"
-   * @gwt.key state
-   */
-  String state();
-
-  /**
    * Translated "Resume scheduler".
    * 
    * @return translated "Resume scheduler"
@@ -414,14 +358,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
    * @gwt.key suspendSchedules
    */
   String suspendSchedules();
-
-  /**
-   * Translated "All Jobs Suspended".
-   * 
-   * @return translated "All Jobs Suspended"
-   * @gwt.key allJobsSuspended
-   */
-  String allJobsSuspended();
 
   /**
    * Translated "Minues must be a number <= {0}.".
@@ -488,14 +424,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String wednesday();
 
   /**
-   * Translated "# Subscribers".
-   * 
-   * @return translated "# Subscribers"
-   * @gwt.key subscriberCount
-   */
-  String subscriberCount();
-
-  /**
    * Translated "Specify an end date.".
    * 
    * @return translated "Specify an end date."
@@ -512,28 +440,12 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String mustBeIntegerRange();
 
   /**
-   * Translated "Group".
-   * 
-   * @return translated "Group"
-   * @gwt.key scheduleGroupName
-   */
-  String scheduleGroupName();
-
-  /**
    * Translated "Invalid recurrence string: {0}".
    * 
    * @return translated "Invalid recurrence string: {0}"
    * @gwt.key invalidRecurrenceString
    */
   String invalidRecurrenceString(String arg0);
-
-  /**
-   * Translated "Run Now".
-   * 
-   * @return translated "Run Now"
-   * @gwt.key runNow
-   */
-  String runNow();
 
   /**
    * Translated "Invalid Run Type: {0}.".
@@ -576,14 +488,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String recurrencePattern();
 
   /**
-   * Translated "Name".
-   * 
-   * @return translated "Name"
-   * @gwt.key scheduleName
-   */
-  String scheduleName();
-
-  /**
    * Translated "No end date".
    * 
    * @return translated "No end date"
@@ -608,14 +512,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String february();
 
   /**
-   * Translated "Delete".
-   * 
-   * @return translated "Delete"
-   * @gwt.key delete
-   */
-  String delete();
-
-  /**
    * Translated "day(s)".
    * 
    * @return translated "day(s)"
@@ -624,20 +520,20 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String daysLabel();
 
   /**
-   * Translated "April".
-   * 
-   * @return translated "April"
-   * @gwt.key april
-   */
-  String april();
-
-  /**
    * Translated "third".
    * 
    * @return translated "third"
    * @gwt.key third
    */
   String third();
+
+  /**
+   * Translated "April".
+   * 
+   * @return translated "April"
+   * @gwt.key april
+   */
+  String april();
 
   /**
    * Translated "Minute token must be an integer between 0 and 59, but it is: {0}. ".
@@ -656,22 +552,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String october();
 
   /**
-   * Translated "Suspend".
-   * 
-   * @return translated "Suspend"
-   * @gwt.key suspend
-   */
-  String suspend();
-
-  /**
-   * Translated "Number of {0} to repeat.".
-   * 
-   * @return translated "Number of {0} to repeat."
-   * @gwt.key numberOfXToRepeat
-   */
-  String numberOfXToRepeat(String arg0);
-
-  /**
    * Translated "Illegal state, must have either a cron string or a repeat time.".
    * 
    * @return translated "Illegal state, must have either a cron string or a repeat time."
@@ -680,12 +560,12 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String illegalStateMissingCronAndRepeat();
 
   /**
-   * Translated "Resume".
+   * Translated "Number of {0} to repeat.".
    * 
-   * @return translated "Resume"
-   * @gwt.key resume
+   * @return translated "Number of {0} to repeat."
+   * @gwt.key numberOfXToRepeat
    */
-  String resume();
+  String numberOfXToRepeat(String arg0);
 
   /**
    * Translated "fourth".
@@ -710,14 +590,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
    * @gwt.key pm
    */
   String pm();
-
-  /**
-   * Translated "Last Fire Time".
-   * 
-   * @return translated "Last Fire Time"
-   * @gwt.key lastFireTime
-   */
-  String lastFireTime();
 
   /**
    * Translated "Cron String:".
@@ -768,14 +640,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String invalidCronInInitOfRecurrenceDialog(String arg0,  String arg1);
 
   /**
-   * Translated "Resume All Jobs".
-   * 
-   * @return translated "Resume All Jobs"
-   * @gwt.key resumeAllJobs
-   */
-  String resumeAllJobs();
-
-  /**
    * Translated "Illegal to call recurrenceStringToCronStr with a RecurrenceType of Unknown.".
    * 
    * @return translated "Illegal to call recurrenceStringToCronStr with a RecurrenceType of Unknown."
@@ -808,14 +672,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String june();
 
   /**
-   * Translated "Working...".
-   * 
-   * @return translated "Working..."
-   * @gwt.key working
-   */
-  String working();
-
-  /**
    * Translated "Edit schedule".
    * 
    * @return translated "Edit schedule"
@@ -838,22 +694,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
    * @gwt.key monthly
    */
   String monthly();
-
-  /**
-   * Translated "Scheduled Action".
-   * 
-   * @return translated "Scheduled Action"
-   * @gwt.key scheduledAction
-   */
-  String scheduledAction();
-
-  /**
-   * Translated "BI Server is available.".
-   * 
-   * @return translated "BI Server is available."
-   * @gwt.key biServerAlive
-   */
-  String biServerAlive();
 
   /**
    * Translated "Schedule Editor".
@@ -904,14 +744,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String secondsLabel();
 
   /**
-   * Translated "March".
-   * 
-   * @return translated "March"
-   * @gwt.key march
-   */
-  String march();
-
-  /**
    * Translated "AM".
    * 
    * @return translated "AM"
@@ -920,20 +752,20 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String am();
 
   /**
+   * Translated "March".
+   * 
+   * @return translated "March"
+   * @gwt.key march
+   */
+  String march();
+
+  /**
    * Translated "Start:".
    * 
    * @return translated "Start:"
    * @gwt.key startLabel
    */
   String startLabel();
-
-  /**
-   * Translated "BI Server is is NOT available.".
-   * 
-   * @return translated "BI Server is is NOT available."
-   * @gwt.key biServerDead
-   */
-  String biServerDead();
 
   /**
    * Translated "Days {0}.".
@@ -1056,22 +888,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String startTime();
 
   /**
-   * Translated "Unable to load Home page, reason: {0}".
-   * 
-   * @return translated "Unable to load Home page, reason: {0}"
-   * @gwt.key failedToLoadHome
-   */
-  String failedToLoadHome(String arg0);
-
-  /**
-   * Translated "All Jobs Resumed".
-   * 
-   * @return translated "All Jobs Resumed"
-   * @gwt.key allJobsResumed
-   */
-  String allJobsResumed();
-
-  /**
    * Translated "getWhichMonthOfYear() not valid for recurrence type: {0}. ".
    * 
    * @return translated "getWhichMonthOfYear() not valid for recurrence type: {0}. "
@@ -1120,14 +936,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String invalidHoursToken(String arg0);
 
   /**
-   * Translated "Status".
-   * 
-   * @return translated "Status"
-   * @gwt.key status
-   */
-  String status();
-
-  /**
    * Translated "Cron string is invalid.".
    * 
    * @return translated "Cron string is invalid."
@@ -1168,14 +976,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String runOnce();
 
   /**
-   * Translated "Invalid String for temporal value: {0}".
-   * 
-   * @return translated "Invalid String for temporal value: {0}"
-   * @gwt.key invalidTemporalValue
-   */
-  String invalidTemporalValue(String arg0);
-
-  /**
    * Translated "Invalid number of tokens.".
    * 
    * @return translated "Invalid number of tokens."
@@ -1192,28 +992,20 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String invalidRecurrenceType(String arg0);
 
   /**
+   * Translated "Invalid String for temporal value: {0}".
+   * 
+   * @return translated "Invalid String for temporal value: {0}"
+   * @gwt.key invalidTemporalValue
+   */
+  String invalidTemporalValue(String arg0);
+
+  /**
    * Translated "Cron".
    * 
    * @return translated "Cron"
    * @gwt.key cron
    */
   String cron();
-
-  /**
-   * Translated "Not running".
-   * 
-   * @return translated "Not running"
-   * @gwt.key notRunning
-   */
-  String notRunning();
-
-  /**
-   * Translated "Description".
-   * 
-   * @return translated "Description"
-   * @gwt.key description
-   */
-  String description();
 
   /**
    * Translated "Schedule Creator".
@@ -1230,14 +1022,6 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
    * @gwt.key noRadioBtnsSelected
    */
   String noRadioBtnsSelected();
-
-  /**
-   * Translated "Suspend All Jobs".
-   * 
-   * @return translated "Suspend All Jobs"
-   * @gwt.key suspendAllJobs
-   */
-  String suspendAllJobs();
 
   /**
    * Translated "Seconds must be a number <= {0}.".
