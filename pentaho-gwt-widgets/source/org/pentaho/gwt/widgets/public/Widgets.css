@@ -58,4 +58,12 @@ which java class/code the style is associated with */
 	background-color: #FFDDDD;
 	color: #FF0000;
 }
+
+.progressPopupPanel {
+	background-color: #EEEEEE;
+	border: 1px dotted black;
+}
+.progressPopupPanel\.label {
+}
+
 /* end snb */
