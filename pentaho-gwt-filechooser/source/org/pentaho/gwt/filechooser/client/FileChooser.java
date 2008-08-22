@@ -49,10 +49,9 @@ import com.google.gwt.xml.client.XMLParser;
 public class FileChooser extends VerticalPanel {
 
   public enum FileChooserMode {
-    OPEN,
-    OPEN_READ_ONLY,
-    SAVE
+    OPEN, OPEN_READ_ONLY, SAVE
   }
+
   FileChooserMode mode = FileChooserMode.OPEN;
   String selectedPath;
   String previousPath;
@@ -62,6 +61,7 @@ public class FileChooser extends VerticalPanel {
   TreeItem selectedTreeItem;
   boolean showHiddenFiles = false;
   boolean showLocalizedFileNames = false;
+  boolean showSearch = true;
   com.google.gwt.user.client.Element lastSelectedFileElement;
   TextBox fileNameTextBox = new TextBox();
   DateTimeFormat dateFormat = DateTimeFormat.getMediumDateTimeFormat();
@@ -210,7 +210,7 @@ public class FileChooser extends VerticalPanel {
     navigationListBox.setSelectedIndex(navigationListBox.getItemCount() - 1);
     navigationListBox.addChangeListener(new ChangeListener() {
       public void onChange(Widget sender) {
-        changeToPath( navigationListBox.getItemText(navigationListBox.getSelectedIndex()) );
+        changeToPath(navigationListBox.getItemText(navigationListBox.getSelectedIndex()));
       }
     });
 
@@ -350,7 +350,7 @@ public class FileChooser extends VerticalPanel {
           myPath = "/";
         }
         fileNameTextBox.setText("");
-        changeToPath( myPath );
+        changeToPath(myPath);
       }
     });
     navigationBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
@@ -456,7 +456,6 @@ public class FileChooser extends VerticalPanel {
     Label myDateLabel = new Label(dateFormat.format(lastModDate));
     myDateLabel.setWordWrap(false);
 
-    
     final Label myNameLabel = new Label(attributeMap.get("name")) {
       public void onBrowserEvent(Event event) {
         handleFileClicked(item, isDir, event, this.getElement());
@@ -469,7 +468,6 @@ public class FileChooser extends VerticalPanel {
       myNameLabel.setText(attributeMap.get("localized-name"));
     }
 
-    
     HorizontalPanel fileNamePanel = new HorizontalPanel();
     Image fileImage = new Image() {
       public void onBrowserEvent(Event event) {
@@ -630,7 +628,7 @@ public class FileChooser extends VerticalPanel {
       listener.fileSelectionChanged(getSolution(), getPath(), getName());
     }
   }
-  
+
   public String getSolution() {
     if (getSelectedPath().indexOf("/", 1) == -1) {
       return getSelectedPath().substring(1);
@@ -641,10 +639,10 @@ public class FileChooser extends VerticalPanel {
 
   public String getPath() {
     int startIdx = getSelectedPath().indexOf("/", 1);
-    if ( -1 == startIdx ) {
+    if (-1 == startIdx) {
       return "";
     } else {
-      return "/" + getSelectedPath().substring(startIdx+1);
+      return "/" + getSelectedPath().substring(startIdx + 1);
     }
   }
 
@@ -654,7 +652,7 @@ public class FileChooser extends VerticalPanel {
 
   public String getFullPath() {
     String name = getName();
-    if ( !"".equals( name ) ) {
+    if (!"".equals(name)) {
       name = "/" + name;
     }
     return getSolution() + getPath() + name;
@@ -698,9 +696,18 @@ public class FileChooser extends VerticalPanel {
     initUI(false);
   }
 
-  public void changeToPath( String path ) {
-    setSelectedPath( path );
-    initUI( false );
+  public void changeToPath(String path) {
+    setSelectedPath(path);
+    initUI(false);
     fireFileSelectionChanged();
+  }
+
+  public boolean isShowSearch() {
+    return showSearch;
+  }
+
+  public void setShowSearch(boolean showSearch) {
+    this.showSearch = showSearch;
+    initUI(false);
   }
 }

@@ -80,5 +80,15 @@ public class FileChooserDialog extends PromptDialogBox {
   public void removeFileChooserListener(FileChooserListener listener) {
     fileChooser.removeFileChooserListener(listener);
   }
-
+  
+  public void setShowSearch(boolean showSearch) {
+    fileChooser.setShowSearch(showSearch);
+  }
+  
+  public boolean isShowSearch() {
+    return fileChooser.isShowSearch();
+  }
+  
+  
+  
 }
