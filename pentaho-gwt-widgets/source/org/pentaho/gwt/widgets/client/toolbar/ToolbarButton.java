@@ -98,8 +98,9 @@ public class ToolbarButton {
         if(!enabled){
           return;
         }
-        command.execute();
         button.addStyleName(stylePrimaryName+"-down");    //$NON-NLS-1$
+        command.execute();
+        button.removeStyleName(stylePrimaryName+"-down");   //$NON-NLS-1$
       }
       public void onMouseEnter(Widget arg0) {
         button.addStyleName(stylePrimaryName+"-hovering");    //$NON-NLS-1$

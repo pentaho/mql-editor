@@ -1,8 +1,6 @@
 package org.pentaho.gwt.widgets.client.toolbar;
 
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MouseListener;
@@ -13,6 +11,7 @@ public class ToolbarComboButton extends ToolbarButton{
   
   private String COMBO_STYLE = "toolbar-combo-button";   //$NON-NLS-1$
   private MenuBar menu;
+  PopupPanel popup = new PopupPanel(true);
   
   /**
    * Constructs a toolbar button with an image and a label
@@ -73,29 +72,14 @@ public class ToolbarComboButton extends ToolbarButton{
   public void setCommand(Command cmd) {
     throw new UnsupportedOperationException("Not implemented in this class");   //$NON-NLS-1$
   }
-  
-  private PopupPanel createPopup(){
     
-    PopupPanel popup = new PopupPanel(true);
-    popup.setWidget(menu);
-    return popup;
-  }
-  
   @Override
   protected void addStyleMouseListener(){
     eventWrapper.addMouseListener(new MouseListener(){
-      private PopupPanel popup;
       public void onMouseDown(Widget w, int x, int y) {
         if(!enabled){
           return;
-        }
-        if(this.popup != null){
-          popup.hide();
-          popup.removeFromParent();
-        }
-        
-        this.popup = createPopup();
-        
+        }        
         popup.setPopupPosition(w.getAbsoluteLeft(), w.getAbsoluteTop() + w.getOffsetHeight());
         popup.show();
       }
@@ -112,6 +96,11 @@ public class ToolbarComboButton extends ToolbarButton{
   }
   
   public void setMenu(MenuBar bar){
-    this.menu = bar;
+    menu = bar;
+    popup.setWidget(menu);
+  }
+
+  public PopupPanel getPopup() {
+    return popup;
   }
 }
