@@ -355,8 +355,10 @@ public class FileChooser extends VerticalPanel {
     });
     navigationBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
     navigationBar.add(navigationListBox);
-    navigationBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-    navigationBar.add(searchImage);
+    if (showSearch) {
+      navigationBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+      navigationBar.add(searchImage);
+    }
     navigationBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
     navigationBar.add(upDirImage);
     navigationBar.setWidth("100%");
