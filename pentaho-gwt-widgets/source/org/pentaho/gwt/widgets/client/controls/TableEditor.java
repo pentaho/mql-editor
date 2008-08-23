@@ -13,8 +13,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class TableEditor extends VerticalPanel {
   
-  private Button deleteBtn = new Button( "-" );
-  private Button addBtn = new Button( "+" );
+  private Button deleteBtn = new Button( "-" ); //$NON-NLS-1$
+  private Button addBtn = new Button( "+" ); //$NON-NLS-1$
   private ListBox actionLb = new ListBox();
   private ErrorLabel errorLabel = null;
   private ICallback<TableEditor> onSelectCallback = null;
@@ -25,6 +25,8 @@ public class TableEditor extends VerticalPanel {
   public TableEditor( String labelText ) {
 
     DockPanel buttonPanel = new DockPanel();
+    deleteBtn.addStyleName( "deleteBtn" ); //$NON-NLS-1$
+    addBtn.addStyleName( "addBtn" ); //$NON-NLS-1$
     buttonPanel.add(deleteBtn, DockPanel.EAST);
     buttonPanel.add(addBtn, DockPanel.EAST);
     
