@@ -161,6 +161,7 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
     rowNum++;
     VerticalPanel vp = new VerticalPanel();
     add( vp );
+    setCellHeight( vp, "100%" );
 
     runOnceEditor = new RunOnceEditor();
     vp.add( runOnceEditor );
