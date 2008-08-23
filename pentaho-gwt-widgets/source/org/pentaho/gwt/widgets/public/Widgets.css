@@ -65,5 +65,10 @@ which java class/code the style is associated with */
 }
 .progressPopupPanel\.label {
 }
-
+.addBtn {
+	width: 22px;
+}
+.deleteBtn {
+	width: 22px;
+}
 /* end snb */
