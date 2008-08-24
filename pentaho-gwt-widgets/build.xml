@@ -1,72 +1,66 @@
-<!-- ======================================================================
-     description: main build file
-     ====================================================================== -->
-<project name="project" default="dist">
-	<description>mantle build process..</description>
-
-	<property file="override.properties" />
-	<property file="build.properties" />
-
-	<propertyfile file="version.properties">
-		<entry pattern="####" key="release.build.number" type="int" operation="+" value="1" />
-	</propertyfile>
-
-	<property file="version.properties" />
-
-	<path id="classpath">
-		<fileset dir="lib" includes="**/*.jar, **/*.zip" />
-	</path>
-
-	<!-- ===================================================================
-        target: clean              
-       =================================================================== -->
-	<target name="clean" depends="">
-		<delete dir="bin" />
-		<delete dir="dist" />
-		<delete dir="${gwt.output.dir}" />
-	</target>
-
-
-	<!-- ===================================================================
-        target: init              
-       =================================================================== -->
-	<target name="init">
-		<mkdir dir="bin" />
-		<copy todir="bin">
-			<fileset dir="source" includes="**/*.png, **/*.jpg, **/*.gif, **/*.properties, **/*.xml" />
-		</copy>
-	</target>
-
-	<target name="compile" depends="init">
-		<javac destdir="bin" debug="${debug}" optimize="${optimize}" deprecation="${deprecation}" compiler="modern" source="1.5" target="1.5" fork="true">
-			<src path="source" />
-			<classpath refid="classpath" />
-		</javac>
-	</target>
-
-	<target name="compile-gwt" depends="compile">
-		<java classname="com.google.gwt.dev.GWTCompiler" fork="true" maxmemory="512M">
-			<classpath>
-				<path refid="classpath" />
-				<pathelement location="source" />
-			</classpath>
-			<arg value="-out" />
-			<arg value="${gwt.output.dir}" />
-			<arg value="%*" />
-			<arg value="${gwt.app}" />
-		</java>
-	</target>
-
-	<target name="dist" depends="clean, dirty-dist"/>
+<!--===========================================================================
+  This is the build file for the Pentaho GWT Widgets project.
+  
+  This build file will use the common_build.xml file as the default build
+  process and should only override the tasks that need to differ from
+  the common build file.
+  
+  See common_build.xml for more details
+============================================================================-->
+<project name="Pentaho GWT Widgets" basedir="." default="jar" xmlns:ivy="antlib:org.apache.ivy.ant">
 	
-	<target name="dirty-dist" depends="compile-gwt">
-		<mkdir dir="dist" />
-		<copy todir="dist/bin">
-			<fileset dir="source" includes="**/*" />
-			<fileset dir="bin" includes="**/*" />
-		</copy>
-		<jar basedir="dist/bin" destfile="dist/pentaho-gwt-widgets-${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}.jar">
-		</jar>
-    </target>
+	<description>
+	  This build file is used to create the Pentaho GWT Widgets project
+		and works with the common_build.xml file.
+	</description>
+
+	<!-- Import the common_build.xml file which contains all the default tasks -->	
+	<import file="common_build.xml"/>
+
+    <!--
+      AS STATED ABOVE, THE ONLY TASKS THAT SHOULD EXIST IN THIS BUILD FILE ARE
+      THE TASKS THAT NEED TO DIFFER FROM THE DEFAULT IMPLEMENTATION OF THE TASKS
+      FOUND IN common_build.xml.
+    --> 
+	
+	<!-- Additional properties for GWT builds -->
+	<property name="dev-lib.dir"       value="${basedir}/dev-lib"   description="Directory for development-only libraries" />
+	<property name="mac.dev-lib.dir"   value="${dev-lib.dir}/mac"   description="Directory for mac-only development libraries" />
+	<property name="win.dev-lib.dir"   value="${dev-lib.dir}/win"   description="Directory for windows-only development libraries" />
+	<property name="linux.dev-lib.dir" value="${dev-lib.dir}/linux" description="Directory for unix-only development libraries" />
+
+  <!--=======================================================================
+      resolve
+      
+      Resolves all the ivy dependencies. This has been modified from the
+      original so that it may resolve development-only dependencies.
+      ====================================================================-->
+	<target name="resolve" depends="resolve-default, resolve-test, resolve-dev" description="Retrieves all the dependent libraries" />
+
+  <!--=======================================================================
+      resolve-dev
+      
+      Resolve all the ivy dependencies that are development-only
+      dependencies.
+      ====================================================================-->
+	<target name="resolve-dev" depends="resolve-init" description="Retrieves default configuration dependencies">
+    <ivy:retrieve conf="dev"       pattern="${lib.dir}/[module]-[revision].[ext]" />
+    <ivy:retrieve conf="dev-mac"   pattern="${mac.dev-lib.dir}/[module]-[revision].[ext]" />
+		<ivy:retrieve conf="dev-win"   pattern="${win.dev-lib.dir}/[module]-[revision].[ext]" />
+		<ivy:retrieve conf="dev-linux" pattern="${linux.dev-lib.dir}/[module]-[revision].[ext]" />
+	</target>
+	
+  <!--=======================================================================
+      clean-jars
+      
+      Removes all the libraries that have been downloaded for this project
+      using the ivy dependencies.
+      ====================================================================-->
+  <target name="clean-jars" description="Cleans the libraries that have been downloaded">
+    <delete dir="${lib.dir}" />
+    <delete dir="${testlib.dir}" />
+    <delete dir="${dev-lib.dir}" />
+  </target>
+
 
 </project>
