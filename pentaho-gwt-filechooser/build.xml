@@ -1,83 +1,66 @@
-<!-- ======================================================================
-     description: main build file
-     ====================================================================== -->
-<project name="project" default="dist">
-	<description>mantle build process..</description>
+<!--===========================================================================
+  This is the build file for the Pentaho GWT Widgets project.
+  
+  This build file will use the common_build.xml file as the default build
+  process and should only override the tasks that need to differ from
+  the common build file.
+  
+  See common_build.xml for more details
+============================================================================-->
+<project name="Pentaho GWT Widgets" basedir="." default="jar" xmlns:ivy="antlib:org.apache.ivy.ant">
+	
+	<description>
+	  This build file is used to create the Pentaho GWT Widgets project
+		and works with the common_build.xml file.
+	</description>
 
-	<property file="override.properties" />
-	<property file="build.properties" />
+	<!-- Import the common_build.xml file which contains all the default tasks -->	
+	<import file="common_build.xml"/>
 
-	<propertyfile file="version.properties">
-		<entry pattern="####" key="release.build.number" type="int" operation="+" value="1" />
-	</propertyfile>
+    <!--
+      AS STATED ABOVE, THE ONLY TASKS THAT SHOULD EXIST IN THIS BUILD FILE ARE
+      THE TASKS THAT NEED TO DIFFER FROM THE DEFAULT IMPLEMENTATION OF THE TASKS
+      FOUND IN common_build.xml.
+    --> 
+	
+	<!-- Additional properties for GWT builds -->
+	<property name="dev-lib.dir"       value="${basedir}/dev-lib"   description="Directory for development-only libraries" />
+	<property name="mac.dev-lib.dir"   value="${dev-lib.dir}/mac"   description="Directory for mac-only development libraries" />
+	<property name="win.dev-lib.dir"   value="${dev-lib.dir}/win"   description="Directory for windows-only development libraries" />
+	<property name="linux.dev-lib.dir" value="${dev-lib.dir}/linux" description="Directory for unix-only development libraries" />
 
-	<property file="version.properties" />
+  <!--=======================================================================
+      resolve
+      
+      Resolves all the ivy dependencies. This has been modified from the
+      original so that it may resolve development-only dependencies.
+      ====================================================================-->
+	<target name="resolve" depends="resolve-default, resolve-test, resolve-dev" description="Retrieves all the dependent libraries" />
 
-	<path id="classpath">
-		<fileset dir="lib" includes="**/*.jar, **/*.zip" />
-		<fileset dir="../pentaho-gwt-widgets/lib" includes="**/*.jar, **/*.zip" />
-	</path>
-
-	<!-- ===================================================================
-        target: clean              
-       =================================================================== -->
-	<target name="clean" depends="">
-		<delete dir="bin" />
-		<delete dir="dist" />
-		<delete dir="${gwt.output.dir}" />
-		<delete dir="_source" />
-	</target>
-
-
-	<!-- ===================================================================
-        target: init              
-       =================================================================== -->
-	<target name="init">
-		<mkdir dir="_source" />
-		<copy todir="_source">
-			<fileset dir="source" includes="**/*" />
-			<fileset dir="../pentaho-gwt-widgets/source" includes="**/*" />
-		</copy>
-		<replace file="_source/org/pentaho/gwt/filechooser/client/FileChooser.java" token="$VERSION$" value="${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}" />
-		<mkdir dir="bin" />
-		<copy todir="bin">
-			<fileset dir="_source" includes="**/*.png, **/*.jpg, **/*.gif, **/*.properties, **/*.xml" />
-			<fileset dir="../pentaho-gwt-widgets/source" includes="**/*.png, **/*.jpg, **/*.gif, **/*.properties, **/*.xml" />
-		</copy>
-	</target>
-
-	<target name="compile" depends="init">
-		<javac destdir="bin" debug="${debug}" optimize="${optimize}" deprecation="${deprecation}" compiler="modern" source="1.5" target="1.5" fork="true">
-			<src path="_source" />
-			<classpath refid="classpath" />
-		</javac>
-	</target>
-
-	<target name="compile-gwt" depends="compile">
-		<java classname="com.google.gwt.dev.GWTCompiler" fork="true" maxmemory="512M">
-			<classpath>
-				<path refid="classpath" />
-				<pathelement location="_source" />
-			</classpath>
-			<arg value="-out" />
-			<arg value="${gwt.output.dir}" />
-			<arg value="%*" />
-			<arg value="${gwt.app}" />
-		</java>
-		<delete dir="_source" />
-	</target>
-
-	<target name="dist" depends="clean, dev_dist">
+  <!--=======================================================================
+      resolve-dev
+      
+      Resolve all the ivy dependencies that are development-only
+      dependencies.
+      ====================================================================-->
+	<target name="resolve-dev" depends="resolve-init" description="Retrieves default configuration dependencies">
+    <ivy:retrieve conf="dev"       pattern="${lib.dir}/[module]-[revision].[ext]" />
+    <ivy:retrieve conf="dev-mac"   pattern="${mac.dev-lib.dir}/[module]-[revision].[ext]" />
+		<ivy:retrieve conf="dev-win"   pattern="${win.dev-lib.dir}/[module]-[revision].[ext]" />
+		<ivy:retrieve conf="dev-linux" pattern="${linux.dev-lib.dir}/[module]-[revision].[ext]" />
 	</target>
 	
-	<target name="dev_dist" depends="compile-gwt">
-		<mkdir dir="dist" />
-		<copy todir="dist/bin">
-			<fileset dir="source" includes="**/*" />
-			<fileset dir="bin" includes="**/*" />
-		</copy>
-		<delete dir="_source" />
-		<jar basedir="dist/bin" destfile="dist/pentaho-gwt-filechooser-${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}.jar" />
-    </target>
+  <!--=======================================================================
+      clean-jars
+      
+      Removes all the libraries that have been downloaded for this project
+      using the ivy dependencies.
+      ====================================================================-->
+  <target name="clean-jars" description="Cleans the libraries that have been downloaded">
+    <delete dir="${lib.dir}" />
+    <delete dir="${testlib.dir}" />
+    <delete dir="${dev-lib.dir}" />
+  </target>
+
 
 </project>

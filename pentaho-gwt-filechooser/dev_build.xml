@@ -1,0 +1,83 @@
+<!-- ======================================================================
+     description: main build file
+     ====================================================================== -->
+<project name="project" default="dist">
+	<description>mantle build process..</description>
+
+	<property file="override.properties" />
+	<property file="dev_build.properties" />
+
+	<propertyfile file="version.properties">
+		<entry pattern="####" key="release.build.number" type="int" operation="+" value="1" />
+	</propertyfile>
+
+	<property file="version.properties" />
+
+	<path id="classpath">
+		<fileset dir="lib" includes="**/*.jar, **/*.zip" />
+		<fileset dir="../pentaho-gwt-widgets/lib" includes="**/*.jar, **/*.zip" />
+	</path>
+
+	<!-- ===================================================================
+        target: clean              
+       =================================================================== -->
+	<target name="clean" depends="">
+		<delete dir="bin" />
+		<delete dir="dist" />
+		<delete dir="${gwt.output.dir}" />
+		<delete dir="_src" />
+	</target>
+
+
+	<!-- ===================================================================
+        target: init              
+       =================================================================== -->
+	<target name="init">
+		<mkdir dir="_src" />
+		<copy todir="_src">
+			<fileset dir="src" includes="**/*" />
+			<fileset dir="../pentaho-gwt-widgets/src" includes="**/*" />
+		</copy>
+		<replace file="_src/org/pentaho/gwt/filechooser/client/FileChooser.java" token="$VERSION$" value="${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}" />
+		<mkdir dir="bin" />
+		<copy todir="bin">
+			<fileset dir="_src" includes="**/*.png, **/*.jpg, **/*.gif, **/*.properties, **/*.xml" />
+			<fileset dir="../pentaho-gwt-widgets/src" includes="**/*.png, **/*.jpg, **/*.gif, **/*.properties, **/*.xml" />
+		</copy>
+	</target>
+
+	<target name="compile" depends="init">
+		<javac destdir="bin" debug="${debug}" optimize="${optimize}" deprecation="${deprecation}" compiler="modern" source="1.5" target="1.5" fork="true">
+			<src path="_src" />
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+
+	<target name="compile-gwt" depends="compile">
+		<java classname="com.google.gwt.dev.GWTCompiler" fork="true" maxmemory="512M">
+			<classpath>
+				<path refid="classpath" />
+				<pathelement location="_src" />
+			</classpath>
+			<arg value="-out" />
+			<arg value="${gwt.output.dir}" />
+			<arg value="%*" />
+			<arg value="${gwt.app}" />
+		</java>
+		<delete dir="_src" />
+	</target>
+
+	<target name="dist" depends="clean, dev_dist">
+	</target>
+	
+	<target name="dev_dist" depends="compile-gwt">
+		<mkdir dir="dist" />
+		<copy todir="dist/bin">
+			<fileset dir="src" includes="**/*" />
+			<fileset dir="bin" includes="**/*" />
+		</copy>
+		<delete dir="_src" />
+		<jar basedir="dist/bin" destfile="dist/pentaho-gwt-filechooser-${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}.jar" />
+    </target>
+
+</project>
