@@ -102,11 +102,13 @@ public class Toolbar extends HorizontalPanel{
   public void setEnabled(boolean enabled){
     try{
       for(ToolbarButton button : this.buttons){
+        button.setEnabled(enabled);
         button.setTempDisabled(!enabled);
       }
       
       for(ToolbarGroup gp : groups){
-       gp.setTempDisabled(!enabled);
+        gp.setEnabled(enabled);
+        gp.setTempDisabled(!enabled);
       }
       
     } catch(Exception e){
