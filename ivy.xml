@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0">
+    <info organisation="pentaho" module="pentaho-mql-editor" revision="${project.revision}" />
+    
+    <configurations>
+    	<conf name="default"/>
+    	<conf name="test" visibility="private"/>
+    </configurations>
+    
+    <dependencies defaultconf="default->default">
+
+        <!--  internal dependencies -->
+        <dependency org="pentaho" name="pentaho-connections"  rev="${dependency.pentaho-connections.revision}" changing="true" transitive="false"/>
+        <dependency org="pentaho" name="pentaho-metadata"     rev="${dependency.pentaho-metadata.revision}"    changing="true" transitive="false"/>
+        <dependency org="pentaho" name="pentaho-cwm"          rev="1.5.4" />
+        <dependency org="pentaho.kettle" name="kettle-engine" rev="${dependency.kettle-engine.revision}" />
+    </dependencies>
+</ivy-module>

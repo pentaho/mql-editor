@@ -170,7 +170,6 @@ public class NewMQLConditionsTable extends Composite {
       final CCombo comparisonCombo = new CCombo(table, SWT.NONE);
       valueText.addModifyListener(new ModifyListener() {
 
-        @Override
         public void modifyText(ModifyEvent arg0) {
           String conditionStr = getConditionType(condition);
           String value = valueText.getText();
