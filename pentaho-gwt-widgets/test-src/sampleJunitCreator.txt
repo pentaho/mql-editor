@@ -1,0 +1,1 @@
+junitCreator -junit C:\projects\pentaho.2.trunk\pentaho-gwt-widgets\test-lib\junit-4.4.jar -module org.pentaho.gwt.widgets.Widgets -eclipse pentaho-gwt-widgets org.pentaho.gwt.widgets.client.utils.CronParserTest -overwrite

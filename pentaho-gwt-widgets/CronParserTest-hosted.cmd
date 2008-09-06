@@ -1,0 +1,1 @@
+@java -Dgwt.args="-out www-test" -Xmx256M -cp "%~dp0\src;%~dp0\test;%~dp0\bin;C:\projects\pentaho.2.trunk\pentaho-gwt-widgets\test-lib\junit-4.4.jar;C:/software/gwt/gwt-windows-1.5.0/gwt-user.jar;C:/software/gwt/gwt-windows-1.5.0/gwt-dev-windows.jar" junit.textui.TestRunner org.pentaho.gwt.widgets.client.utils.CronParserTest %*

@@ -1,0 +1,204 @@
+/** Add css rules here for your application.
+Please, please comment all entries so that it is clear
+which java class/code the style is associated with */
+
+/* start snb */
+/* default style for java class SimpleGroupBox */
+.simpleGroupBox {
+	padding: 5px;
+}
+/* begin recurrence dialog ------------------------------------------------------*/
+.startLabel {
+	padding-right: 1ex;
+	white-space: nowrap;
+	/*border:1px dotted red;*/
+}
+.middleLabel {
+	padding-right: 1ex;
+	padding-left: 1ex;
+	white-space: nowrap;
+	/*border:1px dotted red;*/
+}
+.endLabel {
+	padding-left: 1ex;
+	white-space: nowrap;
+	/*border:1px dotted red;*/
+}
+
+.recurrenceRadioButton label {
+	padding-right: 1ex;
+	white-space: nowrap;
+}
+
+.weeklyRecurrencePanel {
+}
+
+/* begin schedule editor ------------------------------------------------------*/
+.scheduleEditor {
+	/* can't add a margin here, IE7 can't handle it */
+	/*margin: 10px;*/
+	/*background-color: #CCCCFF; for testing*/
+	width: 100%;
+}
+
+.scheduleDescription {
+	width: 85%;
+	/*background-color: red; for testing */
+}
+
+.scheduleCombo {
+	padding-right: 5px;
+	margin-right: 5px;
+}
+/* end schedule editor ----------------------------------------------------------*/
+/* end recurrence dialog ----------------------------------------------------------*/
+
+/* style for error message associated with dialog controls with invalid data */
+.errorLabel {
+	background-color: #FFDDDD;
+	color: #FF0000;
+}
+
+.progressPopupPanel {
+	background-color: #EEEEEE;
+	border: 1px dotted black;
+}
+.progressPopupPanel\.label {
+}
+.addBtn {
+	width: 22px;
+}
+.deleteBtn {
+	width: 22px;
+}
+/* end snb */
+
+.tooltip{
+	padding: 5px;
+	border: 1px solid #666;
+	background-color: #FAFAFA;
+	max-width: 150px;
+}
+
+.tooltip-label{
+  color: #444;
+  font-family: Tahoma, Arial, sans-serif;
+  font-size: .8em;
+}
+
+.roundedbutton{
+	height: 27px;
+}
+
+.roundedbutton-label{
+  font-family: Tahoma, Arial, sans-serif;
+  font-size:.8em;
+  line-height: 24px;
+  color: #000
+}
+
+.roundedbutton-right{
+	background: url('style/images/button_right.png');
+  width: 7px;
+  height: 27px;
+}
+
+.roundedbutton-left{
+  background: url('style/images/button_left.png');
+  width: 7px;
+  height: 27px;
+}
+
+.roundedbutton-slice{
+  background: url('style/images/button_middle.png') repeat-x;
+}
+
+.roundedbutton-over{
+  cursor: pointer;
+}
+
+.roundedbutton-label-over{
+  font-family: Tahoma, Arial, sans-serif;
+  font-size:.8em;
+  line-height: 24px;
+  color: #525252
+}
+
+.roundedbutton-right-over{
+  background: url('style/images/button_right_over.png');
+  width: 7px;
+  height: 27px;
+}
+
+.roundedbutton-left-over{
+  background: url('style/images/button_left_over.png');
+  width: 7px;
+  height: 27px;
+}
+
+.roundedbutton-slice-over{
+  background: url('style/images/button_middle_over.png') repeat-x;
+}
+
+.roundedbutton-label-disabled{
+  font-family: Tahoma, Arial, sans-serif;
+  font-size:.8em;
+  line-height: 24px;
+  color: #525252
+}
+
+.roundedbutton-right-disabled{
+  background: url('style/images/button_right_disabled.png');
+  width: 7px;
+  height: 27px;
+}
+
+.roundedbutton-left-disabled{
+  background: url('style/images/button_left_disabled.png');
+  width: 7px;
+  height: 27px;
+}
+
+.roundedbutton-slice-disabled{
+  background: url('style/images/button_middle_disabled.png') repeat-x;
+}
+
+.gwt-MenuBar-vertical .gwt-MenuItem-checkbox-checked {
+  cursor: hand;
+  cursor: pointer;
+  background-image:url(style/images/checkbox.png);
+  background-position:6px 50%;
+  background-repeat:no-repeat;
+  padding:3px 20px 3px 20px;
+}
+
+.gwt-MenuBar-vertical .gwt-MenuItem-checkbox-checked-selected {
+  background-color: #d0d0d0;  
+  vertical-align: bottom;
+}
+
+.gwt-MenuBar-vertical .gwt-MenuItem-checkbox-unchecked {
+  cursor: hand;
+  cursor: pointer;
+  background-image:url(style/images/checkbox-empty.png);
+  background-position:6px 50%;
+  background-repeat:no-repeat;
+  padding:3px 20px 3px 20px;
+}
+
+.gwt-MenuBar-vertical .gwt-MenuItem-checkbox-unchecked-selected {
+  background-color: #d0d0d0;  
+  vertical-align: bottom;
+}
+
+.disabledMenuItem {
+  color: gray;
+  cursor: Default;
+  padding:5px 20px 5px 25px;
+  vertical-align: bottom;	
+}
+
+.gwt-MenuItem {
+  color: black;
+  padding:5px 20px 5px 25px;
+}

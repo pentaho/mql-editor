@@ -1,0 +1,72 @@
+<!-- ======================================================================
+     description: main build file
+     ====================================================================== -->
+<project name="project" default="dist">
+	<description>mantle build process..</description>
+
+	<property file="dev_override.properties" />
+	<property file="dev_build.properties" />
+
+	<propertyfile file="version.properties">
+		<entry pattern="####" key="release.build.number" type="int" operation="+" value="1" />
+	</propertyfile>
+
+	<property file="version.properties" />
+
+	<path id="classpath">
+		<fileset dir="lib" includes="**/*.jar, **/*.zip" />
+	</path>
+
+	<!-- ===================================================================
+        target: clean              
+       =================================================================== -->
+	<target name="clean" depends="">
+		<delete dir="bin" />
+		<delete dir="dist" />
+		<delete dir="${gwt.output.dir}" />
+	</target>
+
+
+	<!-- ===================================================================
+        target: init              
+       =================================================================== -->
+	<target name="init">
+		<mkdir dir="bin" />
+		<copy todir="bin">
+			<fileset dir="src" includes="**/*.png, **/*.jpg, **/*.gif, **/*.properties, **/*.xml" />
+		</copy>
+	</target>
+
+	<target name="compile" depends="init">
+		<javac destdir="bin" debug="${debug}" optimize="${optimize}" deprecation="${deprecation}" compiler="modern" source="1.5" target="1.5" fork="true">
+			<src path="src" />
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+
+	<target name="compile-gwt" depends="compile">
+		<java classname="com.google.gwt.dev.GWTCompiler" fork="true" maxmemory="512M">
+			<classpath>
+				<path refid="classpath" />
+				<pathelement location="src" />
+			</classpath>
+			<arg value="-out" />
+			<arg value="${gwt.output.dir}" />
+			<arg value="%*" />
+			<arg value="${gwt.app}" />
+		</java>
+	</target>
+
+	<target name="dist" depends="clean, dirty-dist"/>
+	
+	<target name="dirty-dist" depends="compile-gwt">
+		<mkdir dir="dist" />
+		<copy todir="dist/bin">
+			<fileset dir="src" includes="**/*" />
+			<fileset dir="bin" includes="**/*" />
+		</copy>
+		<jar basedir="dist/bin" destfile="dist/pentaho-gwt-widgets-${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}.jar">
+		</jar>
+    </target>
+
+</project>
