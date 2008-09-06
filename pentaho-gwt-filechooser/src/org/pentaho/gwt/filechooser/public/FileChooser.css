@@ -1,0 +1,14 @@
+.modalDialogPageBackground {
+  opacity: 0.2;
+  background-color:  #808080;
+  /* Transparency for IE */
+  background-image: expression('url(wait-background.gif)');
+  background-color: expression('transparent');
+  /*
+  opacity: 0.2;
+  position: expression('absolute');
+  height: expression(document.documentElement.scrollHeight+'px');
+  width: expression(document.documentElement.scrollWidth+'px');
+  */
+  cursor: wait;
+} 
