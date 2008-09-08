@@ -347,13 +347,13 @@ html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
 /* begin dialog styles ------------------------------------------------------*/
 
 .modalDialogPageBackground {
-  opacity: 0.20;
+  opacity: 0.10;
   background-color:  #000000;
   /* Transparency for IE */
   background-image: expression('url(style/images/wait-background.gif)');
   background-color: expression('transparent');
   /*
-  opacity: 0.20;
+  opacity: 0.10;
   position: expression('absolute');
   height: expression(document.documentElement.scrollHeight+'px');
   width: expression(document.documentElement.scrollWidth+'px');
