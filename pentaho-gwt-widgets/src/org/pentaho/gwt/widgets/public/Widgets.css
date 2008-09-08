@@ -202,3 +202,49 @@ which java class/code the style is associated with */
   color: black;
   padding:5px 20px 5px 25px;
 }
+
+
+/* begin dialog styles ------------------------------------------------------*/
+
+.modalDialogPageBackground {
+  opacity: 0.20;
+  background-color:  #000000;
+  /* Transparency for IE */
+  background-image: expression('url(style/images/wait-background.gif)');
+  background-color: expression('transparent');
+  /*
+  opacity: 0.20;
+  position: expression('absolute');
+  height: expression(document.documentElement.scrollHeight+'px');
+  width: expression(document.documentElement.scrollWidth+'px');
+  */
+	cursor: wait;
+} 
+
+.dialogButtonPanel {
+  border-top: 1px solid #848484;
+  background-color: #e3e3e3;
+}
+
+.gwt-DialogBox {
+  background-color: white;
+  border: 1px solid #848484;
+}
+
+.gwt-DialogBox .Caption {
+  background-image: url(style/images/dialog_caption.png);
+  background-color: #d3d3d3;
+  color: black;
+  cursor: move;
+  border-bottom: 1px solid #848484;
+  text-align: left;
+  padding: 3px 0px 3px 5px;
+}
+
+.gwt-DialogBox .dialogMiddleCenter {
+  height: 100%;
+}
+
+.gwt-DialogBox .dialogMiddleCenterInner {
+  height: 100%;
+}
