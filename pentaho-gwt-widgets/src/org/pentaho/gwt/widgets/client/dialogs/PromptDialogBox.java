@@ -17,6 +17,7 @@ package org.pentaho.gwt.widgets.client.dialogs;
 
 import org.pentaho.gwt.widgets.client.buttons.RoundedButton;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FocusWidget;
@@ -32,7 +33,7 @@ public class PromptDialogBox extends DialogBox {
   IDialogValidatorCallback validatorCallback;
   Widget content;
   final FlexTable dialogContent = new FlexTable();
-  
+
   public PromptDialogBox(String title, String okText, String cancelText, boolean autoHide, boolean modal) {
     super(autoHide, modal);
     setText(title);
@@ -41,8 +42,11 @@ public class PromptDialogBox extends DialogBox {
 
       public void onClick(Widget sender) {
         if (validatorCallback == null || (validatorCallback != null && validatorCallback.validate())) {
-          if (callback != null) {
-            callback.okPressed();
+          try {
+            if (callback != null) {
+              callback.okPressed();
+            }
+          } catch (Throwable dontCare) {
           }
           hide();
         }
@@ -56,8 +60,11 @@ public class PromptDialogBox extends DialogBox {
       cancel.addClickListener(new ClickListener() {
 
         public void onClick(Widget sender) {
-          if (callback != null) {
-            callback.cancelPressed();
+          try {
+            if (callback != null) {
+              callback.cancelPressed();
+            }
+          } catch (Throwable dontCare) {
           }
           hide();
         }
@@ -73,7 +80,7 @@ public class PromptDialogBox extends DialogBox {
     dialogButtonPanelWrapper.setStyleName("dialogButtonPanel");
     dialogButtonPanelWrapper.setWidth("100%");
     dialogButtonPanelWrapper.add(dialogButtonPanel);
-    
+
     if (content instanceof FocusWidget) {
       setFocusWidget((FocusWidget) content);
     }
@@ -94,7 +101,7 @@ public class PromptDialogBox extends DialogBox {
     this(title, okText, cancelText, autoHide, modal);
     setContent(content);
   }
-  
+
   public boolean onKeyDownPreview(char key, int modifiers) {
     // Use the popup's key preview hooks to close the dialog when either
     // enter or escape is pressed.
@@ -121,18 +128,18 @@ public class PromptDialogBox extends DialogBox {
     return callback;
   }
 
-  public void setContent(Widget content){
+  public void setContent(Widget content) {
     this.content = content;
     if (content != null) {
       dialogContent.getFlexCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
       dialogContent.getFlexCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
       dialogContent.setWidget(0, 0, content);
-      content.getElement().setAttribute("margin", "5px");
+      DOM.setStyleAttribute(dialogContent.getCellFormatter().getElement(0,0), "padding", "10px");
       content.setHeight("100%");
       content.setWidth("100%");
     }
   }
-  
+
   public Widget getContent() {
     return content;
   }

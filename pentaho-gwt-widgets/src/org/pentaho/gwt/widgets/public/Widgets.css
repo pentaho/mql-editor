@@ -163,6 +163,9 @@ which java class/code the style is associated with */
   background: url('style/images/button_middle_disabled.png') repeat-x;
 }
 
+
+/* end menubar/menuitem styles ------------------------------------------------------*/
+
 .gwt-MenuBar-vertical .gwt-MenuItem-checkbox-checked {
   cursor: hand;
   cursor: pointer;
@@ -194,14 +197,151 @@ which java class/code the style is associated with */
 .disabledMenuItem {
   color: gray;
   cursor: Default;
-  padding:5px 20px 5px 25px;
+  padding:3px 20px 3px 20px;
   vertical-align: bottom;	
 }
 
 .gwt-MenuItem {
   color: black;
-  padding:5px 20px 5px 25px;
+  padding:3px 20px 3px 20px;
 }
+
+
+.gwt-MenuBar {
+  cursor: default;
+}
+.gwt-MenuBar .gwt-MenuItem {
+  cursor: hand;
+  cursor: pointer;
+}
+.gwt-MenuBar .gwt-MenuItem-selected {
+  color: black;
+}
+.gwt-MenuBar-horizontal {
+}
+.gwt-MenuBar-horizontal .gwt-MenuItem {
+  color: black;
+  padding: 2px 6px;
+  vertical-align: bottom;
+  border: 1px;
+}
+.gwt-MenuBar-horizontal .gwt-MenuItem-selected {
+  border: 1px solid #848484;
+  background-color: #ececec;  
+  color: black;  
+  padding: 1px 5px;
+  vertical-align: bottom;
+}
+.gwt-MenuBar-horizontal .gwt-MenuItemSeparator {
+  width: 1px;
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  border-left: 1px solid #888888;
+  background: white;
+}
+.gwt-MenuBar-horizontal .gwt-MenuItemSeparator .menuSeparatorInner {
+  width: 1px;
+  background: white; 
+}
+
+
+
+
+
+.gwt-MenuBar-vertical {
+  background-color: #ffffff;  
+  margin-top: 0px;
+  margin-left: 0px;
+  border-top: 1px solid #848484;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  border-left: 1px solid #848484;
+}
+.gwt-MenuBar-vertical table {
+  border-collapse: collapse;
+}
+.gwt-MenuBar-vertical .gwt-MenuItem {
+  color: black;
+  padding:3px 20px 3px 20px;
+}
+
+.gwt-MenuBar-vertical .gwt-MenuItem-selected {
+  background-color: #d0d0d0;  
+  color: black;  
+  vertical-align: bottom;
+}
+
+.gwt-MenuBar-vertical .gwt-MenuItemSeparator {
+  padding: 0px;
+}
+.gwt-MenuBar-vertical .gwt-MenuItemSeparator .menuSeparatorInner {
+  height: 1px;
+  padding: 0px;
+  border: 0px;
+  border-top: 1px solid #777777;
+  overflow: hidden;
+}
+.gwt-MenuBar-vertical .subMenuIcon {
+  padding-right: 4px;
+}
+.gwt-MenuBar-vertical .subMenuIcon-selected {
+  background-color: #d0d0d0;
+}
+
+
+.gwt-MenuBarPopup {
+  margin: 0px 0px 0px 0px;
+}
+.gwt-MenuBarPopup .menuPopupTopCenter {
+}
+html>body .gwt-MenuBarPopup .menuPopupBottomCenter {
+}
+* html .gwt-MenuBarPopup .menuPopupBottomCenter {
+}
+.gwt-MenuBarPopup .menuPopupMiddleLeft {
+}
+html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
+}
+* html .gwt-MenuBarPopup .menuPopupMiddleRight {
+}
+.gwt-MenuBarPopup .menuPopupTopLeftInner {
+}
+.gwt-MenuBarPopup .menuPopupTopRightInner {
+}
+.gwt-MenuBarPopup .menuPopupBottomLeftInner {
+}
+.gwt-MenuBarPopup .menuPopupBottomRightInner {
+}
+* html .gwt-MenuBarPopup .menuPopupTopLeftInner {
+  width: 5px;
+  height: 41px;
+  margin-top: -36px;
+  overflow: hidden;
+}
+* html .gwt-MenuBarPopup .menuPopupTopRightInner {
+  width: 13px;
+  height: 41px;
+  margin-left: -5px;
+  margin-top: -36px;
+  overflow: hidden;
+}
+* html .gwt-MenuBarPopup .menuPopupBottomLeftInner {
+  width: 5px;
+  height: 49px;
+  margin-top: -41px;
+  overflow: hidden;
+}
+* html .gwt-MenuBarPopup .menuPopupBottomRightInner {
+  width: 13px;
+  height: 49px;
+  margin-left: -5px;
+  margin-top: -41px;
+  overflow: hidden;
+}
+
+/* end menubar/menuitem styles ------------------------------------------------------*/
+
 
 
 /* begin dialog styles ------------------------------------------------------*/
@@ -232,13 +372,13 @@ which java class/code the style is associated with */
 }
 
 .gwt-DialogBox .Caption {
-  background-image: url(style/images/dialog_caption.png);
+  background-image: url(style/images/subtoolbar_bg.png);
   background-color: #d3d3d3;
   color: black;
   cursor: move;
   border-bottom: 1px solid #848484;
   text-align: left;
-  padding: 3px 0px 3px 5px;
+  padding: 6px 0px 6px 5px;
 }
 
 .gwt-DialogBox .dialogMiddleCenter {

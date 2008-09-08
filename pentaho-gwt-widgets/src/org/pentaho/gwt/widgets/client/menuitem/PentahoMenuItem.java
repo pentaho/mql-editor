@@ -9,6 +9,7 @@ public class PentahoMenuItem extends MenuItem {
   
   public PentahoMenuItem(String text, Command cmd) {
     super(text, cmd);
+    setEnabled(enabled);
   }
   
   public void setEnabled(boolean enabled) {
