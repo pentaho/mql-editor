@@ -1,4 +1,4 @@
-package org.pentaho.gwt.filechooser.client;
+package org.pentaho.gwt.widgets.client.filechooser;
 
 import java.util.HashMap;
 

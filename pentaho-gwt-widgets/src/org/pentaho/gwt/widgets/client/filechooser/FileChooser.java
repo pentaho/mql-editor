@@ -1,4 +1,4 @@
-package org.pentaho.gwt.filechooser.client;
+package org.pentaho.gwt.widgets.client.filechooser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,9 +6,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.pentaho.gwt.filechooser.client.images.FileChooserImagesSingleton;
 import org.pentaho.gwt.widgets.client.dialogs.IDialogCallback;
 import org.pentaho.gwt.widgets.client.dialogs.PromptDialogBox;
+import org.pentaho.gwt.widgets.client.filechooser.images.FileChooserImages;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
@@ -226,7 +226,7 @@ public class FileChooser extends VerticalPanel {
     HorizontalPanel navigationBar = new HorizontalPanel();
 
     final Image searchImage = new Image();
-    FileChooserImagesSingleton.getImages().search().applyTo(searchImage);
+    FileChooserImages.images.search().applyTo(searchImage);
     searchImage.setTitle("Search");
     DOM.setStyleAttribute(searchImage.getElement(), "border", "1px solid white");
     searchImage.addMouseListener(new MouseListener() {
@@ -301,7 +301,7 @@ public class FileChooser extends VerticalPanel {
     });
 
     final Image upDirImage = new Image();
-    FileChooserImagesSingleton.getImages().up().applyTo(upDirImage);
+    FileChooserImages.images.up().applyTo(upDirImage);
     upDirImage.setTitle("Up One Level");
     DOM.setStyleAttribute(upDirImage.getElement(), "border", "1px solid white");
     upDirImage.addMouseListener(new MouseListener() {
@@ -478,9 +478,9 @@ public class FileChooser extends VerticalPanel {
     };
     fileImage.sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
     if (isDir) {
-      FileChooserImagesSingleton.getImages().folder().applyTo(fileImage);
+      FileChooserImages.images.folder().applyTo(fileImage);
     } else {
-      FileChooserImagesSingleton.getImages().file().applyTo(fileImage);
+      FileChooserImages.images.file().applyTo(fileImage);
     }
     fileNamePanel.add(fileImage);
     fileNamePanel.add(myNameLabel);

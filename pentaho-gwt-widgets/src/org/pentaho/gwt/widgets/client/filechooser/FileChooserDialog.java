@@ -1,10 +1,10 @@
-package org.pentaho.gwt.filechooser.client;
+package org.pentaho.gwt.widgets.client.filechooser;
 
-import org.pentaho.gwt.filechooser.client.FileChooser.FileChooserMode;
 import org.pentaho.gwt.widgets.client.dialogs.IDialogCallback;
 import org.pentaho.gwt.widgets.client.dialogs.IDialogValidatorCallback;
 import org.pentaho.gwt.widgets.client.dialogs.MessageDialogBox;
 import org.pentaho.gwt.widgets.client.dialogs.PromptDialogBox;
+import org.pentaho.gwt.widgets.client.filechooser.FileChooser.FileChooserMode;
 
 import com.google.gwt.xml.client.Document;
 
