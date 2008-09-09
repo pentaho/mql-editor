@@ -28,27 +28,4 @@
       FOUND IN common_build.xml.
     -->
 
-  <!--=======================================================================
-      resolve
-      
-      Resolve all the ivy dependencies that are development-only
-      dependencies.
-      ====================================================================-->
-  <target name="resolve" depends="resolve-init" description="Retrieves all the dependent libraries">
-  	<ant antfile="${basedir}/common_build.xml" target="resolve"/>
-  	
-    <property name="ivy.codegen.config" value="codegen-win" />
-    <condition property="ivy.codegen.config" value="codegen-mac">
-      <os family="mac" />
-    </condition>
-    <condition property="ivy.codegen.config" value="codegen-linux">
-      <os family="unix" />
-    </condition>
-
-    <ivy:resolve conf="codegen" />
-    <ivy:retrieve conf="codegen" pattern="${lib.dir}/[module]-[revision].[ext]" />
-    <ivy:resolve conf="${ivy.codegen.config}" />
-    <ivy:retrieve conf="${ivy.codegen.config}" pattern="${lib.dir}/[module]-[revision].[ext]" />
-  </target>
-
 </project>
