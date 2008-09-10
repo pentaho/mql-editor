@@ -669,7 +669,7 @@ public class FileChooser extends VerticalPanel {
   }
 
   public boolean doesSelectedFileExist() {
-    String path = getFullPath();
+    String path = "/" + getFullPath();
     // find the selected item from the list
     List<String> pathSegments = new ArrayList<String>();
     if (path != null) {

@@ -88,6 +88,9 @@ public class FileChooserDialog extends PromptDialogBox {
     return fileChooser.isShowSearch();
   }
   
+  public boolean doesSelectedFileExist() {
+    return fileChooser.doesSelectedFileExist();
+  }
   
   
 }
