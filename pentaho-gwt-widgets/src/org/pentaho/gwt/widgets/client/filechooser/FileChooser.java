@@ -60,7 +60,7 @@ public class FileChooser extends VerticalPanel {
   Tree repositoryTree;
   TreeItem selectedTreeItem;
   boolean showHiddenFiles = false;
-  boolean showLocalizedFileNames = false;
+  boolean showLocalizedFileNames = true;
   boolean showSearch = true;
   com.google.gwt.user.client.Element lastSelectedFileElement;
   TextBox fileNameTextBox = new TextBox();
