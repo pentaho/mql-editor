@@ -10,7 +10,7 @@
     <dependencies defaultconf="default->default">
         <!--  Actual dependencies -->
         <dependency org="org.zenica"     name="gwt-datepicker" rev="r17"   conf="default->default"/>
-        <dependency org="com.google.gwt" name="gwt-user" rev="1.5.2"       conf="default->default"/>
+        <dependency org="com.google.gwt" name="gwt-servlet" rev="1.5.2"       conf="default->default"/>
         
         <!--  Testing dependencies -->
         <dependency org="junit"          name="junit"          rev="4.4" conf="test->default"/>
