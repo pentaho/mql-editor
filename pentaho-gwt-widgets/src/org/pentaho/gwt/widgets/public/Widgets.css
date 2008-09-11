@@ -5,29 +5,29 @@ which java class/code the style is associated with */
 /* start snb */
 /* default style for java class SimpleGroupBox */
 .simpleGroupBox {
-	padding: 5px;
+  padding: 5px;
 }
 /* begin recurrence dialog ------------------------------------------------------*/
 .startLabel {
-	padding-right: 1ex;
-	white-space: nowrap;
-	/*border:1px dotted red;*/
+  padding-right: 1ex;
+  white-space: nowrap;
+  /*border:1px dotted red;*/
 }
 .middleLabel {
-	padding-right: 1ex;
-	padding-left: 1ex;
-	white-space: nowrap;
-	/*border:1px dotted red;*/
+  padding-right: 1ex;
+  padding-left: 1ex;
+  white-space: nowrap;
+  /*border:1px dotted red;*/
 }
 .endLabel {
-	padding-left: 1ex;
-	white-space: nowrap;
-	/*border:1px dotted red;*/
+  padding-left: 1ex;
+  white-space: nowrap;
+  /*border:1px dotted red;*/
 }
 
 .recurrenceRadioButton label {
-	padding-right: 1ex;
-	white-space: nowrap;
+  padding-right: 1ex;
+  white-space: nowrap;
 }
 
 .weeklyRecurrencePanel {
@@ -35,49 +35,49 @@ which java class/code the style is associated with */
 
 /* begin schedule editor ------------------------------------------------------*/
 .scheduleEditor {
-	/* can't add a margin here, IE7 can't handle it */
-	/*margin: 10px;*/
-	/*background-color: #CCCCFF; for testing*/
-	width: 100%;
+  /* can't add a margin here, IE7 can't handle it */
+  /*margin: 10px;*/
+  /*background-color: #CCCCFF; for testing*/
+  width: 100%;
 }
 
 .scheduleDescription {
-	width: 85%;
-	/*background-color: red; for testing */
+  width: 85%;
+  /*background-color: red; for testing */
 }
 
 .scheduleCombo {
-	padding-right: 5px;
-	margin-right: 5px;
+  padding-right: 5px;
+  margin-right: 5px;
 }
 /* end schedule editor ----------------------------------------------------------*/
 /* end recurrence dialog ----------------------------------------------------------*/
 
 /* style for error message associated with dialog controls with invalid data */
 .errorLabel {
-	background-color: #FFDDDD;
-	color: #FF0000;
+  background-color: #FFDDDD;
+  color: #FF0000;
 }
 
 .progressPopupPanel {
-	background-color: #EEEEEE;
-	border: 1px dotted black;
+  background-color: #EEEEEE;
+  border: 1px dotted black;
 }
 .progressPopupPanel\.label {
 }
 .addBtn {
-	width: 22px;
+  width: 22px;
 }
 .deleteBtn {
-	width: 22px;
+  width: 22px;
 }
 /* end snb */
 
 .tooltip{
-	padding: 5px;
-	border: 1px solid #666;
-	background-color: #FAFAFA;
-	max-width: 150px;
+  padding: 5px;
+  border: 1px solid #666;
+  background-color: #FAFAFA;
+  max-width: 150px;
 }
 
 .tooltip-label{
@@ -87,7 +87,7 @@ which java class/code the style is associated with */
 }
 
 .roundedbutton{
-	height: 27px;
+  height: 27px;
 }
 
 .roundedbutton-label{
@@ -98,7 +98,7 @@ which java class/code the style is associated with */
 }
 
 .roundedbutton-right{
-	background: url('style/images/button_right.png');
+  background: url('style/images/button_right.png');
   width: 7px;
   height: 27px;
 }
@@ -198,7 +198,7 @@ which java class/code the style is associated with */
   color: gray;
   cursor: Default;
   padding:3px 20px 3px 20px;
-  vertical-align: bottom;	
+  vertical-align: bottom; 
 }
 
 .gwt-MenuItem {
@@ -221,15 +221,15 @@ which java class/code the style is associated with */
 }
 .gwt-MenuBar-horizontal .gwt-MenuItem {
   color: black;
-  padding: 2px 6px;
+  padding: 3px 6px 5px;
   vertical-align: bottom;
   border: 1px;
 }
 .gwt-MenuBar-horizontal .gwt-MenuItem-selected {
   border: 1px solid #848484;
   background-color: #ececec;  
-  color: black;  
-  padding: 1px 5px;
+  color: black;
+  padding: 2px 5px 4px;
   vertical-align: bottom;
 }
 .gwt-MenuBar-horizontal .gwt-MenuItemSeparator {
@@ -257,6 +257,7 @@ which java class/code the style is associated with */
   border-right: 1px solid #000000;
   border-bottom: 1px solid #000000;
   border-left: 1px solid #848484;
+  padding: 2px;
 }
 .gwt-MenuBar-vertical table {
   border-collapse: collapse;
@@ -274,22 +275,22 @@ which java class/code the style is associated with */
 
 .gwt-MenuBar-vertical .gwt-MenuItemSeparator {
   padding: 0px;
+  height: 3px;
+  border-bottom: 2px solid white;
 }
 .gwt-MenuBar-vertical .gwt-MenuItemSeparator .menuSeparatorInner {
   height: 1px;
   padding: 0px;
-  border: 0px;
-  border-top: 1px solid #777777;
+  border-top: 1px solid #777;
   overflow: hidden;
 }
+
 .gwt-MenuBar-vertical .subMenuIcon {
   padding-right: 4px;
 }
 .gwt-MenuBar-vertical .subMenuIcon-selected {
   background-color: #d0d0d0;
 }
-
-
 .gwt-MenuBarPopup {
   margin: 0px 0px 0px 0px;
 }
@@ -358,7 +359,7 @@ html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
   height: expression(document.documentElement.scrollHeight+'px');
   width: expression(document.documentElement.scrollWidth+'px');
   */
-	cursor: wait;
+  cursor: wait;
 } 
 
 .dialogButtonPanel {
