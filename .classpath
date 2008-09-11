@@ -26,9 +26,5 @@
 	<classpathentry kind="lib" path="lib/commons-vfs-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jug-lgpl-2.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/swt-linux/linux-swt.jar"/>
-    <classpathentry kind="lib" path="lib/pentaho/pentaho-cwm-1.5.4.jar"/>
-    <classpathentry kind="lib" path="lib/pentaho/pentaho-connections-2.0.0-SNAPSHOT.jar"/>    
-    <classpathentry kind="lib" path="lib/pentaho/pentaho-metadata-2.0.0-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/pentaho/kettle-engine-3.0.4.jar"/>
-	<classpathentry kind="output" path="bin"/>
+    <classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?ivyXmlPath=ivy.xml&amp;confs=*&amp;ivySettingsPath=file%3A.%2Fivysettings.xml&amp;buildPropertyFiles=build.properties&amp;acceptedTypes=jar&amp;sourceTypes=source&amp;javadocTypes=javadoc&amp;sourceSuffixes=-source%2C-sources%2C-src&amp;javadocSuffixes=-javadoc%2C-javadocs%2C-doc%2C-docs&amp;doRetrieve=false&amp;retrievePattern=lib%2F%5Bconf%5D%2F%5Bartifact%5D.%5Bext%5D&amp;alphaOrder=true"/>	<classpathentry kind="output" path="bin"/>
 </classpath>
