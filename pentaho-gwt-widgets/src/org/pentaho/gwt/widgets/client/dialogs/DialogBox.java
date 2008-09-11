@@ -37,7 +37,6 @@ public class DialogBox extends com.google.gwt.user.client.ui.DialogBox implement
 
   public DialogBox(boolean autoHide, boolean modal) {
     super(autoHide, modal);
-    setAnimationEnabled(true);
     this.autoHide = autoHide;
     this.modal = modal;
     addPopupListener(this);

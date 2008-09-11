@@ -38,6 +38,7 @@ public class PromptDialogBox extends DialogBox {
     super(autoHide, modal);
     setText(title);
     RoundedButton ok = new RoundedButton(okText);
+    ok.getElement().setAttribute("id", "okButton");
     ok.addClickListener(new ClickListener() {
 
       public void onClick(Widget sender) {
@@ -57,6 +58,7 @@ public class PromptDialogBox extends DialogBox {
     dialogButtonPanel.add(ok);
     if (cancelText != null) {
       RoundedButton cancel = new RoundedButton(cancelText);
+      cancel.getElement().setAttribute("id", "cancelButton");
       cancel.addClickListener(new ClickListener() {
 
         public void onClick(Widget sender) {
