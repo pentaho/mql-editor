@@ -14,9 +14,11 @@ public class ToolbarToggleButton extends ToolbarButton {
    * @param img GWT Image object 
    * @param label String containing an option label
    */
-  public ToolbarToggleButton(Image img, String label){
+  public ToolbarToggleButton(Image img, String label, boolean selected) {
     super(img, label);
     super.setStylePrimaryName(TOGGLE_STYLE);
+    this.selected = selected;
+    updateSelectedStyle();
   }
   
   /**
@@ -26,9 +28,11 @@ public class ToolbarToggleButton extends ToolbarButton {
    * @param disabledImage GWT Image object 
    * @param label String containing an option label
    */
-  public ToolbarToggleButton(Image img, Image disabledImage, String label){
+  public ToolbarToggleButton(Image img, Image disabledImage, String label, boolean selected) {
     super(img, disabledImage, label);
     super.setStylePrimaryName(TOGGLE_STYLE);
+    this.selected = selected;
+    updateSelectedStyle();
   }
   
 
@@ -39,9 +43,11 @@ public class ToolbarToggleButton extends ToolbarButton {
    * @param disabledImage GWT Image object 
    * @param label String containing an option label
    */
-  public ToolbarToggleButton(Image img, Image disabledImage){
+  public ToolbarToggleButton(Image img, Image disabledImage, boolean selected){
     super(img, disabledImage);
     super.setStylePrimaryName(TOGGLE_STYLE);
+    this.selected = selected;
+    updateSelectedStyle();
   }
   
   /**
@@ -65,14 +71,15 @@ public class ToolbarToggleButton extends ToolbarButton {
   
   private void toggleSelectedState(){
     selected = !(this.selected);
+    updateSelectedStyle();
+  }
+  
+  private void updateSelectedStyle() {
     if(selected){
-      button.removeStyleName(stylePrimaryName+"-hovering");    //$NON-NLS-1$
       button.addStyleName(stylePrimaryName+"-down");    //$NON-NLS-1$
-      button.addStyleName(stylePrimaryName+"-down-hovering");    //$NON-NLS-1$ 
     } else {
       button.removeStyleName(stylePrimaryName+"-down");    //$NON-NLS-1$
       button.removeStyleName(stylePrimaryName+"-down-hovering");    //$NON-NLS-1$
-      button.addStyleName(stylePrimaryName+"-hovering");    //$NON-NLS-1$   
     }
   }
   
@@ -80,11 +87,8 @@ public class ToolbarToggleButton extends ToolbarButton {
   protected void addStyleMouseListener(){
     eventWrapper.addMouseListener(new MouseListener(){
       public void onMouseDown(Widget arg0, int arg1, int arg2) {
-        if(!enabled){
-          return;
-        }
-        toggleSelectedState();
-        command.execute();
+        button.addStyleName(stylePrimaryName+"-down-hovering");    //$NON-NLS-1$ 
+        button.addStyleName(stylePrimaryName+"-hovering");    //$NON-NLS-1$   
       }
       public void onMouseEnter(Widget arg0) {
         button.addStyleName(stylePrimaryName+((selected)?"-down":"")+"-hovering");    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -94,6 +98,11 @@ public class ToolbarToggleButton extends ToolbarButton {
         button.removeStyleName(stylePrimaryName+"-hovering");    //$NON-NLS-1$ 
       }
       public void onMouseUp(Widget arg0, int arg1, int arg2) {
+        if(!enabled){
+          return;
+        }
+        toggleSelectedState();
+        command.execute();
       }
       public void onMouseMove(Widget arg0, int arg1, int arg2) {}
     });
