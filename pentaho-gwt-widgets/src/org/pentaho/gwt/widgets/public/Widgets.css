@@ -275,15 +275,17 @@ which java class/code the style is associated with */
 
 .gwt-MenuBar-vertical .gwt-MenuItemSeparator {
   padding: 0px;
-  height: 3px;
+  border-top: 2px solid white;
   border-bottom: 2px solid white;
+  height: 5px;
+  
 }
 .gwt-MenuBar-vertical .gwt-MenuItemSeparator .menuSeparatorInner {
   height: 1px;
-  padding: 0px;
-  border-top: 1px solid #777;
   overflow: hidden;
+  border-top: 1px solid #777;
 }
+
 
 .gwt-MenuBar-vertical .subMenuIcon {
   padding-right: 4px;
@@ -291,6 +293,8 @@ which java class/code the style is associated with */
 .gwt-MenuBar-vertical .subMenuIcon-selected {
   background-color: #d0d0d0;
 }
+
+
 .gwt-MenuBarPopup {
   margin: 0px 0px 0px 0px;
 }
