@@ -9,6 +9,7 @@ public class CheckBoxMenuItem extends MenuItem {
 
   public CheckBoxMenuItem(String text, Command cmd) {
     super(text, cmd);
+    setChecked(checked);
   }
 
   public void setChecked(boolean checked) {
