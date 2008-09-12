@@ -13,8 +13,8 @@ public class FileChooserDialog extends PromptDialogBox {
   FileChooser fileChooser;
 
   public FileChooserDialog(FileChooserMode mode, String selectedPath, boolean autoHide, boolean modal) {
-    super(mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel",
-        autoHide, modal, new FileChooser(mode, selectedPath));
+    super(mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel", autoHide, modal, new FileChooser(mode,
+        selectedPath));
     fileChooser = (FileChooser) getContent();
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
@@ -37,7 +37,6 @@ public class FileChooserDialog extends PromptDialogBox {
 
     };
     setCallback(callback);
-    setAnimationEnabled(true);
   }
 
   public FileChooserDialog(FileChooserMode mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal) {
@@ -68,7 +67,6 @@ public class FileChooserDialog extends PromptDialogBox {
 
     };
     setCallback(callback);
-    setAnimationEnabled(true);
     fileChooser.initUI(false);
   }
 
@@ -79,18 +77,17 @@ public class FileChooserDialog extends PromptDialogBox {
   public void removeFileChooserListener(FileChooserListener listener) {
     fileChooser.removeFileChooserListener(listener);
   }
-  
+
   public void setShowSearch(boolean showSearch) {
     fileChooser.setShowSearch(showSearch);
   }
-  
+
   public boolean isShowSearch() {
     return fileChooser.isShowSearch();
   }
-  
+
   public boolean doesSelectedFileExist() {
     return fileChooser.doesSelectedFileExist();
   }
-  
-  
+
 }
