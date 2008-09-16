@@ -463,6 +463,7 @@ public class FileChooser extends VerticalPanel {
         handleFileClicked(item, isDir, event, this.getElement());
       }
     };
+    myNameLabel.getElement().setAttribute("id", attributeMap.get("name"));
     myNameLabel.sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
     myNameLabel.setWordWrap(false);
     myNameLabel.setTitle(getTitle(item));
