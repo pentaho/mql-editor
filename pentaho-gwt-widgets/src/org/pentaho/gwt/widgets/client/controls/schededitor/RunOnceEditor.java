@@ -2,8 +2,8 @@ package org.pentaho.gwt.widgets.client.controls.schededitor;
 
 import java.util.Date;
 
+import org.pentaho.gwt.widgets.client.containers.SimpleGroupBox;
 import org.pentaho.gwt.widgets.client.controls.DatePickerEx;
-import org.pentaho.gwt.widgets.client.controls.ErrorLabel;
 import org.pentaho.gwt.widgets.client.controls.TimePicker;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
@@ -11,7 +11,6 @@ import org.pentaho.gwt.widgets.client.ui.ICallback;
 import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 import org.pentaho.gwt.widgets.client.utils.TimeUtil;
 
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 
@@ -25,20 +24,24 @@ public class RunOnceEditor extends VerticalPanel implements IChangeHandler {
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
   private TimePicker startTimePicker = new TimePicker();
   private DatePickerEx startDatePicker = new DatePickerEx();
-  private Label startTimeLabel = null;
-  private ErrorLabel startDateLabel = null;
   private static final String DEFAULT_START_HOUR = "12"; //$NON-NLS-1$
   private static final String DEFAULT_START_MINUTE = "00"; //$NON-NLS-1$
   private static final TimeUtil.TimeOfDay DEFAULT_TIME_OF_DAY = TimeUtil.TimeOfDay.AM;
   private ICallback<IChangeHandler> onChangeHandler = null;
   
   public RunOnceEditor() {
-    startTimeLabel = new Label( MSGS.startTimeColon() );
-    add( startTimeLabel );
-    add( startTimePicker );
-    startDateLabel = new ErrorLabel( new Label( MSGS.startDate() ) );
-    add( startDateLabel );
-    add( startDatePicker );
+    setWidth("100%");
+
+    SimpleGroupBox startTimeCaptionPanel = new SimpleGroupBox(MSGS.startTime());
+    startTimeCaptionPanel.add(startTimePicker);
+    add( startTimeCaptionPanel );
+    startTimeCaptionPanel.setWidth("100%");
+    
+    SimpleGroupBox startDateCaptionPanel = new SimpleGroupBox(MSGS.startDate());
+    startDateCaptionPanel.add(startDatePicker);
+    add( startDateCaptionPanel );
+    startDateCaptionPanel.setWidth("100%");
+    
     configureOnChangeHandler();
   }
 
@@ -67,7 +70,7 @@ public class RunOnceEditor extends VerticalPanel implements IChangeHandler {
   }
   
   public void setStartDateError( String errorMsg ) {
-    startDateLabel.setErrorMsg( errorMsg );
+//    startDateLabel.setErrorMsg( errorMsg );
   }
 
   public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {

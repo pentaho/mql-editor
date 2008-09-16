@@ -34,6 +34,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ScheduleEditorWizardPanel extends AbstractWizardPanel {
 
+  private static final String PENTAHO_SCHEDULE = "pentaho-schedule-create"; //$NON-NLS-1$
   ScheduleEditor scheduleEditor = new ScheduleEditor();
   ScheduleEditorValidator scheduleEditorValidator;
   
@@ -60,6 +61,7 @@ public class ScheduleEditorWizardPanel extends AbstractWizardPanel {
    * 
    */
   private void layout() {
+    this.addStyleName(PENTAHO_SCHEDULE);
     this.add(scheduleEditor, CENTER);
     panelWidgetChanged(null);
   }

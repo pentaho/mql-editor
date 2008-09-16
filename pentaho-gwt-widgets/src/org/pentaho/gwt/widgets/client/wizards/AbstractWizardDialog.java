@@ -17,9 +17,9 @@
 
 package org.pentaho.gwt.widgets.client.wizards;
 
+import org.pentaho.gwt.widgets.client.buttons.RoundedButton;
 import org.pentaho.gwt.widgets.client.dialogs.DialogBox;
 
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -39,12 +39,24 @@ import com.google.gwt.user.client.ui.Widget;
 public abstract class AbstractWizardDialog extends DialogBox implements IWizardPanelListener {
   
   private static final int STEPS_COUNT = 15;  // Defines the height of the steps ListBox
+
+  private static final String WIZARD_DECK_PANEL = "pentaho-wizard-deck-panel"; //$NON-NLS-1$
+
+  private static final String WIZARD_BUTTON_PANEL = "pentaho-wizard-button-panel"; //$NON-NLS-1$
+
+  private static final String BACK_BTN_STYLE = "pentaho-wizard-back-button"; //$NON-NLS-1$
+
+  private static final String NEXT_BTN_STYLE = "pentaho-wizard-next-button"; //$NON-NLS-1$
+
+  private static final String FINISH_BTN_STYLE = "pentaho-wizard-finish-button"; //$NON-NLS-1$
+
+  private static final String CANCEL_BTN_STYLE = "pentaho-wizard-cancel-button"; //$NON-NLS-1$
   
   // gui elements
-  Button backButton = new Button("Back");
-  Button nextButton = new Button("Next");
-  Button cancelButton = new Button("Cancel");
-  Button finishButton = new Button("Finish");
+  RoundedButton backButton = new RoundedButton("Back");
+  RoundedButton nextButton = new RoundedButton("Next");
+  RoundedButton cancelButton = new RoundedButton("Cancel");
+  RoundedButton finishButton = new RoundedButton("Finish");
 
   ListBox steps = new ListBox();
   DeckPanel wizardDeckPanel = new DeckPanel();
@@ -57,12 +69,11 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
   public AbstractWizardDialog(String title, IWizardPanel[] panels, boolean autohide, boolean modal) {
     super(autohide, modal);
     
-    this.wizardPanels = panels;
-    
     setText(title);
     
     init();
     layout();
+    setWizardPanels(panels);
     show();
   }
   
@@ -126,10 +137,8 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
       }
     });
     
-    finishButton.setEnabled(false);
     steps.setEnabled(false);
     
-    setWizardPanels(wizardPanels);
   }
 
   
@@ -176,21 +185,31 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
     // Add the wizardPanels to the Deck and add the deck to the content
 //    wizardDeckPanel.setSize("70%", "100%");
     content.add(wizardDeckPanel, DockPanel.CENTER);
+    wizardDeckPanel.addStyleName(WIZARD_DECK_PANEL);
     
     // Add the control buttons
     HorizontalPanel buttonPanel = new HorizontalPanel();
+    buttonPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+    buttonPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
     // If we have only one button then we dont need to show the back and next button.
     buttonPanel.add(backButton);
+    backButton.addStyleName(BACK_BTN_STYLE);
     buttonPanel.add(nextButton);
+    nextButton.addStyleName(NEXT_BTN_STYLE);
     buttonPanel.add(finishButton);
+    finishButton.addStyleName(FINISH_BTN_STYLE);
     buttonPanel.add(cancelButton);
+    cancelButton.addStyleName(CANCEL_BTN_STYLE);
     content.add(buttonPanel, DockPanel.SOUTH);
+    buttonPanel.addStyleName(WIZARD_BUTTON_PANEL);
+
     content.setCellHorizontalAlignment(buttonPanel, HasHorizontalAlignment.ALIGN_RIGHT);
     content.setCellVerticalAlignment(buttonPanel, HasVerticalAlignment.ALIGN_BOTTOM);
     
     // Add the content to the dialog
     add(content);
-
+    content.setWidth("100%");
+    content.setHeight("100%");
   }
 
   /**

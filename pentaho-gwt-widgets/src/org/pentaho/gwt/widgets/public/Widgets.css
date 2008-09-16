@@ -393,3 +393,46 @@ html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
 .gwt-DialogBox .dialogMiddleCenterInner {
   height: 100%;
 }
+
+/* Begin Wizard Styles ------------------------------------------------------ */ 
+.pentaho-wizard-deck-panel {
+	height: 80%;
+	width: 100%;
+}
+
+.pentaho-wizard-button-panel {
+	width: 100%;
+	height: 100%;
+}
+.pentaho-wizard-panel {
+	height: 100%;
+	width: 100%;
+}
+
+.pentaho-schedule-create {
+	padding: 10px;
+	width: 100%;
+}
+
+.pentaho-wizard-cancel-button {
+	horizontal-align: right;
+	vertical-align: bottom;
+}
+
+.pentaho-wizard-finish-button {
+	horizontal-align: right;
+	vertical-align: bottom;
+}
+
+.pentaho-wizard-next-button {
+	horizontal-align: right;
+	vertical-align: bottom;
+}
+
+.pentaho-wizard-back-button {
+	horizontal-align: right;
+	vertical-align: bottom;
+}
+
+/* End Wizard Styles -------------------------------------------------------- */
+

@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.DockPanel;
  */
 public abstract class AbstractWizardPanel extends DockPanel implements IWizardPanel {
 
+  private static final String WIZARD_PANEL = "pentaho-wizard-panel"; //$NON-NLS-1$
   private boolean canContinue = false;
   private boolean canFinish = false;
   private Object userData;
@@ -36,7 +37,7 @@ public abstract class AbstractWizardPanel extends DockPanel implements IWizardPa
   
   public AbstractWizardPanel() {
     super();
-    this.setSize("100%", "100%");
+    this.addStyleName(WIZARD_PANEL);
   }
 
   /* (non-Javadoc)

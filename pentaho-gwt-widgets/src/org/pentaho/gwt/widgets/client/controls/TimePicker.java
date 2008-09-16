@@ -27,7 +27,7 @@ public class TimePicker extends HorizontalPanel implements IChangeHandler {
   private ICallback<IChangeHandler> onChangeHandler = null;
   
   public TimePicker() {
-    
+    this.setSpacing(5);
     // hour list
     initHourLB();
     
