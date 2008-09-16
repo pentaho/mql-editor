@@ -28,6 +28,7 @@ public class ToolbarButton {
   protected String text;
   protected Image image;
   protected Image disabledImage;
+  protected Image currentImage;
   protected Label label = new Label();
   protected FocusPanel eventWrapper = new FocusPanel();
   protected String stylePrimaryName = "toolbar-button";    //$NON-NLS-1$
@@ -78,6 +79,7 @@ public class ToolbarButton {
    */
   public ToolbarButton(Image img){
     this.image = img;
+    this.currentImage = img;
     button.add(this.image, DockPanel.CENTER);
     button.setCellHorizontalAlignment(this.image, DockPanel.ALIGN_CENTER);
     button.setCellVerticalAlignment(this.image, DockPanel.ALIGN_MIDDLE);
@@ -149,8 +151,8 @@ public class ToolbarButton {
 
       if(prevState == false && disabledImage != null){
         //was disabled, remove old image and put in the enabled one
-        button.remove(disabledImage);
-        button.add(image, DockPanel.CENTER);
+        button.remove(currentImage);
+        button.add(calculateApporiateImage(), DockPanel.CENTER);
         button.setCellHorizontalAlignment(this.image, DockPanel.ALIGN_CENTER);
         button.setCellVerticalAlignment(this.image, DockPanel.ALIGN_MIDDLE);
       }
@@ -160,8 +162,8 @@ public class ToolbarButton {
       
       if(prevState == true && disabledImage != null){
         //was enabled, remove old image and put in the disabled one
-        button.remove(image);
-        button.add(disabledImage, DockPanel.CENTER);
+        button.remove(currentImage);
+        button.add(calculateApporiateImage(), DockPanel.CENTER);
         button.setCellHorizontalAlignment(this.disabledImage, DockPanel.ALIGN_CENTER);
         button.setCellVerticalAlignment(this.disabledImage, DockPanel.ALIGN_MIDDLE);
       }
@@ -239,8 +241,6 @@ public class ToolbarButton {
   public void setDisabledImage(Image img) {
     this.disabledImage = img;
   }
-
-  
   
   /**
    * Returns the optional text to be displayed on this button.
@@ -298,6 +298,11 @@ public class ToolbarButton {
    */
   public String getToolTip(){
     return toolTip;
+  }
+  
+  protected Image calculateApporiateImage(){
+    currentImage = (!enabled && disabledImage != null)? disabledImage : image;
+    return currentImage;
   }
   
   
