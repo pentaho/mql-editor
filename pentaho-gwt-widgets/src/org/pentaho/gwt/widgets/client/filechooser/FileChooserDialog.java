@@ -18,7 +18,7 @@ public class FileChooserDialog extends PromptDialogBox {
     fileChooser = (FileChooser) getContent();
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
-        boolean isValid = fileChooser.getName() != null && !"".equals(fileChooser.getName());
+        boolean isValid = fileChooser.getActualFileName() != null && !"".equals(fileChooser.getActualFileName());
         if (!isValid) {
           MessageDialogBox dialogBox = new MessageDialogBox("Error", "No filename has been entered.", false, false, true);
           dialogBox.center();
@@ -48,7 +48,7 @@ public class FileChooserDialog extends PromptDialogBox {
     fileChooser.repositoryTree = TreeBuilder.buildSolutionTree(repositoryDocument, fileChooser.showHiddenFiles, fileChooser.showLocalizedFileNames);
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
-        boolean isValid = fileChooser.getName() != null && !"".equals(fileChooser.getName());
+        boolean isValid = fileChooser.getActualFileName() != null && !"".equals(fileChooser.getActualFileName());
         if (!isValid) {
           MessageDialogBox dialogBox = new MessageDialogBox("Error", "No filename has been entered.", false, false, true);
           dialogBox.center();

@@ -923,4 +923,39 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
    * @return translated "Delete Items"
    */
   String deleteItems();
+  
+  /**
+   * Translated "Filename:"
+   * 
+   * @return translated "Filename:"
+   */
+  String filename();
+  
+  /**
+   * Translated "Location:"
+   * 
+   * @return translated "Location:"
+   */
+  String location();
+  
+  /**
+   * Translated "Name"
+   * 
+   * @return translated "Name"
+   */
+  String name();
+  
+  /**
+   * Translated "Type"
+   * 
+   * @return translated "Type"
+   */
+  String type();
+  
+  /**
+   * Translated "Date Modified"
+   * 
+   * @return translated "Date Modified"
+   */
+  String dateModified();  
 }

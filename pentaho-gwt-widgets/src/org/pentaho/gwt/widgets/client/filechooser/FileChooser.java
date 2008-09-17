@@ -9,6 +9,8 @@ import java.util.List;
 import org.pentaho.gwt.widgets.client.dialogs.IDialogCallback;
 import org.pentaho.gwt.widgets.client.dialogs.PromptDialogBox;
 import org.pentaho.gwt.widgets.client.filechooser.images.FileChooserImages;
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
@@ -48,6 +50,8 @@ import com.google.gwt.xml.client.XMLParser;
  */
 public class FileChooser extends VerticalPanel {
 
+  private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
+  
   public enum FileChooserMode {
     OPEN, OPEN_READ_ONLY, SAVE
   }
@@ -66,9 +70,14 @@ public class FileChooser extends VerticalPanel {
   TextBox fileNameTextBox = new TextBox();
   DateTimeFormat dateFormat = DateTimeFormat.getMediumDateTimeFormat();
   Document solutionRepositoryDocument;
-
+  
   ArrayList<FileChooserListener> listeners = new ArrayList<FileChooserListener>();
-
+  private String actualFileName;
+  boolean fileSelected = false;
+  
+  private static final String ACTUAL_FILE_NAME="name";
+  private static final String LOCALIZED_FILE_NAME="localized-name";
+  
   public FileChooser() {
     fileNameTextBox.addKeyboardListener(new KeyboardListener() {
 
@@ -145,8 +154,8 @@ public class FileChooser extends VerticalPanel {
   }
 
   private void buildOracleValues(List<String> oracleValues, Element element) {
-    String name = element.getAttribute("name");
-    String localizedName = element.getAttribute("localized-name");
+    String name = element.getAttribute(ACTUAL_FILE_NAME);
+    String localizedName = element.getAttribute(LOCALIZED_FILE_NAME);
     boolean isVisible = "true".equals(element.getAttribute("visible"));
     if (isVisible || showHiddenFiles) {
       if (name != null) {
@@ -167,7 +176,10 @@ public class FileChooser extends VerticalPanel {
     if (mode == FileChooserMode.OPEN_READ_ONLY) {
       fileNameTextBox.setReadOnly(true);
     }
-
+    // We are here because we are initiating a fresh UI for a new directory
+    // Since there is no file selected currently, we are setting file selected to false. 
+    setFileSelected(false);
+    
     String path = this.selectedPath;
     if (fromSearch) {
       path = previousPath;
@@ -221,7 +233,7 @@ public class FileChooser extends VerticalPanel {
     clear();
 
     VerticalPanel locationBar = new VerticalPanel();
-    locationBar.add(new Label("Location:"));
+    locationBar.add(new Label(MSGS.location()));
 
     HorizontalPanel navigationBar = new HorizontalPanel();
 
@@ -277,8 +289,8 @@ public class FileChooser extends VerticalPanel {
             parentItem.setTitle("Search Results");
 
             HashMap<String, Object> attributeMap = new HashMap<String, Object>();
-            attributeMap.put("name", "Search Results");
-            attributeMap.put("localized-name", "Search Results");
+            attributeMap.put(ACTUAL_FILE_NAME, "Search Results");
+            attributeMap.put(LOCALIZED_FILE_NAME, "Search Results");
             attributeMap.put("description", "Search Results");
             attributeMap.put("lastModifiedDate", "" + (new Date()).getTime());
             attributeMap.put("visible", "true");
@@ -335,14 +347,16 @@ public class FileChooser extends VerticalPanel {
         List<String> parentSegments = new ArrayList<String>();
         while (tmpItem != null) {
           HashMap<String, Object> attributeMap = (HashMap<String, Object>) tmpItem.getUserObject();
-          if (attributeMap.get("name") != null) {
-            parentSegments.add((String) attributeMap.get("name"));
+          if (attributeMap.get(ACTUAL_FILE_NAME) != null) {
+            parentSegments.add((String) attributeMap.get(ACTUAL_FILE_NAME));
           }
           tmpItem = tmpItem.getParentItem();
         }
         Collections.reverse(parentSegments);
         String myPath = "";
-        for (int i = 0; i < parentSegments.size() - 1; i++) {
+        // If we have a file selected then we need to go one lesser level deep
+        final int loopCount = isFileSelected()? parentSegments.size() - 2 : parentSegments.size() - 1;
+        for (int i = 0; i < loopCount; i++) {
           String pathSegment = parentSegments.get(i);
           myPath += "/" + pathSegment;
         }
@@ -350,7 +364,8 @@ public class FileChooser extends VerticalPanel {
           myPath = "/";
         }
         fileNameTextBox.setText("");
-        changeToPath(myPath);
+        actualFileName = "";
+        changeToPath(myPath);        
       }
     });
     navigationBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
@@ -366,7 +381,7 @@ public class FileChooser extends VerticalPanel {
     locationBar.add(navigationBar);
     locationBar.setWidth("100%");
 
-    add(new Label("Filename:"));
+    add(new Label(MSGS.filename()));
     fileNameTextBox.setWidth("300px");
     add(fileNameTextBox);
     add(locationBar);
@@ -379,8 +394,8 @@ public class FileChooser extends VerticalPanel {
       final TreeItem childItem = parentItem.getChild(i);
       HashMap<String, Object> attributeMap = (HashMap<String, Object>) childItem.getUserObject();
       final boolean isDir = "true".equals(attributeMap.get("isDirectory"));
-      String name = ((String) attributeMap.get("name")).toLowerCase();
-      String localizedName = ((String) attributeMap.get("localized-name")).toLowerCase();
+      String name = ((String) attributeMap.get(ACTUAL_FILE_NAME)).toLowerCase();
+      String localizedName = ((String) attributeMap.get(LOCALIZED_FILE_NAME)).toLowerCase();
       if (isDir) {
         findMatchingTreeItems(rootItem, childItem, searchText);
       }
@@ -405,9 +420,9 @@ public class FileChooser extends VerticalPanel {
 
     FlexTable filesListTable = new FlexTable();
     filesListTable.setCellSpacing(0);
-    Label nameLabel = new Label("Name");
-    Label typeLabel = new Label("Type");
-    Label dateLabel = new Label("Date Modified");
+    Label nameLabel = new Label(MSGS.name());
+    Label typeLabel = new Label(MSGS.type());
+    Label dateLabel = new Label(MSGS.dateModified());
 
     filesListTable.setWidget(0, 0, nameLabel);
     filesListTable.getCellFormatter().setWidth(0, 0, "100%");
@@ -458,7 +473,7 @@ public class FileChooser extends VerticalPanel {
     Label myDateLabel = new Label(dateFormat.format(lastModDate));
     myDateLabel.setWordWrap(false);
 
-    final Label myNameLabel = new Label(attributeMap.get("name")) {
+    final Label myNameLabel = new Label(attributeMap.get(ACTUAL_FILE_NAME)) {
       public void onBrowserEvent(Event event) {
         handleFileClicked(item, isDir, event, this.getElement());
       }
@@ -468,7 +483,7 @@ public class FileChooser extends VerticalPanel {
     myNameLabel.setWordWrap(false);
     myNameLabel.setTitle(getTitle(item));
     if (showLocalizedFileNames) {
-      myNameLabel.setText(attributeMap.get("localized-name"));
+      myNameLabel.setText(attributeMap.get(LOCALIZED_FILE_NAME));
     }
 
     HorizontalPanel fileNamePanel = new HorizontalPanel();
@@ -500,6 +515,7 @@ public class FileChooser extends VerticalPanel {
       eventWeCareAbout = true;
     }
     if (eventWeCareAbout) {
+      setFileSelected(true);
       HashMap<String, Object> attributeMap = (HashMap<String, Object>) item.getUserObject();
       TreeItem originalItem = (TreeItem) attributeMap.get("original");
       TreeItem tmpItem = originalItem;
@@ -511,8 +527,8 @@ public class FileChooser extends VerticalPanel {
       List<String> parentSegments = new ArrayList<String>();
       while (tmpItem != null) {
         HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) tmpItem.getUserObject();
-        if (tmpAttributeMap.get("name") != null) {
-          parentSegments.add((String) tmpAttributeMap.get("name"));
+        if (tmpAttributeMap.get(ACTUAL_FILE_NAME) != null) {
+          parentSegments.add((String) tmpAttributeMap.get(ACTUAL_FILE_NAME));
         }
         tmpItem = tmpItem.getParentItem();
       }
@@ -524,8 +540,9 @@ public class FileChooser extends VerticalPanel {
       setSelectedPath(myPath);
       if (!isDir) {
         HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) selectedTreeItem.getUserObject();
-        if (tmpAttributeMap.get("name") != null) {
-          fileNameTextBox.setText((String) tmpAttributeMap.get("name"));
+        if (tmpAttributeMap.get(ACTUAL_FILE_NAME) != null) {
+          fileNameTextBox.setText((String) tmpAttributeMap.get(LOCALIZED_FILE_NAME));
+          actualFileName = (String) tmpAttributeMap.get(ACTUAL_FILE_NAME);
         }
       }
     }
@@ -533,6 +550,7 @@ public class FileChooser extends VerticalPanel {
     if ((DOM.eventGetType(event) & Event.ONDBLCLICK) == Event.ONDBLCLICK) {
       if (isDir) {
         fileNameTextBox.setText("");
+        actualFileName = "";
         initUI(false);
       } else {
         fireFileSelected();
@@ -551,12 +569,20 @@ public class FileChooser extends VerticalPanel {
     }
   }
 
+  private void setFileSelected(boolean selected) {
+    fileSelected = selected;
+  }
+  
+  public boolean isFileSelected() {
+    return fileSelected;
+  }
+  
   private String getTitle(TreeItem item) {
     List<String> parentSegments = new ArrayList<String>();
     while (item != null) {
       HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) item.getUserObject();
-      if (tmpAttributeMap.get("name") != null) {
-        parentSegments.add((String) tmpAttributeMap.get("name"));
+      if (tmpAttributeMap.get(ACTUAL_FILE_NAME) != null) {
+        parentSegments.add((String) tmpAttributeMap.get(ACTUAL_FILE_NAME));
       }
       TreeItem originalItem = (TreeItem) tmpAttributeMap.get("original");
       if (originalItem != null) {
@@ -584,7 +610,7 @@ public class FileChooser extends VerticalPanel {
       for (int i = 0; i < selectedItem.getChildCount(); i++) {
         TreeItem item = selectedItem.getChild(i);
         HashMap<String, String> attributeMap = (HashMap<String, String>) item.getUserObject();
-        if (segment.equals(attributeMap.get("name"))) {
+        if (segment.equals(attributeMap.get(ACTUAL_FILE_NAME))) {
           selectedItem = item;
         }
       }
@@ -622,13 +648,13 @@ public class FileChooser extends VerticalPanel {
 
   public void fireFileSelected() {
     for (FileChooserListener listener : listeners) {
-      listener.fileSelected(getSolution(), getPath(), getName());
+      listener.fileSelected(getSolution(), getPath(), getActualFileName());
     }
   }
 
   public void fireFileSelectionChanged() {
     for (FileChooserListener listener : listeners) {
-      listener.fileSelectionChanged(getSolution(), getPath(), getName());
+      listener.fileSelectionChanged(getSolution(), getPath(), getActualFileName());
     }
   }
 
@@ -649,12 +675,17 @@ public class FileChooser extends VerticalPanel {
     }
   }
 
-  public String getName() {
+  public String getActualFileName() {
+    return actualFileName;
+  }
+  
+  public String getLocalizedFileName() {
     return fileNameTextBox.getText();
   }
+  
 
   public String getFullPath() {
-    String name = getName();
+    String name = getActualFileName();
     if (!"".equals(name)) {
       name = "/" + name;
     }
@@ -687,7 +718,7 @@ public class FileChooser extends VerticalPanel {
     TreeItem treeItem = getTreeItem(pathSegments);
     if (treeItem != null) {
       HashMap<String, Object> attributeMap = (HashMap<String, Object>) treeItem.getUserObject();
-      if (getName().equals(attributeMap.get("name"))) {
+      if (getActualFileName().equals(attributeMap.get(ACTUAL_FILE_NAME))) {
         return true;
       }
     }
@@ -702,7 +733,7 @@ public class FileChooser extends VerticalPanel {
   public void changeToPath(String path) {
     setSelectedPath(path);
     initUI(false);
-    fireFileSelectionChanged();
+    fireFileSelectionChanged();        
   }
 
   public boolean isShowSearch() {
