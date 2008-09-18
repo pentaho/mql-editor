@@ -131,10 +131,12 @@ public class RoundedButton extends Widget {
 
   public void onBrowserEvent(Event event) {
     switch (event.getTypeInt()) {
-    case Event.ONMOUSEDOWN:
+    case Event.ONMOUSEUP:
       if (RoundedButton.this.isEnabled()) {
         fireClicked();
-        RoundedButton.this.command.execute();
+        if (command != null) {
+          command.execute();
+        }
         event.cancelBubble(true);
         event.preventDefault();
       }
@@ -172,7 +174,7 @@ public class RoundedButton extends Widget {
   }
 
   private static native void preventTextSelection(Element ele) /*-{
-     ele.onselectstart=function() {return false};
-   }-*/;
+      ele.onselectstart=function() {return false};
+    }-*/;
 
 }
