@@ -108,6 +108,7 @@ public class Toolbar extends HorizontalPanel {
    */
   public void addSpacer(int spacerAmount) {
     SimplePanel panel = new SimplePanel();
+    panel.setWidth(spacerAmount + "px");
     bar.add(panel);
     bar.setCellWidth(panel, spacerAmount + "px"); //$NON-NLS-1$
   }
