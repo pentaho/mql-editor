@@ -647,7 +647,7 @@ public class FileChooser extends VerticalPanel {
 
   public void fireFileSelected() {
     for (FileChooserListener listener : listeners) {
-      listener.fileSelected(getSolution(), getPath(), getActualFileName());
+      listener.fileSelected(getSolution(), getPath(), getActualFileName(), getLocalizedFileName());
     }
   }
 
