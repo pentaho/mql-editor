@@ -1,5 +1,7 @@
 package org.pentaho.gwt.widgets.client.toolbar;
 
+import org.pentaho.gwt.widgets.client.utils.ElementUtils;
+
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -77,11 +79,6 @@ public class ToolbarComboButton extends ToolbarButton{
   protected void addStyleMouseListener(){
     eventWrapper.addMouseListener(new MouseListener(){
       public void onMouseDown(Widget w, int x, int y) {
-        if(!enabled){
-          return;
-        }        
-        popup.setPopupPosition(w.getAbsoluteLeft(), w.getAbsoluteTop() + w.getOffsetHeight());
-        popup.show();
       }
       public void onMouseEnter(Widget w) {
         button.addStyleName(stylePrimaryName+"-hovering");    //$NON-NLS-1$
@@ -90,6 +87,13 @@ public class ToolbarComboButton extends ToolbarButton{
         button.removeStyleName(stylePrimaryName+"-hovering");   //$NON-NLS-1$
       }
       public void onMouseUp(Widget w, int x, int y) {
+        if(!enabled){
+          ElementUtils.blur(ToolbarComboButton.this.eventWrapper.getElement());
+          return;
+        }        
+        popup.setPopupPosition(w.getAbsoluteLeft(), w.getAbsoluteTop() + w.getOffsetHeight());
+        popup.show();
+        ElementUtils.blur(ToolbarComboButton.this.eventWrapper.getElement());
       }
       public void onMouseMove(Widget w, int x, int y) {}
     });

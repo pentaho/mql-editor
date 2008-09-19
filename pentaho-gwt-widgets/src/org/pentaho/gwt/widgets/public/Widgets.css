@@ -436,3 +436,7 @@ html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
 
 /* End Wizard Styles -------------------------------------------------------- */
 
+body{
+	font-family:Tahoma,Arial,Helvetica,sans-serif;
+}
+

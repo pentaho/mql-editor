@@ -1,5 +1,7 @@
 package org.pentaho.gwt.widgets.client.toolbar;
 
+import org.pentaho.gwt.widgets.client.utils.ElementUtils;
+
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MouseListener;
@@ -147,10 +149,12 @@ public class ToolbarToggleButton extends ToolbarButton {
       }
       public void onMouseUp(Widget arg0, int arg1, int arg2) {
         if(!enabled){
+          ElementUtils.blur(ToolbarToggleButton.this.eventWrapper.getElement());
           return;
         }
         toggleSelectedState();
         command.execute();
+        ElementUtils.blur(ToolbarToggleButton.this.eventWrapper.getElement());
       }
       public void onMouseMove(Widget arg0, int arg1, int arg2) {}
     });

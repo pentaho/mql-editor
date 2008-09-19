@@ -1,6 +1,7 @@
 package org.pentaho.gwt.widgets.client.toolbar;
 
 import org.pentaho.gwt.widgets.client.text.ToolTip;
+import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -119,11 +120,14 @@ public class ToolbarButton {
       }
       public void onMouseUp(Widget arg0, int arg1, int arg2) {
         if(!enabled){
+          ElementUtils.blur(ToolbarButton.this.eventWrapper.getElement());
           return;
         }
         button.removeStyleName(stylePrimaryName+"-down");   //$NON-NLS-1$
         button.removeStyleName(stylePrimaryName+"-hovering");   //$NON-NLS-1$
         command.execute();
+        ElementUtils.blur(ToolbarButton.this.eventWrapper.getElement());
+        
       }
       public void onMouseMove(Widget arg0, int arg1, int arg2) {}
     });
