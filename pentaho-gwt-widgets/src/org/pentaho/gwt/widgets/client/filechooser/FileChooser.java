@@ -473,18 +473,22 @@ public class FileChooser extends VerticalPanel {
     Label myDateLabel = new Label(dateFormat.format(lastModDate));
     myDateLabel.setWordWrap(false);
 
-    final Label myNameLabel = new Label(attributeMap.get(ACTUAL_FILE_NAME)) {
+    String finalFileName;
+    if (showLocalizedFileNames) {
+      finalFileName = getRestrictedLengthFileName(attributeMap.get(LOCALIZED_FILE_NAME));
+    } else {
+      finalFileName = getRestrictedLengthFileName(attributeMap.get(ACTUAL_FILE_NAME));
+    }
+    
+    final Label myNameLabel = new Label(finalFileName) {
       public void onBrowserEvent(Event event) {
         handleFileClicked(item, isDir, event, this.getElement());
       }
     };
     myNameLabel.getElement().setAttribute("id", attributeMap.get("name"));
     myNameLabel.sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
-    myNameLabel.setWordWrap(false);
-    myNameLabel.setTitle(getTitle(item));
-    if (showLocalizedFileNames) {
-      myNameLabel.setText(attributeMap.get(LOCALIZED_FILE_NAME));
-    }
+    myNameLabel.setWordWrap(true);
+    myNameLabel.setTitle(attributeMap.get(LOCALIZED_FILE_NAME));
 
     HorizontalPanel fileNamePanel = new HorizontalPanel();
     Image fileImage = new Image() {
@@ -507,6 +511,26 @@ public class FileChooser extends VerticalPanel {
     filesListTable.setWidget(row + 1, 2, myDateLabel);
   }
 
+  /*
+   * If the file name is longer than 18 characters than clip it to 18 length and add "..." to it.
+   * If the file name has a space as 18th char than get the string until 17th char and add "..."
+   * else return file name as is.
+   */
+  private String getRestrictedLengthFileName(String fileName) {
+    if (null != fileName) {
+      if (fileName.length() > 18) {
+        if (fileName.substring(17,17).equals(" ")) {
+          return fileName.substring(0, 16) + "...";
+        } else {
+          return fileName.substring(0,17) + "...";
+        }
+      } else {
+        return fileName;
+      }      
+    }
+    return "";
+  }
+  
   private void handleFileClicked(final TreeItem item, final boolean isDir, final Event event, com.google.gwt.user.client.Element sourceElement) {
     boolean eventWeCareAbout = false;
     if ((DOM.eventGetType(event) & Event.ONDBLCLICK) == Event.ONDBLCLICK) {
