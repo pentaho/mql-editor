@@ -35,12 +35,10 @@ public class RunOnceEditor extends VerticalPanel implements IChangeHandler {
     SimpleGroupBox startTimeCaptionPanel = new SimpleGroupBox(MSGS.startTime());
     startTimeCaptionPanel.add(startTimePicker);
     add( startTimeCaptionPanel );
-    startTimeCaptionPanel.setWidth("100%");
     
     SimpleGroupBox startDateCaptionPanel = new SimpleGroupBox(MSGS.startDate());
     startDateCaptionPanel.add(startDatePicker);
     add( startDateCaptionPanel );
-    startDateCaptionPanel.setWidth("100%");
     
     configureOnChangeHandler();
   }

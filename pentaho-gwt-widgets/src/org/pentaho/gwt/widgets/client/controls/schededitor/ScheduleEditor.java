@@ -140,11 +140,13 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
     nameLabel = new ErrorLabel( new Label( MSGS.nameColon() ) );
     add( nameLabel );
     add( nameTb );
+    nameTb.setWidth("70%");
     
     rowNum++;
     groupNameLabel = new ErrorLabel( new Label( MSGS.groupColon() ) );
     add( groupNameLabel );
     add( groupNameTb );
+    groupNameTb.setWidth("70%");
 
     rowNum++;
     Label l = new Label( MSGS.descriptionColon() );
@@ -160,6 +162,7 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
 
     rowNum++;
     VerticalPanel vp = new VerticalPanel();
+    vp.setWidth("100%");
     add( vp );
     setCellHeight( vp, "100%" );
 

@@ -188,23 +188,27 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
     wizardDeckPanel.addStyleName(WIZARD_DECK_PANEL);
     
     // Add the control buttons
-    HorizontalPanel buttonPanel = new HorizontalPanel();
-    buttonPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
-    buttonPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
+    HorizontalPanel wizardButtonPanel = new HorizontalPanel();
+    wizardButtonPanel.setSpacing(2);
     // If we have only one button then we dont need to show the back and next button.
-    buttonPanel.add(backButton);
+    wizardButtonPanel.add(backButton);
     backButton.addStyleName(BACK_BTN_STYLE);
-    buttonPanel.add(nextButton);
+    wizardButtonPanel.add(nextButton);
     nextButton.addStyleName(NEXT_BTN_STYLE);
-    buttonPanel.add(finishButton);
+    wizardButtonPanel.add(finishButton);
     finishButton.addStyleName(FINISH_BTN_STYLE);
-    buttonPanel.add(cancelButton);
+    wizardButtonPanel.add(cancelButton);
     cancelButton.addStyleName(CANCEL_BTN_STYLE);
-    content.add(buttonPanel, DockPanel.SOUTH);
-    buttonPanel.addStyleName(WIZARD_BUTTON_PANEL);
+    wizardButtonPanel.addStyleName(WIZARD_BUTTON_PANEL);
 
-    content.setCellHorizontalAlignment(buttonPanel, HasHorizontalAlignment.ALIGN_RIGHT);
-    content.setCellVerticalAlignment(buttonPanel, HasVerticalAlignment.ALIGN_BOTTOM);
+    HorizontalPanel wizardButtonPanelWrapper = new HorizontalPanel();
+    wizardButtonPanelWrapper.setWidth("100%");
+    wizardButtonPanelWrapper.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+    wizardButtonPanelWrapper.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
+    wizardButtonPanelWrapper.add(wizardButtonPanel);
+    
+    content.add(wizardButtonPanelWrapper, DockPanel.SOUTH);
+    content.setCellVerticalAlignment(wizardButtonPanelWrapper, HasVerticalAlignment.ALIGN_BOTTOM);
     
     // Add the content to the dialog
     add(content);
