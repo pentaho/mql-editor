@@ -352,13 +352,13 @@ html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
 /* begin dialog styles ------------------------------------------------------*/
 
 .modalDialogPageBackground {
-  opacity: 0.10;
+  opacity: 0.05;
   background-color:  #000000;
   /* Transparency for IE */
   background-image: expression('url(style/images/wait-background.gif)');
   background-color: expression('transparent');
   /*
-  opacity: 0.10;
+  opacity: 0.05;
   position: expression('absolute');
   height: expression(document.documentElement.scrollHeight+'px');
   width: expression(document.documentElement.scrollWidth+'px');
@@ -368,11 +368,11 @@ html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
 
 .dialogButtonPanel {
   border-top: 1px solid #848484;
-  background-color: #e3e3e3;
+  background-color: #ececec;
 }
 
 .gwt-DialogBox {
-  background-color: white;
+  background-color: #ececec;
   border: 1px solid #848484;
 }
 
