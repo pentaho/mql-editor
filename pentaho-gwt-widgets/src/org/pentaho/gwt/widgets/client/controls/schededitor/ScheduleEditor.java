@@ -298,7 +298,7 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
     final ScheduleEditor localThis = this;
     ListBox lb = new ListBox();
     lb.setVisibleItemCount( 1 );
-    lb.setStyleName("scheduleCombo"); //$NON-NLS-1$
+    //lb.setStyleName("scheduleCombo"); //$NON-NLS-1$
     lb.addChangeListener( new ChangeListener() {
       public void onChange(Widget sender) {
         localThis.handleScheduleChange();
