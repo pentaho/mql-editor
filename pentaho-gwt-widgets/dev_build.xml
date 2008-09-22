@@ -45,7 +45,7 @@
 	</target>
 
 	<target name="compile-gwt" depends="compile">
-		<java classname="com.google.gwt.dev.GWTCompiler" fork="true" maxmemory="512M">
+		<java classname="com.google.gwt.dev.GWTCompiler" fork="true" failonerror="true" maxmemory="512M">
 			<classpath>
 				<path refid="classpath" />
 				<pathelement location="src" />
