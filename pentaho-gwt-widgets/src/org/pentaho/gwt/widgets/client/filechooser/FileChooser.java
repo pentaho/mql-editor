@@ -88,7 +88,8 @@ public class FileChooser extends VerticalPanel {
       }
 
       public void onKeyUp(Widget sender, char keyCode, int modifiers) {
-        if (keyCode == KeyboardListener.KEY_ENTER) {
+        actualFileName = fileNameTextBox.getText(); 
+        if (keyCode == KeyboardListener.KEY_ENTER) {          
           fireFileSelected();
         }
       }

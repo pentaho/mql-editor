@@ -18,12 +18,7 @@ public class FileChooserDialog extends PromptDialogBox {
     fileChooser = (FileChooser) getContent();
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
-        boolean isValid = fileChooser.getActualFileName() != null && !"".equals(fileChooser.getActualFileName());
-        if (!isValid) {
-          MessageDialogBox dialogBox = new MessageDialogBox("Error", "No filename has been entered.", false, false, true);
-          dialogBox.center();
-        }
-        return isValid;
+        return isFileNameValid();
       }
     });
     IDialogCallback callback = new IDialogCallback() {
@@ -48,12 +43,7 @@ public class FileChooserDialog extends PromptDialogBox {
     fileChooser.repositoryTree = TreeBuilder.buildSolutionTree(repositoryDocument, fileChooser.showHiddenFiles, fileChooser.showLocalizedFileNames);
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
-        boolean isValid = fileChooser.getActualFileName() != null && !"".equals(fileChooser.getActualFileName());
-        if (!isValid) {
-          MessageDialogBox dialogBox = new MessageDialogBox("Error", "No filename has been entered.", false, false, true);
-          dialogBox.center();
-        }
-        return isValid;
+        return isFileNameValid();
       }
     });
     IDialogCallback callback = new IDialogCallback() {
@@ -89,5 +79,35 @@ public class FileChooserDialog extends PromptDialogBox {
   public boolean doesSelectedFileExist() {
     return fileChooser.doesSelectedFileExist();
   }
-
+  
+  /*
+   * Give precedence to file name text box content as file name.
+   * It should never be empty, but in the unlikely scenario of it 
+   * being empty get the actual file name. If both are empty return 
+   * empty string.
+   */
+  private String getFileName() {    
+    final String fileNameFromTextBox = fileChooser.fileNameTextBox.getText().trim();
+    final String actualFileName = fileChooser.getActualFileName();
+    if (fileNameFromTextBox != null && !"".equals(fileNameFromTextBox)) {      
+      return fileNameFromTextBox;
+    } else if ( actualFileName != null && !"".equals(actualFileName) ) {
+      return actualFileName;
+    } else {
+      return "";
+    }
+  }
+  
+  /*
+   * If the file name is empty or null then return false, else return true.
+   */
+  private boolean isFileNameValid() {
+    final String fileName = getFileName();
+    if (fileName == null || "".equals(fileName)) {
+      MessageDialogBox dialogBox = new MessageDialogBox("Error", "No filename has been entered.", false, false, true);
+      dialogBox.center();
+      return false;
+    }    
+    return true;
+  }
 }
