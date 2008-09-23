@@ -87,6 +87,7 @@ which java class/code the style is associated with */
 
 .roundedbutton{
   height: 27px;
+  display: inline;
 }
 
 .roundedbutton-label{
