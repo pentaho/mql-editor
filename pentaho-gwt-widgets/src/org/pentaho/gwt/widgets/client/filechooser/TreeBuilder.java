@@ -1,6 +1,8 @@
 package org.pentaho.gwt.widgets.client.filechooser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -51,7 +53,44 @@ public class TreeBuilder {
         attributeMap.put("isDirectory", childElement.getAttribute("isDirectory"));
         childTreeItem.setUserObject(attributeMap);
 
-        parentTreeItem.addItem(childTreeItem);
+        // find the spot in the parentTreeItem to insert the node (based on showLocalizedFileNames)
+        if (parentTreeItem.getChildCount() == 0) {
+          parentTreeItem.addItem(childTreeItem);
+        } else {
+          // this does sorting
+          boolean inserted = false;
+          for (int j = 0; j < parentTreeItem.getChildCount(); j++) {
+            TreeItem kid = (TreeItem) parentTreeItem.getChild(j);
+            if (showLocalizedFileNames) {
+              if (childTreeItem.getText().compareTo(kid.getText()) <= 0) {
+                // leave all items ahead of the insert point
+                // remove all items between the insert point and the end
+                // add the new item
+                // add back all removed items
+                List<TreeItem> removedItems = new ArrayList<TreeItem>();
+                for (int x = j; x < parentTreeItem.getChildCount(); x++) {
+                  TreeItem removedItem = (TreeItem) parentTreeItem.getChild(x);
+                  removedItems.add(removedItem);
+                }
+                for (TreeItem removedItem : removedItems) {
+                  parentTreeItem.removeItem(removedItem);
+                }
+                parentTreeItem.addItem(childTreeItem);
+                inserted = true;
+                for (TreeItem removedItem : removedItems) {
+                  parentTreeItem.addItem(removedItem);
+                }
+                break;
+              }
+            } else {
+              parentTreeItem.addItem(childTreeItem);
+            }
+          }
+          if (!inserted) {
+            parentTreeItem.addItem(childTreeItem);
+          }
+        }
+
         boolean isDirectory = "true".equals(childElement.getAttribute("isDirectory"));
         if (isDirectory) {
           buildSolutionTree(childTreeItem, childElement, showHiddenFiles, showLocalizedFileNames);
