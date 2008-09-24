@@ -136,7 +136,7 @@ public class PromptDialogBox extends DialogBox {
       dialogContent.getFlexCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
       dialogContent.getFlexCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
       dialogContent.setWidget(0, 0, content);
-      DOM.setStyleAttribute(dialogContent.getCellFormatter().getElement(0,0), "padding", "10px");
+      DOM.setStyleAttribute(dialogContent.getCellFormatter().getElement(0,0), "padding", "5px 10px 10px 10px");
       content.setHeight("100%");
       content.setWidth("100%");
     }
