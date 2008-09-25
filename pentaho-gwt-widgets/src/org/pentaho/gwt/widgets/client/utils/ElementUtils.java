@@ -5,7 +5,9 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalSplitPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -65,6 +67,61 @@ public class ElementUtils {
         }
       }
     }
+  }
+  
+
+  public static native void preventTextSelection(Element ele) /*-{
+    ele.onselectstart=function() {return false};
+  }-*/;
+
+  
+
+  public static native void toggleEmbedVisibilityJS(boolean visible)/*-{
+    alert("toggle function called with "+visible);
+    var embeds = $doc.getElementsByTagName("embed");
+    for(var i=0; i<embeds.length; i++){
+      //embeds[i].style.display = (visible)? "" : "none";
+    }
+    
+    var iframes = $doc.getElementsByTagName("iframe");
+    for(var i=0; i<iframes.length; i++){
+    var doc = (iframes[i].contentWindow.document || iframes[i].contentDocument);
+    
+    if(doc == null)
+    {
+      alert("doc null");
+      continue;
+    }
+      var embeds = doc.getElementsByTagName("embed");
+      for(var y=0; y<embeds.length; y++){
+        if(visible){
+        alert("showing iframe");
+          iframes[i].style.display = "" ;
+          iframes[i].contentWindow.location.href = iframes[i].contentWindow.location.href
+        } else {
+        alert("hiding iframe");
+          iframes[i].style.display = "none" ;
+        }
+      }
+      
+    }
+    
+  }-*/;
+
+  
+  public static void toggleEmbedVisibility(boolean visible){
+//    NodeList<Element> embeds = RootPanel.getBodyElement().getElementsByTagName("embed");
+//    
+//    
+//    NodeList<Element> iframes = RootPanel.getBodyElement().getElementsByTagName("iframe");
+//    
+//    for(int i=0; i<iframes.getLength(); i++){
+//      Element ele = iframes.getItem(i);
+//      embeds = Frame.wrap(ele).getElement().getElementsByTagName("embed");
+//      if(embeds.getLength() > 0){
+//        ele.getStyle().setProperty("display", (visible)?"" : "none");
+//      }
+//    }
   }
   
 }

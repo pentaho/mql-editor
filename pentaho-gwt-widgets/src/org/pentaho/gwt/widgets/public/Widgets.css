@@ -297,6 +297,7 @@ which java class/code the style is associated with */
 
 .gwt-MenuBarPopup {
   margin: 0px 0px 0px 0px;
+  z-index: 110;
 }
 .gwt-MenuBarPopup .menuPopupTopCenter {
 }
