@@ -20,6 +20,8 @@ import java.util.EnumSet;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 
+import com.google.gwt.user.client.Window;
+
 /**
  * 
  * @author Steven Barkdull
@@ -604,9 +606,8 @@ public class CronParser {
     }
   }
   
-  private static final String COMMA_SEPARATED_LIST_OF_WEEKDAY_INTS = "^[1-7](,[1-7]){0,6}$?$"; //$NON-NLS-1$
+  private static final String COMMA_SEPARATED_LIST_OF_WEEKDAY_INTS = "^[1-7](,[1-7]){0,6}$"; //$NON-NLS-1$
   private static void validateIsCommaSeparatedListOfWeekdays( String strInts ) throws CronParseException {
-
     // TODO, could make sure that the ints are unique
     boolean matches = strInts.matches( COMMA_SEPARATED_LIST_OF_WEEKDAY_INTS );
     if ( !matches ) {
