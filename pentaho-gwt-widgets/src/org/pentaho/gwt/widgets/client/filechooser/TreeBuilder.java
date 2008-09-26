@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.pentaho.gwt.widgets.client.utils.ElementUtils;
+
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.xml.client.Document;
@@ -44,6 +46,8 @@ public class TreeBuilder {
           childTreeItem.setTitle(localizedName);
         }
 
+        //ElementUtils.preventTextSelection(childTreeItem.getElement());
+        
         HashMap<String, Object> attributeMap = new HashMap<String, Object>();
         attributeMap.put("name", childElement.getAttribute("name"));
         attributeMap.put("localized-name", childElement.getAttribute("localized-name"));

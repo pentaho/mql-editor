@@ -26,6 +26,11 @@
 	margin: 1px; 
 }
 
+div{
+	outline:0px;
+  hideFocus: true;
+}
+
 .toolbar-button-hovering{
 	background-color: #E8E8E8;
 	border: 1px solid #AAA;

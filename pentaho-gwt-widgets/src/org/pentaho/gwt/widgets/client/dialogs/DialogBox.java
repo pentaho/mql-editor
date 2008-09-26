@@ -103,14 +103,6 @@ public class DialogBox extends com.google.gwt.user.client.ui.DialogBox implement
     }
   }
   
-  @Override
-  public void hide(){
-    if(this.isVisible()){
-      //reshow <embeds>
-      ElementUtils.toggleEmbedVisibility(true);
-      super.hide();
-    }
-  }
 
   public void onPopupClosed(PopupPanel sender, boolean autoClosed) {
     if (modal) {
@@ -120,7 +112,9 @@ public class DialogBox extends com.google.gwt.user.client.ui.DialogBox implement
         pageBackground.setVisible(false);
         
         //reshow <embeds>
-        //ElementUtils.toggleEmbedVisibility(true);
+        if(this.isVisible()){
+          ElementUtils.toggleEmbedVisibility(true);
+        }
         
         // just make sure it is zero
         dialogDepthCount = 0;

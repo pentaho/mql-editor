@@ -71,35 +71,35 @@ public class ElementUtils {
   
 
   public static native void preventTextSelection(Element ele) /*-{
-    ele.onselectstart=function() {return false};
+    if(document.all){
+      ele.onselectstart=function() {return false};
+    } else {
+      ele.style.MozUserSelect='none';
+    }
   }-*/;
 
   
 
-  public static native void toggleEmbedVisibilityJS(boolean visible)/*-{
-    alert("toggle function called with "+visible);
-    var embeds = $doc.getElementsByTagName("embed");
-    for(var i=0; i<embeds.length; i++){
-      //embeds[i].style.display = (visible)? "" : "none";
-    }
-    
+  public static native void toggleEmbedVisibility(boolean visible)/*-{
+
     var iframes = $doc.getElementsByTagName("iframe");
     for(var i=0; i<iframes.length; i++){
-    var doc = (iframes[i].contentWindow.document || iframes[i].contentDocument);
-    
-    if(doc == null)
-    {
-      alert("doc null");
-      continue;
-    }
+      var doc = (iframes[i].contentWindow.document || iframes[i].contentDocument);
+      
+      if(doc == null)
+      {
+        //IE7 you're ok anyway
+        return;
+      }
+      
       var embeds = doc.getElementsByTagName("embed");
       for(var y=0; y<embeds.length; y++){
         if(visible){
-        alert("showing iframe");
+          alert("showing iframe");
           iframes[i].style.display = "" ;
           iframes[i].contentWindow.location.href = iframes[i].contentWindow.location.href
         } else {
-        alert("hiding iframe");
+          alert("hiding iframe");
           iframes[i].style.display = "none" ;
         }
       }
@@ -109,20 +109,67 @@ public class ElementUtils {
   }-*/;
 
   
-  public static void toggleEmbedVisibility(boolean visible){
-//    NodeList<Element> embeds = RootPanel.getBodyElement().getElementsByTagName("embed");
-//    
-//    
-//    NodeList<Element> iframes = RootPanel.getBodyElement().getElementsByTagName("iframe");
-//    
-//    for(int i=0; i<iframes.getLength(); i++){
-//      Element ele = iframes.getItem(i);
-//      embeds = Frame.wrap(ele).getElement().getElementsByTagName("embed");
-//      if(embeds.getLength() > 0){
-//        ele.getStyle().setProperty("display", (visible)?"" : "none");
-//      }
-//    }
-  }
+  public static native void convertPNGs() /*-{
+    try{
+      var arVersion = navigator.appVersion.split("MSIE")
+      var version = parseFloat(arVersion[1])
+    
+      if ((version >= 5.5) && ($doc.body.filters)) 
+      {
+         for(var i=0; i<$doc.images.length; i++)
+         {
+            var img = $doc.images[i]
+            var imgName = img.src.toUpperCase()
+            if (imgName.substring(imgName.length-3, imgName.length) == "PNG")
+            {
+               var imgID = (img.id) ? "id='" + img.id + "' " : ""
+               var imgClass = (img.className) ? "class='" + img.className + "' " : ""
+               var imgTitle = (img.title) ? "title='" + img.title + "' " : "title='" + img.alt + "' "
+               var imgStyle = "display:inline-block;" + img.style.cssText 
+               if (img.align == "left") imgStyle = "float:left;" + imgStyle
+               if (img.align == "right") imgStyle = "float:right;" + imgStyle
+               if (img.parentElement.href) imgStyle = "cursor:hand;" + imgStyle
+               var strNewHTML = "<span " + imgID + imgClass + imgTitle
+               + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
+               + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
+               + "(src=\'" + img.src + "\', sizingMethod='scale');\"></span>" 
+               img.outerHTML = strNewHTML
+               i = i-1
+            }
+         }
+      }
+    } catch(e){
+      //NON-IE
+    }
+  }-*/;
+  
+  
+  public static native int[] calculateScrollOffsets(Element e)/*-{
+    var x=0;
+    var y=0;
+    while(e.offsetParent != null){
+      x += e.scrollLeft;
+      y += e.scrollTop;
+      e = e.offsetParent;
+    }
+    return [x,y];
+  }-*/;
+  
+
+  public static native int[] calculateOffsets(Element e)/*-{
+    var x=0;
+    var y=0;
+    while(e.offsetParent != null){
+      x += e.offsetLeft;
+      y += e.offsetTop;
+      e = e.offsetParent;
+    }
+    return [x,y];
+  }-*/;
+
+  
+  
+  
   
 }
 

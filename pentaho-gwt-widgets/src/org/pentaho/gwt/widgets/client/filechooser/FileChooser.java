@@ -11,6 +11,7 @@ import org.pentaho.gwt.widgets.client.dialogs.PromptDialogBox;
 import org.pentaho.gwt.widgets.client.filechooser.images.FileChooserImages;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
+import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
@@ -425,6 +426,10 @@ public class FileChooser extends VerticalPanel {
     Label typeLabel = new Label(MSGS.type());
     Label dateLabel = new Label(MSGS.dateModified());
 
+    ElementUtils.preventTextSelection(nameLabel.getElement());
+    ElementUtils.preventTextSelection(typeLabel.getElement());
+    ElementUtils.preventTextSelection(dateLabel.getElement());
+    
     filesListTable.setWidget(0, 0, nameLabel);
     filesListTable.getCellFormatter().setWidth(0, 0, "100%");
     filesListTable.setWidget(0, 1, typeLabel);
@@ -507,8 +512,15 @@ public class FileChooser extends VerticalPanel {
     fileNamePanel.add(myNameLabel);
     DOM.setStyleAttribute(myNameLabel.getElement(), "cursor", "default");
 
+
+    Label typeLabel = new Label(isDir ? "Folder" : "File");
+    
+    ElementUtils.preventTextSelection(myNameLabel.getElement());
+    ElementUtils.preventTextSelection(typeLabel.getElement());
+    ElementUtils.preventTextSelection(myDateLabel.getElement());
+    
     filesListTable.setWidget(row + 1, 0, fileNamePanel);
-    filesListTable.setWidget(row + 1, 1, new Label(isDir ? "Folder" : "File"));
+    filesListTable.setWidget(row + 1, 1, typeLabel);
     filesListTable.setWidget(row + 1, 2, myDateLabel);
   }
 
