@@ -13,7 +13,7 @@
         <dependency org="pentaho" name="pentaho-connections"  rev="${dependency.pentaho-connections.revision}" changing="true" transitive="false"/>
         <dependency org="pentaho" name="pentaho-metadata"     rev="${dependency.pentaho-metadata.revision}"    changing="true" transitive="false"/>
         <dependency org="pentaho" name="pentaho-cwm"          rev="1.5.4" />
-        <dependency org="pentaho.kettle" name="kettle-core"   rev="${dependency.kettle-engine.revision}" />
+        <!--  dependency org="pentaho.kettle" name="kettle-core"   rev="${dependency.kettle-engine.revision}" / -->
         <dependency org="pentaho.kettle" name="kettle-engine" rev="${dependency.kettle-engine.revision}" />
     </dependencies>
 </ivy-module>
