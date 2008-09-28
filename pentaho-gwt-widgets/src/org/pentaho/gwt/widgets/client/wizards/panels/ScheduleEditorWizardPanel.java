@@ -107,6 +107,10 @@ public class ScheduleEditorWizardPanel extends AbstractWizardPanel {
     return scheduleEditor.getStartDate();
   }
   
+  public String getStartTime() {
+    return scheduleEditor.getStartTime();
+  }
+  
   public Date getEndDate() {
     return scheduleEditor.getEndDate();
   }
@@ -118,5 +122,4 @@ public class ScheduleEditorWizardPanel extends AbstractWizardPanel {
   public String getRepeatInterval() {
     return scheduleEditor.getRepeatInSecs().toString();
   }
-  
 }
