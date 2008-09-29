@@ -225,7 +225,6 @@ public class FileChooser extends VerticalPanel {
     navigationListBox.addChangeListener(new ChangeListener() {
       public void onChange(Widget sender) {
         changeToPath(navigationListBox.getItemText(navigationListBox.getSelectedIndex()));
-        resetFileName();
       }
     });
 
@@ -366,7 +365,6 @@ public class FileChooser extends VerticalPanel {
         if (myPath.equals("")) {
           myPath = "/";
         }
-        resetFileName();
         changeToPath(myPath);        
       }
     });
@@ -586,7 +584,6 @@ public class FileChooser extends VerticalPanel {
     // double click
     if ((DOM.eventGetType(event) & Event.ONDBLCLICK) == Event.ONDBLCLICK) {
       if (isDir) {
-        resetFileName();
         initUI(false);
       } else {
         fireFileSelected();
@@ -779,14 +776,5 @@ public class FileChooser extends VerticalPanel {
   public void setShowSearch(boolean showSearch) {
     this.showSearch = showSearch;
     initUI(false);
-  }
-  
-  /*
-   * When called, we want to clear the file name textbox 
-   * and also reset any reference to previous file name string. 
-   */
-  private void resetFileName() {
-    fileNameTextBox.setText("");
-    actualFileName = "";
-  }
+  }  
 }
