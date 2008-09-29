@@ -95,11 +95,9 @@ public class ElementUtils {
       var embeds = doc.getElementsByTagName("embed");
       for(var y=0; y<embeds.length; y++){
         if(visible){
-          alert("showing iframe");
           iframes[i].style.display = "" ;
           iframes[i].contentWindow.location.href = iframes[i].contentWindow.location.href
         } else {
-          alert("hiding iframe");
           iframes[i].style.display = "none" ;
         }
       }
