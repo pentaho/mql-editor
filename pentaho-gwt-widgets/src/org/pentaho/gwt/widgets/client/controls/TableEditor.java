@@ -1,5 +1,6 @@
 package org.pentaho.gwt.widgets.client.controls;
 
+import org.pentaho.gwt.widgets.client.dialogs.MessageDialogBox;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 import org.pentaho.gwt.widgets.client.ui.ICallback;
@@ -24,7 +25,6 @@ public class TableEditor extends VerticalPanel {
   private static int DEFAULT_NUM_VISIBLE_ITEMS = 10;
   private ICallback<TableEditor> onAddHandler = null;
   private ICallback<TableEditor> onDeleteHandler = null;
-  
   public TableEditor( String labelText ) {
 
     DockPanel buttonPanel = new DockPanel();
@@ -113,9 +113,25 @@ public class TableEditor extends VerticalPanel {
     ListBoxUtils.removeAll( actionLb );
   }
   
+  private boolean isExist(String item) {
+    boolean returnValue = false;
+    for ( int ii=0; ii<getItemCount(); ii++ ) {
+      if ( actionLb.getItemText(ii) != null) {
+        if(!actionLb.getItemText(ii).equals(item)) {
+          continue;
+        }  else {
+          returnValue = true;
+          break;
+        }
+      }
+    }
+    return returnValue;
+  }
   public void addItem( String item, String value ) {
-    actionLb.addItem( item );
-    actionLb.setValue( actionLb.getItemCount()-1, value );
+    if(!isExist(item)) {
+      actionLb.addItem( item );
+      actionLb.setValue( actionLb.getItemCount()-1, value );
+    }
   }
   
   public String getItemText( int idx ) {
