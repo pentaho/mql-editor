@@ -3,6 +3,7 @@ package org.pentaho.gwt.widgets.client.toolbar;
 import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MouseListener;
@@ -77,6 +78,22 @@ public class ToolbarComboButton extends ToolbarButton{
     
   @Override
   protected void addStyleMouseListener(){
+    // a click listener is more appropriate here to fire the click events
+    // rather than a mouse-up because the focus panel can (and does) sometimes
+    // receive mouse up events if a widget 'above' it has been clicked and
+    // dismissed (on mouse-down).  The ensures that only a true click will
+    // fire a button's command
+    eventWrapper.addClickListener(new ClickListener() {
+      public void onClick(Widget sender) {
+        if(!enabled){
+          ElementUtils.blur(ToolbarComboButton.this.eventWrapper.getElement());
+          return;
+        }        
+        popup.setPopupPosition(sender.getAbsoluteLeft(), sender.getAbsoluteTop() + sender.getOffsetHeight());
+        popup.show();
+        ElementUtils.blur(ToolbarComboButton.this.eventWrapper.getElement());
+      }
+    });
     eventWrapper.addMouseListener(new MouseListener(){
       public void onMouseDown(Widget w, int x, int y) {
       }
@@ -92,7 +109,6 @@ public class ToolbarComboButton extends ToolbarButton{
           return;
         }        
         popup.setPopupPosition(w.getAbsoluteLeft(), w.getAbsoluteTop() + w.getOffsetHeight());
-        popup.show();
         ElementUtils.blur(ToolbarComboButton.this.eventWrapper.getElement());
       }
       public void onMouseMove(Widget w, int x, int y) {}

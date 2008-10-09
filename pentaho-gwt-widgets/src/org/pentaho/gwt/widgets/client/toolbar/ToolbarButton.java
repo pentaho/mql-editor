@@ -1,9 +1,9 @@
 package org.pentaho.gwt.widgets.client.toolbar;
 
 import org.pentaho.gwt.widgets.client.text.ToolTip;
-import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -99,6 +99,23 @@ public class ToolbarButton {
 
   
   protected void addStyleMouseListener(){
+    // a click listener is more appropriate here to fire the click events
+    // rather than a mouse-up because the focus panel can (and does) sometimes
+    // receive mouse up events if a widget 'above' it has been clicked and
+    // dismissed (on mouse-down).  The ensures that only a true click will
+    // fire a button's command
+    eventWrapper.addClickListener(new ClickListener() {
+      public void onClick(Widget sender) {
+        if(!enabled){
+          //ElementUtils.blur(ToolbarButton.this.eventWrapper.getElement());
+          return;
+        }
+        button.removeStyleName(stylePrimaryName+"-down");   //$NON-NLS-1$
+        button.removeStyleName(stylePrimaryName+"-hovering");   //$NON-NLS-1$
+        command.execute();
+        //ElementUtils.blur(ToolbarButton.this.eventWrapper.getElement());
+      }
+    });
     eventWrapper.addMouseListener(new MouseListener(){
       public void onMouseDown(Widget w, int arg1, int arg2) {
         if(!enabled){
@@ -125,9 +142,7 @@ public class ToolbarButton {
         }
         button.removeStyleName(stylePrimaryName+"-down");   //$NON-NLS-1$
         button.removeStyleName(stylePrimaryName+"-hovering");   //$NON-NLS-1$
-        command.execute();
         //ElementUtils.blur(ToolbarButton.this.eventWrapper.getElement());
-        
       }
       public void onMouseMove(Widget arg0, int arg1, int arg2) {}
     });
