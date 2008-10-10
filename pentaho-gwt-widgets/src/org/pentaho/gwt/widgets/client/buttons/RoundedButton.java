@@ -3,6 +3,8 @@ package org.pentaho.gwt.widgets.client.buttons;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pentaho.gwt.widgets.client.utils.ElementUtils;
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
@@ -66,7 +68,7 @@ public class RoundedButton extends Widget {
     label.addStyleDependentName("label");
 
     // prevent double-click from selecting text
-    preventTextSelection(label.getElement());
+    ElementUtils.preventTextSelection(label.getElement());
 
   }
 
@@ -173,8 +175,5 @@ public class RoundedButton extends Widget {
     listeners.remove(listener);
   }
 
-  private static native void preventTextSelection(Element ele) /*-{
-      ele.onselectstart=function() {return false};
-    }-*/;
 
 }
