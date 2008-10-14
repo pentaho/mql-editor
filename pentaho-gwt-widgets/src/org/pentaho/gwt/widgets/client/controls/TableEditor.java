@@ -44,6 +44,7 @@ public class TableEditor extends VerticalPanel {
     add( buttonPanel );
     
     actionLb.setWidth( "100%" ); //$NON-NLS-1$  // TODO sbarkdull, move to css
+    actionLb.setHeight( "100%" ); //$NON-NLS-1$
     actionLb.setVisibleItemCount( DEFAULT_NUM_VISIBLE_ITEMS );
     actionLb.setMultipleSelect( true );
     final TableEditor localThis = this;
@@ -56,7 +57,7 @@ public class TableEditor extends VerticalPanel {
       }
     });
     add( actionLb );
-    setCellHeight( actionLb, "100%" );
+    setCellHeight( actionLb, "100%" ); //$NON-NLS-1$
     addBtn.addClickListener( new ClickListener() {
       public void onClick(Widget sender) {
         localThis.handleAdd();
