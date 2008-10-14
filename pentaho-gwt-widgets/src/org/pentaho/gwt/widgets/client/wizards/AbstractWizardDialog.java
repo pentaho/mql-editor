@@ -228,7 +228,6 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
     
     steps.clear();      
     wizardDeckPanel.clear();
-
     if (wizardPanels != null  && wizardPanels.length > 0) { // Add new wizardPanels
       for (IWizardPanel panel : wizardPanels) {
         steps.addItem(panel.getName());
@@ -236,7 +235,10 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
       }
       
       ((IWizardPanel) wizardDeckPanel.getWidget(0)).addWizardPanelListener(this);
-
+      if (wizardPanels.length == 1) { // We only have one item so change the Finish button to ok.
+        finishButton.setText("OK");
+      }
+      
       updateGUI(0);
     }
   }
