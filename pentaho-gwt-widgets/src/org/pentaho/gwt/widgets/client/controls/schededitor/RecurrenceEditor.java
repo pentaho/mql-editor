@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.pentaho.gwt.widgets.client.containers.SimpleGroupBox;
 import org.pentaho.gwt.widgets.client.controls.DateRangeEditor;
 import org.pentaho.gwt.widgets.client.controls.ErrorLabel;
 import org.pentaho.gwt.widgets.client.controls.TimePicker;
@@ -24,6 +23,7 @@ import org.pentaho.gwt.widgets.client.utils.TimeUtil.MonthOfYear;
 import org.pentaho.gwt.widgets.client.utils.TimeUtil.TimeOfDay;
 import org.pentaho.gwt.widgets.client.utils.TimeUtil.WeekOfMonth;
 
+import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -47,6 +47,9 @@ import com.google.gwt.user.client.ui.Widget;
 public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
 
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
+  
+  private static final String SCHEDULE_EDITOR_CAPTION_PANEL = "schedule-editor-caption-panel"; //$NON-NLS-1$
+  private static final String DOW_CHECKBOX = "day-of-week-checkbox"; //$NON-NLS-1$
   
   private TimePicker startTimePicker = null;
 
@@ -135,8 +138,9 @@ public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
 
   public RecurrenceEditor() {
     super();
+    this.setWidth("100%");
 
-    Panel p = createStartTimePanel();
+    Widget p = createStartTimePanel();
     add(p);
 
     p = createRecurrencePanel();
@@ -303,18 +307,20 @@ public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
   }
 
   
-  private Panel createStartTimePanel() {
-    SimpleGroupBox startTimeGB = new SimpleGroupBox( MSGS.startTime() );
-
+  private Widget createStartTimePanel() {
+    CaptionPanel startTimeGB = new CaptionPanel( MSGS.startTime() );
+    startTimeGB.setStyleName(SCHEDULE_EDITOR_CAPTION_PANEL);
+    
     startTimePicker = new TimePicker();
     startTimeGB.add(startTimePicker);
 
     return startTimeGB;
   }
 
-  private Panel createRecurrencePanel() {
+  private Widget createRecurrencePanel() {
 
-    SimpleGroupBox recurrenceGB = new SimpleGroupBox(MSGS.recurrencePattern() );
+    CaptionPanel recurrenceGB = new CaptionPanel(MSGS.recurrencePattern() );
+    recurrenceGB.setStyleName(SCHEDULE_EDITOR_CAPTION_PANEL);
 
     VerticalPanel p = new VerticalPanel();
     recurrenceGB.add(p);
@@ -569,6 +575,7 @@ public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
       for (int ii = 0; ii < ITEMS_IN_ROW; ++ii) {
         DayOfWeek day = DayOfWeek.get(ii);
         CheckBox cb = new CheckBox(day.toString());
+        cb.setStylePrimaryName(DOW_CHECKBOX);
         gp.setWidget(0, ii, cb);
         dayToCheckBox.put(day, cb);
       }
@@ -576,6 +583,7 @@ public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
       for (int ii = ITEMS_IN_ROW; ii < DayOfWeek.length(); ++ii) {
         DayOfWeek day = DayOfWeek.get(ii);
         CheckBox cb = new CheckBox(day.toString());
+        cb.setStylePrimaryName(DOW_CHECKBOX);
         gp.setWidget(1, ii - 4, cb);
         dayToCheckBox.put(day, cb);
       }
@@ -688,6 +696,7 @@ public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
     
     public MonthlyRecurrenceEditor() {
       setVisible(false);
+      setSpacing(6);
 
       HorizontalPanel hp = new HorizontalPanel();
       dayNOfMonthRb.setStyleName("recurrenceRadioButton"); //$NON-NLS-1$
@@ -825,15 +834,17 @@ public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
     private ICallback<IChangeHandler> onChangeHandler;
 
     private static final String YEARLY_RB_GROUP = "yearly-group"; //$NON-NLS-1$
-
+    private static final String DAY_OF_MONTH_TB = "day-of-month-textbox"; //$NON-NLS-1$
     public YearlyRecurrenceEditor() {
       setVisible(false);
+      setSpacing(6);
 
       HorizontalPanel p = new HorizontalPanel();
       everyMonthOnNthDayRb.setStyleName("recurrenceRadioButton"); //$NON-NLS-1$
       everyMonthOnNthDayRb.setChecked(true);
       p.add(everyMonthOnNthDayRb);
       p.add( monthOfYearLb0 );
+      dayOfMonthTb.setStylePrimaryName("DAY_OF_MONTH_TB");
       dayOfMonthTb.setWidth("3em"); //$NON-NLS-1$
       p.add(dayOfMonthTb);
       dayOfMonthLabel = new ErrorLabel( p );

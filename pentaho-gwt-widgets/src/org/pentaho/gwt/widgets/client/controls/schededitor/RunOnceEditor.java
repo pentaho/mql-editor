@@ -2,7 +2,6 @@ package org.pentaho.gwt.widgets.client.controls.schededitor;
 
 import java.util.Date;
 
-import org.pentaho.gwt.widgets.client.containers.SimpleGroupBox;
 import org.pentaho.gwt.widgets.client.controls.DatePickerEx;
 import org.pentaho.gwt.widgets.client.controls.TimePicker;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
@@ -11,6 +10,7 @@ import org.pentaho.gwt.widgets.client.ui.ICallback;
 import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 import org.pentaho.gwt.widgets.client.utils.TimeUtil;
 
+import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 
@@ -20,8 +20,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 
 public class RunOnceEditor extends VerticalPanel implements IChangeHandler {
-
+  
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
+  private static final String SCHEDULER_CAPTION_PANEL = "schedule-editor-caption-panel";
+  
   private TimePicker startTimePicker = new TimePicker();
   private DatePickerEx startDatePicker = new DatePickerEx();
   private static final String DEFAULT_START_HOUR = "12"; //$NON-NLS-1$
@@ -32,11 +34,14 @@ public class RunOnceEditor extends VerticalPanel implements IChangeHandler {
   public RunOnceEditor() {
     setWidth("100%");
 
-    SimpleGroupBox startTimeCaptionPanel = new SimpleGroupBox(MSGS.startTime());
+    CaptionPanel startTimeCaptionPanel = new CaptionPanel(MSGS.startTime());
+    startTimeCaptionPanel.setStyleName(SCHEDULER_CAPTION_PANEL);
+    
     startTimeCaptionPanel.add(startTimePicker);
     add( startTimeCaptionPanel );
     
-    SimpleGroupBox startDateCaptionPanel = new SimpleGroupBox(MSGS.startDate());
+    CaptionPanel startDateCaptionPanel = new CaptionPanel(MSGS.startDate());
+    startDateCaptionPanel.setStyleName(SCHEDULER_CAPTION_PANEL);
     startDateCaptionPanel.add(startDatePicker);
     add( startDateCaptionPanel );
     

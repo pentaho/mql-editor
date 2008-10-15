@@ -3,16 +3,18 @@ Please, please comment all entries so that it is clear
 which java class/code the style is associated with */
 
 /* start snb */
-/* default style for java class SimpleGroupBox */
-.simpleGroupBox {
+/* default style for java class Schedule Editor caption panels */
+/* begin recurrence dialog ------------------------------------------------------*/
+.schedule-editor-caption-panel {
+  margin-top: 6px;
   padding: 5px;
 }
-/* begin recurrence dialog ------------------------------------------------------*/
 .startLabel {
   padding-right: 1ex;
   white-space: nowrap;
   /*border:1px dotted red;*/
 }
+
 .middleLabel {
   padding-right: 1ex;
   padding-left: 1ex;
@@ -25,12 +27,73 @@ which java class/code the style is associated with */
   /*border:1px dotted red;*/
 }
 
+.schedule-label {
+  margin-top: 4px;
+}
+
+.cron-label {
+  margin-top: 6px;
+}
+
+.start-date-picker {
+  width: 10em;
+}
+
+.end-date-picker {
+  width: 10em;
+}
+
 .recurrenceRadioButton label {
   padding-right: 1ex;
   white-space: nowrap;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 2px;
+}
+
+.recurrenceRadioButton {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 10px;
+}
+
+.day-of-month-textbox {
+  margin-left: 6px;
+}
+
+.day-of-week-checkbox {
+  padding-left: 4px;
 }
 
 .weeklyRecurrencePanel {
+}
+
+.popupContent {
+  font-family: Tahoma, Ariel, Helvetica, san-serif;
+  font-color: #000000;
+}
+
+.blue-current-month-selected {
+  background-color: #848484;
+}
+
+.blue-week-line {
+  background-color: #D2D2D2;
+}
+
+.blue-month-line {
+  background-color: #D2D2D2;
+  font-family: Tahoma, Ariel, Helvetica, san-serif;
+  font-color: #000000;
+  color: #000000;
+}
+
+.blue-day-grid {
+	border: 1pt solid #848484;
+}
+
+.blue-date-picker {
+	z-index: 310;
 }
 
 /* begin schedule editor ------------------------------------------------------*/
@@ -358,6 +421,7 @@ html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
   background-color:  #000000;
   z-index:250;
   filter:alpha(opacity=20)
+  
   cursor: wait;
 } 
 
@@ -435,7 +499,6 @@ html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
 body{
 	font-family:Tahoma,Arial,Helvetica,sans-serif;
 }
-
 
 /* begin file chooser styles ------------------------------------------------ */
 .fileChooserHeader {

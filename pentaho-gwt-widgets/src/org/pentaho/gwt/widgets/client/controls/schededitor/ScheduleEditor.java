@@ -49,6 +49,8 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
 
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
 
+  private static final String SCHEDULE_LABEL = "schedule-label"; //$NON-NLS-1$
+  
   public enum ScheduleType {
     RUN_ONCE(0, MSGS.runOnce()), 
     SECONDS(1, MSGS.seconds()), 
@@ -138,18 +140,21 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
     setStylePrimaryName( "scheduleEditor" ); //$NON-NLS-1$
     int rowNum = 0;
     nameLabel = new ErrorLabel( new Label( MSGS.nameColon() ) );
+    nameLabel.setStyleName(SCHEDULE_LABEL);
     add( nameLabel );
     add( nameTb );
     nameTb.setWidth("70%");
     
     rowNum++;
     groupNameLabel = new ErrorLabel( new Label( MSGS.groupColon() ) );
+    groupNameLabel.setStyleName(SCHEDULE_LABEL);
     add( groupNameLabel );
     add( groupNameTb );
     groupNameTb.setWidth("70%");
 
     rowNum++;
     Label l = new Label( MSGS.descriptionColon() );
+    l.setStyleName(SCHEDULE_LABEL);
     add( l );
     descriptionTb.setStyleName( "scheduleDescription" );
     add( descriptionTb );
@@ -157,6 +162,7 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
     rowNum++;
     scheduleCombo = createScheduleCombo();
     l = new Label( MSGS.recurrenceColon() );
+    l.setStyleName(SCHEDULE_LABEL);
     add( l );
     add( scheduleCombo );
 

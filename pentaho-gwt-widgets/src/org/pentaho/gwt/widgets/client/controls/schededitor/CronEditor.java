@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  */
 public class CronEditor extends VerticalPanel implements IChangeHandler {
+  private static final String CRON_LABEL = "cron-label"; //$NON-NLS-1$
   
   private TextBox cronTb = new TextBox();
   private DateRangeEditor dateRangeEditor = null;
@@ -29,12 +30,17 @@ public class CronEditor extends VerticalPanel implements IChangeHandler {
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
   
   public CronEditor() {
+    super();
+    setWidth("100%");
+    
     Label l = new Label( MSGS.cronLabel() );
+    l.setStylePrimaryName(CRON_LABEL);
     cronLabel = new ErrorLabel( l );
+    
     add( cronLabel );
     add( cronTb );
     
-    dateRangeEditor = new DateRangeEditor( new Date() );
+    dateRangeEditor = new DateRangeEditor( new Date() );   
     add( dateRangeEditor );
     configureOnChangeHandler();
   }

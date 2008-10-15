@@ -2,12 +2,12 @@ package org.pentaho.gwt.widgets.client.controls;
 
 import java.util.Date;
 
-import org.pentaho.gwt.widgets.client.containers.SimpleGroupBox;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 import org.pentaho.gwt.widgets.client.ui.ICallback;
 import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 
+import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.KeyboardListener;
@@ -20,10 +20,14 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Steven Barkdull
  *
  */
-public class DateRangeEditor extends SimpleGroupBox implements IChangeHandler {
+public class DateRangeEditor extends CaptionPanel implements IChangeHandler {
 
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
+  private static final String SCHEDULE_EDITOR_CAPTION_PANEL = "schedule-editor-caption-panel";
+
   private static final String END_DATE_RB_GROUP = "end-date-group"; //$NON-NLS-1$
+  private static final String END_DATE_PICKER = "end-date-picker"; //$NON-NLS-1$
+  private static final String START_DATE_PICKER = "start-date-picker"; //$NON-NLS-1$
 
   private DatePickerEx startDatePicker = null;
   private EndDatePanel endDatePanel = null;
@@ -34,7 +38,8 @@ public class DateRangeEditor extends SimpleGroupBox implements IChangeHandler {
   public DateRangeEditor( Date date ) {
 
     super( MSGS.rangeOfRecurrence() );
-
+    this.addStyleName(SCHEDULE_EDITOR_CAPTION_PANEL);
+    
     HorizontalPanel outerHP = new HorizontalPanel();
     add( outerHP );
     
@@ -43,6 +48,7 @@ public class DateRangeEditor extends SimpleGroupBox implements IChangeHandler {
     l.setStyleName("startLabel"); //$NON-NLS-1$
     hp.add( l );
     startDatePicker = new DatePickerEx();
+    startDatePicker.setStyleName(START_DATE_PICKER);
     hp.add(startDatePicker);
     startLabel = new ErrorLabel( hp );
     outerHP.add(startLabel);
@@ -146,6 +152,7 @@ public class DateRangeEditor extends SimpleGroupBox implements IChangeHandler {
       endByRb.setStyleName("recurrenceRadioButton"); //$NON-NLS-1$
       endByPanel.add(endByRb);
       endDatePicker = new DatePickerEx();
+      endDatePicker.setStyleName(END_DATE_PICKER);
       endDatePicker.setEnabled(false);
       endByPanel.add(endDatePicker);
       endByLabel = new ErrorLabel( endByPanel );
