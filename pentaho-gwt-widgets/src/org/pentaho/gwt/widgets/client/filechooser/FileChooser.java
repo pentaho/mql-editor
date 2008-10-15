@@ -52,7 +52,7 @@ import com.google.gwt.xml.client.XMLParser;
 public class FileChooser extends VerticalPanel {
 
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
-  
+
   public enum FileChooserMode {
     OPEN, OPEN_READ_ONLY, SAVE
   }
@@ -71,14 +71,14 @@ public class FileChooser extends VerticalPanel {
   TextBox fileNameTextBox = new TextBox();
   DateTimeFormat dateFormat = DateTimeFormat.getMediumDateTimeFormat();
   Document solutionRepositoryDocument;
-  
+
   ArrayList<FileChooserListener> listeners = new ArrayList<FileChooserListener>();
   private String actualFileName;
   boolean fileSelected = false;
-  
-  private static final String ACTUAL_FILE_NAME="name";
-  private static final String LOCALIZED_FILE_NAME="localized-name";
-  
+
+  private static final String ACTUAL_FILE_NAME = "name";
+  private static final String LOCALIZED_FILE_NAME = "localized-name";
+
   public FileChooser() {
     fileNameTextBox.addKeyboardListener(new KeyboardListener() {
 
@@ -89,8 +89,8 @@ public class FileChooser extends VerticalPanel {
       }
 
       public void onKeyUp(Widget sender, char keyCode, int modifiers) {
-        actualFileName = fileNameTextBox.getText(); 
-        if (keyCode == KeyboardListener.KEY_ENTER) {          
+        actualFileName = fileNameTextBox.getText();
+        if (keyCode == KeyboardListener.KEY_ENTER) {
           fireFileSelected();
         }
       }
@@ -179,9 +179,9 @@ public class FileChooser extends VerticalPanel {
       fileNameTextBox.setReadOnly(true);
     }
     // We are here because we are initiating a fresh UI for a new directory
-    // Since there is no file selected currently, we are setting file selected to false. 
+    // Since there is no file selected currently, we are setting file selected to false.
     setFileSelected(false);
-    
+
     String path = this.selectedPath;
     if (fromSearch) {
       path = previousPath;
@@ -357,7 +357,7 @@ public class FileChooser extends VerticalPanel {
         Collections.reverse(parentSegments);
         String myPath = "";
         // If we have a file selected then we need to go one lesser level deep
-        final int loopCount = isFileSelected()? parentSegments.size() - 2 : parentSegments.size() - 1;
+        final int loopCount = isFileSelected() ? parentSegments.size() - 2 : parentSegments.size() - 1;
         for (int i = 0; i < loopCount; i++) {
           String pathSegment = parentSegments.get(i);
           myPath += "/" + pathSegment;
@@ -365,7 +365,7 @@ public class FileChooser extends VerticalPanel {
         if (myPath.equals("")) {
           myPath = "/";
         }
-        changeToPath(myPath);        
+        changeToPath(myPath);
       }
     });
     navigationBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
@@ -381,7 +381,9 @@ public class FileChooser extends VerticalPanel {
     locationBar.add(navigationBar);
     locationBar.setWidth("100%");
 
-    add(new Label(MSGS.filename()));
+    Label filenameLabel = new Label(MSGS.filename());
+    filenameLabel.setWidth("550px");
+    add(filenameLabel);
     fileNameTextBox.setWidth("300px");
     add(fileNameTextBox);
     add(locationBar);
@@ -420,32 +422,21 @@ public class FileChooser extends VerticalPanel {
 
     FlexTable filesListTable = new FlexTable();
     filesListTable.setCellSpacing(0);
-    Label nameLabel = new Label(MSGS.name());
-    Label typeLabel = new Label(MSGS.type());
-    Label dateLabel = new Label(MSGS.dateModified());
+    Label nameLabel = new Label(MSGS.name(), false);
+    nameLabel.setStyleName("fileChooserHeader");
+    Label typeLabel = new Label(MSGS.type(), false);
+    typeLabel.setStyleName("fileChooserHeader");
+    Label dateLabel = new Label(MSGS.dateModified(), false);
+    dateLabel.setStyleName("fileChooserHeader");
 
     ElementUtils.preventTextSelection(nameLabel.getElement());
     ElementUtils.preventTextSelection(typeLabel.getElement());
     ElementUtils.preventTextSelection(dateLabel.getElement());
-    
+
     filesListTable.setWidget(0, 0, nameLabel);
     filesListTable.getCellFormatter().setWidth(0, 0, "100%");
     filesListTable.setWidget(0, 1, typeLabel);
     filesListTable.setWidget(0, 2, dateLabel);
-
-    // name
-    DOM.setStyleAttribute(nameLabel.getElement(), "background", "#f0f0f0");
-    DOM.setStyleAttribute(nameLabel.getElement(), "border", "1px solid black");
-    // type
-    DOM.setStyleAttribute(typeLabel.getElement(), "background", "#f0f0f0");
-    DOM.setStyleAttribute(typeLabel.getElement(), "borderTop", "1px solid black");
-    DOM.setStyleAttribute(typeLabel.getElement(), "borderRight", "1px solid black");
-    DOM.setStyleAttribute(typeLabel.getElement(), "borderBottom", "1px solid black");
-    // date
-    DOM.setStyleAttribute(dateLabel.getElement(), "background", "#f0f0f0");
-    DOM.setStyleAttribute(dateLabel.getElement(), "borderTop", "1px solid black");
-    DOM.setStyleAttribute(dateLabel.getElement(), "borderRight", "1px solid black");
-    DOM.setStyleAttribute(dateLabel.getElement(), "borderBottom", "1px solid black");
 
     int row = 0;
     for (int i = 0; i < parentTreeItem.getChildCount(); i++) {
@@ -465,7 +456,7 @@ public class FileChooser extends VerticalPanel {
       }
     }
     filesScroller.setWidget(filesListTable);
-    filesScroller.setHeight("200px");
+    filesScroller.setHeight("220px");
 
     filesListPanel.add(filesScroller);
     return filesListPanel;
@@ -474,24 +465,22 @@ public class FileChooser extends VerticalPanel {
   private void addFileToList(final HashMap<String, String> attributeMap, final TreeItem item, final FlexTable filesListTable, int row) {
     Date lastModDate = new Date(Long.parseLong(attributeMap.get("lastModifiedDate")));
     final boolean isDir = "true".equals(attributeMap.get("isDirectory"));
-    Label myDateLabel = new Label(dateFormat.format(lastModDate));
-    myDateLabel.setWordWrap(false);
+    Label myDateLabel = new Label(dateFormat.format(lastModDate), false);
 
     String finalFileName;
     if (showLocalizedFileNames) {
-      finalFileName = getRestrictedLengthFileName(attributeMap.get(LOCALIZED_FILE_NAME));
+      finalFileName = attributeMap.get(LOCALIZED_FILE_NAME);
     } else {
-      finalFileName = getRestrictedLengthFileName(attributeMap.get(ACTUAL_FILE_NAME));
+      finalFileName = attributeMap.get(ACTUAL_FILE_NAME);
     }
-    
-    final Label myNameLabel = new Label(finalFileName) {
+
+    final Label myNameLabel = new Label(finalFileName, false) {
       public void onBrowserEvent(Event event) {
         handleFileClicked(item, isDir, event, this.getElement());
       }
     };
     myNameLabel.getElement().setAttribute("id", attributeMap.get("name"));
     myNameLabel.sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
-    myNameLabel.setWordWrap(true);
     myNameLabel.setTitle(attributeMap.get(LOCALIZED_FILE_NAME));
 
     HorizontalPanel fileNamePanel = new HorizontalPanel();
@@ -510,38 +499,21 @@ public class FileChooser extends VerticalPanel {
     fileNamePanel.add(myNameLabel);
     DOM.setStyleAttribute(myNameLabel.getElement(), "cursor", "default");
 
+    Label typeLabel = new Label(isDir ? "Folder" : "File", false);
 
-    Label typeLabel = new Label(isDir ? "Folder" : "File");
-    
     ElementUtils.preventTextSelection(myNameLabel.getElement());
     ElementUtils.preventTextSelection(typeLabel.getElement());
     ElementUtils.preventTextSelection(myDateLabel.getElement());
-    
+
+    fileNamePanel.setStyleName("fileChooserCell");
+    typeLabel.setStyleName("fileChooserCell");
+    myDateLabel.setStyleName("fileChooserCell");
+
     filesListTable.setWidget(row + 1, 0, fileNamePanel);
     filesListTable.setWidget(row + 1, 1, typeLabel);
     filesListTable.setWidget(row + 1, 2, myDateLabel);
   }
 
-  /*
-   * If the file name is longer than 18 characters than clip it to 18 length and add "..." to it.
-   * If the file name has a space as 18th char than get the string until 17th char and add "..."
-   * else return file name as is.
-   */
-  private String getRestrictedLengthFileName(String fileName) {
-    if (null != fileName) {
-      if (fileName.length() > 18) {
-        if (fileName.substring(17,17).equals(" ")) {
-          return fileName.substring(0, 16) + "...";
-        } else {
-          return fileName.substring(0,17) + "...";
-        }
-      } else {
-        return fileName;
-      }      
-    }
-    return "";
-  }
-  
   private void handleFileClicked(final TreeItem item, final boolean isDir, final Event event, com.google.gwt.user.client.Element sourceElement) {
     boolean eventWeCareAbout = false;
     if ((DOM.eventGetType(event) & Event.ONDBLCLICK) == Event.ONDBLCLICK) {
@@ -605,11 +577,11 @@ public class FileChooser extends VerticalPanel {
   private void setFileSelected(boolean selected) {
     fileSelected = selected;
   }
-  
+
   public boolean isFileSelected() {
     return fileSelected;
   }
-  
+
   private String getTitle(TreeItem item) {
     List<String> parentSegments = new ArrayList<String>();
     while (item != null) {
@@ -711,11 +683,10 @@ public class FileChooser extends VerticalPanel {
   public String getActualFileName() {
     return actualFileName;
   }
-  
+
   public String getLocalizedFileName() {
     return fileNameTextBox.getText();
   }
-  
 
   public String getFullPath() {
     String name = getActualFileName();
@@ -766,7 +737,7 @@ public class FileChooser extends VerticalPanel {
   public void changeToPath(String path) {
     setSelectedPath(path);
     initUI(false);
-    fireFileSelectionChanged();        
+    fireFileSelectionChanged();
   }
 
   public boolean isShowSearch() {
@@ -776,5 +747,5 @@ public class FileChooser extends VerticalPanel {
   public void setShowSearch(boolean showSearch) {
     this.showSearch = showSearch;
     initUI(false);
-  }  
+  }
 }

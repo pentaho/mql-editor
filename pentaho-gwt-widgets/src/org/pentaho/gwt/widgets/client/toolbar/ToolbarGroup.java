@@ -3,6 +3,8 @@ package org.pentaho.gwt.widgets.client.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 
@@ -20,8 +22,8 @@ public class ToolbarGroup {
   private boolean enabled = true;
   private boolean visible = true;
   private String label = null;
-  private Image trailingSeparator = new Image( "style/images/toolbarDivider.png", 0, 0, 2, 16 ); //$NON-NLS-1$;
-  private Image leadingSeparator = new Image( "style/images/toolbarDivider.png", 0, 0, 2, 16 ); //$NON-NLS-1$;
+  private Image trailingSeparator = null;
+  private Image leadingSeparator = null;
   private Label groupLabel = new Label();
   
   public static final String CSS_ENABLED= "toolbar-group-label";  //$NON-NLS-1$ 
@@ -29,6 +31,20 @@ public class ToolbarGroup {
 
   public ToolbarGroup(){
     groupLabel.setStyleName(CSS_ENABLED);    
+    String url = "mantle/style/images/toolbarDivider.png";
+    if (GWT.isScript()) {
+      String mypath = Window.Location.getPath();
+      if (!mypath.endsWith("/")) {
+        mypath = mypath.substring(0, mypath.lastIndexOf("/") + 1);
+      }
+      mypath = mypath.replaceAll("/mantle/", "/");
+      if (!mypath.endsWith("/")) {
+        mypath = "/" + mypath;
+      }    
+      url = mypath + url;
+    }
+    trailingSeparator = new Image( url, 0, 0, 2, 16 ); //$NON-NLS-1$;
+    leadingSeparator = new Image( url, 0, 0, 2, 16 ); //$NON-NLS-1$;
   }
   
   /**

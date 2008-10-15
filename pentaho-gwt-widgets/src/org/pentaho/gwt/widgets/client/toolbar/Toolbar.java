@@ -3,6 +3,8 @@ package org.pentaho.gwt.widgets.client.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -86,7 +88,19 @@ public class Toolbar extends HorizontalPanel {
   public void add(int key) {
     switch (key) {
     case Toolbar.SEPARATOR:
-      Image img = new Image("style/images/toolbarDivider.png"); //$NON-NLS-1$
+      String url = "mantle/style/images/toolbarDivider.png";
+      if (GWT.isScript()) {
+        String mypath = Window.Location.getPath();
+        if (!mypath.endsWith("/")) {
+          mypath = mypath.substring(0, mypath.lastIndexOf("/") + 1);
+        }
+        mypath = mypath.replaceAll("/mantle/", "/");
+        if (!mypath.endsWith("/")) {
+          mypath = "/" + mypath;
+        }    
+        url = mypath + url;
+      }
+      Image img = new Image(url); //$NON-NLS-1$
       bar.add(img);
       bar.setCellVerticalAlignment(img, ALIGN_MIDDLE);
       break;

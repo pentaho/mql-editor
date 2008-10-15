@@ -3,19 +3,20 @@ package org.pentaho.gwt.widgets.client.filechooser;
 import org.pentaho.gwt.widgets.client.dialogs.IDialogCallback;
 import org.pentaho.gwt.widgets.client.dialogs.IDialogValidatorCallback;
 import org.pentaho.gwt.widgets.client.dialogs.MessageDialogBox;
-import org.pentaho.gwt.widgets.client.dialogs.PromptDialogBox;
+import org.pentaho.gwt.widgets.client.dialogs.ResizableDialogBox;
 import org.pentaho.gwt.widgets.client.filechooser.FileChooser.FileChooserMode;
 
 import com.google.gwt.xml.client.Document;
 
-public class FileChooserDialog extends PromptDialogBox {
+public class FileChooserDialog extends ResizableDialogBox {
 
   FileChooser fileChooser;
 
   public FileChooserDialog(FileChooserMode mode, String selectedPath, boolean autoHide, boolean modal) {
-    super(mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel", autoHide, modal, new FileChooser(mode,
-        selectedPath));
+    super(mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel", new FileChooser(mode,
+        selectedPath), true);
     fileChooser = (FileChooser) getContent();
+    fileChooser.setWidth("100%");
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
         return isFileNameValid();
@@ -35,8 +36,9 @@ public class FileChooserDialog extends PromptDialogBox {
   }
 
   public FileChooserDialog(FileChooserMode mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal) {
-    super(mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel", autoHide, modal, new FileChooser());
+    super(mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel", new FileChooser(), true);
     fileChooser = (FileChooser) getContent();
+    fileChooser.setWidth("100%");
     fileChooser.setMode(mode);
     fileChooser.setSelectedPath(selectedPath);
     fileChooser.solutionRepositoryDocument = repositoryDocument;

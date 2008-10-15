@@ -358,7 +358,6 @@ html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
   background-color:  #000000;
   z-index:250;
   filter:alpha(opacity=20)
-  
   cursor: wait;
 } 
 
@@ -435,5 +434,142 @@ html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
 
 body{
 	font-family:Tahoma,Arial,Helvetica,sans-serif;
+}
+
+
+/* begin file chooser styles ------------------------------------------------ */
+.fileChooserHeader {
+  background-color: #f0f0f0;
+  border: 1px solid black;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.fileChooserCell {
+  background-color: white;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* end file chooser styles ------------------------------------------------ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.dragdrop-handle {
+  cursor: ;
+}
+
+.dragdrop-draggable {
+  zoom: 1; /* IE gain hasLayout */
+}
+
+.dragdrop-dragging {
+  zoom: normal; /* remove artifacts */
+}
+
+.dragdrop-positioner {
+  border: 1px dashed #1E90FF; /* blue */
+  margin: 0px !important;
+  zoom: 1; /* IE gain hasLayout */
+  z-index: 100;
+}
+
+.dragdrop-flow-panel-positioner {
+  color: #1E90FF; /* blue */
+  display: inline;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.dragdrop-proxy {
+}
+.dragdrop-selected,.dragdrop-dragging,.dragdrop-proxy {
+}
+
+.dragdrop-movable-panel {
+  z-index: 200;
+  margin: 0px !important;
+  border: none !important;
+}
+
+
+/* ------------ WindowExample ------------ */
+.contentWidget {
+  padding: 5px;
+}
+
+.resizableDialogHeaderAndContent {
+  background-color: #ececec;
+  border: 1px solid #848484;
+}
+
+.demo-WindowPanel {
+  cursor: default;
+  z-index: 1000;
+}
+
+.demo-WindowPanel .demo-WindowPanel-header {
+  padding: 5px;
+  background-image: url(style/images/subtoolbar_bg.png);
+  color: black;
+  overflow: hidden;
+  cursor: move;
+}
+
+.demo-resize-nw {
+  cursor: nw-resize;
+}
+
+.demo-resize-n {
+  cursor: n-resize;
+}
+
+.demo-resize-ne {
+  cursor: ne-resize;
+}
+
+.demo-resize-w {
+  cursor: w-resize;
+}
+
+.demo-resize-e {
+  cursor: e-resize;
+}
+
+.demo-resize-sw {
+  cursor: sw-resize;
+}
+
+.demo-resize-s {
+  cursor: s-resize;
+}
+
+.demo-resize-se {
+  cursor: se-resize;
 }
 
