@@ -499,6 +499,9 @@ html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
 body{
 	font-family:Tahoma,Arial,Helvetica,sans-serif;
 }
+.nowrap{
+  white-space: nowrap;	
+}
 
 /* begin file chooser styles ------------------------------------------------ */
 .fileChooserHeader {
@@ -514,34 +517,6 @@ body{
 }
 
 /* end file chooser styles ------------------------------------------------ */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .dragdrop-handle {
   cursor: ;
@@ -635,4 +610,3 @@ body{
 .demo-resize-se {
   cursor: se-resize;
 }
-
