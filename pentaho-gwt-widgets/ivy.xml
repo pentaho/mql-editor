@@ -17,6 +17,7 @@
         <!--  Actual dependencies -->
         <dependency org="org.zenica"     name="gwt-datepicker" rev="r17"   conf="default->default"/>
         <dependency org="com.google.gwt" name="gwt-servlet" rev="1.5.2"       conf="default->default"/>
+        <dependency org="com.google.gwt" ame="gwt-incubator" rev="1-5_Sept_04" 	conf="default->default"/>
         <dependency org="com.allen_sauer" name="gwt-dnd" rev="2.5.6"       conf="default->default"/>
         
         <!--  Testing dependencies -->
