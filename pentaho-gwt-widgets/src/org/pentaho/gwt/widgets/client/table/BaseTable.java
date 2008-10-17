@@ -117,7 +117,7 @@ public class BaseTable extends Composite {
     
       createTableWithShortMessage(LOADING_MESSAGE);
 
-      parentPanel.setWidth("100%");
+      parentPanel.setWidth("100%"); //$NON-NLS-1$
       this.parentPanel.add(scrollTable);
       scrollTable.fillWidth();
     }else{
@@ -129,9 +129,9 @@ public class BaseTable extends Composite {
    * Creates a table with blank headers and a single row with a short message in it. 
    */
   private void createTableWithShortMessage(String message){
-    String[] simpleMessageHeaderValues = new String[]{"&nbsp;", "&nbsp;"};
+    String[] simpleMessageHeaderValues = new String[]{"&nbsp;", "&nbsp;"}; //$NON-NLS-1$ //$NON-NLS-2$
     int[] simpleMessageColumnWidths = new int[]{45, -1};
-    String[][] simpleMessageRowAndColumnValues = new String[][]{{message, "&nbsp;"}};
+    String[][] simpleMessageRowAndColumnValues = new String[][]{{message, "&nbsp;"}}; //$NON-NLS-1$
     
     createTable(simpleMessageHeaderValues, simpleMessageColumnWidths, simpleMessageRowAndColumnValues, 
         ScrollTable.ResizePolicy.FILL_WIDTH, SelectionGrid.SelectionPolicy.DISABLED);
@@ -139,8 +139,8 @@ public class BaseTable extends Composite {
     scrollTable.setSortingEnabled(false);
     scrollTable.setScrollPolicy(ScrollPolicy.DISABLED);
 
-    tableHeader.setStylePrimaryName("disabled");
-    dataGrid.setStylePrimaryName("disabled");
+    tableHeader.setStylePrimaryName("disabled"); //$NON-NLS-1$
+    dataGrid.setStylePrimaryName("disabled"); //$NON-NLS-1$
   }
   
   /**
@@ -181,6 +181,10 @@ public class BaseTable extends Composite {
     
     tableHeader.setCellPadding(2);
     tableHeader.setCellSpacing(0);
+    
+    if (this.selectionPolicy == SelectionPolicy.DISABLED){
+      tableHeader.setStylePrimaryName("disabled");
+    }
   }
   
   /**
@@ -237,6 +241,10 @@ public class BaseTable extends Composite {
     dataGrid.sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
     
     dataGrid.setColumnSorter(new BaseTableColumnSorter());
+    
+    if (this.selectionPolicy == SelectionPolicy.DISABLED){
+      dataGrid.setStylePrimaryName("disabled");
+    }
   }
   
   /**
@@ -248,7 +256,7 @@ public class BaseTable extends Composite {
     scrollTable.setResizePolicy(resizePolicy);
 
     // Set style
-    scrollTable.setWidth("100%");
+    scrollTable.setWidth("100%"); //$NON-NLS-1$
     if (scrollTableHeight != null){
       scrollTable.setHeight(scrollTableHeight);
     }
@@ -275,11 +283,11 @@ public class BaseTable extends Composite {
       rowAndColumnValues = new String[1][tableHeaderNames.length];
       
       for (int i = 0; i < tableHeaderNames.length; i++){
-        rowAndColumnValues[0][i] = "&nbsp;";
+        rowAndColumnValues[0][i] = "&nbsp;"; //$NON-NLS-1$
       }
       
       dataGrid.setSelectionPolicy(SelectionGrid.SelectionPolicy.DISABLED);
-      dataGrid.setStylePrimaryName("disabled");
+      dataGrid.setStylePrimaryName("disabled"); //$NON-NLS-1$
     }
     
     // Set table values
@@ -324,7 +332,7 @@ public class BaseTable extends Composite {
         if (element != null){
           disableTextSelectionForCell(element);
         
-          if (value != null && value instanceof String && !value.equals("&nbsp;")){
+          if (value != null && value instanceof String && !value.equals("&nbsp;")){ //$NON-NLS-1$
             element.setTitle(value.toString());
           }
         }
