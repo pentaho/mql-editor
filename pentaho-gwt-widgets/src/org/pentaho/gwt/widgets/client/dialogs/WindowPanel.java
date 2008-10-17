@@ -90,9 +90,9 @@ public class WindowPanel extends FocusPanel {
 
   private static final int BORDER_THICKNESS = 5;
 
-  private static final String CSS_DEMO_RESIZE_PANEL = "demo-WindowPanel";
+  private static final String CSS_RESIZE_PANEL = "resizable-WindowPanel";
 
-  private static final String CSS_DEMO_RESIZE_PANEL_HEADER = "demo-WindowPanel-header";
+  private static final String CSS_RESIZE_PANEL_HEADER = "resizable-WindowPanel-header";
 
   private int contentHeight;
 
@@ -119,12 +119,12 @@ public class WindowPanel extends FocusPanel {
   public WindowPanel(final WindowController windowController, String headerText, Widget contentWidget, boolean wrapContentInScrollPanel) {
     this.windowController = windowController;
     this.headerWidget = new HTML(headerText);
-    setStyleName(CSS_DEMO_RESIZE_PANEL);
+    setStyleName(CSS_RESIZE_PANEL);
 
     contentOrScrollPanelWidget = wrapContentInScrollPanel ? new ScrollPanel(contentWidget) : contentWidget;
 
     headerContainer = new FocusPanel();
-    headerContainer.setStyleName(CSS_DEMO_RESIZE_PANEL_HEADER);
+    headerContainer.setStyleName(CSS_RESIZE_PANEL_HEADER);
     headerContainer.add(headerWidget);
 
     windowController.getPickupDragController().makeDraggable(this, headerContainer);
@@ -144,8 +144,8 @@ public class WindowPanel extends FocusPanel {
     verticalPanel.setCellSpacing(0);
     verticalPanel.setWidget(0, 0, headerContainer);
     verticalPanel.setWidget(1, 0, contentOrScrollPanelWidget);
-    verticalPanel.getCellFormatter().addStyleName(1, 0, "contentWidget");
-    verticalPanel.addStyleName("resizableDialogHeaderAndContent");
+    verticalPanel.getCellFormatter().addStyleName(1, 0, "resizable-DialogContentWidget");
+    verticalPanel.addStyleName("resizable-DialogHeaderAndContent");
 
     grid.setCellSpacing(0);
     grid.setCellPadding(0);
@@ -220,7 +220,7 @@ public class WindowPanel extends FocusPanel {
     widget.setPixelSize(BORDER_THICKNESS, BORDER_THICKNESS);
     grid.setWidget(row, col, widget);
     windowController.getResizeDragController().makeDraggable(widget, direction);
-    widget.setStyleName("demo-resize-" + direction.directionLetters);
+    widget.setStyleName("dialog-resize-" + direction.directionLetters);
     //grid.getCellFormatter().setStyleName(row, col, "demo-resize-" + direction.directionLetters);
     return widget;
   }

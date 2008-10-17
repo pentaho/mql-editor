@@ -4,6 +4,9 @@
       <inherits name='com.google.gwt.user.User'/>
       <!-- required for date picker control -->
       <inherits name='org.zenika.widget.DatePickerModule'/>
+
+      <inherits name='com.google.gwt.widgetideas.WidgetIdeas'/>
+      <inherits name='com.google.gwt.widgetideas.ScrollTable'/>
 	
       <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
 	

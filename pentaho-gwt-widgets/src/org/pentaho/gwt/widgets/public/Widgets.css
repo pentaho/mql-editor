@@ -526,6 +526,9 @@ body{
 
 /* end file chooser styles ------------------------------------------------ */
 
+
+/* begin resizable dialogbox styles ------------------------------------------------ */
+
 .dragdrop-handle {
   cursor: ;
 }
@@ -565,21 +568,21 @@ body{
 
 
 /* ------------ WindowExample ------------ */
-.contentWidget {
+.resizable-DialogContentWidget {
   padding: 5px;
 }
 
-.resizableDialogHeaderAndContent {
+.resizable-DialogHeaderAndContent {
   background-color: #ececec;
   border: 1px solid #848484;
 }
 
-.demo-WindowPanel {
+.resizable-WindowPanel {
   cursor: default;
   z-index: 1000;
 }
 
-.demo-WindowPanel .demo-WindowPanel-header {
+.resizable-WindowPanel .resizable-WindowPanel-header {
   padding: 5px;
   background-image: url(style/images/subtoolbar_bg.png);
   color: black;
@@ -587,34 +590,36 @@ body{
   cursor: move;
 }
 
-.demo-resize-nw {
+.dialog-resize-nw {
   cursor: nw-resize;
 }
 
-.demo-resize-n {
+.dialog-resize-n {
   cursor: n-resize;
 }
 
-.demo-resize-ne {
+.dialog-resize-ne {
   cursor: ne-resize;
 }
 
-.demo-resize-w {
+.dialog-resize-w {
   cursor: w-resize;
 }
 
-.demo-resize-e {
+.dialog-resize-e {
   cursor: e-resize;
 }
 
-.demo-resize-sw {
+.dialog-resize-sw {
   cursor: sw-resize;
 }
 
-.demo-resize-s {
+.dialog-resize-s {
   cursor: s-resize;
 }
 
-.demo-resize-se {
+.dialog-resize-se {
   cursor: se-resize;
 }
+
+/* end resizable dialogbox styles ------------------------------------------------ */
