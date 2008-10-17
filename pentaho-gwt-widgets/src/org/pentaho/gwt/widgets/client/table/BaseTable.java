@@ -457,6 +457,10 @@ public class BaseTable extends Composite {
     return dataGrid.getSelectedRows();
   }
   
+  public void fillWidth(){
+    scrollTable.fillWidth();
+  }
+  
   /**
    * Default column sorter for this class.
    */
