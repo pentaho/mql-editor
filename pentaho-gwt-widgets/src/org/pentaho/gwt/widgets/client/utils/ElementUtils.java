@@ -1,13 +1,9 @@
 package org.pentaho.gwt.widgets.client.utils;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalSplitPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -165,7 +161,18 @@ public class ElementUtils {
     return [x,y];
   }-*/;
 
-  
+  public static Element findElementAboveByTagName(Element base, String targetName){
+    
+    Element curEle = base;
+    Element parent;
+    while((parent = curEle.getParentElement()) != null){
+      if(parent.getTagName().equalsIgnoreCase(targetName)){
+        return parent;
+      }
+      curEle = parent;
+    }
+    return null;
+  }
   
   
   

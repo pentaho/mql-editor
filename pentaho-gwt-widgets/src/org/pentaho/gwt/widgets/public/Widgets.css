@@ -506,11 +506,19 @@ body{
 /* begin file chooser styles ------------------------------------------------ */
 .fileChooserHeader {
   background-color: #f0f0f0;
-  border: 1px solid black;
+  border-bottom: 1px solid #848484;
+  border-right: 1px solid #848484;
   padding-left: 5px;
   padding-right: 5px;
 }
 .fileChooserCell {
+  background-color: white;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+
+.fileChooserCell-over {
   background-color: white;
   padding-left: 5px;
   padding-right: 5px;

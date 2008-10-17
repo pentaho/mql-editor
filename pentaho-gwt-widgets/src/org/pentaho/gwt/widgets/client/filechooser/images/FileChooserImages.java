@@ -9,6 +9,10 @@ public interface FileChooserImages extends ImageBundle, TreeImages {
   public static final FileChooserImages images = (FileChooserImages) GWT.create(FileChooserImages.class);
 
   AbstractImagePrototype file();
+  AbstractImagePrototype file_report();
+  AbstractImagePrototype file_analysis();
+  AbstractImagePrototype file_url();
+  AbstractImagePrototype file_action();
   AbstractImagePrototype folder();
   AbstractImagePrototype up();
   AbstractImagePrototype search();

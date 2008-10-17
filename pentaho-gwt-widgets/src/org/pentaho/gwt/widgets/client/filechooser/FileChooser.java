@@ -317,28 +317,21 @@ public class FileChooser extends VerticalPanel {
     final Image upDirImage = new Image();
     FileChooserImages.images.up().applyTo(upDirImage);
     upDirImage.setTitle(MSGS.upOneLevel());
-    DOM.setStyleAttribute(upDirImage.getElement(), "border", "1px solid white"); //$NON-NLS-1$ //$NON-NLS-2$
     upDirImage.addMouseListener(new MouseListener() {
 
       public void onMouseDown(Widget sender, int x, int y) {
       }
 
       public void onMouseEnter(Widget sender) {
-        DOM.setStyleAttribute(upDirImage.getElement(), "borderLeft", "1px solid gray"); //$NON-NLS-1$ //$NON-NLS-2$
-        DOM.setStyleAttribute(upDirImage.getElement(), "borderTop", "1px solid gray"); //$NON-NLS-1$ //$NON-NLS-2$
-        DOM.setStyleAttribute(upDirImage.getElement(), "borderRight", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
-        DOM.setStyleAttribute(upDirImage.getElement(), "borderBottom", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
       }
 
       public void onMouseLeave(Widget sender) {
-        DOM.setStyleAttribute(upDirImage.getElement(), "border", "1px solid white"); //$NON-NLS-1$ //$NON-NLS-2$
       }
 
       public void onMouseMove(Widget sender, int x, int y) {
       }
 
       public void onMouseUp(Widget sender, int x, int y) {
-        DOM.setStyleAttribute(searchImage.getElement(), "border", "1px solid white"); //$NON-NLS-1$ //$NON-NLS-2$
       }
 
     });
@@ -374,9 +367,11 @@ public class FileChooser extends VerticalPanel {
       navigationBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
       navigationBar.add(searchImage);
     }
-    navigationBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+    navigationBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
     navigationBar.add(upDirImage);
-    navigationBar.setWidth("100%"); //$NON-NLS-1$
+    navigationBar.setCellWidth(upDirImage, "100%");	//$NON-NLS-1$
+    DOM.setStyleAttribute(upDirImage.getElement(), "margin-left", "4px");	//$NON-NLS-1$	//$NON-NLS-2$
+    navigationBar.setWidth("100%");	//$NON-NLS-1$
 
     locationBar.add(navigationBar);
     locationBar.setWidth("100%"); //$NON-NLS-1$
@@ -476,11 +471,23 @@ public class FileChooser extends VerticalPanel {
 
     final Label myNameLabel = new Label(finalFileName, false) {
       public void onBrowserEvent(Event event) {
-        handleFileClicked(item, isDir, event, this.getElement());
+        switch(event.getTypeInt()){
+          case Event.ONCLICK:
+          case Event.ONDBLCLICK:
+            handleFileClicked(item, isDir, event, this.getElement());
+            break;
+          case Event.ONMOUSEOVER:
+            this.addStyleDependentName("over");
+            break;
+          case Event.ONMOUSEOUT:
+            this.removeStyleDependentName("over");
+            break;
+        }
       }
     };
     myNameLabel.getElement().setAttribute("id", attributeMap.get("name")); //$NON-NLS-1$ //$NON-NLS-2$
     myNameLabel.sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
+    myNameLabel.sinkEvents(Event.ONMOUSEOVER | Event.ONMOUSEOUT);
     myNameLabel.setTitle(attributeMap.get(LOCALIZED_FILE_NAME));
 
     HorizontalPanel fileNamePanel = new HorizontalPanel();
@@ -493,7 +500,17 @@ public class FileChooser extends VerticalPanel {
     if (isDir) {
       FileChooserImages.images.folder().applyTo(fileImage);
     } else {
-      FileChooserImages.images.file().applyTo(fileImage);
+      String fileName = attributeMap.get("name");
+      
+      if (fileName.endsWith("waqr.xaction")) {
+        FileChooserImages.images.file_report().applyTo(fileImage);
+      } else if (fileName.endsWith("analysisview.xaction")) {
+        FileChooserImages.images.file_analysis().applyTo(fileImage);
+      } else if (fileName.endsWith(".url")) {
+        FileChooserImages.images.file_url().applyTo(fileImage);
+      } else {
+        FileChooserImages.images.file_action().applyTo(fileImage);
+      }
     }
     fileNamePanel.add(fileImage);
     fileNamePanel.add(myNameLabel);
@@ -565,11 +582,11 @@ public class FileChooser extends VerticalPanel {
       // single click
       // highlight row
       if (lastSelectedFileElement != null) {
-        DOM.setStyleAttribute(lastSelectedFileElement, "background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
-        DOM.setStyleAttribute(lastSelectedFileElement, "color", "black"); //$NON-NLS-1$ //$NON-NLS-2$
+        com.google.gwt.dom.client.Element parentRow = ElementUtils.findElementAboveByTagName(lastSelectedFileElement, "table");
+        parentRow.getStyle().setProperty("background", "white");	//$NON-NLS-1$ //$NON-NLS-2$
       }
-      DOM.setStyleAttribute(sourceElement, "background", "#7070ff"); //$NON-NLS-1$ //$NON-NLS-2$
-      DOM.setStyleAttribute(sourceElement, "color", "white"); //$NON-NLS-1$ //$NON-NLS-2$
+      com.google.gwt.dom.client.Element parentRow = ElementUtils.findElementAboveByTagName(sourceElement, "table");
+      parentRow.getStyle().setProperty("background", "#B9B9B9");	//$NON-NLS-1$ //$NON-NLS-2$
       lastSelectedFileElement = sourceElement;
     }
   }
