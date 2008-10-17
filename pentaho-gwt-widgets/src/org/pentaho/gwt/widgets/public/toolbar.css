@@ -31,6 +31,13 @@ div{
   hideFocus: true;
 }
 
+img{
+	outline: 0px;
+  -moz-user-focus: none;
+  user-focus: none;
+}
+
+
 .toolbar-button-hovering{
 	background-color: #E8E8E8;
 	border: 1px solid #AAA;
