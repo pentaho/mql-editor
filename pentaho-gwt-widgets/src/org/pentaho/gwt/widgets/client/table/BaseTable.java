@@ -41,13 +41,15 @@ import com.google.gwt.widgetideas.table.client.overrides.HTMLTable.CellFormatter
  * should be implemented in a subclass. 
  * 
  * Usage Notes:
+ *   - You MUST call the populateTable or populateTableWithSimpleMessage method AFTER adding the widget
+ *     to the DOM tree, otherwise the columns will not resize correctly.
  *   - You may need to set the height to a non-percentage value to get the scrollbars to appear.
  *   
  * TODO refactor to minimize size
  */
 public class BaseTable extends Composite {
   
-  private static final String LOADING_MESSAGE = "Loading...";
+  private static final String LOADING_MESSAGE = "Loading";
   
   public static final BaseColumnComparator DEFAULT_COLUMN_COMPARATOR = BaseColumnComparator
       .getInstance(ColumnComparatorTypes.STRING_NOCASE);
@@ -85,8 +87,8 @@ public class BaseTable extends Composite {
    * Main constructor.
    * 
    * Note: For column width values, use -1 to not specify a column width.
-   * Note: For column comparators, a null value will disable sorting for that column.  If you set columnComparators
-   *         to null, all columns will be populated with the default column comparator;
+   * Note: For column comparators individually, a null value will disable sorting for that column.  If you set 
+   *         the columnComparators array to null, all columns will be populated with the default column comparator.
    */
   public BaseTable(String[] tableHeaderNames, int[] columnWidths, BaseColumnComparator[] columnComparators, 
       SelectionPolicy selectionPolicy){
