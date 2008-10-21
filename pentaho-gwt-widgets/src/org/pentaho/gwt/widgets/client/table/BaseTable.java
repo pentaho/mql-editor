@@ -439,9 +439,20 @@ public class BaseTable extends Composite {
     doubleClickListeners.add(listener);
   }
   
-  //TODO rename to setTableHeight
+  /**
+   * Use setTableHeight instead.
+   */
+  @Deprecated
   public void setHeight(String height){
     this.scrollTableHeight = height;
+  }
+  
+  public void setTableHeight(String height){
+    this.scrollTableHeight = height;
+  }
+  
+  public void setGridWidth(String width){
+    this.dataGrid.setWidth(width);
   }
   
   public String getText(int row, int column){
