@@ -31,7 +31,7 @@ public class ResizableDialogBox {
         }
       }
     };
-    boundaryPanel.setSize("100%", Window.getClientHeight() + Window.getScrollTop() + "px"); //$NON-NLS-1$
+    boundaryPanel.setSize("100%", Window.getClientHeight() + Window.getScrollTop() + "px"); //$NON-NLS-1$ //$NON-NLS-2$
     boundaryPanel.setVisible(true);
     RootPanel.get().add(boundaryPanel, 0, 0);
     boundaryPanel.sinkEvents(Event.ONCLICK);
@@ -41,7 +41,7 @@ public class ResizableDialogBox {
 
     // content wrapper
     RoundedButton ok = new RoundedButton(okText);
-    ok.getElement().setAttribute("id", "okButton");
+    ok.getElement().setAttribute("id", "okButton"); //$NON-NLS-1$ //$NON-NLS-2$
     ok.addClickListener(new ClickListener() {
 
       public void onClick(Widget sender) {
@@ -61,7 +61,7 @@ public class ResizableDialogBox {
     dialogButtonPanel.add(ok);
     if (cancelText != null) {
       RoundedButton cancel = new RoundedButton(cancelText);
-      cancel.getElement().setAttribute("id", "cancelButton");
+      cancel.getElement().setAttribute("id", "cancelButton"); //$NON-NLS-1$ //$NON-NLS-2$
       cancel.addClickListener(new ClickListener() {
 
         public void onClick(Widget sender) {
@@ -82,8 +82,8 @@ public class ResizableDialogBox {
     } else {
       dialogButtonPanelWrapper.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     }
-    dialogButtonPanelWrapper.setStyleName("dialogButtonPanel");
-    dialogButtonPanelWrapper.setWidth("100%");
+    dialogButtonPanelWrapper.setStyleName("dialogButtonPanel"); //$NON-NLS-1$
+    dialogButtonPanelWrapper.setWidth("100%"); //$NON-NLS-1$
     dialogButtonPanelWrapper.add(dialogButtonPanel);
 
     Grid dialogContent = new Grid(2, 1);
@@ -97,18 +97,10 @@ public class ResizableDialogBox {
     // add button panel
     dialogContent.setWidget(1, 0, dialogButtonPanelWrapper);
     dialogContent.getCellFormatter().setVerticalAlignment(1, 0, HasVerticalAlignment.ALIGN_BOTTOM);
-    dialogContent.setWidth("100%");
-    dialogContent.setHeight("100%");
+    dialogContent.setWidth("100%"); //$NON-NLS-1$
+    dialogContent.setHeight("100%"); //$NON-NLS-1$
 
-    windowPanel = new WindowPanel(windowController, headerText, dialogContent, true) {
-      public void onBrowserEvent(Event event) {
-        if (!modal) {
-          event.cancelBubble(true);
-          return;
-        }
-        super.onBrowserEvent(event);
-      }
-    };
+    windowPanel = new WindowPanel(windowController, headerText, dialogContent, true);
   }
 
   public void hide() {
