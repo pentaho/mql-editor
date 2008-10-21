@@ -59,6 +59,7 @@ public class BaseTable extends Composite {
   private FixedWidthFlexTable tableHeader;
   private FixedWidthGrid dataGrid;
   private String[] tableHeaderNames;
+  private String scrollTableWidth;
   private String scrollTableHeight;
   private int[] columnWidths;
   private int numberOfColumns;
@@ -258,7 +259,11 @@ public class BaseTable extends Composite {
     scrollTable.setResizePolicy(resizePolicy);
 
     // Set style
-    scrollTable.setWidth("100%"); //$NON-NLS-1$
+    if (scrollTableWidth != null){
+      scrollTable.setWidth(scrollTableWidth);
+    }else{
+      scrollTable.setWidth("100%"); //$NON-NLS-1$  
+    }
     if (scrollTableHeight != null){
       scrollTable.setHeight(scrollTableHeight);
     }
@@ -445,6 +450,10 @@ public class BaseTable extends Composite {
   @Deprecated
   public void setHeight(String height){
     this.scrollTableHeight = height;
+  }
+
+  public void setTableWidth(String width){
+    this.scrollTableWidth = width;
   }
   
   public void setTableHeight(String height){
