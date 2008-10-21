@@ -7,6 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
@@ -69,6 +70,16 @@ public class Toolbar extends HorizontalPanel {
     bar.add(group.getTrailingSeparator());
     bar.setCellVerticalAlignment(group.getTrailingSeparator(), ALIGN_MIDDLE);
     groups.add(group);
+  }
+
+  /**
+   * Add in a Label to a toolbar
+   * 
+   * @param group
+   *          ToolbarGroup to add.
+   */
+  public void add(Label lbl) {
+    bar.add(lbl);
   }
 
   /**
