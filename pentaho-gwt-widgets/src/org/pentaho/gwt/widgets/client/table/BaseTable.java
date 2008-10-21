@@ -439,6 +439,7 @@ public class BaseTable extends Composite {
     doubleClickListeners.add(listener);
   }
   
+  //TODO rename to setTableHeight
   public void setHeight(String height){
     this.scrollTableHeight = height;
   }
@@ -461,6 +462,10 @@ public class BaseTable extends Composite {
   
   public void fillWidth(){
     scrollTable.fillWidth();
+  }
+  
+  public void deselectRows(){
+    dataGrid.deselectRows();
   }
   
   /**
