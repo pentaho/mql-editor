@@ -63,7 +63,7 @@ import com.google.gwt.widgetideas.table.client.overrides.HTMLTable.CellFormatter
  */
 public class BaseTable extends Composite {
   
-  private static final String LOADING_MESSAGE = "Loading";
+  private static final String LOADING_MESSAGE = "Loading...";
   
   public static final BaseColumnComparator DEFAULT_COLUMN_COMPARATOR = BaseColumnComparator
       .getInstance(ColumnComparatorTypes.STRING_NOCASE);
@@ -140,6 +140,13 @@ public class BaseTable extends Composite {
     }else{
       System.err.println("ERROR: Must specify table header names.");
     }
+  }
+  
+  @Override
+  protected void onAttach() {
+    super.onAttach();
+    
+    fillWidth();
   }
   
   /**
