@@ -60,8 +60,6 @@ import com.google.gwt.widgetideas.table.client.overrides.HTMLTable.CellFormatter
  *   - You MUST call the populateTable or populateTableWithSimpleMessage method AFTER adding the widget
  *     to the DOM tree, otherwise the columns will not resize correctly.
  *   - You may need to set the height to a non-percentage value to get the scrollbars to appear.
- *   
- * TODO refactor to minimize size
  */
 public class BaseTable extends Composite {
   
@@ -285,11 +283,13 @@ public class BaseTable extends Composite {
     }
     
     // Set column comparators
-    for (int i = 0; i < columnComparators.length; i++){
-      if (columnComparators[i] != null){
-        scrollTable.setColumnSortable(i, true);
-      }else{
-        scrollTable.setColumnSortable(i, false);
+    if (columnComparators != null){
+      for (int i = 0; i < columnComparators.length; i++){
+        if (columnComparators[i] != null){
+          scrollTable.setColumnSortable(i, true);
+        }else{
+          scrollTable.setColumnSortable(i, false);
+        }
       }
     }
   }
