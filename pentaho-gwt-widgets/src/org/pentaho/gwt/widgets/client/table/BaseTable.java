@@ -372,7 +372,7 @@ public class BaseTable extends Composite {
     }
     
     for (int i = 0; i < rowAndColumnValues.length; i++){
-      for (int j = 0; j < rowAndColumnValues.length; j++){
+      for (int j = 0; j < rowAndColumnValues[i].length; j++){
         if (rowAndColumnValues[i][j] != null){
           return true;
         }
