@@ -122,7 +122,7 @@ public class WindowPanel extends FocusPanel {
 
   private final FocusPanel headerContainer;
 
-  private final Widget headerWidget;
+  private final HTML headerWidget;
 
   private Widget northWidget;
 
@@ -181,13 +181,11 @@ public class WindowPanel extends FocusPanel {
   }
 
   public void setText(String text) {
-    headerContainer.clear();
-    headerContainer.add(new HTML(text));
+    headerWidget.setHTML(text);
   }
   
   public void setTitle(String text) {
-    headerContainer.clear();
-    headerContainer.add(new HTML(text));
+    setText(text);
   }
   
   public int getContentHeight() {
