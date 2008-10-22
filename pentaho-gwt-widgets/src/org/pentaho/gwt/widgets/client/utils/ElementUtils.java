@@ -67,7 +67,7 @@ public class ElementUtils {
     }
   }
   
-  private static void killAutoScrolling(Element ele){
+  public static void killAutoScrolling(Element ele){
     ele.getStyle().setProperty("overflow", "visible");
     if(ele.hasChildNodes()){
       
@@ -81,6 +81,16 @@ public class ElementUtils {
     }
   }
   
+  
+
+  public static void killAllTextSelection(com.google.gwt.dom.client.Element item) {
+    ElementUtils.preventTextSelection(item);
+    com.google.gwt.dom.client.NodeList<Node> children = item.getChildNodes();
+    for (int i = 0; i < children.getLength(); i++) {
+      killAllTextSelection((com.google.gwt.dom.client.Element) children.getItem(i));
+    }
+
+  }
 
   public static native void preventTextSelection(Element ele) /*-{
     if(document.all){
