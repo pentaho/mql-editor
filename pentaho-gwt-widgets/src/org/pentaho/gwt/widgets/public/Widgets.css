@@ -557,6 +557,8 @@ body{
 .dragdrop-proxy {
 }
 .dragdrop-selected,.dragdrop-dragging,.dragdrop-proxy {
+  opacity: 1;
+  filter:alpha(opacity=100)
 }
 
 .dragdrop-movable-panel {
