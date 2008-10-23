@@ -106,24 +106,27 @@ public class ElementUtils {
 
     var iframes = $doc.getElementsByTagName("iframe");
     for(var i=0; i<iframes.length; i++){
-      var doc = (iframes[i].contentWindow.document || iframes[i].contentDocument);
-      
-      if(doc == null)
-      {
-        //IE7 you're ok anyway
-        return;
-      }
-      
-      var embeds = doc.getElementsByTagName("embed");
-      for(var y=0; y<embeds.length; y++){
-        if(visible){
-          iframes[i].style.display = "" ;
-          iframes[i].contentWindow.location.href = iframes[i].contentWindow.location.href
-        } else {
-          iframes[i].style.display = "none" ;
+      try{
+        var doc = (iframes[i].contentWindow.document || iframes[i].contentDocument);
+        
+        if(doc == null)
+        {
+          //IE7 you're ok anyway
+          return;
         }
+        
+        var embeds = doc.getElementsByTagName("embed");
+        for(var y=0; y<embeds.length; y++){
+          if(visible){
+            iframes[i].style.display = "" ;
+            iframes[i].contentWindow.location.href = iframes[i].contentWindow.location.href
+          } else {
+            iframes[i].style.display = "none" ;
+          }
+        }
+      } catch(e) {
+        // Cross-site scripting error in all likelyhood
       }
-      
     }
     
   }-*/;
