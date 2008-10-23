@@ -63,7 +63,7 @@ import com.google.gwt.widgetideas.table.client.overrides.HTMLTable.CellFormatter
  */
 public class BaseTable extends Composite {
   
-  private static final String LOADING_MESSAGE = "Loading...";
+  private static final String LOADING_MESSAGE = "Loading";
   
   public static final BaseColumnComparator DEFAULT_COLUMN_COMPARATOR = BaseColumnComparator
       .getInstance(ColumnComparatorTypes.STRING_NOCASE);
@@ -136,17 +136,10 @@ public class BaseTable extends Composite {
 
       parentPanel.setWidth("100%"); //$NON-NLS-1$
       this.parentPanel.add(scrollTable);
-      scrollTable.fillWidth();
+      this.fillWidth();
     }else{
       System.err.println("ERROR: Must specify table header names.");
     }
-  }
-  
-  @Override
-  protected void onAttach() {
-    super.onAttach();
-    
-    fillWidth();
   }
   
   /**
@@ -207,7 +200,7 @@ public class BaseTable extends Composite {
     tableHeader.setCellSpacing(0);
     
     if (this.selectionPolicy == SelectionPolicy.DISABLED){
-      tableHeader.setStylePrimaryName("disabled");
+      tableHeader.setStylePrimaryName("disabled"); //$NON-NLS-1$
     }
   }
   
@@ -267,7 +260,7 @@ public class BaseTable extends Composite {
     dataGrid.setColumnSorter(new BaseTableColumnSorter());
     
     if (this.selectionPolicy == SelectionPolicy.DISABLED){
-      dataGrid.setStylePrimaryName("disabled");
+      dataGrid.setStylePrimaryName("disabled"); //$NON-NLS-1$
     }
   }
   
@@ -463,10 +456,13 @@ public class BaseTable extends Composite {
     tableSelectionListeners.add(listener);
   }
   
+  /**
+   * Adds a listener to fire when a user double-clicks on a table row. 
+   */
   public void addDoubleClickListener(TableListener listener){
     doubleClickListeners.add(listener);
   }
-  
+    
   /**
    * Use setTableHeight instead.
    */
@@ -474,39 +470,53 @@ public class BaseTable extends Composite {
   public void setHeight(String height){
     this.scrollTableHeight = height;
   }
-
-  public void setTableWidth(String width){
-    this.scrollTableWidth = width;
-  }
   
+  /**
+   * Warning: You may need to set the height to a non-percentage value to get the scrollbars to appear.
+   */
   public void setTableHeight(String height){
     this.scrollTableHeight = height;
   }
   
-  public void setGridWidth(String width){
-    this.dataGrid.setWidth(width);
-  }
-  
+  /**
+   * Gets the text within the specified cell.
+   */
   public String getText(int row, int column){
     return dataGrid.getText(row, column);
   }
   
+  /**
+   * Returns the number of columns in the data table.
+   */
   public int getNumberOfColumns(){
     return numberOfColumns;
   }
 
+  /**
+   * Select a row in the data table.
+   */
   public void selectRow(int row){
     dataGrid.selectRow(row, false);
   }
   
+  /**
+   * Returns the set of selected row indexes.
+   */
   public Set<Integer> getSelectedRows(){
     return dataGrid.getSelectedRows();
   }
   
+  /**
+   * Adjusts all column widths so they take up the maximum amount of space
+   * without needing a horizontal scroll bar. 
+   */
   public void fillWidth(){
     scrollTable.fillWidth();
   }
   
+  /**
+   * Deselect all selected rows in the data table.
+   */
   public void deselectRows(){
     dataGrid.deselectRows();
   }
