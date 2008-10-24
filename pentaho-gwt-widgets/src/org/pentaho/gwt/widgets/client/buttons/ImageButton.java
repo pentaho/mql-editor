@@ -20,38 +20,71 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MouseListener;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ImageButton extends Image{
 
-  public ImageButton (Panel parent,String url, String tooltip){
-    super(url);
-        
+  private boolean isEnabled = true;
+  private String enabledUrl;
+  private String disabledUrl;
+
+  public ImageButton (String enabledUrl, String disabledUrl, String tooltip){
+    this(enabledUrl, disabledUrl, tooltip, -1, -1);
+  }
+  
+  public ImageButton (String enabledUrl, String disabledUrl, String tooltip, int width, int height){
+    super(enabledUrl);
+    
+    this.enabledUrl = enabledUrl;
+    this.disabledUrl = disabledUrl;
+    
     if(tooltip != null && tooltip.length() > 0){
       setTitle(tooltip);
     }
         
     setStyleName("image-button"); //$NON-NLS-1$
     
+    setSize(width + "px", height + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+    
     addMouseListener(new MouseListener(){
       public void onMouseEnter (Widget sender){
-        setStyleName("image-button-over"); //$NON-NLS-1$
+        if (isEnabled){
+          setStyleName("image-button-over"); //$NON-NLS-1$
+        }else{
+          setStyleName("disabled-image-button-over"); //$NON-NLS-1$
+        }
       }
 
       public void onMouseMove(Widget sender, int x, int y) {
-        setStyleName("image-button-over"); //$NON-NLS-1$
+        if (isEnabled){
+          setStyleName("image-button-over"); //$NON-NLS-1$
+        }else{
+          setStyleName("disabled-image-button-over"); //$NON-NLS-1$
+        }
       }
             
       public void onMouseLeave (Widget sender){
-        setStyleName("image-button"); //$NON-NLS-1$
+        if (isEnabled){
+          setStyleName("image-button"); //$NON-NLS-1$
+        }else{
+          setStyleName("disabled-image-button"); //$NON-NLS-1$
+        }
       }
             
       public void onMouseDown(Widget sender, int x, int y){
-        setStyleName("image-button-pressed"); //$NON-NLS-1$
+        if (isEnabled){
+          setStyleName("image-button-pressed"); //$NON-NLS-1$
+        }else{
+          setStyleName("disabled-image-button-pressed"); //$NON-NLS-1$
+        }
       }
+      
       public void onMouseUp(Widget sender, int x, int y) {
-        setStyleName("image-button"); //$NON-NLS-1$
+        if (isEnabled){
+          setStyleName("image-button"); //$NON-NLS-1$
+        }else{
+          setStyleName("disabled-image-button"); //$NON-NLS-1$
+        }
       }
     });
   }
@@ -62,5 +95,19 @@ public class ImageButton extends Image{
       //This is required to prevent a drag & drop of the Image in the edit text.
       DOM.eventPreventDefault(event);
   }
+  
+  public boolean isEnabled() {
+    return isEnabled;
+  }
+
+  public void setEnabled(boolean isEnabled) {
+    this.isEnabled = isEnabled;
     
+    if (isEnabled){
+      this.setUrl(enabledUrl);
+    }else{
+      this.setUrl(disabledUrl);
+    }
+  }
+  
 }
