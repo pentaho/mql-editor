@@ -21,7 +21,7 @@ package org.pentaho.gwt.widgets.client.utils;
 public class StringUtils {
 
   public static boolean isEmpty( String str ) {
-    return null == str || "".equals( str ); //$NON-NLS-1$
+    return null == str || "".equals( str.trim() ); //$NON-NLS-1$
   }
   
   public static String defaultString( String str, String xdefault )
