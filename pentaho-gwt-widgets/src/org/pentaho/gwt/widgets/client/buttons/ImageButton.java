@@ -22,6 +22,9 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Clickable image with enable/disable functionality built in.
+ */
 public class ImageButton extends Image{
 
   private boolean isEnabled = true;
