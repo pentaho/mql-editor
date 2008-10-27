@@ -151,7 +151,7 @@ public class BaseTable extends Composite {
     String[][] simpleMessageRowAndColumnValues = new String[][]{{message, "&nbsp;"}}; //$NON-NLS-1$
     
     createTable(simpleMessageHeaderValues, simpleMessageColumnWidths, simpleMessageRowAndColumnValues, 
-        ScrollTable.ResizePolicy.FILL_WIDTH, SelectionGrid.SelectionPolicy.DISABLED);
+        ScrollTable.ResizePolicy.FIXED_WIDTH, SelectionGrid.SelectionPolicy.DISABLED);
     
     scrollTable.setSortingEnabled(false);
     scrollTable.setScrollPolicy(ScrollPolicy.DISABLED);
