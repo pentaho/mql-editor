@@ -47,6 +47,9 @@ public class TableEditor extends VerticalPanel {
     DockPanel buttonPanel = new DockPanel();
     
     buttonPanel.add(deleteBtn, DockPanel.EAST);
+    VerticalPanel spacer = new VerticalPanel();
+    spacer.setWidth("2"); //$NON-NLS-1$
+    buttonPanel.add(spacer, DockPanel.EAST);
     buttonPanel.add(addBtn, DockPanel.EAST);
     
     errorLabel = new ErrorLabel( new Label( labelText ) );
