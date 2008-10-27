@@ -16,13 +16,12 @@
  */
 package org.pentaho.gwt.widgets.client.controls;
 
-import org.pentaho.gwt.widgets.client.dialogs.MessageDialogBox;
+import org.pentaho.gwt.widgets.client.buttons.ImageButton;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 import org.pentaho.gwt.widgets.client.ui.ICallback;
 import org.pentaho.gwt.widgets.client.utils.ListBoxUtils;
 
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -33,22 +32,19 @@ import com.google.gwt.user.client.ui.Widget;
 public class TableEditor extends VerticalPanel {
   
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
-  private Button deleteBtn = new Button( "-" ); //$NON-NLS-1$
-  private Button addBtn = new Button( "+" ); //$NON-NLS-1$
+  
+  private ImageButton addBtn = new ImageButton("style/images/add.png", "style/images/add_disabled.png", MSGS.addItem(), 15, 15); //$NON-NLS-1$ //$NON-NLS-2$
+  private ImageButton deleteBtn = new ImageButton("style/images/remove.png", "style/images/remove_disabled.png", MSGS.deleteItems(), 15, 15); //$NON-NLS-1$ //$NON-NLS-2$
   private ListBox actionLb = new ListBox();
   private ErrorLabel errorLabel = null;
   private ICallback<TableEditor> onSelectHandler = null;
   private static int DEFAULT_NUM_VISIBLE_ITEMS = 10;
   private ICallback<TableEditor> onAddHandler = null;
   private ICallback<TableEditor> onDeleteHandler = null;
+  
   public TableEditor( String labelText ) {
 
     DockPanel buttonPanel = new DockPanel();
-    deleteBtn.addStyleName( "deleteBtn" ); //$NON-NLS-1$
-    addBtn.addStyleName( "addBtn" ); //$NON-NLS-1$
-    
-    addBtn.setTitle(MSGS.addItem());
-    deleteBtn.setTitle(MSGS.deleteItems());
     
     buttonPanel.add(deleteBtn, DockPanel.EAST);
     buttonPanel.add(addBtn, DockPanel.EAST);
@@ -59,7 +55,7 @@ public class TableEditor extends VerticalPanel {
     
     add( buttonPanel );
     
-    actionLb.setWidth( "100%" ); //$NON-NLS-1$  // TODO sbarkdull, move to css
+    actionLb.setWidth( "100%" ); //$NON-NLS-1$
     actionLb.setHeight( "100%" ); //$NON-NLS-1$
     actionLb.setVisibleItemCount( DEFAULT_NUM_VISIBLE_ITEMS );
     actionLb.setMultipleSelect( true );
@@ -159,10 +155,6 @@ public class TableEditor extends VerticalPanel {
     return actionLb.getValue( idx );
   }
   
-//  public void setValue( int idx, String value ) {
-//    actionLb.setValue( idx, value );
-//  }
-  
   public void setOnAddClickedHandler( ICallback<TableEditor> handler ) {
     onAddHandler = handler;
   }
@@ -178,10 +170,12 @@ public class TableEditor extends VerticalPanel {
   public void setErrorMsg( String errorMsg ) {
     errorLabel.setErrorMsg( errorMsg );
   }
-  
-  public void setFocus() {
-    addBtn.setFocus( true );
-  }
+
+  /**
+   * No longer available.
+   */
+  @Deprecated
+  public void setFocus() {}
   
   public void setAddBtnEnabled( boolean enabled ) {
     addBtn.setEnabled( enabled );
@@ -210,8 +204,3 @@ public class TableEditor extends VerticalPanel {
     message = null;
   }
 }
-
-
-//FixedWidthFlexTable
-// http://code.google.com/p/google-web-toolkit-incubator/wiki/ScrollTable
-// http://code.google.com/p/google-web-toolkit-incubator/wiki/ScrollTable
