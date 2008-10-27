@@ -170,7 +170,29 @@ public class MessageBundle {
    * @return The UTF-8 friendly value found for the given key
    */
   public String getString(String key) {
+    String resource = bundle.get(key);
+    if (resource == null) {
+      return key;
+    }
     return decodeUTF8(bundle.get(key));
+  }
+  
+  /**
+   * This method return the value for the given key with UTF-8 respected and will replace {n} tokens with the parameters that are passed in.
+   * 
+   * @param key The name of the resource being requested
+   * @param parameters The values to replace occurrences of {n} in the found resource
+   * @return The UTF-8 friendly value found for the given key
+   */
+  public String getString(String key, String...parameters) {
+    String resource = bundle.get(key);
+    if (resource == null) {
+      return key;
+    }
+    for (int i=0;i<parameters.length;i++) {
+      resource = resource.replace("{" + i + "}", parameters[i]);
+    }
+    return decodeUTF8(resource);
   }
 
   private String decodeUTF8(String str) {
