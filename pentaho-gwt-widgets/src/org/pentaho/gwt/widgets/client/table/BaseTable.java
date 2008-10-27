@@ -57,9 +57,11 @@ import com.google.gwt.widgetideas.table.client.overrides.HTMLTable.CellFormatter
  * should be implemented in a subclass. 
  * 
  * Usage Notes:
- *   - You MUST call the populateTable or populateTableWithSimpleMessage method AFTER adding the widget
- *     to the DOM tree, otherwise the columns will not resize correctly.
+ *   - You must call the populateTable or populateTableWithSimpleMessage method AFTER adding the widget
+ *     to the DOM, otherwise the columns will not resize correctly.  If this is not possible, you
+ *     can call the fillWidth method after it has been added to the DOM.
  *   - You may need to set the height to a non-percentage value to get the scrollbars to appear.
+ *   - Never set the resize policy to FILL_WIDTH or FireFox will experience an ever growing table.
  */
 public class BaseTable extends Composite {
   
