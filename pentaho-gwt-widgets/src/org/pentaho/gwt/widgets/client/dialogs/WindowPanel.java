@@ -18,9 +18,7 @@ package org.pentaho.gwt.widgets.client.dialogs;
 
 import com.allen_sauer.gwt.dnd.client.util.Location;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
@@ -134,7 +132,6 @@ public class WindowPanel extends FocusPanel {
   private final WindowController windowController;
 
   public WindowPanel(final WindowController windowController, String headerText, Widget contentWidget, boolean wrapContentInScrollPanel) {
-    Window.alert("windowpanel");
     this.windowController = windowController;
     this.headerWidget = new HTML(headerText);
     setStyleName(CSS_RESIZE_PANEL);
