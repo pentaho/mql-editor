@@ -17,6 +17,7 @@
 package org.pentaho.gwt.widgets.client.dialogs;
 
 import org.pentaho.gwt.widgets.client.buttons.RoundedButton;
+import org.pentaho.gwt.widgets.client.utils.FrameUtils;
 
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
@@ -122,6 +123,8 @@ public class ResizableDialogBox {
   public void hide() {
     boundaryPanel.clear();
     RootPanel.get().remove(boundaryPanel);
+    //show <embeds>
+    FrameUtils.toggleEmbedVisibility(true);
   }
 
   public void center() {
@@ -133,6 +136,8 @@ public class ResizableDialogBox {
     top = (Window.getClientHeight() - windowPanel.getOffsetHeight()) >> 1;
     boundaryPanel.clear();
     boundaryPanel.add(windowPanel, Window.getScrollLeft() + left, Window.getScrollTop() + top);
+    //hide <embeds>
+    FrameUtils.toggleEmbedVisibility(false);
   }
 
   public void show() {

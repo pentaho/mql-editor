@@ -16,21 +16,34 @@
  */
 package org.pentaho.gwt.widgets.client.toolbar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MouseListener;
+import com.google.gwt.user.client.ui.PopupListener;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ToolbarComboButton extends ToolbarButton{
+public class ToolbarComboButton extends ToolbarButton implements ToolbarPopupSource, PopupListener{
   
   private String COMBO_STYLE = "toolbar-combo-button";   //$NON-NLS-1$
   private MenuBar menu;
-  PopupPanel popup = new PopupPanel(true);
+  PopupPanel popup = new PopupPanel(true){
+    @Override
+    public void show() {
+      super.show();
+      notifyPopupListeners(this, true);
+    }
+  };
+  
+  private List<ToolbarPopupListener> popupListeners = new ArrayList<ToolbarPopupListener>();
   
   /**
    * Constructs a toolbar button with an image and a label
@@ -83,8 +96,7 @@ public class ToolbarComboButton extends ToolbarButton{
   }
   
   private void addDropdownControl(){
-    
-    
+    popup.addPopupListener(this);
   }
   
   @Override
@@ -102,12 +114,10 @@ public class ToolbarComboButton extends ToolbarButton{
     eventWrapper.addClickListener(new ClickListener() {
       public void onClick(Widget sender) {
         if(!enabled){
-          ElementUtils.blur(ToolbarComboButton.this.eventWrapper.getElement());
           return;
         }        
         popup.setPopupPosition(sender.getAbsoluteLeft(), sender.getAbsoluteTop() + sender.getOffsetHeight());
         popup.show();
-        ElementUtils.blur(ToolbarComboButton.this.eventWrapper.getElement());
       }
     });
     eventWrapper.addMouseListener(new MouseListener(){
@@ -121,11 +131,9 @@ public class ToolbarComboButton extends ToolbarButton{
       }
       public void onMouseUp(Widget w, int x, int y) {
         if(!enabled){
-          ElementUtils.blur(ToolbarComboButton.this.eventWrapper.getElement());
           return;
         }        
         popup.setPopupPosition(w.getAbsoluteLeft(), w.getAbsoluteTop() + w.getOffsetHeight());
-        ElementUtils.blur(ToolbarComboButton.this.eventWrapper.getElement());
       }
       public void onMouseMove(Widget w, int x, int y) {}
     });
@@ -139,4 +147,30 @@ public class ToolbarComboButton extends ToolbarButton{
   public PopupPanel getPopup() {
     return popup;
   }
+  
+  public void addPopupPanelListener(ToolbarPopupListener listener){
+    if(popupListeners.contains(listener) == false){
+      popupListeners.add(listener);
+    }
+  }
+  public void removePopupPanelListener(ToolbarPopupListener listener){
+    if(popupListeners.contains(listener)){
+      popupListeners.remove(listener);
+    }
+  }
+  
+  public void notifyPopupListeners(PopupPanel panel, boolean visible){
+    for(ToolbarPopupListener listener : popupListeners){
+      if(visible){
+        listener.popupOpened(panel);
+      } else {
+        listener.popupClosed(panel);
+      }
+    }
+  }
+
+  public void onPopupClosed(PopupPanel sender, boolean autoClosed) {
+    notifyPopupListeners(sender, false);
+  }
+
 }

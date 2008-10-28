@@ -24,6 +24,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
@@ -31,7 +32,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
  * 
  * @author nbaker
  */
-public class Toolbar extends HorizontalPanel {
+public class Toolbar extends HorizontalPanel implements ToolbarPopupListener, ToolbarPopupSource{
 
   public static final int SEPARATOR = 1;
   public static final int GLUE = 2;
@@ -45,6 +46,8 @@ public class Toolbar extends HorizontalPanel {
   // collection of groups
   private List<ToolbarGroup> groups = new ArrayList<ToolbarGroup>();
 
+  private List<ToolbarPopupListener> popupListeners = new ArrayList<ToolbarPopupListener>();
+  
   public Toolbar() {
     this.setStylePrimaryName("toolbar"); //$NON-NLS-1$
     this.setVerticalAlignment(ALIGN_MIDDLE);
@@ -104,6 +107,11 @@ public class Toolbar extends HorizontalPanel {
   public void add(ToolbarButton button) {
     bar.add(button.getPushButton());
     buttons.add(button);
+    
+    //register interest in popupPanel of the comboButtons
+    if(button instanceof ToolbarComboButton){
+      ((ToolbarComboButton) button).addPopupPanelListener(this);
+    }
   }
 
   /**
@@ -176,6 +184,29 @@ public class Toolbar extends HorizontalPanel {
       System.out.println("Error with Disable: " + e); //$NON-NLS-1$
       e.printStackTrace(System.out);
     }
+  }
+  
+  public void addPopupPanelListener(ToolbarPopupListener listener){
+    if(popupListeners.contains(listener) == false){
+      popupListeners.add(listener);
+    }
+  }
+  public void removePopupPanelListener(ToolbarPopupListener listener){
+    if(popupListeners.contains(listener)){
+      popupListeners.remove(listener);
+    }
+  }
+
+  public void popupClosed(PopupPanel panel) {
+    for(ToolbarPopupListener listener : popupListeners){
+      listener.popupClosed(panel);
+    }
+  }
+
+  public void popupOpened(PopupPanel panel) {
+    for(ToolbarPopupListener listener : popupListeners){
+      listener.popupOpened(panel);
+    }  
   }
 
 }

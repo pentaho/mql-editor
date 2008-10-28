@@ -165,7 +165,7 @@ public class ToolbarToggleButton extends ToolbarButton {
         }
         toggleSelectedState();
         command.execute();
-        ElementUtils.blur(ToolbarToggleButton.this.eventWrapper.getElement());      }
+      }
     });
     eventWrapper.addMouseListener(new MouseListener(){
       public void onMouseDown(Widget arg0, int arg1, int arg2) {
@@ -185,7 +185,6 @@ public class ToolbarToggleButton extends ToolbarButton {
           return;
         }
         toggleSelectedState();
-        ElementUtils.blur(ToolbarToggleButton.this.eventWrapper.getElement());
       }
       public void onMouseMove(Widget arg0, int arg1, int arg2) {}
     });

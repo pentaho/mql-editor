@@ -16,6 +16,7 @@
  */
 package org.pentaho.gwt.widgets.client.utils;
 
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
@@ -29,7 +30,6 @@ public class ElementUtils {
   public static final int RIGHT = 1;
   public static final int TOP = 0;
   public static final int BOTTOM = 1;
-  
   
   public static native void blur(Element e)/*-{
    e.blur();
@@ -102,35 +102,9 @@ public class ElementUtils {
 
   
 
-  public static native void toggleEmbedVisibility(boolean visible)/*-{
-
-    var iframes = $doc.getElementsByTagName("iframe");
-    for(var i=0; i<iframes.length; i++){
-      try{
-        var doc = (iframes[i].contentWindow.document || iframes[i].contentDocument);
-        
-        if(doc == null)
-        {
-          //IE7 you're ok anyway
-          return;
-        }
-        
-        var embeds = doc.getElementsByTagName("embed");
-        for(var y=0; y<embeds.length; y++){
-          if(visible){
-            iframes[i].style.display = "" ;
-            iframes[i].contentWindow.location.href = iframes[i].contentWindow.location.href
-          } else {
-            iframes[i].style.display = "none" ;
-          }
-        }
-      } catch(e) {
-        // Cross-site scripting error in all likelyhood
-      }
-    }
-    
-  }-*/;
-
+  public static native Element[] getElementsByTagName(String name)/*-{
+    return $doc.getElementsByTagName(name);
+  }-*/;  
   
   public static native void convertPNGs() /*-{
     try{
@@ -203,7 +177,17 @@ public class ElementUtils {
     return null;
   }
   
-  
+  public static boolean elementsOverlap(Element ele1, Element ele2){
+    
+    Rectangle r1 = new Rectangle(ele1.getAbsoluteLeft(), ele1.getAbsoluteTop(), 
+        ele1.getOffsetWidth(), ele1.getOffsetHeight());
+    
+    Rectangle r2 = new Rectangle(ele2.getAbsoluteLeft(), ele2.getAbsoluteTop(), 
+        ele2.getOffsetWidth(), ele2.getOffsetHeight());
+
+    return r1.intersects(r2);
+    
+  }
   
 }
 

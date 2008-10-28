@@ -19,7 +19,7 @@
  */
 package org.pentaho.gwt.widgets.client.dialogs;
 
-import org.pentaho.gwt.widgets.client.utils.ElementUtils;
+import org.pentaho.gwt.widgets.client.utils.FrameUtils;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -89,7 +89,7 @@ public class DialogBox extends com.google.gwt.user.client.ui.DialogBox implement
       focusWidget.setFocus(true);
     }
     //hide <embeds>
-    ElementUtils.toggleEmbedVisibility(false);
+    FrameUtils.toggleEmbedVisibility(false);
     
   }
 
@@ -117,7 +117,7 @@ public class DialogBox extends com.google.gwt.user.client.ui.DialogBox implement
         
         //reshow <embeds>
         if(this.isVisible()){
-          ElementUtils.toggleEmbedVisibility(true);
+          FrameUtils.toggleEmbedVisibility(true);
         }
         
         // just make sure it is zero
