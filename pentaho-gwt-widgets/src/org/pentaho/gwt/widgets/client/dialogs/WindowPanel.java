@@ -18,6 +18,7 @@ package org.pentaho.gwt.widgets.client.dialogs;
 
 import com.allen_sauer.gwt.dnd.client.util.Location;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusPanel;
@@ -133,6 +134,7 @@ public class WindowPanel extends FocusPanel {
   private final WindowController windowController;
 
   public WindowPanel(final WindowController windowController, String headerText, Widget contentWidget, boolean wrapContentInScrollPanel) {
+    Window.alert("windowpanel");
     this.windowController = windowController;
     this.headerWidget = new HTML(headerText);
     setStyleName(CSS_RESIZE_PANEL);
@@ -145,15 +147,15 @@ public class WindowPanel extends FocusPanel {
 
     windowController.getPickupDragController().makeDraggable(this, headerContainer);
 
-    addClickListener(new ClickListener() {
-
-      public void onClick(Widget sender) {
-        // force our panel to the top of our z-index context
-        AbsolutePanel boundaryPanel = windowController.getBoundaryPanel();
-        WidgetLocation location = new WidgetLocation(WindowPanel.this, boundaryPanel);
-        boundaryPanel.add(WindowPanel.this, location.getLeft(), location.getTop());
-      }
-    });
+//    addClickListener(new ClickListener() {
+//
+//      public void onClick(Widget sender) {
+//        // force our panel to the top of our z-index context
+//        AbsolutePanel boundaryPanel = windowController.getBoundaryPanel();
+//        WidgetLocation location = new WidgetLocation(WindowPanel.this, boundaryPanel);
+//        boundaryPanel.add(WindowPanel.this, location.getLeft(), location.getTop());
+//      }
+//    });
 
     Grid verticalPanel = new Grid(2, 1);
     verticalPanel.setCellPadding(0);
