@@ -17,17 +17,23 @@
 package org.pentaho.gwt.widgets.client.utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StringTokenizer {
   ArrayList<String> tokens = new ArrayList<String>();
 
-  public StringTokenizer(String text, char delimiter) {
+  public StringTokenizer(String text, String delimiters) {
+    char[] delimiterArray = delimiters.toCharArray();
+    List<Character> delimiterList = new ArrayList<Character>();
+    for (char delim : delimiterArray) {
+      delimiterList.add(delim);
+    }
     char[] chars = text.toCharArray();
 
     int sindex = 0;
     int i;
     for (i = 0; i < chars.length; i++) {
-      if (chars[i] == delimiter) {
+      if (delimiterList.contains(chars[i])) {
         tokens.add(text.substring(sindex, i));
         sindex = i + 1;
       }
@@ -36,6 +42,10 @@ public class StringTokenizer {
     if (sindex < i) {
       tokens.add(text.substring(sindex));
     }
+  }
+
+  public StringTokenizer(String text, char delimiter) {
+    this(text, new String(new char[] { delimiter }));
   }
 
   public int countTokens() {
