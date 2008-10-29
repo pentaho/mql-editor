@@ -43,9 +43,8 @@ public class PropertiesUtil {
     for (int i = 0; i < lineTokenizer.countTokens(); i++) {
       String line = lineTokenizer.tokenAt(i);
       if (line.indexOf('=') != -1) {
-        StringTokenizer settingTokenizer = new StringTokenizer(lineTokenizer.tokenAt(i), '=');
-        String key = settingTokenizer.tokenAt(0).trim();
-        String value = settingTokenizer.tokenAt(1).trim();
+        String key = line.substring(0,line.indexOf('=')).trim();
+        String value = line.substring(line.indexOf('=')+1).trim();
         settings.put(key, value);
       }
     }

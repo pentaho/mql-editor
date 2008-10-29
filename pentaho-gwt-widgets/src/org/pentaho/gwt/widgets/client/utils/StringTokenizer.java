@@ -23,6 +23,9 @@ public class StringTokenizer {
   ArrayList<String> tokens = new ArrayList<String>();
 
   public StringTokenizer(String text, String delimiters) {
+    if (text == null || "".equals(text)) {
+      return;
+    }
     char[] delimiterArray = delimiters.toCharArray();
     List<Character> delimiterList = new ArrayList<Character>();
     for (char delim : delimiterArray) {
