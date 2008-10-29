@@ -220,8 +220,8 @@ public final class SliderMap extends HTML implements EventPreview
 
 		this.parent = parent;
 
-		setWidth("256px");
-		setHeight("256px");
+		setWidth("256px"); //$NON-NLS-1$
+		setHeight("256px"); //$NON-NLS-1$
 
 		cpImageBundle = (ColorPickerImageBundle) GWT.create(ColorPickerImageBundle.class);
 
@@ -233,9 +233,9 @@ public final class SliderMap extends HTML implements EventPreview
 		DOM.appendChild(getElement(), colorOverlay.getElement());
 		DOM.appendChild(getElement(), slider.getElement());
 
-		DOM.setStyleAttribute(getElement(), "position", "absolute");
-		DOM.setStyleAttribute(colorUnderlay.getElement(), "border", "1px solid black");
-		DOM.setStyleAttribute(colorOverlay.getElement(), "border", "1px solid black");
+		DOM.setStyleAttribute(getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorUnderlay.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorOverlay.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/***
@@ -245,15 +245,15 @@ public final class SliderMap extends HTML implements EventPreview
 	{
 		super.onAttach();
 
-		DOM.setStyleAttribute(colorUnderlay.getElement(), "position", "absolute");
-		DOM.setStyleAttribute(colorUnderlay.getElement(), "left", "0px");
-		DOM.setStyleAttribute(colorUnderlay.getElement(), "top", "0px");
-		DOM.setStyleAttribute(colorOverlay.getElement(), "position", "absolute");
-		DOM.setStyleAttribute(colorOverlay.getElement(), "left", "0px");
-		DOM.setStyleAttribute(colorOverlay.getElement(), "top", "0px");
-		DOM.setStyleAttribute(slider.getElement(), "position", "absolute");
-		DOM.setStyleAttribute(slider.getElement(), "left", "0px");
-		DOM.setStyleAttribute(slider.getElement(), "top", "0px");
+		DOM.setStyleAttribute(colorUnderlay.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorUnderlay.getElement(), "left", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorUnderlay.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorOverlay.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorOverlay.getElement(), "left", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorOverlay.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(slider.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(slider.getElement(), "left", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(slider.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
 		setOverlayOpacity(100);
 	}
 
@@ -275,7 +275,7 @@ public final class SliderMap extends HTML implements EventPreview
 	 */
 	public void setUnderlayColor(String color)
 	{
-		DOM.setStyleAttribute(colorUnderlay.getElement(), "backgroundColor", color);
+		DOM.setStyleAttribute(colorUnderlay.getElement(), "backgroundColor", color); //$NON-NLS-1$
 	}
 
 	/**
@@ -284,7 +284,7 @@ public final class SliderMap extends HTML implements EventPreview
 	 */
 	public void setOverlayColor(String color)
 	{
-		DOM.setStyleAttribute(colorOverlay.getElement(), "backgroundColor", color);
+		DOM.setStyleAttribute(colorOverlay.getElement(), "backgroundColor", color); //$NON-NLS-1$
 	}
 
 	/**
@@ -298,8 +298,8 @@ public final class SliderMap extends HTML implements EventPreview
 		if (y < 0) y = 0;
 		if (x > 256) x = 256;
 		if (y > 256) y = 256;
-		DOM.setStyleAttribute(slider.getElement(), "left", x - 7 + "px");
-		DOM.setStyleAttribute(slider.getElement(), "top", y - 7 + "px");
+		DOM.setStyleAttribute(slider.getElement(), "left", x - 7 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(slider.getElement(), "top", y - 7 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/***
@@ -402,8 +402,8 @@ public final class SliderMap extends HTML implements EventPreview
 		if (y < 0) y = 0;
 		if (y > 256) y = 256;
 
-		DOM.setStyleAttribute(slider.getElement(), "left", x - 7 + "px");
-		DOM.setStyleAttribute(slider.getElement(), "top", y - 7 + "px");
+		DOM.setStyleAttribute(slider.getElement(), "left", x - 7 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(slider.getElement(), "top", y - 7 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		if (parent != null) { parent.onMapSelected(x,y); }
 	}

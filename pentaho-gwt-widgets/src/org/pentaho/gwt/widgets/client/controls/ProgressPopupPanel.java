@@ -34,11 +34,11 @@ public class ProgressPopupPanel extends PopupPanel {
   }
   
   private void init() {
-    this.setStyleName( "progressPopupPanel" );
+    this.setStyleName( "progressPopupPanel" ); //$NON-NLS-1$
     setPixelSize( width, height );
     
     label = new Label();
-    label.setStyleName( "progressPopupPanel.label" );
+    label.setStyleName( "progressPopupPanel.label" ); //$NON-NLS-1$
     
     VerticalPanel vp = new VerticalPanel();
     vp.add( label );

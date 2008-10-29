@@ -31,9 +31,9 @@ public class CheckBoxMenuItem extends MenuItem {
   public void setChecked(boolean checked) {
     this.checked = checked;
     if (checked) {
-      setStylePrimaryName("gwt-MenuItem-checkbox-checked");
+      setStylePrimaryName("gwt-MenuItem-checkbox-checked"); //$NON-NLS-1$
     } else {
-      setStylePrimaryName("gwt-MenuItem-checkbox-unchecked");
+      setStylePrimaryName("gwt-MenuItem-checkbox-unchecked"); //$NON-NLS-1$
     }
   }
 

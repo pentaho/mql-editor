@@ -41,7 +41,7 @@ public class ElementUtils {
     }
     
     if((panel instanceof HorizontalSplitPanel || panel instanceof VerticalSplitPanel) == false){
-      throw new IllegalArgumentException("Widget not expected SplitPane type");
+      throw new IllegalArgumentException("Widget not expected SplitPane type"); //$NON-NLS-1$
     }
     
     if(panel instanceof HorizontalSplitPanel){
@@ -60,15 +60,15 @@ public class ElementUtils {
     
     Element ele = bottom;
     while(ele != top && ele.getParentElement() != null){
-      ele.getStyle().setProperty("overflow", "visible");
-      ele.getStyle().setProperty("overflowX", "visible");
-      ele.getStyle().setProperty("overflowY", "visible");
+      ele.getStyle().setProperty("overflow", "visible"); //$NON-NLS-1$ //$NON-NLS-2$
+      ele.getStyle().setProperty("overflowX", "visible"); //$NON-NLS-1$ //$NON-NLS-2$
+      ele.getStyle().setProperty("overflowY", "visible"); //$NON-NLS-1$ //$NON-NLS-2$
       ele = ele.getParentElement();
     }
   }
   
   public static void killAutoScrolling(Element ele){
-    ele.getStyle().setProperty("overflow", "visible");
+    ele.getStyle().setProperty("overflow", "visible"); //$NON-NLS-1$ //$NON-NLS-2$
     if(ele.hasChildNodes()){
       
       NodeList<Node> nodes = ele.getChildNodes();

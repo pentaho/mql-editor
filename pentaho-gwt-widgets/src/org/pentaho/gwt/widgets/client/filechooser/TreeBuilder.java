@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.pentaho.gwt.widgets.client.utils.ElementUtils;
-
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.xml.client.Document;
@@ -36,9 +34,9 @@ public class TreeBuilder {
     // get document root item
     Element solutionRoot = doc.getDocumentElement();
     TreeItem rootItem = new TreeItem();
-    rootItem.setText(solutionRoot.getAttribute("path"));
+    rootItem.setText(solutionRoot.getAttribute("path")); //$NON-NLS-1$
     HashMap<String, Object> attributeMap = new HashMap<String, Object>();
-    attributeMap.put("path", solutionRoot.getAttribute("path"));
+    attributeMap.put("path", solutionRoot.getAttribute("path")); //$NON-NLS-1$ //$NON-NLS-2$
     rootItem.setUserObject(attributeMap);
     repositoryTree.addItem(rootItem);
     buildSolutionTree(rootItem, solutionRoot, showHiddenFiles, showLocalizedFileNames);
@@ -49,10 +47,10 @@ public class TreeBuilder {
     NodeList children = parentElement.getChildNodes();
     for (int i = 0; i < children.getLength(); i++) {
       Element childElement = (Element) children.item(i);
-      boolean isVisible = "true".equals(childElement.getAttribute("visible"));
+      boolean isVisible = "true".equals(childElement.getAttribute("visible")); //$NON-NLS-1$ //$NON-NLS-2$
       if (isVisible || showHiddenFiles) {
-        String fileName = childElement.getAttribute("name");
-        String localizedName = childElement.getAttribute("localized-name");
+        String fileName = childElement.getAttribute("name"); //$NON-NLS-1$
+        String localizedName = childElement.getAttribute("localized-name"); //$NON-NLS-1$
         TreeItem childTreeItem = new TreeItem();
         if (showLocalizedFileNames) {
           childTreeItem.setText(localizedName);
@@ -65,12 +63,12 @@ public class TreeBuilder {
         //ElementUtils.preventTextSelection(childTreeItem.getElement());
         
         HashMap<String, Object> attributeMap = new HashMap<String, Object>();
-        attributeMap.put("name", childElement.getAttribute("name"));
-        attributeMap.put("localized-name", childElement.getAttribute("localized-name"));
-        attributeMap.put("description", childElement.getAttribute("description"));
-        attributeMap.put("lastModifiedDate", childElement.getAttribute("lastModifiedDate"));
-        attributeMap.put("visible", childElement.getAttribute("visible"));
-        attributeMap.put("isDirectory", childElement.getAttribute("isDirectory"));
+        attributeMap.put("name", childElement.getAttribute("name")); //$NON-NLS-1$ //$NON-NLS-2$
+        attributeMap.put("localized-name", childElement.getAttribute("localized-name")); //$NON-NLS-1$ //$NON-NLS-2$
+        attributeMap.put("description", childElement.getAttribute("description")); //$NON-NLS-1$ //$NON-NLS-2$
+        attributeMap.put("lastModifiedDate", childElement.getAttribute("lastModifiedDate")); //$NON-NLS-1$ //$NON-NLS-2$
+        attributeMap.put("visible", childElement.getAttribute("visible")); //$NON-NLS-1$ //$NON-NLS-2$
+        attributeMap.put("isDirectory", childElement.getAttribute("isDirectory")); //$NON-NLS-1$ //$NON-NLS-2$
         childTreeItem.setUserObject(attributeMap);
 
         // find the spot in the parentTreeItem to insert the node (based on showLocalizedFileNames)
@@ -111,7 +109,7 @@ public class TreeBuilder {
           }
         }
 
-        boolean isDirectory = "true".equals(childElement.getAttribute("isDirectory"));
+        boolean isDirectory = "true".equals(childElement.getAttribute("isDirectory")); //$NON-NLS-1$ //$NON-NLS-2$
         if (isDirectory) {
           buildSolutionTree(childTreeItem, childElement, showHiddenFiles, showLocalizedFileNames);
         }

@@ -66,48 +66,48 @@ public class WindowPanel extends FocusPanel {
   /**
    * Specifies that resizing occur at the east edge.
    */
-  public static final DirectionConstant EAST = new DirectionConstant(DIRECTION_EAST, "e");
+  public static final DirectionConstant EAST = new DirectionConstant(DIRECTION_EAST, "e"); //$NON-NLS-1$
 
   /**
    * Specifies that resizing occur at the both edge.
    */
-  public static final DirectionConstant NORTH = new DirectionConstant(DIRECTION_NORTH, "n");
+  public static final DirectionConstant NORTH = new DirectionConstant(DIRECTION_NORTH, "n"); //$NON-NLS-1$
 
   /**
    * Specifies that resizing occur at the north-east edge.
    */
-  public static final DirectionConstant NORTH_EAST = new DirectionConstant(DIRECTION_NORTH | DIRECTION_EAST, "ne");
+  public static final DirectionConstant NORTH_EAST = new DirectionConstant(DIRECTION_NORTH | DIRECTION_EAST, "ne"); //$NON-NLS-1$
 
   /**
    * Specifies that resizing occur at the north-west edge.
    */
-  public static final DirectionConstant NORTH_WEST = new DirectionConstant(DIRECTION_NORTH | DIRECTION_WEST, "nw");
+  public static final DirectionConstant NORTH_WEST = new DirectionConstant(DIRECTION_NORTH | DIRECTION_WEST, "nw"); //$NON-NLS-1$
 
   /**
    * Specifies that resizing occur at the south edge.
    */
-  public static final DirectionConstant SOUTH = new DirectionConstant(DIRECTION_SOUTH, "s");
+  public static final DirectionConstant SOUTH = new DirectionConstant(DIRECTION_SOUTH, "s"); //$NON-NLS-1$
 
   /**
    * Specifies that resizing occur at the south-east edge.
    */
-  public static final DirectionConstant SOUTH_EAST = new DirectionConstant(DIRECTION_SOUTH | DIRECTION_EAST, "se");
+  public static final DirectionConstant SOUTH_EAST = new DirectionConstant(DIRECTION_SOUTH | DIRECTION_EAST, "se"); //$NON-NLS-1$
 
   /**
    * Specifies that resizing occur at the south-west edge.
    */
-  public static final DirectionConstant SOUTH_WEST = new DirectionConstant(DIRECTION_SOUTH | DIRECTION_WEST, "sw");
+  public static final DirectionConstant SOUTH_WEST = new DirectionConstant(DIRECTION_SOUTH | DIRECTION_WEST, "sw"); //$NON-NLS-1$
 
   /**
    * Specifies that resizing occur at the west edge.
    */
-  public static final DirectionConstant WEST = new DirectionConstant(DIRECTION_WEST, "w");
+  public static final DirectionConstant WEST = new DirectionConstant(DIRECTION_WEST, "w"); //$NON-NLS-1$
 
   private static final int BORDER_THICKNESS = 5;
 
-  private static final String CSS_RESIZE_PANEL = "resizable-WindowPanel";
+  private static final String CSS_RESIZE_PANEL = "resizable-WindowPanel"; //$NON-NLS-1$
 
-  private static final String CSS_RESIZE_PANEL_HEADER = "resizable-WindowPanel-header";
+  private static final String CSS_RESIZE_PANEL_HEADER = "resizable-WindowPanel-header"; //$NON-NLS-1$
 
   private int contentHeight;
 
@@ -159,8 +159,8 @@ public class WindowPanel extends FocusPanel {
     verticalPanel.setCellSpacing(0);
     verticalPanel.setWidget(0, 0, headerContainer);
     verticalPanel.setWidget(1, 0, contentOrScrollPanelWidget);
-    verticalPanel.getCellFormatter().addStyleName(1, 0, "resizable-DialogContentWidget");
-    verticalPanel.addStyleName("resizable-DialogHeaderAndContent");
+    verticalPanel.getCellFormatter().addStyleName(1, 0, "resizable-DialogContentWidget"); //$NON-NLS-1$
+    verticalPanel.addStyleName("resizable-DialogHeaderAndContent"); //$NON-NLS-1$
 
     grid.setCellSpacing(0);
     grid.setCellPadding(0);
@@ -233,7 +233,7 @@ public class WindowPanel extends FocusPanel {
     widget.setPixelSize(BORDER_THICKNESS, BORDER_THICKNESS);
     grid.setWidget(row, col, widget);
     windowController.getResizeDragController().makeDraggable(widget, direction);
-    widget.setStyleName("dialog-resize-" + direction.directionLetters);
+    widget.setStyleName("dialog-resize-" + direction.directionLetters); //$NON-NLS-1$
     //grid.getCellFormatter().setStyleName(row, col, "demo-resize-" + direction.directionLetters);
     return widget;
   }

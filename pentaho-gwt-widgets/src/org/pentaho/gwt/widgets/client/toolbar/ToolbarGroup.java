@@ -47,20 +47,20 @@ public class ToolbarGroup {
 
   public ToolbarGroup(){
     groupLabel.setStyleName(CSS_ENABLED);    
-    String url = "mantle/style/images/toolbarDivider.png";
+    String url = "mantle/style/images/toolbarDivider.png"; //$NON-NLS-1$
     if (GWT.isScript()) {
       String mypath = Window.Location.getPath();
-      if (!mypath.endsWith("/")) {
-        mypath = mypath.substring(0, mypath.lastIndexOf("/") + 1);
+      if (!mypath.endsWith("/")) { //$NON-NLS-1$
+        mypath = mypath.substring(0, mypath.lastIndexOf("/") + 1); //$NON-NLS-1$
       }
-      mypath = mypath.replaceAll("/mantle/", "/");
-      if (!mypath.endsWith("/")) {
-        mypath = "/" + mypath;
+      mypath = mypath.replaceAll("/mantle/", "/"); //$NON-NLS-1$ //$NON-NLS-2$
+      if (!mypath.endsWith("/")) { //$NON-NLS-1$
+        mypath = "/" + mypath; //$NON-NLS-1$
       }    
       url = mypath + url;
     }
-    trailingSeparator = new Image( url, 0, 0, 2, 16 ); //$NON-NLS-1$;
-    leadingSeparator = new Image( url, 0, 0, 2, 16 ); //$NON-NLS-1$;
+    trailingSeparator = new Image( url, 0, 0, 2, 16 );
+    leadingSeparator = new Image( url, 0, 0, 2, 16 );
   }
   
   /**

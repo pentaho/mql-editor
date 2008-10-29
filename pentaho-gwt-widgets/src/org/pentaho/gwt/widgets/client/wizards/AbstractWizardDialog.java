@@ -204,7 +204,7 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
     wizardButtonPanel.addStyleName(WIZARD_BUTTON_PANEL);
 
     HorizontalPanel wizardButtonPanelWrapper = new HorizontalPanel();
-    wizardButtonPanelWrapper.setWidth("100%");
+    wizardButtonPanelWrapper.setWidth("100%"); //$NON-NLS-1$
     wizardButtonPanelWrapper.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
     wizardButtonPanelWrapper.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
     wizardButtonPanelWrapper.add(wizardButtonPanel);
@@ -214,8 +214,8 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
     
     // Add the content to the dialog
     add(content);
-    content.setWidth("100%");
-    content.setHeight("100%");
+    content.setWidth("100%"); //$NON-NLS-1$
+    content.setHeight("100%"); //$NON-NLS-1$
   }
 
   /**

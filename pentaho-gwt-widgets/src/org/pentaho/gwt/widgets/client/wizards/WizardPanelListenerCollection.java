@@ -26,6 +26,7 @@ import java.util.ArrayList;
  *
  * Holds a list of IWizardPanelListeners.
  */
+@SuppressWarnings("serial")
 public class WizardPanelListenerCollection extends ArrayList<IWizardPanelListener> {
   /**
    * Fires a wizard changed event to all listeners.

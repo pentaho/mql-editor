@@ -38,7 +38,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class RunOnceEditor extends VerticalPanel implements IChangeHandler {
   
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
-  private static final String SCHEDULER_CAPTION_PANEL = "schedule-editor-caption-panel";
+  private static final String SCHEDULER_CAPTION_PANEL = "schedule-editor-caption-panel"; //$NON-NLS-1$
   
   private TimePicker startTimePicker = new TimePicker();
   private DatePickerEx startDatePicker = new DatePickerEx();
@@ -48,7 +48,7 @@ public class RunOnceEditor extends VerticalPanel implements IChangeHandler {
   private ICallback<IChangeHandler> onChangeHandler = null;
   
   public RunOnceEditor() {
-    setWidth("100%");
+    setWidth("100%"); //$NON-NLS-1$
 
     CaptionPanel startTimeCaptionPanel = new CaptionPanel(MSGS.startTime());
     startTimeCaptionPanel.setStyleName(SCHEDULER_CAPTION_PANEL);

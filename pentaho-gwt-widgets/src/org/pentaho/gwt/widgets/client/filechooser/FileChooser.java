@@ -493,10 +493,10 @@ public class FileChooser extends VerticalPanel {
             handleFileClicked(item, isDir, event, this.getElement());
             break;
           case Event.ONMOUSEOVER:
-            this.addStyleDependentName("over");
+            this.addStyleDependentName("over"); //$NON-NLS-1$
             break;
           case Event.ONMOUSEOUT:
-            this.removeStyleDependentName("over");
+            this.removeStyleDependentName("over"); //$NON-NLS-1$
             break;
         }
       }
@@ -516,13 +516,13 @@ public class FileChooser extends VerticalPanel {
     if (isDir) {
       FileChooserImages.images.folder().applyTo(fileImage);
     } else {
-      String fileName = attributeMap.get("name");
+      String fileName = attributeMap.get("name"); //$NON-NLS-1$
       
-      if (fileName.endsWith("waqr.xaction")) {
+      if (fileName.endsWith("waqr.xaction")) { //$NON-NLS-1$
         FileChooserImages.images.file_report().applyTo(fileImage);
-      } else if (fileName.endsWith("analysisview.xaction")) {
+      } else if (fileName.endsWith("analysisview.xaction")) { //$NON-NLS-1$
         FileChooserImages.images.file_analysis().applyTo(fileImage);
-      } else if (fileName.endsWith(".url")) {
+      } else if (fileName.endsWith(".url")) { //$NON-NLS-1$
         FileChooserImages.images.file_url().applyTo(fileImage);
       } else {
         FileChooserImages.images.file_action().applyTo(fileImage);

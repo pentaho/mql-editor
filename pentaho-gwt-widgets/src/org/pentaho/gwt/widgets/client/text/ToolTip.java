@@ -17,7 +17,6 @@
 package org.pentaho.gwt.widgets.client.text;
 
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -35,10 +34,10 @@ public class ToolTip extends PopupPanel implements MouseListener{
   public ToolTip(String message, int delay){
     super(true);
     Label lbl = new Label(message);
-    lbl.setStyleName("tooltip-label");
+    lbl.setStyleName("tooltip-label"); //$NON-NLS-1$
     setWidget(lbl);
     this.delay = delay;
-    this.setStyleName("tooltip");
+    this.setStyleName("tooltip"); //$NON-NLS-1$
   }
 
   public void onMouseDown(Widget sender, int x, int y) {

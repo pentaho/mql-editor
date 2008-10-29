@@ -42,7 +42,7 @@ public class PromptDialogBox extends DialogBox {
     super(autoHide, modal);
     setText(title);
     RoundedButton ok = new RoundedButton(okText);
-    ok.getElement().setAttribute("id", "okButton");
+    ok.getElement().setAttribute("id", "okButton"); //$NON-NLS-1$ //$NON-NLS-2$
     ok.addClickListener(new ClickListener() {
 
       public void onClick(Widget sender) {
@@ -62,7 +62,7 @@ public class PromptDialogBox extends DialogBox {
     dialogButtonPanel.add(ok);
     if (cancelText != null) {
       RoundedButton cancel = new RoundedButton(cancelText);
-      cancel.getElement().setAttribute("id", "cancelButton");
+      cancel.getElement().setAttribute("id", "cancelButton"); //$NON-NLS-1$ //$NON-NLS-2$
       cancel.addClickListener(new ClickListener() {
 
         public void onClick(Widget sender) {
@@ -83,8 +83,8 @@ public class PromptDialogBox extends DialogBox {
     } else {
       dialogButtonPanelWrapper.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     }
-    dialogButtonPanelWrapper.setStyleName("dialogButtonPanel");
-    dialogButtonPanelWrapper.setWidth("100%");
+    dialogButtonPanelWrapper.setStyleName("dialogButtonPanel"); //$NON-NLS-1$
+    dialogButtonPanelWrapper.setWidth("100%"); //$NON-NLS-1$
     dialogButtonPanelWrapper.add(dialogButtonPanel);
 
     if (content instanceof FocusWidget) {
@@ -98,7 +98,7 @@ public class PromptDialogBox extends DialogBox {
     dialogContent.setWidget(2, 0, dialogButtonPanelWrapper);
     dialogContent.getCellFormatter().setVerticalAlignment(2, 0, HasVerticalAlignment.ALIGN_BOTTOM);
     // dialogContent.getFlexCellFormatter().setColSpan(2, 0, 2);
-    dialogContent.setWidth("100%");
+    dialogContent.setWidth("100%"); //$NON-NLS-1$
     setWidget(dialogContent);
   }
 
@@ -140,9 +140,9 @@ public class PromptDialogBox extends DialogBox {
       dialogContent.getFlexCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
       dialogContent.getFlexCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
       dialogContent.setWidget(0, 0, content);
-      DOM.setStyleAttribute(dialogContent.getCellFormatter().getElement(0,0), "padding", "5px 10px 10px 10px");
-      content.setHeight("100%");
-      content.setWidth("100%");
+      DOM.setStyleAttribute(dialogContent.getCellFormatter().getElement(0,0), "padding", "5px 10px 10px 10px"); //$NON-NLS-1$ //$NON-NLS-2$
+      content.setHeight("100%"); //$NON-NLS-1$
+      content.setWidth("100%"); //$NON-NLS-1$
     }
   }
 

@@ -228,8 +228,8 @@ public final class SliderBar extends HTML implements EventPreview
 
 		this.parent = parent;
 
-		setWidth("40px");
-		setHeight("256px");
+		setWidth("40px"); //$NON-NLS-1$
+		setHeight("256px"); //$NON-NLS-1$
 
 		cpImageBundle = (ColorPickerImageBundle) GWT.create(ColorPickerImageBundle.class);
 
@@ -245,11 +245,11 @@ public final class SliderBar extends HTML implements EventPreview
 		DOM.appendChild(getElement(), colorD.getElement());
 		DOM.appendChild(getElement(), slider.getElement());
 
-		DOM.setStyleAttribute(getElement(), "position", "absolute");
-		DOM.setStyleAttribute(colorA.getElement(), "border", "1px solid black");
-		DOM.setStyleAttribute(colorB.getElement(), "border", "1px solid black");
-		DOM.setStyleAttribute(colorC.getElement(), "border", "1px solid black");
-		DOM.setStyleAttribute(colorD.getElement(), "border", "1px solid black");
+		DOM.setStyleAttribute(getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorA.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorB.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorC.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorD.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/***
@@ -259,21 +259,21 @@ public final class SliderBar extends HTML implements EventPreview
 	{
 		super.onAttach();
 
-		DOM.setStyleAttribute(colorA.getElement(), "position", "absolute");
-		DOM.setStyleAttribute(colorA.getElement(), "left", "10px");
-		DOM.setStyleAttribute(colorA.getElement(), "top", "0px");
-		DOM.setStyleAttribute(colorB.getElement(), "position", "absolute");
-		DOM.setStyleAttribute(colorB.getElement(), "left", "10px");
-		DOM.setStyleAttribute(colorB.getElement(), "top", "0px");
-		DOM.setStyleAttribute(colorC.getElement(), "position", "absolute");
-		DOM.setStyleAttribute(colorC.getElement(), "left", "10px");
-		DOM.setStyleAttribute(colorC.getElement(), "top", "0px");
-		DOM.setStyleAttribute(colorD.getElement(), "position", "absolute");
-		DOM.setStyleAttribute(colorD.getElement(), "left", "10px");
-		DOM.setStyleAttribute(colorD.getElement(), "top", "0px");
-		DOM.setStyleAttribute(slider.getElement(), "position", "absolute");
-		DOM.setStyleAttribute(slider.getElement(), "left", "0px");
-		DOM.setStyleAttribute(slider.getElement(), "top", "0px");
+		DOM.setStyleAttribute(colorA.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorA.getElement(), "left", "10px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorA.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorB.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorB.getElement(), "left", "10px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorB.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorC.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorC.getElement(), "left", "10px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorC.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorD.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorD.getElement(), "left", "10px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(colorD.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(slider.getElement(), "position", "absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(slider.getElement(), "left", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
+		DOM.setStyleAttribute(slider.getElement(), "top", "0px"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -347,7 +347,7 @@ public final class SliderBar extends HTML implements EventPreview
 	{
 		if (y < 0) y = 0;
 		if (y > 256) y = 256;
-		DOM.setStyleAttribute(slider.getElement(), "top", y - 4 + "px");
+		DOM.setStyleAttribute(slider.getElement(), "top", y - 4 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -458,7 +458,7 @@ public final class SliderBar extends HTML implements EventPreview
 		if (y < 0) y = 0;
 		if (y > 256) y = 256;
 
-		DOM.setStyleAttribute(slider.getElement(), "top", y - 4 + "px");
+		DOM.setStyleAttribute(slider.getElement(), "top", y - 4 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		if (parent != null) { parent.onBarSelected(y); }
 	}

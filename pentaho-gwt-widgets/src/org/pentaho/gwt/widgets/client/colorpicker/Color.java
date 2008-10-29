@@ -272,12 +272,12 @@ public class Color
 		String hGreen = Integer.toHexString(getGreen());
 		String hBlue = Integer.toHexString(getBlue());
 
-		if (hRed.length() == 0) { hRed = "00"; }
-		if (hRed.length() == 1) { hRed = "0" + hRed; }
-		if (hGreen.length() == 0) { hGreen = "00"; }
-		if (hGreen.length() == 1) { hGreen = "0" + hGreen; }
-		if (hBlue.length() == 0) { hBlue = "00"; }
-		if (hBlue.length() == 1) { hBlue = "0" + hBlue; }
+		if (hRed.length() == 0) { hRed = "00"; } //$NON-NLS-1$
+		if (hRed.length() == 1) { hRed = "0" + hRed; } //$NON-NLS-1$
+		if (hGreen.length() == 0) { hGreen = "00"; } //$NON-NLS-1$
+		if (hGreen.length() == 1) { hGreen = "0" + hGreen; } //$NON-NLS-1$
+		if (hBlue.length() == 0) { hBlue = "00"; } //$NON-NLS-1$
+		if (hBlue.length() == 1) { hBlue = "0" + hBlue; } //$NON-NLS-1$
 
 		this.hex = hRed + hGreen + hBlue;
 	}

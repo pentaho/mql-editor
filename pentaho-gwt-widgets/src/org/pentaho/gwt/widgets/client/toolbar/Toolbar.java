@@ -123,19 +123,19 @@ public class Toolbar extends HorizontalPanel implements ToolbarPopupListener, To
   public void add(int key) {
     switch (key) {
     case Toolbar.SEPARATOR:
-      String url = "mantle/style/images/toolbarDivider.png";
+      String url = "mantle/style/images/toolbarDivider.png"; //$NON-NLS-1$
       if (GWT.isScript()) {
         String mypath = Window.Location.getPath();
-        if (!mypath.endsWith("/")) {
-          mypath = mypath.substring(0, mypath.lastIndexOf("/") + 1);
+        if (!mypath.endsWith("/")) { //$NON-NLS-1$
+          mypath = mypath.substring(0, mypath.lastIndexOf("/") + 1); //$NON-NLS-1$
         }
-        mypath = mypath.replaceAll("/mantle/", "/");
-        if (!mypath.endsWith("/")) {
-          mypath = "/" + mypath;
+        mypath = mypath.replaceAll("/mantle/", "/"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (!mypath.endsWith("/")) { //$NON-NLS-1$
+          mypath = "/" + mypath; //$NON-NLS-1$
         }    
         url = mypath + url;
       }
-      Image img = new Image(url); //$NON-NLS-1$
+      Image img = new Image(url);
       bar.add(img);
       bar.setCellVerticalAlignment(img, ALIGN_MIDDLE);
       break;
@@ -157,7 +157,7 @@ public class Toolbar extends HorizontalPanel implements ToolbarPopupListener, To
    */
   public void addSpacer(int spacerAmount) {
     SimplePanel panel = new SimplePanel();
-    panel.setWidth(spacerAmount + "px");
+    panel.setWidth(spacerAmount + "px"); //$NON-NLS-1$
     bar.add(panel);
     bar.setCellWidth(panel, spacerAmount + "px"); //$NON-NLS-1$
   }

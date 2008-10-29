@@ -80,7 +80,7 @@ public class DialogBox extends com.google.gwt.user.client.ui.DialogBox implement
     }
     super.center();
     if (modal && !centerCalled) {
-      pageBackground.setSize("100%", Window.getClientHeight() + Window.getScrollTop() + "px"); //$NON-NLS-1$
+      pageBackground.setSize("100%", Window.getClientHeight() + Window.getScrollTop() + "px"); //$NON-NLS-1$ //$NON-NLS-2$
       pageBackground.setVisible(true);
       dialogDepthCount++;
       centerCalled = true;

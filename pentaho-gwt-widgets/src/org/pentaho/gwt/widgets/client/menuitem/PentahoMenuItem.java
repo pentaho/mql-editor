@@ -31,9 +31,9 @@ public class PentahoMenuItem extends MenuItem {
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
     if (enabled) {
-      setStyleName("gwt-MenuItem");
+      setStyleName("gwt-MenuItem"); //$NON-NLS-1$
     } else {
-      setStyleName("disabledMenuItem");
+      setStyleName("disabledMenuItem"); //$NON-NLS-1$
     }    
   }
   

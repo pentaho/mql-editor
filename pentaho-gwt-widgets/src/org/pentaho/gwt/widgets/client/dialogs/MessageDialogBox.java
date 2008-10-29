@@ -25,6 +25,6 @@ import com.google.gwt.user.client.ui.Label;
 public class MessageDialogBox extends PromptDialogBox {
 
   public MessageDialogBox(String title, String message, boolean isHTML, boolean autoHide, boolean modal) {
-    super(title, "OK", null, autoHide, modal, isHTML?new HTML(message):new Label(message));
+    super(title, "OK", null, autoHide, modal, isHTML?new HTML(message):new Label(message)); //$NON-NLS-1$
   }
 }

@@ -154,7 +154,7 @@ public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
 
   public RecurrenceEditor() {
     super();
-    this.setWidth("100%");
+    this.setWidth("100%"); //$NON-NLS-1$
 
     Widget p = createStartTimePanel();
     add(p);
@@ -850,7 +850,6 @@ public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
     private ICallback<IChangeHandler> onChangeHandler;
 
     private static final String YEARLY_RB_GROUP = "yearly-group"; //$NON-NLS-1$
-    private static final String DAY_OF_MONTH_TB = "day-of-month-textbox"; //$NON-NLS-1$
     public YearlyRecurrenceEditor() {
       setVisible(false);
       setSpacing(6);
@@ -860,7 +859,7 @@ public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
       everyMonthOnNthDayRb.setChecked(true);
       p.add(everyMonthOnNthDayRb);
       p.add( monthOfYearLb0 );
-      dayOfMonthTb.setStylePrimaryName("DAY_OF_MONTH_TB");
+      dayOfMonthTb.setStylePrimaryName("DAY_OF_MONTH_TB"); //$NON-NLS-1$
       dayOfMonthTb.setWidth("3em"); //$NON-NLS-1$
       p.add(dayOfMonthTb);
       dayOfMonthLabel = new ErrorLabel( p );

@@ -31,17 +31,17 @@ public final class ResizableDialogDragHandler implements DragHandler {
   /**
    * CSS blue.
    */
-  private static final String BLUE = "#4444BB";
+  private static final String BLUE = "#4444BB"; //$NON-NLS-1$
 
   /**
    * CSS green.
    */
-  private static final String GREEN = "#44BB44";
+  private static final String GREEN = "#44BB44"; //$NON-NLS-1$
 
   /**
    * CSS red.
    */
-  private static final String RED = "#BB4444";
+  private static final String RED = "#BB4444"; //$NON-NLS-1$
 
   /**
    * Text area where event messages are shown.
@@ -58,7 +58,7 @@ public final class ResizableDialogDragHandler implements DragHandler {
    * @param event the event to log
    */
   public void onDragEnd(DragEndEvent event) {
-    log("onDragEnd: " + event, RED);
+    log("onDragEnd: " + event, RED); //$NON-NLS-1$
   }
 
   /**
@@ -67,7 +67,7 @@ public final class ResizableDialogDragHandler implements DragHandler {
    * @param event the event to log
    */
   public void onDragStart(DragStartEvent event) {
-    log("onDragStart: " + event, GREEN);
+    log("onDragStart: " + event, GREEN); //$NON-NLS-1$
   }
 
   /**
@@ -77,7 +77,7 @@ public final class ResizableDialogDragHandler implements DragHandler {
    * @throws VetoDragException exception which may be thrown by any drag handler
    */
   public void onPreviewDragEnd(DragEndEvent event) throws VetoDragException {
-    log("<br>onPreviewDragEnd: " + event, BLUE);
+    log("<br>onPreviewDragEnd: " + event, BLUE); //$NON-NLS-1$
   }
 
   /**
@@ -88,16 +88,16 @@ public final class ResizableDialogDragHandler implements DragHandler {
    */
   public void onPreviewDragStart(DragStartEvent event) throws VetoDragException {
     clear();
-    log("onPreviewDragStart: " + event, BLUE);
+    log("onPreviewDragStart: " + event, BLUE); //$NON-NLS-1$
   }
 
   private void clear() {
-    eventTextArea.setHTML("");
+    eventTextArea.setHTML(""); //$NON-NLS-1$
   }
 
   private void log(String text, String color) {
     eventTextArea.setHTML(eventTextArea.getHTML()
-        + (eventTextArea.getHTML().length() == 0 ? "" : "<br>") + "<span style='color: " + color
-        + "'>" + text + "</span>");
+        + (eventTextArea.getHTML().length() == 0 ? "" : "<br>") + "<span style='color: " + color //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        + "'>" + text + "</span>"); //$NON-NLS-1$ //$NON-NLS-2$
   }
 }

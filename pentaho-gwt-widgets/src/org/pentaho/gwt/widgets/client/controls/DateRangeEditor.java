@@ -39,7 +39,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class DateRangeEditor extends CaptionPanel implements IChangeHandler {
 
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
-  private static final String SCHEDULE_EDITOR_CAPTION_PANEL = "schedule-editor-caption-panel";
+  private static final String SCHEDULE_EDITOR_CAPTION_PANEL = "schedule-editor-caption-panel"; //$NON-NLS-1$
 
   private static final String END_DATE_RB_GROUP = "end-date-group"; //$NON-NLS-1$
   private static final String END_DATE_PICKER = "end-date-picker"; //$NON-NLS-1$

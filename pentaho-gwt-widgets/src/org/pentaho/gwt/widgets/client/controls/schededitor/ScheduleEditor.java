@@ -147,20 +147,20 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
     nameLabel.setStyleName(SCHEDULE_LABEL);
     add( nameLabel );
     add( nameTb );
-    nameTb.setWidth("70%");
+    nameTb.setWidth("70%"); //$NON-NLS-1$
     
     rowNum++;
     groupNameLabel = new ErrorLabel( new Label( MSGS.groupColon() ) );
     groupNameLabel.setStyleName(SCHEDULE_LABEL);
     add( groupNameLabel );
     add( groupNameTb );
-    groupNameTb.setWidth("70%");
+    groupNameTb.setWidth("70%"); //$NON-NLS-1$
 
     rowNum++;
     Label l = new Label( MSGS.descriptionColon() );
     l.setStyleName(SCHEDULE_LABEL);
     add( l );
-    descriptionTb.setStyleName( "scheduleDescription" );
+    descriptionTb.setStyleName( "scheduleDescription" ); //$NON-NLS-1$
     add( descriptionTb );
 
     rowNum++;
@@ -172,9 +172,9 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
 
     rowNum++;
     VerticalPanel vp = new VerticalPanel();
-    vp.setWidth("100%");
+    vp.setWidth("100%"); //$NON-NLS-1$
     add( vp );
-    setCellHeight( vp, "100%" );
+    setCellHeight( vp, "100%" ); //$NON-NLS-1$
 
     runOnceEditor = new RunOnceEditor();
     vp.add( runOnceEditor );

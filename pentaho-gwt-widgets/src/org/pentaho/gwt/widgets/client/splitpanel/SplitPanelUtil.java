@@ -29,14 +29,14 @@ public class SplitPanelUtil {
     Element leftElement = hsplit.getLeftWidget().getElement();
     while (leftElement != splitElement && leftElement != null) {
       leftElement = leftElement.getParentElement();
-      DOM.setStyleAttribute((com.google.gwt.user.client.Element) leftElement, "overflowX", enableLeft ? "auto" : "hidden");
-      DOM.setStyleAttribute((com.google.gwt.user.client.Element) leftElement, "overflowY", enableLeft ? "auto" : "hidden");
+      DOM.setStyleAttribute((com.google.gwt.user.client.Element) leftElement, "overflowX", enableLeft ? "auto" : "hidden"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+      DOM.setStyleAttribute((com.google.gwt.user.client.Element) leftElement, "overflowY", enableLeft ? "auto" : "hidden"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
     Element rightElement = hsplit.getRightWidget().getElement();
     while (rightElement != splitElement && rightElement != null) {
       rightElement = rightElement.getParentElement();
-      DOM.setStyleAttribute((com.google.gwt.user.client.Element) rightElement, "overflowX", enableRight ? "auto" : "hidden");
-      DOM.setStyleAttribute((com.google.gwt.user.client.Element) rightElement, "overflowY", enableRight ? "auto" : "hidden");
+      DOM.setStyleAttribute((com.google.gwt.user.client.Element) rightElement, "overflowX", enableRight ? "auto" : "hidden"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+      DOM.setStyleAttribute((com.google.gwt.user.client.Element) rightElement, "overflowY", enableRight ? "auto" : "hidden"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
   }
 
@@ -46,14 +46,14 @@ public class SplitPanelUtil {
     Element topElement = vsplit.getTopWidget().getElement();
     while (topElement != splitElement && topElement != null) {
       topElement = topElement.getParentElement();
-      DOM.setStyleAttribute((com.google.gwt.user.client.Element) topElement, "overflowX", enableTop ? "auto" : "hidden");
-      DOM.setStyleAttribute((com.google.gwt.user.client.Element) topElement, "overflowY", enableTop ? "auto" : "hidden");
+      DOM.setStyleAttribute((com.google.gwt.user.client.Element) topElement, "overflowX", enableTop ? "auto" : "hidden"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+      DOM.setStyleAttribute((com.google.gwt.user.client.Element) topElement, "overflowY", enableTop ? "auto" : "hidden"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
     Element bottomElement = vsplit.getBottomWidget().getElement();
     while (bottomElement != splitElement && bottomElement != null) {
       bottomElement = bottomElement.getParentElement();
-      DOM.setStyleAttribute((com.google.gwt.user.client.Element) bottomElement, "overflowX", enableBottom ? "auto" : "hidden");
-      DOM.setStyleAttribute((com.google.gwt.user.client.Element) bottomElement, "overflowY", enableBottom ? "auto" : "hidden");
+      DOM.setStyleAttribute((com.google.gwt.user.client.Element) bottomElement, "overflowX", enableBottom ? "auto" : "hidden"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+      DOM.setStyleAttribute((com.google.gwt.user.client.Element) bottomElement, "overflowY", enableBottom ? "auto" : "hidden"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
   }
 

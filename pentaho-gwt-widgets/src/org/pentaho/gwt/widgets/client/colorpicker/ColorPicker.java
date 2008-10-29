@@ -273,34 +273,34 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 		// Add the large slider map
 		slidermap = new SliderMap(this);
 		panel.add(slidermap);
-		panel.setCellWidth(slidermap, "258px");
-		panel.setCellHeight(slidermap, "258px");
+		panel.setCellWidth(slidermap, "258px"); //$NON-NLS-1$
+		panel.setCellHeight(slidermap, "258px"); //$NON-NLS-1$
 
 		// Add the small slider bar
 		sliderbar = new SliderBar(this);
 		panel.add(sliderbar);
-		panel.setCellWidth(sliderbar, "40px");
-		panel.setCellHeight(sliderbar, "258px");
+		panel.setCellWidth(sliderbar, "40px"); //$NON-NLS-1$
+		panel.setCellHeight(sliderbar, "258px"); //$NON-NLS-1$
 
 		// Define the Flextable's content
 		// Color preview at the top
-		colorpreview = new HTML("");
-		colorpreview.setWidth("50px");
-		colorpreview.setHeight("50px");
-		DOM.setStyleAttribute(colorpreview.getElement(), "border", "1px solid black");
+		colorpreview = new HTML(""); //$NON-NLS-1$
+		colorpreview.setWidth("50px"); //$NON-NLS-1$
+		colorpreview.setHeight("50px"); //$NON-NLS-1$
+		DOM.setStyleAttribute(colorpreview.getElement(), "border", "1px solid black"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// Radio buttons
-		rbHue = new RadioButton("color", "H:");
+		rbHue = new RadioButton("color", "H:"); //$NON-NLS-1$ //$NON-NLS-2$
 		rbHue.addClickListener(this);
-		rbSaturation = new RadioButton("color", "S:");
+		rbSaturation = new RadioButton("color", "S:"); //$NON-NLS-1$ //$NON-NLS-2$
 		rbSaturation.addClickListener(this);
-		rbBrightness = new RadioButton("color", "V:");
+		rbBrightness = new RadioButton("color", "V:"); //$NON-NLS-1$ //$NON-NLS-2$
 		rbBrightness.addClickListener(this);
-		rbRed = new RadioButton("color", "R:");
+		rbRed = new RadioButton("color", "R:"); //$NON-NLS-1$ //$NON-NLS-2$
 		rbRed.addClickListener(this);
-		rbGreen = new RadioButton("color", "G:");
+		rbGreen = new RadioButton("color", "G:"); //$NON-NLS-1$ //$NON-NLS-2$
 		rbGreen.addClickListener(this);
-		rbBlue = new RadioButton("color", "B:");
+		rbBlue = new RadioButton("color", "B:"); //$NON-NLS-1$ //$NON-NLS-2$
 		rbBlue.addClickListener(this);
 
 		// Textboxes
@@ -341,7 +341,7 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 		tbBlue.addKeyboardListener(this);
 		tbBlue.addChangeListener(this);
 		tbHexColor = new TextBox();
-		tbHexColor.setText("ff0000");
+		tbHexColor.setText("ff0000"); //$NON-NLS-1$
 		tbHexColor.setMaxLength(6);
 		tbHexColor.setVisibleLength(6);
 		tbHexColor.addKeyboardListener(this);
@@ -352,28 +352,28 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 		table.getFlexCellFormatter().setColSpan(0, 0, 3);
 		table.setWidget(1, 0, rbHue);
 		table.setWidget(1, 1, tbHue);
-		table.setWidget(1, 2, new HTML("&deg;"));
+		table.setWidget(1, 2, new HTML("&deg;")); //$NON-NLS-1$
 		table.setWidget(2, 0, rbSaturation);
 		table.setWidget(2, 1, tbSaturation);
-		table.setText(2, 2, "%");
+		table.setText(2, 2, "%"); //$NON-NLS-1$
 		table.setWidget(3, 0, rbBrightness);
 		table.setWidget(3, 1, tbBrightness);
-		table.setText(3, 2, "%");
+		table.setText(3, 2, "%"); //$NON-NLS-1$
 		table.setWidget(4, 0, rbRed);
 		table.setWidget(4, 1, tbRed);
 		table.setWidget(5, 0, rbGreen);
 		table.setWidget(5, 1, tbGreen);
 		table.setWidget(6, 0, rbBlue);
 		table.setWidget(6, 1, tbBlue);
-		table.setText(7,0, "#:");
+		table.setText(7,0, "#:"); //$NON-NLS-1$
 		table.setWidget(7,1, tbHexColor);
 		table.getFlexCellFormatter().setColSpan(7, 1, 2);
 
 		// Final setup
 		panel.add(table);
 		rbSaturation.setChecked(true);
-		setPreview("ff0000");
-		DOM.setStyleAttribute(colorpreview.getElement(), "cursor", "default");
+		setPreview("ff0000"); //$NON-NLS-1$
+		DOM.setStyleAttribute(colorpreview.getElement(), "cursor", "default"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// First event
 		onClick(rbSaturation);
@@ -400,7 +400,7 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 	 */
 	private void setPreview(String hex)
 	{
-		DOM.setStyleAttribute(colorpreview.getElement(), "backgroundColor", "#" + hex);
+		DOM.setStyleAttribute(colorpreview.getElement(), "backgroundColor", "#" + hex); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -525,7 +525,7 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 			{
 				Color color = new Color();
 				color.setHSV(hue, 100, 100);
-				slidermap.setOverlayColor("#" + color.getHex());
+				slidermap.setOverlayColor("#" + color.getHex()); //$NON-NLS-1$
 			}
 			catch (Exception e) {}
 
@@ -540,8 +540,8 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 				colorMode = SliderMap.Saturation;
 				slidermap.setColorSelectMode(SliderMap.Saturation);
 				sliderbar.setColorSelectMode(SliderBar.Saturation);
-				slidermap.setOverlayColor("transparent");
-				sliderbar.setLayerColor("#ffffff", SliderBar.BarC);
+				slidermap.setOverlayColor("transparent"); //$NON-NLS-1$
+				sliderbar.setLayerColor("#ffffff", SliderBar.BarC); //$NON-NLS-1$
 				sliderbar.setLayerOpacity(100, SliderBar.BarD);
 			}
 
@@ -559,8 +559,8 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 				colorMode = SliderMap.Brightness;
 				slidermap.setColorSelectMode(SliderMap.Brightness);
 				sliderbar.setColorSelectMode(SliderBar.Brightness);
-				slidermap.setUnderlayColor("#000000");
-				slidermap.setOverlayColor("transparent");
+				slidermap.setUnderlayColor("#000000"); //$NON-NLS-1$
+				slidermap.setOverlayColor("transparent"); //$NON-NLS-1$
 				sliderbar.setLayerOpacity(100, SliderBar.BarD);
 			}
 
@@ -568,7 +568,7 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 			{
 				Color color = new Color();
 				color.setHSV(hue, saturation, 100);
-				sliderbar.setLayerColor("#" + color.getHex(), SliderBar.BarD);
+				sliderbar.setLayerColor("#" + color.getHex(), SliderBar.BarD); //$NON-NLS-1$
 			}
 			catch (Exception e) {}
 
@@ -704,11 +704,11 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 			{
 				if (Integer.parseInt(((TextBox)sender).getText()) > 255)
 				{
-					((TextBox)sender).setText("255");
+					((TextBox)sender).setText("255"); //$NON-NLS-1$
 				}
 				if (Integer.parseInt(((TextBox)sender).getText()) < 0)
 				{
-					((TextBox)sender).setText("0");
+					((TextBox)sender).setText("0"); //$NON-NLS-1$
 				}
 			}
 			catch (Exception e)
@@ -744,17 +744,17 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 			{
 				if (Integer.parseInt(tbHue.getText()) > 359)
 				{
-					tbHue.setText("359");
+					tbHue.setText("359"); //$NON-NLS-1$
 				}
 
 				if (Integer.parseInt(tbSaturation.getText()) > 100)
 				{
-					tbSaturation.setText("100");
+					tbSaturation.setText("100"); //$NON-NLS-1$
 				}
 
 				if (Integer.parseInt(tbBrightness.getText()) > 100)
 				{
-					tbBrightness.setText("100");
+					tbBrightness.setText("100"); //$NON-NLS-1$
 				}
 			}
 			catch (Exception e)
@@ -935,7 +935,7 @@ public class ColorPicker extends Composite implements ClickListener, KeyboardLis
 	 */
 	public void setHex(String hex) throws Exception
 	{
-    if (hex.startsWith("#")) {
+    if (hex.startsWith("#")) { //$NON-NLS-1$
       hex = hex.substring(1);
     }
 	  

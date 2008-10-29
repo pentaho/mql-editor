@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -32,7 +31,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class RoundedButton extends Widget {
 
-  private String text = "";
+  private String text = ""; //$NON-NLS-1$
   private String baseStyleName = "roundedbutton"; //$NON-NLS-1$
   private Label label = new Label();
   private Command command;
@@ -69,19 +68,19 @@ public class RoundedButton extends Widget {
 
     // Add in placeholder simplepanels
     leftPanel.setStylePrimaryName(this.getStylePrimaryName());
-    leftPanel.addStyleDependentName("left");
+    leftPanel.addStyleDependentName("left"); //$NON-NLS-1$
     hbox.add(leftPanel);
     hbox.add(label);
     rightPanel.setStylePrimaryName(this.getStylePrimaryName());
-    rightPanel.addStyleDependentName("right");
+    rightPanel.addStyleDependentName("right"); //$NON-NLS-1$
     hbox.add(rightPanel);
 
     // Set styles
     leftPanel.setStylePrimaryName(this.getStylePrimaryName());
     rightPanel.setStylePrimaryName(this.getStylePrimaryName());
-    label.getElement().getParentElement().setClassName(this.getStylePrimaryName() + "-slice");
+    label.getElement().getParentElement().setClassName(this.getStylePrimaryName() + "-slice"); //$NON-NLS-1$
     label.setStylePrimaryName(this.getStylePrimaryName());
-    label.addStyleDependentName("label");
+    label.addStyleDependentName("label"); //$NON-NLS-1$
 
     // prevent double-click from selecting text
     ElementUtils.preventTextSelection(label.getElement());
@@ -93,10 +92,10 @@ public class RoundedButton extends Widget {
     super.setStylePrimaryName(style);
     baseStyleName = style;
 
-    label.setStylePrimaryName(style + "-label");
-    rightPanel.setStylePrimaryName(style + "-right");
-    leftPanel.setStylePrimaryName(style + "-left");
-    label.getElement().getParentElement().setClassName(style + "-slice");
+    label.setStylePrimaryName(style + "-label"); //$NON-NLS-1$
+    rightPanel.setStylePrimaryName(style + "-right"); //$NON-NLS-1$
+    leftPanel.setStylePrimaryName(style + "-left"); //$NON-NLS-1$
+    label.getElement().getParentElement().setClassName(style + "-slice"); //$NON-NLS-1$
   }
 
   @Override
@@ -107,7 +106,7 @@ public class RoundedButton extends Widget {
 
     rightPanel.addStyleDependentName(style);
     leftPanel.addStyleDependentName(style);
-    label.getElement().getParentElement().setClassName(this.getStylePrimaryName() + "-slice-" + style);
+    label.getElement().getParentElement().setClassName(this.getStylePrimaryName() + "-slice-" + style); //$NON-NLS-1$
   }
 
   @Override
@@ -118,7 +117,7 @@ public class RoundedButton extends Widget {
 
     rightPanel.removeStyleDependentName(style);
     leftPanel.removeStyleDependentName(style);
-    label.getElement().getParentElement().setClassName(this.getStylePrimaryName() + "-slice");
+    label.getElement().getParentElement().setClassName(this.getStylePrimaryName() + "-slice"); //$NON-NLS-1$
   }
 
   public String getText() {
@@ -137,9 +136,9 @@ public class RoundedButton extends Widget {
     if (prevVal && enabled) {
       return;
     } else if (prevVal && !enabled) {
-      this.addStyleDependentName("disabled");
+      this.addStyleDependentName("disabled"); //$NON-NLS-1$
     } else {
-      this.removeStyleDependentName("disabled");
+      this.removeStyleDependentName("disabled"); //$NON-NLS-1$
     }
   }
 
@@ -165,12 +164,12 @@ public class RoundedButton extends Widget {
       break;
     case Event.ONMOUSEOVER:
       if (RoundedButton.this.isEnabled()) {
-        RoundedButton.this.addStyleDependentName("over");
+        RoundedButton.this.addStyleDependentName("over"); //$NON-NLS-1$
       }
       break;
     case Event.ONMOUSEOUT:
       if (RoundedButton.this.isEnabled()) {
-        RoundedButton.this.removeStyleDependentName("over");
+        RoundedButton.this.removeStyleDependentName("over"); //$NON-NLS-1$
       }
       break;
 

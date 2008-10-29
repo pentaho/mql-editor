@@ -47,7 +47,7 @@ public class CronEditor extends VerticalPanel implements IChangeHandler {
   
   public CronEditor() {
     super();
-    setWidth("100%");
+    setWidth("100%"); //$NON-NLS-1$
     
     Label l = new Label( MSGS.cronLabel() );
     l.setStylePrimaryName(CRON_LABEL);

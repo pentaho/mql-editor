@@ -215,44 +215,44 @@ public class TransparencyImpl
 			{
 				if (alpha == 100)
 				{
-					DOM.setStyleAttribute(elem, "filter", map.get(elem) + "");
+					DOM.setStyleAttribute(elem, "filter", map.get(elem) + ""); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				else
 				{
-					DOM.setStyleAttribute(elem, "filter", map.get(elem) +
-						", progid:DXImageTransform.Microsoft.Alpha(opacity=" + alpha + ");");
+					DOM.setStyleAttribute(elem, "filter", map.get(elem) + //$NON-NLS-1$
+						", progid:DXImageTransform.Microsoft.Alpha(opacity=" + alpha + ");"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 			else
 			{
-				map.put(elem, DOM.getStyleAttribute(elem, "filter"));
+				map.put(elem, DOM.getStyleAttribute(elem, "filter")); //$NON-NLS-1$
 
 				if (alpha == 100)
 				{
-					DOM.setStyleAttribute(elem, "filter", map.get(elem) + "");
+					DOM.setStyleAttribute(elem, "filter", map.get(elem) + ""); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				else
 				{
-					DOM.setStyleAttribute(elem, "filter", map.get(elem) +
-						", progid:DXImageTransform.Microsoft.Alpha(opacity=" + alpha + ");");
+					DOM.setStyleAttribute(elem, "filter", map.get(elem) + //$NON-NLS-1$
+						", progid:DXImageTransform.Microsoft.Alpha(opacity=" + alpha + ");"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 		}
 		// If IE 7 (or better)
 		else if (ieVersion >= 7.0)
 		{
-			DOM.setStyleAttribute(elem, "filter", "alpha(opacity="+alpha+")");
+			DOM.setStyleAttribute(elem, "filter", "alpha(opacity="+alpha+")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		else // Everyone else
 		{
-			DOM.setStyleAttribute(elem, "-moz-opacity", ""+(new Integer(alpha).floatValue() / 100)+"");
-			DOM.setStyleAttribute(elem, "opacity", ""+(new Integer(alpha).floatValue() / 100)+"");
+			DOM.setStyleAttribute(elem, "-moz-opacity", ""+(new Integer(alpha).floatValue() / 100)+""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			DOM.setStyleAttribute(elem, "opacity", ""+(new Integer(alpha).floatValue() / 100)+""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
 	public static void setBackgroundColor(Element elem, String color)
 	{
-		DOM.setStyleAttribute(elem, "backgroundColor", color);
+		DOM.setStyleAttribute(elem, "backgroundColor", color); //$NON-NLS-1$
 	}
 
 	// Get IE version (provided by Microsoft)

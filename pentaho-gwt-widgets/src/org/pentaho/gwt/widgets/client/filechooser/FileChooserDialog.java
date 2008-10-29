@@ -29,10 +29,10 @@ public class FileChooserDialog extends ResizableDialogBox {
   FileChooser fileChooser;
 
   public FileChooserDialog(FileChooserMode mode, String selectedPath, boolean autoHide, boolean modal) {
-    super(mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel", new FileChooser(mode,
+    super(mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel", new FileChooser(mode, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
         selectedPath), true);
     fileChooser = (FileChooser) getContent();
-    fileChooser.setWidth("100%");
+    fileChooser.setWidth("100%"); //$NON-NLS-1$
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
         return isFileNameValid();
@@ -52,9 +52,9 @@ public class FileChooserDialog extends ResizableDialogBox {
   }
 
   public FileChooserDialog(FileChooserMode mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal) {
-    super(mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel", new FileChooser(), true);
+    super(mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel", new FileChooser(), true); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     fileChooser = (FileChooser) getContent();
-    fileChooser.setWidth("100%");
+    fileChooser.setWidth("100%"); //$NON-NLS-1$
     fileChooser.setMode(mode);
     fileChooser.setSelectedPath(selectedPath);
     fileChooser.solutionRepositoryDocument = repositoryDocument;
@@ -107,12 +107,12 @@ public class FileChooserDialog extends ResizableDialogBox {
   private String getFileName() {    
     final String fileNameFromTextBox = fileChooser.fileNameTextBox.getText().trim();
     final String actualFileName = fileChooser.getActualFileName();
-    if (fileNameFromTextBox != null && !"".equals(fileNameFromTextBox)) {      
+    if (fileNameFromTextBox != null && !"".equals(fileNameFromTextBox)) { //$NON-NLS-1$
       return fileNameFromTextBox;
-    } else if ( actualFileName != null && !"".equals(actualFileName) ) {
+    } else if ( actualFileName != null && !"".equals(actualFileName) ) { //$NON-NLS-1$
       return actualFileName;
     } else {
-      return "";
+      return ""; //$NON-NLS-1$
     }
   }
   
@@ -121,7 +121,7 @@ public class FileChooserDialog extends ResizableDialogBox {
    */
   private boolean isFileNameValid() {
     final String fileName = getFileName();
-    if (fileName == null || "".equals(fileName)) {
+    if (fileName == null || "".equals(fileName)) { //$NON-NLS-1$
       MessageDialogBox dialogBox = new MessageDialogBox("Error", "No filename has been entered.", false, false, true);
       dialogBox.center();
       return false;

@@ -24,8 +24,6 @@ import java.util.EnumSet;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 
-import com.google.gwt.user.client.Window;
-
 /**
  * 
  * @author Steven Barkdull
@@ -998,7 +996,7 @@ public class CronParser {
     assert !bThrewException : "Should not have thrown exception"; //$NON-NLS-1$
     bThrewException = false;
 
-    String r;
+    String r = null;
     try {
       r = recurrenceStringToCronString( "EveryNthDayOfMonth 0 22 4 toke" ); //$NON-NLS-1$
     } catch (CronParseException e) {
