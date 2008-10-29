@@ -17,11 +17,15 @@
 package org.pentaho.gwt.widgets.client.colorpicker;
 
 import org.pentaho.gwt.widgets.client.dialogs.PromptDialogBox;
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 
 public class ColorPickerDialog extends PromptDialogBox {
 
+  private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
+  
   public ColorPickerDialog(String startHex) {
-    super("Color Chooser", "OK", "Cancel", false, true, new ColorPicker());
+    super(MSGS.colorChooser(), MSGS.ok(), MSGS.cancel(), false, true, new ColorPicker());
     ColorPicker colorPicker = (ColorPicker) getContent();
     try {
       colorPicker.setHex(startHex);

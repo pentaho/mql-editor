@@ -1327,5 +1327,14 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
    */
   @DefaultMessage("Invalid type set in data grid")
   String invalidDataGridTypeSet();
+
+  /**
+   * Translated "colorChooser".
+   * 
+   * @return translated "colorChooser"
+  
+   */
+  @DefaultMessage("Color Chooser")
+  String colorChooser();
   
 }
