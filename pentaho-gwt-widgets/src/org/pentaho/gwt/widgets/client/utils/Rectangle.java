@@ -1,7 +1,5 @@
 package org.pentaho.gwt.widgets.client.utils;
 
-import com.google.gwt.user.client.Window;
-
 public class Rectangle{
   int x, y, width, height;
   

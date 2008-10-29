@@ -18,6 +18,9 @@ package org.pentaho.gwt.widgets.client.utils;
 
 import java.util.HashMap;
 
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
+
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -38,6 +41,9 @@ import com.google.gwt.user.client.Window;
  * @author Michael D'Amour
  */
 public class MessageBundle {
+  
+  private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
+  
   private HashMap<String, String> bundle = new HashMap<String, String>();
   private RequestCallback baseCallback = null;
   private RequestCallback langCallback = null;

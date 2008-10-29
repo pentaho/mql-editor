@@ -21,6 +21,8 @@ package org.pentaho.gwt.widgets.client.wizards;
 
 import org.pentaho.gwt.widgets.client.buttons.RoundedButton;
 import org.pentaho.gwt.widgets.client.dialogs.DialogBox;
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DeckPanel;
@@ -40,6 +42,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public abstract class AbstractWizardDialog extends DialogBox implements IWizardPanelListener {
   
+  private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
+  
   private static final int STEPS_COUNT = 15;  // Defines the height of the steps ListBox
 
   private static final String WIZARD_DECK_PANEL = "pentaho-wizard-deck-panel"; //$NON-NLS-1$
@@ -55,10 +59,10 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
   private static final String CANCEL_BTN_STYLE = "pentaho-wizard-cancel-button"; //$NON-NLS-1$
   
   // gui elements
-  RoundedButton backButton = new RoundedButton("Back");
-  RoundedButton nextButton = new RoundedButton("Next");
-  RoundedButton cancelButton = new RoundedButton("Cancel");
-  RoundedButton finishButton = new RoundedButton("Finish");
+  RoundedButton backButton = new RoundedButton(MSGS.back());
+  RoundedButton nextButton = new RoundedButton(MSGS.next());
+  RoundedButton cancelButton = new RoundedButton(MSGS.cancel());
+  RoundedButton finishButton = new RoundedButton(MSGS.finish());
 
   ListBox steps = new ListBox();
   DeckPanel wizardDeckPanel = new DeckPanel();

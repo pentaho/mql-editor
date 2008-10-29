@@ -23,6 +23,8 @@ import java.util.Date;
 
 import org.pentaho.gwt.widgets.client.controls.schededitor.ScheduleEditor;
 import org.pentaho.gwt.widgets.client.controls.schededitor.ScheduleEditor.ScheduleType;
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 import org.pentaho.gwt.widgets.client.ui.ICallback;
 import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 import org.pentaho.gwt.widgets.client.wizards.AbstractWizardPanel;
@@ -36,7 +38,10 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ScheduleEditorWizardPanel extends AbstractWizardPanel {
 
+  private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
+  
   private static final String PENTAHO_SCHEDULE = "pentaho-schedule-create"; //$NON-NLS-1$
+  
   ScheduleEditor scheduleEditor = new ScheduleEditor();
   ScheduleEditorValidator scheduleEditorValidator;
   
@@ -73,7 +78,7 @@ public class ScheduleEditorWizardPanel extends AbstractWizardPanel {
    */
   public String getName() {
     // TODO Auto-generated method stub
-    return "Schedule Edit";
+    return MSGS.scheduleEdit();
   }
 
   protected void panelWidgetChanged(Widget changedWidget) {

@@ -663,6 +663,32 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String cancel();
 
   /**
+   * Translated "Finish".
+   * 
+   * @return translated "Finish"
+  
+   */
+  @DefaultMessage("Finish")
+  String finish();
+
+  /**
+   * Translated "Back".
+   * 
+   * @return translated "Back"
+  
+   */
+  @DefaultMessage("Back")
+  String back();
+
+  /**
+   * Translated "Next".
+   * 
+   * @return translated "Next"
+  
+   */
+  @DefaultMessage("Next")
+  String next();
+  /**
    * Translated "Type".
    * 
    * @return translated "Type"
@@ -1354,5 +1380,14 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
    */
   @DefaultMessage("No filename has been entered.")
   String noFilenameEntered();
+
+  /**
+   * Translated "Schedule Edit".
+   * 
+   * @return translated "Schedule Edit"
+  
+   */
+  @DefaultMessage("Schedule Edit")  
+  String scheduleEdit();
   
 }

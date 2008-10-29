@@ -23,7 +23,7 @@ public class StringTokenizer {
   ArrayList<String> tokens = new ArrayList<String>();
 
   public StringTokenizer(String text, String delimiters) {
-    if (text == null || "".equals(text)) {
+    if (text == null || "".equals(text)) { //$NON-NLS-1$
       return;
     }
     char[] delimiterArray = delimiters.toCharArray();

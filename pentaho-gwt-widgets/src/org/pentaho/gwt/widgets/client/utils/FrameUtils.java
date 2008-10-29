@@ -82,7 +82,7 @@ public class FrameUtils {
   public static void toggleEmbedVisibility(boolean visible){
     Element[] frames = new Element[0];
     try {
-      frames = ElementUtils.getElementsByTagName("iframe");
+      frames = ElementUtils.getElementsByTagName("iframe"); //$NON-NLS-1$
     } catch (ClassCastException cce) {
       // ignore class cast exceptions in here, they are happening in hosted mode for Elements
     }
