@@ -1329,12 +1329,30 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String invalidDataGridTypeSet();
 
   /**
-   * Translated "colorChooser".
+   * Translated "Color Chooser".
    * 
-   * @return translated "colorChooser"
+   * @return translated "Color Chooser"
   
    */
   @DefaultMessage("Color Chooser")
   String colorChooser();
+
+  /**
+   * Translated "Error".
+   * 
+   * @return translated "Error"
+  
+   */
+  @DefaultMessage("Error")
+  String error();
+
+  /**
+   * Translated "No filename has been entered.".
+   * 
+   * @return translated "No filename has been entered."
+  
+   */
+  @DefaultMessage("No filename has been entered.")
+  String noFilenameEntered();
   
 }

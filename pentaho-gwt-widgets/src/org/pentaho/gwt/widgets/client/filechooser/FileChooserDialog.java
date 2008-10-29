@@ -21,11 +21,15 @@ import org.pentaho.gwt.widgets.client.dialogs.IDialogValidatorCallback;
 import org.pentaho.gwt.widgets.client.dialogs.MessageDialogBox;
 import org.pentaho.gwt.widgets.client.dialogs.ResizableDialogBox;
 import org.pentaho.gwt.widgets.client.filechooser.FileChooser.FileChooserMode;
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 
 import com.google.gwt.xml.client.Document;
 
 public class FileChooserDialog extends ResizableDialogBox {
 
+  private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
+  
   FileChooser fileChooser;
 
   public FileChooserDialog(FileChooserMode mode, String selectedPath, boolean autoHide, boolean modal) {
@@ -122,7 +126,7 @@ public class FileChooserDialog extends ResizableDialogBox {
   private boolean isFileNameValid() {
     final String fileName = getFileName();
     if (fileName == null || "".equals(fileName)) { //$NON-NLS-1$
-      MessageDialogBox dialogBox = new MessageDialogBox("Error", "No filename has been entered.", false, false, true);
+      MessageDialogBox dialogBox = new MessageDialogBox(MSGS.error(), MSGS.noFilenameEntered(), false, false, true);
       dialogBox.center();
       return false;
     }    
