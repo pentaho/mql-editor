@@ -1309,4 +1309,23 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
    */
   @DefaultMessage("first")
   String first();
+  
+  /**
+   * Translated "tableHeaderInputError".
+   * 
+   * @return translated "tableHeaderInputError"
+  
+   */
+  @DefaultMessage("Must specify table header names.")
+  String tableHeaderInputError();  
+ 
+  /**
+   * Translated "invalidDataGridTypeSet".
+   * 
+   * @return translated "invalidDataGridTypeSet"
+  
+   */
+  @DefaultMessage("Invalid type set in data grid")
+  String invalidDataGridTypeSet();
+  
 }

@@ -21,6 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
+import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 import org.pentaho.gwt.widgets.client.table.ColumnComparators.BaseColumnComparator;
 import org.pentaho.gwt.widgets.client.table.ColumnComparators.ColumnComparatorTypes;
 
@@ -65,7 +67,7 @@ import com.google.gwt.widgetideas.table.client.overrides.HTMLTable.CellFormatter
  */
 public class BaseTable extends Composite {
   
-  private static final String LOADING_MESSAGE = "Loading";
+  private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
   
   public static final BaseColumnComparator DEFAULT_COLUMN_COMPARATOR = BaseColumnComparator
       .getInstance(ColumnComparatorTypes.STRING_NOCASE);
@@ -134,13 +136,13 @@ public class BaseTable extends Composite {
     
       initWidget(parentPanel);
     
-      createTableWithShortMessage(LOADING_MESSAGE);
+      createTableWithShortMessage(MSGS.loading());
 
       parentPanel.setWidth("100%"); //$NON-NLS-1$
       this.parentPanel.add(scrollTable);
       this.fillWidth();
     }else{
-      System.err.println("ERROR: Must specify table header names.");
+      System.err.println(MSGS.tableHeaderInputError());
     }
   }
   
@@ -326,7 +328,7 @@ public class BaseTable extends Composite {
           } else if (value instanceof Widget){
             dataGrid.setWidget(i, j, (Widget)value);
           } else {
-            System.err.print("Invalid type set in data grid");
+            System.err.print(MSGS.invalidDataGridTypeSet());
           }
         }
       }
