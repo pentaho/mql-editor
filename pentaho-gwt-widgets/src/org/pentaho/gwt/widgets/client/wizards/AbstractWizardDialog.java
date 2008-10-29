@@ -182,7 +182,7 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
     
     // Create the Steps and add it to the content
     stepsList = new VerticalPanel();
-    stepsList.add(new Label("Steps:"));
+    stepsList.add(new Label(MSGS.steps()));
     steps.setVisibleItemCount(STEPS_COUNT);
     stepsList.add(steps);
 //    steps.setSize("30%", "100%");
@@ -242,7 +242,7 @@ public abstract class AbstractWizardDialog extends DialogBox implements IWizardP
       
       ((IWizardPanel) wizardDeckPanel.getWidget(0)).addWizardPanelListener(this);
       if (wizardPanels.length == 1) { // We only have one item so change the Finish button to ok.
-        finishButton.setText("OK");
+        finishButton.setText(MSGS.ok());
       }
       
       updateGUI(0);

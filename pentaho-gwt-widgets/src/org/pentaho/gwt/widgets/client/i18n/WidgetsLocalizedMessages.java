@@ -1389,5 +1389,13 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
    */
   @DefaultMessage("Schedule Edit")  
   String scheduleEdit();
+
+  /**
+   * Translated "Steps:".
+   * 
+   * @return translated "Steps:"
   
+   */
+  @DefaultMessage("Steps:")  
+  String steps();
 }
