@@ -19,10 +19,7 @@ package org.pentaho.gwt.widgets.client.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.gwt.widgets.client.utils.ElementUtils;
-
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MenuBar;
