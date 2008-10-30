@@ -121,9 +121,15 @@ public class ToolbarComboButton extends ToolbarButton implements ToolbarPopupSou
       public void onMouseDown(Widget w, int x, int y) {
       }
       public void onMouseEnter(Widget w) {
+        if(!enabled){
+          return;
+        }
         button.addStyleName(stylePrimaryName+"-hovering");    //$NON-NLS-1$
       }
       public void onMouseLeave(Widget w) {
+        if(!enabled){
+          return;
+        }
         button.removeStyleName(stylePrimaryName+"-hovering");   //$NON-NLS-1$
       }
       public void onMouseUp(Widget w, int x, int y) {
