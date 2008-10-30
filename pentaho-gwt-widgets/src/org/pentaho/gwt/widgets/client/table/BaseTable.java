@@ -404,8 +404,6 @@ public class BaseTable extends Composite {
   
   /**
    * Disables the ability to select text on the given object.
-   * 
-   * TODO use ElementUtils common method instead
    */
   private static native void disableTextSelection(JavaScriptObject target) /*-{
     if (target){
