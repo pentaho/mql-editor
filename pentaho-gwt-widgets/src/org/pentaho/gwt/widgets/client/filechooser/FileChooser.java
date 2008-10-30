@@ -357,6 +357,7 @@ public class FileChooser extends VerticalPanel {
         TreeItem tmpItem = selectedTreeItem;
         List<String> parentSegments = new ArrayList<String>();
         while (tmpItem != null) {
+          @SuppressWarnings("unchecked")
           HashMap<String, Object> attributeMap = (HashMap<String, Object>) tmpItem.getUserObject();
           if (attributeMap.get(ACTUAL_FILE_NAME) != null) {
             parentSegments.add((String) attributeMap.get(ACTUAL_FILE_NAME));
@@ -405,6 +406,7 @@ public class FileChooser extends VerticalPanel {
     searchText = searchText.toLowerCase();
     for (int i = 0; i < parentItem.getChildCount(); i++) {
       final TreeItem childItem = parentItem.getChild(i);
+      @SuppressWarnings("unchecked")
       HashMap<String, Object> attributeMap = (HashMap<String, Object>) childItem.getUserObject();
       final boolean isDir = "true".equals(attributeMap.get("isDirectory")); //$NON-NLS-1$ //$NON-NLS-2$
       String name = ((String) attributeMap.get(ACTUAL_FILE_NAME)).toLowerCase();
@@ -452,6 +454,7 @@ public class FileChooser extends VerticalPanel {
     int row = 0;
     for (int i = 0; i < parentTreeItem.getChildCount(); i++) {
       final TreeItem childItem = parentTreeItem.getChild(i);
+      @SuppressWarnings("unchecked")
       HashMap<String, String> attributeMap = (HashMap<String, String>) childItem.getUserObject();
       final boolean isDir = "true".equals(attributeMap.get("isDirectory")); //$NON-NLS-1$ //$NON-NLS-2$
       if (isDir) {
@@ -460,6 +463,7 @@ public class FileChooser extends VerticalPanel {
     }
     for (int i = 0; i < parentTreeItem.getChildCount(); i++) {
       final TreeItem childItem = parentTreeItem.getChild(i);
+      @SuppressWarnings("unchecked")
       HashMap<String, String> attributeMap = (HashMap<String, String>) childItem.getUserObject();
       final boolean isDir = "true".equals(attributeMap.get("isDirectory")); //$NON-NLS-1$ //$NON-NLS-2$
       if (!isDir) {
@@ -556,6 +560,7 @@ public class FileChooser extends VerticalPanel {
     }
     if (eventWeCareAbout) {
       setFileSelected(true);
+      @SuppressWarnings("unchecked")
       HashMap<String, Object> attributeMap = (HashMap<String, Object>) item.getUserObject();
       TreeItem originalItem = (TreeItem) attributeMap.get("original"); //$NON-NLS-1$
       TreeItem tmpItem = originalItem;
@@ -566,6 +571,7 @@ public class FileChooser extends VerticalPanel {
 
       List<String> parentSegments = new ArrayList<String>();
       while (tmpItem != null) {
+        @SuppressWarnings("unchecked")
         HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) tmpItem.getUserObject();
         if (tmpAttributeMap.get(ACTUAL_FILE_NAME) != null) {
           parentSegments.add((String) tmpAttributeMap.get(ACTUAL_FILE_NAME));
@@ -579,6 +585,7 @@ public class FileChooser extends VerticalPanel {
       }
       setSelectedPath(myPath);
       if (!isDir) {
+        @SuppressWarnings("unchecked")
         HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) selectedTreeItem.getUserObject();
         if (tmpAttributeMap.get(ACTUAL_FILE_NAME) != null) {
           fileNameTextBox.setText((String) tmpAttributeMap.get(LOCALIZED_FILE_NAME));
@@ -598,10 +605,10 @@ public class FileChooser extends VerticalPanel {
       // single click
       // highlight row
       if (lastSelectedFileElement != null) {
-        com.google.gwt.dom.client.Element parentRow = ElementUtils.findElementAboveByTagName(lastSelectedFileElement, "table");
+        com.google.gwt.dom.client.Element parentRow = ElementUtils.findElementAboveByTagName(lastSelectedFileElement, "table"); //$NON-NLS-1$
         parentRow.getStyle().setProperty("background", "white");	//$NON-NLS-1$ //$NON-NLS-2$
       }
-      com.google.gwt.dom.client.Element parentRow = ElementUtils.findElementAboveByTagName(sourceElement, "table");
+      com.google.gwt.dom.client.Element parentRow = ElementUtils.findElementAboveByTagName(sourceElement, "table"); //$NON-NLS-1$
       parentRow.getStyle().setProperty("background", "#B9B9B9");	//$NON-NLS-1$ //$NON-NLS-2$
       lastSelectedFileElement = sourceElement;
     }
@@ -615,9 +622,11 @@ public class FileChooser extends VerticalPanel {
     return fileSelected;
   }
 
+  @SuppressWarnings("unused")
   private String getTitle(TreeItem item) {
     List<String> parentSegments = new ArrayList<String>();
     while (item != null) {
+      @SuppressWarnings("unchecked")
       HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) item.getUserObject();
       if (tmpAttributeMap.get(ACTUAL_FILE_NAME) != null) {
         parentSegments.add((String) tmpAttributeMap.get(ACTUAL_FILE_NAME));
@@ -647,13 +656,15 @@ public class FileChooser extends VerticalPanel {
     for (String segment : pathSegments) {
       for (int i = 0; i < selectedItem.getChildCount(); i++) {
         TreeItem item = selectedItem.getChild(i);
+        @SuppressWarnings("unchecked")
         HashMap<String, String> attributeMap = (HashMap<String, String>) item.getUserObject();
         if (segment.equals(attributeMap.get(ACTUAL_FILE_NAME))) {
           selectedItem = item;
         }
       }
     }
-
+    
+    @SuppressWarnings("unchecked")
     HashMap<String, Object> attributeMap = (HashMap<String, Object>) selectedItem.getUserObject();
     TreeItem originalItem = (TreeItem) attributeMap.get("original"); //$NON-NLS-1$
     if (originalItem != null) {
@@ -754,6 +765,7 @@ public class FileChooser extends VerticalPanel {
     }
     TreeItem treeItem = getTreeItem(pathSegments);
     if (treeItem != null) {
+      @SuppressWarnings("unchecked")
       HashMap<String, Object> attributeMap = (HashMap<String, Object>) treeItem.getUserObject();
       if (getActualFileName().equals(attributeMap.get(ACTUAL_FILE_NAME))) {
         return true;

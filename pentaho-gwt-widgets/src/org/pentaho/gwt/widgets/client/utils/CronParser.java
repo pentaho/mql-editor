@@ -92,6 +92,7 @@ public class CronParser {
     this.cronStr = cronStr.trim();
   }
   
+  @SuppressWarnings("unused")
   private static boolean isMultipleOfN( int testValue, int n ) {
     assert n != 0 : "isMultipleOfN(), n cannot be zero."; //$NON-NLS-1$
     return ( ( testValue / n ) * n ) == testValue;
@@ -183,12 +184,17 @@ public class CronParser {
     return cronStr;
   }
   
+  @SuppressWarnings("unused")
   private int getStartSecond() {
     return startSecond;
   }
+  
+  @SuppressWarnings("unused")
   private int getStartMinute() {
     return startMinute;
   }
+  
+  @SuppressWarnings("unused")
   private int getStartHour() {
     return startHour;
   }
@@ -996,6 +1002,7 @@ public class CronParser {
     assert !bThrewException : "Should not have thrown exception"; //$NON-NLS-1$
     bThrewException = false;
 
+    @SuppressWarnings("unused")
     String r = null;
     try {
       r = recurrenceStringToCronString( "EveryNthDayOfMonth 0 22 4 toke" ); //$NON-NLS-1$

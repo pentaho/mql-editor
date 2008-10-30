@@ -92,6 +92,7 @@ public class FrameUtils {
       //Attempt to find a previously GWT-wrapped frame instance in our timer collection
       Object[] tmap = timers.entrySet().toArray();
       for(int i=0; i<tmap.length; i++){
+        @SuppressWarnings("unchecked")
         Map.Entry<Frame, FrameTimer> t = (Map.Entry<Frame, FrameTimer>) tmap[i];
         if(t.getKey().getElement() == ele){ 
           //found an already wrapped instance
