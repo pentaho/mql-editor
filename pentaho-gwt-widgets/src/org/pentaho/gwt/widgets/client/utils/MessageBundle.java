@@ -82,7 +82,7 @@ public class MessageBundle {
     try {
       requestBuilder.sendRequest(null, baseCallback);
     } catch (RequestException e) {
-      Window.alert("base load error" + e.getMessage());
+      Window.alert("base load " + MSGS.error() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
       fireBundleLoadCallback();
     }
   }
@@ -90,7 +90,7 @@ public class MessageBundle {
   private void initCallbacks() {
     baseCallback = new RequestCallback() {
       public void onError(Request request, Throwable exception) {
-        Window.alert("baseCallback error" + exception.getMessage());
+        Window.alert("baseCallback " + MSGS.error() + ":" + exception.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
         fireBundleLoadCallback();
       }
 
@@ -110,11 +110,11 @@ public class MessageBundle {
             String lang = st.tokenAt(0);
             // 2. fetch bundleName_lang.properties
             // 3. fetch bundleName_lang_country.properties
-            RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + lang + ".properties"); //$NON-NLS-1$
+            RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + lang + ".properties"); //$NON-NLS-1$ //$NON-NLS-2$
             try {
               requestBuilder.sendRequest(null, langCallback);
             } catch (RequestException e) {
-              Window.alert("lang error" + e.getMessage());
+              Window.alert("lang " + MSGS.error() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
               fireBundleLoadCallback();
             }
           } else if (st.countTokens() == 0) {
@@ -130,12 +130,12 @@ public class MessageBundle {
         // if the language callback fails this means that message_fr.properties
         // does not exist but something like message_fr_CA.properties still could,
         // so we will go ahead and try that as well
-        Window.alert("langCallback error" + exception.getMessage());
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + localeName + ".properties"); //$NON-NLS-1$
+        Window.alert("langCallback " + MSGS.error() + ":" + exception.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + localeName + ".properties"); //$NON-NLS-1$ //$NON-NLS-2$
         try {
           requestBuilder.sendRequest(null, langCountryCallback);
         } catch (RequestException e) {
-          Window.alert("langCountry error" + e.getMessage());
+          Window.alert("langCountry " + MSGS.error() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
           fireBundleLoadCallback();
         }
       }
@@ -148,11 +148,11 @@ public class MessageBundle {
         StringTokenizer st = new StringTokenizer(localeName, '_');
         if (st.countTokens() == 2) {
           // 3. fetch bundleName_lang_country.properties
-          RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + localeName + ".properties"); //$NON-NLS-1$
+          RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + localeName + ".properties"); //$NON-NLS-1$ //$NON-NLS-2$
           try {
             requestBuilder.sendRequest(null, langCountryCallback);
           } catch (RequestException e) {
-            Window.alert("langCountry error" + e.getMessage());
+            Window.alert("langCountry " + MSGS.error() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
             fireBundleLoadCallback();
           }
         } else {
@@ -164,7 +164,7 @@ public class MessageBundle {
     };
     langCountryCallback = new RequestCallback() {
       public void onError(Request request, Throwable exception) {
-        Window.alert("langCountryCallback error" + exception.getMessage());
+        Window.alert("langCountryCallback " + MSGS.error() + ":" + exception.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
         fireBundleLoadCallback();
       }
 
