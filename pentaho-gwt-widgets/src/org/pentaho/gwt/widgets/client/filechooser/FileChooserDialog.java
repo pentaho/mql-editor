@@ -16,6 +16,8 @@
  */
 package org.pentaho.gwt.widgets.client.filechooser;
 
+import java.util.ArrayList;
+
 import org.pentaho.gwt.widgets.client.dialogs.IDialogCallback;
 import org.pentaho.gwt.widgets.client.dialogs.IDialogValidatorCallback;
 import org.pentaho.gwt.widgets.client.dialogs.MessageDialogBox;
@@ -26,9 +28,11 @@ import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 
 import com.google.gwt.xml.client.Document;
 
-public class FileChooserDialog extends ResizableDialogBox {
+public class FileChooserDialog extends ResizableDialogBox implements FileChooserListener{
 
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
+
+  private ArrayList<FileChooserListener> listeners = new ArrayList<FileChooserListener>();
   
   FileChooser fileChooser;
 
@@ -79,15 +83,18 @@ public class FileChooserDialog extends ResizableDialogBox {
 
     };
     setCallback(callback);
+    fileChooser.addFileChooserListener(this);
     fileChooser.initUI(false);
   }
 
   public void addFileChooserListener(FileChooserListener listener) {
-    fileChooser.addFileChooserListener(listener);
+    listeners.add(listener);
   }
 
   public void removeFileChooserListener(FileChooserListener listener) {
-    fileChooser.removeFileChooserListener(listener);
+    if(listeners.contains(listener)){
+      listeners.remove(listener);
+    }
   }
 
   public void setShowSearch(boolean showSearch) {
@@ -131,5 +138,18 @@ public class FileChooserDialog extends ResizableDialogBox {
       return false;
     }    
     return true;
+  }
+
+  public void fileSelected(String solution, String path, String name, String localizedFileName) {
+    for(FileChooserListener listener : listeners){
+      listener.fileSelected(solution, path, name, localizedFileName);
+    }
+    this.hide();
+  }
+
+  public void fileSelectionChanged(String solution, String path, String name) {
+    for(FileChooserListener listener : listeners){
+      listener.fileSelectionChanged(solution, path, name);
+    }
   }
 }
