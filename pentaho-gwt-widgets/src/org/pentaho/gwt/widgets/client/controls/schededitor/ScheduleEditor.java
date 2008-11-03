@@ -129,6 +129,7 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
   // validation labels
   private ErrorLabel nameLabel;
   private ErrorLabel groupNameLabel;
+  private ErrorLabel descriptionLabel;
 
 //  private String cronStr = null;
 //  private String repeatInSecs = null;
@@ -142,6 +143,7 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
     super();
     
     setStylePrimaryName( "scheduleEditor" ); //$NON-NLS-1$
+    
     int rowNum = 0;
     nameLabel = new ErrorLabel( new Label( MSGS.nameColon() ) );
     nameLabel.setStyleName(SCHEDULE_LABEL);
@@ -157,15 +159,15 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
     groupNameTb.setWidth("70%"); //$NON-NLS-1$
 
     rowNum++;
-    Label l = new Label( MSGS.descriptionColon() );
-    l.setStyleName(SCHEDULE_LABEL);
-    add( l );
+    descriptionLabel = new ErrorLabel( new Label( MSGS.descriptionColon() ) );
+    descriptionLabel.setStyleName(SCHEDULE_LABEL);
+    add( descriptionLabel );
     descriptionTb.setStyleName( "scheduleDescription" ); //$NON-NLS-1$
     add( descriptionTb );
 
     rowNum++;
     scheduleCombo = createScheduleCombo();
-    l = new Label( MSGS.recurrenceColon() );
+    Label l = new Label( MSGS.recurrenceColon() );
     l.setStyleName(SCHEDULE_LABEL);
     add( l );
     add( scheduleCombo );
@@ -485,6 +487,10 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
   
   public void setGroupNameError( String errorMsg ) {
     groupNameLabel.setErrorMsg( errorMsg );
+  }
+  
+  public void setDescriptionError( String errorMsg ) {
+    descriptionLabel.setErrorMsg( errorMsg );
   }
   
   private static Map<TemporalValue, ScheduleType> createTemporalValueToScheduleTypeMap() {
