@@ -219,21 +219,16 @@ public class BaseTable extends Composite {
         if (td == null) return;
         Element tr = DOM.getParent(td);
         Element body = DOM.getParent(tr);
-        int row = DOM.getChildIndex(body, tr);
+        int row = DOM.getChildIndex(body, tr) - 1;
         int column = DOM.getChildIndex(tr, td);
         
+System.out.println("row/column: " + row + " " + column);
+        
         switch (DOM.eventGetType(event)) {
-          case Event.ONCLICK: {
-            for (TableSelectionListener tableSelectionListener : tableSelectionListeners){
-              tableSelectionListener.onRowsSelected(this, row, column);
-            }
-            break;
-          }
           case Event.ONDBLCLICK: {
             for (TableListener doubleClickListener : doubleClickListeners){
               doubleClickListener.onCellClicked(this, row, column);
             }
-            break;
           }
           default: {
             break;
@@ -259,7 +254,7 @@ public class BaseTable extends Composite {
       dataGrid.addTableSelectionListener(listener);
     }
     
-    dataGrid.sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
+    dataGrid.sinkEvents(Event.ONDBLCLICK);
     
     dataGrid.setColumnSorter(new BaseTableColumnSorter());
     
