@@ -222,8 +222,6 @@ public class BaseTable extends Composite {
         int row = DOM.getChildIndex(body, tr) - 1;
         int column = DOM.getChildIndex(tr, td);
         
-System.out.println("row/column: " + row + " " + column);
-        
         switch (DOM.eventGetType(event)) {
           case Event.ONDBLCLICK: {
             for (TableListener doubleClickListener : doubleClickListeners){
