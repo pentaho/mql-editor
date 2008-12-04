@@ -266,6 +266,11 @@ public class ToolbarButton {
    */
   public void setImage(Image img) {
     this.image = img;
+    button.remove(currentImage);
+    Image curImage = calculateApporiateImage();
+    button.add(curImage, DockPanel.CENTER);
+    button.setCellHorizontalAlignment(curImage, DockPanel.ALIGN_CENTER);
+    button.setCellVerticalAlignment(curImage, DockPanel.ALIGN_MIDDLE);
   }
 
   /**
