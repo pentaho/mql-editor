@@ -210,9 +210,7 @@ public class Toolbar extends HorizontalPanel implements ToolbarPopupListener, To
   }
   
   public void removeAll(){
-    for(int i=0; i<bar.getWidgetCount(); i++){
-      bar.getWidget(i).removeFromParent();
-    }
+    bar.clear();
     buttons.clear();
   }
 
