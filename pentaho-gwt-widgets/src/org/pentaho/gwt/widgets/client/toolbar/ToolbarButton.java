@@ -279,7 +279,15 @@ public class ToolbarButton {
    * @param img GWT Image
    */
   public void setDisabledImage(Image img) {
-    this.disabledImage = img;
+    if(!isEnabled()){
+      //was enabled, remove old image and put in the disabled one
+      this.disabledImage = img;
+      button.remove(currentImage);
+      Image curImage = calculateApporiateImage();
+      button.add(curImage, DockPanel.CENTER);
+      button.setCellHorizontalAlignment(curImage, DockPanel.ALIGN_CENTER);
+      button.setCellVerticalAlignment(curImage, DockPanel.ALIGN_MIDDLE);
+    }
   }
   
   /**
