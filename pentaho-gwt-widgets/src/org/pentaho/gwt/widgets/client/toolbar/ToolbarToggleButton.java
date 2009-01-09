@@ -28,8 +28,6 @@ public class ToolbarToggleButton extends ToolbarButton {
 
   private boolean selected = false;
   private String TOGGLE_STYLE = "toolbar-toggle-button";   //$NON-NLS-1$
-  private Image downImage;
-  private Image downImageDisabled;
   
   /**
    * Constructs a toolbar button with an image and a label
@@ -180,32 +178,9 @@ public class ToolbarToggleButton extends ToolbarButton {
         button.removeStyleName(stylePrimaryName+"-hovering");    //$NON-NLS-1$ 
       }
       public void onMouseUp(Widget arg0, int arg1, int arg2) {
-        if(!enabled){
-          ElementUtils.blur(ToolbarToggleButton.this.eventWrapper.getElement());
-          return;
-        }
-        toggleSelectedState();
       }
       public void onMouseMove(Widget arg0, int arg1, int arg2) {}
     });
-  }
-
-  /**
-   * Sets the image to be displayed on this button when depressed
-   * 
-   * @param img GWT Image
-   */
-  public void setDownImage(Image img) {
-    this.downImage = img;
-  }
-  
-  /**
-   * Gets the image to be displayed on this button when depressed
-   * 
-   * @param img GWT Image
-   */
-  public Image getDownImage() {
-    return this.downImage;
   }
 
   /**

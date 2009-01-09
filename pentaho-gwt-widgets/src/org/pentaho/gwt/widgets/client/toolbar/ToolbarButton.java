@@ -51,7 +51,9 @@ public class ToolbarButton {
   protected String stylePrimaryName = "toolbar-button";    //$NON-NLS-1$
   protected Command command;
   protected String toolTip;
-  
+  protected Image downImage;
+  protected Image downImageDisabled;
+
   /**
    * Constructs a toolbar button with an image and a label
    * 
@@ -351,6 +353,35 @@ public class ToolbarButton {
   protected Image calculateApporiateImage(){
     currentImage = (!enabled && disabledImage != null)? disabledImage : image;
     return currentImage;
+  }
+
+  /**
+   * Gets the image to be displayed on this button when depressed
+   * 
+   */
+  public Image getDownImage() {
+  
+    return downImage;
+  }
+
+  /**
+   * Sets the image to be displayed on this button when depressed
+   * 
+   * @param img GWT Image
+   */
+  public void setDownImage(Image downImage) {
+  
+    this.downImage = downImage;
+  }
+
+  public Image getDownImageDisabled() {
+  
+    return downImageDisabled;
+  }
+
+  public void setDownImageDisabled(Image downImageDisabled) {
+  
+    this.downImageDisabled = downImageDisabled;
   }
   
   
