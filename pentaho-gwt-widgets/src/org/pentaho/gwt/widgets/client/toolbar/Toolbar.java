@@ -24,6 +24,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
@@ -54,7 +55,7 @@ public class Toolbar extends HorizontalPanel implements ToolbarPopupListener, To
 
     bar.setVerticalAlignment(ALIGN_MIDDLE);
     bar.setSpacing(1);
-    add(bar);
+    super.add(bar);
 
     setWidth("100%"); //$NON-NLS-1$
     setHeight("100%"); //$NON-NLS-1$
@@ -100,6 +101,16 @@ public class Toolbar extends HorizontalPanel implements ToolbarPopupListener, To
   public void add(Label lbl) {
     bar.add(lbl);
   }
+  
+  /**
+   * Add a panel (spacer most likely) to the toolbar
+   * 
+   * @param panel ToolbarSpacer to add.
+   */
+  public void add(Panel p) {
+    bar.add(p);
+  }
+  
 
   /**
    * Add a Button to the Toolbar

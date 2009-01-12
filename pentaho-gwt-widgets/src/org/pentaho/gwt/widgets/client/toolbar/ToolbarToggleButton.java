@@ -171,11 +171,15 @@ public class ToolbarToggleButton extends ToolbarButton {
         button.addStyleName(stylePrimaryName+"-hovering");    //$NON-NLS-1$   
       }
       public void onMouseEnter(Widget arg0) {
-        button.addStyleName(stylePrimaryName+((selected)?"-down":"")+"-hovering");    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        if(enabled){
+          button.addStyleName(stylePrimaryName+((selected)?"-down":"")+"-hovering");    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
       }
       public void onMouseLeave(Widget arg0) {
-        button.removeStyleName(stylePrimaryName+((selected)?"-down":"")+"-hovering");    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        button.removeStyleName(stylePrimaryName+"-hovering");    //$NON-NLS-1$ 
+        if(enabled){
+          button.removeStyleName(stylePrimaryName+((selected)?"-down":"")+"-hovering");    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+          button.removeStyleName(stylePrimaryName+"-hovering");    //$NON-NLS-1$
+        }
       }
       public void onMouseUp(Widget arg0, int arg1, int arg2) {
       }
