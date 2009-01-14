@@ -37,7 +37,12 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
   FileChooser fileChooser;
 
   public FileChooserDialog(FileChooserMode mode, String selectedPath, boolean autoHide, boolean modal) {
-    super(mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel", new FileChooser(mode, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+    this(mode, selectedPath, autoHide, modal, mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save");
+
+  }
+  
+  public FileChooserDialog(FileChooserMode mode, String selectedPath, boolean autoHide, boolean modal, String title, String okText) {
+    super(title, okText, "Cancel", new FileChooser(mode, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
         selectedPath), true);
     fileChooser = (FileChooser) getContent();
     fileChooser.setWidth("100%"); //$NON-NLS-1$
@@ -58,9 +63,9 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
     };
     setCallback(callback);
   }
-
-  public FileChooserDialog(FileChooserMode mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal) {
-    super(mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save", "Cancel", new FileChooser(), true); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+  
+  public FileChooserDialog(FileChooserMode mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal, String title, String okText) {
+    super(title, okText, "Cancel", new FileChooser(), true); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     fileChooser = (FileChooser) getContent();
     fileChooser.setWidth("100%"); //$NON-NLS-1$
     fileChooser.setMode(mode);
@@ -85,6 +90,10 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
     setCallback(callback);
     fileChooser.addFileChooserListener(this);
     fileChooser.initUI(false);
+  }
+
+  public FileChooserDialog(FileChooserMode mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal) {
+    this(mode, selectedPath, repositoryDocument, autoHide, modal, mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save");
   }
 
   public void addFileChooserListener(FileChooserListener listener) {
