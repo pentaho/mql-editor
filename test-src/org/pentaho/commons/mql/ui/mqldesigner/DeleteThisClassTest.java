@@ -2,7 +2,7 @@ package org.pentaho.commons.mql.ui.mqldesigner;
 
 import org.junit.Test;
 
-public class DeleteThisClass {
+public class DeleteThisClassTest {
 
   @Test
   public void testMe() {
