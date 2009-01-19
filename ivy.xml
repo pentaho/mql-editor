@@ -22,5 +22,8 @@
         <!--  dependency org="pentaho.kettle" name="kettle-core"   rev="${dependency.kettle-engine.revision}" / -->
         <dependency org="pentaho.kettle" name="kettle-engine" rev="${dependency.kettle-engine.revision}" />
         <dependency org="pentaho.kettle" name="kettle-core" rev="${dependency.kettle-engine.revision}" />
+        
+        <!--  Testing dependencies -->
+        <dependency org="junit" name="junit" rev="4.3.1" transitive="false" conf="test->default" />
     </dependencies>
 </ivy-module>
