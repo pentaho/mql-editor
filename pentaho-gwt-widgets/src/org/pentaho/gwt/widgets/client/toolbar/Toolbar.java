@@ -58,7 +58,6 @@ public class Toolbar extends HorizontalPanel implements ToolbarPopupListener, To
     super.add(bar);
 
     setWidth("100%"); //$NON-NLS-1$
-    setHeight("100%"); //$NON-NLS-1$
   }
 
   /**
@@ -109,6 +108,12 @@ public class Toolbar extends HorizontalPanel implements ToolbarPopupListener, To
    */
   public void add(Panel p) {
     bar.add(p);
+    //spacer now passed in as panel
+    if(p instanceof SimplePanel){
+      if(p.getStyleName().equals("spacer")){
+        bar.setCellWidth(p, "100%");
+      }
+    }
   }
   
 

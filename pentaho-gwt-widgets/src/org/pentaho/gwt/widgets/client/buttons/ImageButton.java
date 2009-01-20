@@ -35,19 +35,9 @@ public class ImageButton extends Image{
     this(enabledUrl, disabledUrl, tooltip, -1, -1);
   }
   
-  public ImageButton (String enabledUrl, String disabledUrl, String tooltip, int width, int height){
-    super(enabledUrl);
-    
-    this.enabledUrl = enabledUrl;
-    this.disabledUrl = disabledUrl;
-    
-    if(tooltip != null && tooltip.length() > 0){
-      setTitle(tooltip);
-    }
-        
+  public ImageButton(){
+    super();
     setStyleName("image-button"); //$NON-NLS-1$
-    
-    setSize(width + "px", height + "px"); //$NON-NLS-1$ //$NON-NLS-2$
     
     addMouseListener(new MouseListener(){
       public void onMouseEnter (Widget sender){
@@ -91,7 +81,41 @@ public class ImageButton extends Image{
       }
     });
   }
+  
+  public ImageButton (String enabledUrl, String disabledUrl, String tooltip, int width, int height){
+    super(enabledUrl);
+
+    setSize(width + "px", height + "px"); //$NON-NLS-1$ //$NON-NLS-2$
     
+    this.enabledUrl = enabledUrl;
+    this.disabledUrl = disabledUrl;
+    
+    if(tooltip != null && tooltip.length() > 0){
+      setTitle(tooltip);
+    }
+        
+   
+  }
+    
+  public void setEnabledUrl(String url){
+    this.enabledUrl = url;
+    if (isEnabled){
+      this.setUrl(enabledUrl);
+    }else{
+      this.setUrl(disabledUrl);
+    }
+  }
+  
+  public void setDisabledUrl(String url){
+    this.disabledUrl = url;
+    if (isEnabled){
+      this.setUrl(enabledUrl);
+    }else{
+      this.setUrl(disabledUrl);
+    }
+  }
+  
+  
   public void onBrowserEvent(Event event) {
       super.onBrowserEvent(event);
       
@@ -111,6 +135,10 @@ public class ImageButton extends Image{
     }else{
       this.setUrl(disabledUrl);
     }
+  }
+  
+  public void setFocus(boolean focus){
+    this.setFocus(focus);
   }
   
 }

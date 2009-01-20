@@ -189,6 +189,10 @@ public class RoundedButton extends Widget {
   public void removeClickListener(ClickListener listener) {
     listeners.remove(listener);
   }
+  
+  public void setFocus(boolean focus){
+    this.setFocus(focus);
+  }
 
 
 }
