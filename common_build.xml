@@ -217,11 +217,6 @@
 	<!-- Set the project title to the value in the manifest file (if it has not
 	     been specified in the properties file -->
 	<property name="impl.title" value="${Implementation-Title}" description="Sets the title of the project based on the Implementation-Title found in the manifest file (if one is supplied and nothing is specified in the build.properties)" />
-	<fail message="A project title has not been determined!">
-		<condition>
-			<matches string="${impl.title}" pattern="\$\{.*\}" />
-		</condition>
-	</fail>
 
   <!-- Build Mode properties -->
   <property name="release" value="false" description="Set this to true if you want to generate a release artifact" />
