@@ -139,6 +139,7 @@ public class BaseTable extends Composite {
       createTableWithShortMessage(MSGS.loading());
 
       parentPanel.setWidth("100%"); //$NON-NLS-1$
+      scrollTable.setWidth("100%");
       this.parentPanel.add(scrollTable);
       this.fillWidth();
     }else{
@@ -418,10 +419,14 @@ public class BaseTable extends Composite {
     parentPanel.clear();
 
     createTable(tableHeaderNames, columnWidths, rowAndColumnValues);  
-    
     parentPanel.add(scrollTable);
     
+    // scrollTable.fillWidth(); is not sufficient, need explicitly set width
+    // http://code.google.com/p/google-web-toolkit-incubator/issues/detail?id=47
     scrollTable.fillWidth();
+    scrollTable.getHeaderTable().setWidth("100%");
+    scrollTable.getDataTable().setWidth("100%");
+    
   }
   
   /**
