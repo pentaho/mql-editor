@@ -237,44 +237,44 @@ public class TimeUtil {
   private TimeUtil() {
   } // cannot create instance, static class
 
-  public static int daysToSecs(int days) {
+  public static long daysToSecs(int days) {
     return hoursToSecs(days * HOURS_IN_DAY);
   }
 
-  public static int hoursToSecs(int hours) {
+  public static long hoursToSecs(int hours) {
     return minutesToSecs(hours * MINUTES_IN_HOUR);
   }
 
-  public static int minutesToSecs(int minutes) {
+  public static long minutesToSecs(int minutes) {
     return minutes * SECONDS_IN_MINUTE;
   }
 
-  public static int secsToMillisecs(int secs) {
+  public static long secsToMillisecs(int secs) {
     return secs * MILLISECS_IN_SECONDS;
   }
 
-  public static int secsToDays(int secs) {
+  public static long secsToDays(long secs) {
     return secs / HOURS_IN_DAY / MINUTES_IN_HOUR / SECONDS_IN_MINUTE;
   }
 
-  public static int secsToHours(int secs) {
+  public static long secsToHours(long secs) {
     return secs / MINUTES_IN_HOUR / SECONDS_IN_MINUTE;
   }
 
-  public static int secsToMinutes(int secs) {
+  public static long secsToMinutes(long secs) {
     return secs / SECONDS_IN_MINUTE;
   }
 
-  public static boolean isSecondsWholeDay(int secs) {
-    return ( daysToSecs( secsToDays( secs )) ) == secs;
+  public static boolean isSecondsWholeDay(long secs) {
+    return ( daysToSecs( (int)secsToDays( secs )) ) == secs;
   }
 
   public static boolean isSecondsWholeHour(int secs) {
-    return ( hoursToSecs( secsToHours( secs ) ) ) == secs;
+    return ( hoursToSecs( (int)secsToHours( secs ) ) ) == secs;
   }
 
   public static boolean isSecondsWholeMinute(int secs) {
-    return ( minutesToSecs( secsToMinutes( secs ) ) ) == secs;
+    return ( minutesToSecs( (int)secsToMinutes( secs ) ) ) == secs;
   }
   
   /**
@@ -320,7 +320,7 @@ public class TimeUtil {
   }
   
   // NOTE: this method will produce rounding errors, since it doesn't round, it truncates
-  public static int millsecondsToSecs( int milliseconds ) {
+  public static long millsecondsToSecs( long milliseconds ) {
     return milliseconds / MILLISECS_IN_SECONDS;
   }
   /**
@@ -444,7 +444,7 @@ public class TimeUtil {
    * @return boolean true if <param>num</param> between <param>low</param> 
    * and <param>high</param>, inclusive, else false. 
    */
-  private static boolean isNumBetween( int low, int num, int high ) {
+  private static boolean isNumBetween( long low, long num, long high ) {
     return num >= low && num <= high;
   }
   
