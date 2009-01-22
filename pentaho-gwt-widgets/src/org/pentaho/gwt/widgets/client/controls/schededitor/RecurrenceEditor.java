@@ -298,11 +298,11 @@ public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
   public void inititalizeWithRepeatInSecs( int repeatInSecs ) {
 
     TemporalValue currentVal;
-    long repeatTime;
+    int repeatTime;
     if ( TimeUtil.isSecondsWholeDay( repeatInSecs ) ) {
       repeatTime = TimeUtil.secsToDays( repeatInSecs );
       currentVal = TemporalValue.DAILY;
-      dailyEditor.setRepeatValue( Long.toString( repeatTime ) );
+      dailyEditor.setRepeatValue( Integer.toString( repeatTime ) );
     } else { 
       SimpleRecurrencePanel p = null;
       if ( TimeUtil.isSecondsWholeHour( repeatInSecs ) ) {
@@ -317,7 +317,7 @@ public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
         currentVal = TemporalValue.SECONDS;
       }
       p = (SimpleRecurrencePanel)temporalPanelMap.get(currentVal);
-      p.setValue( Long.toString( repeatTime ) );
+      p.setValue( Integer.toString( repeatTime ) );
     }
     setTemporalState( currentVal );
   }
@@ -1044,7 +1044,7 @@ public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
    * @throws RuntimeException if the temporal value (tv) is invalid. This
    * condition occurs as a result of programmer error.
    */
-  public Long getRepeatInSecs() throws RuntimeException {
+  public Integer getRepeatInSecs() throws RuntimeException {
     switch ( temporalState ) {
       case WEEKLY:
         // fall through
@@ -1053,7 +1053,7 @@ public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
       case YEARLY:
         return null;
       case SECONDS:
-        return Long.parseLong( secondlyEditor.getValue() );
+        return Integer.parseInt( secondlyEditor.getValue() );
       case MINUTES:
         return TimeUtil.minutesToSecs( Integer.parseInt( minutelyEditor.getValue() ) );
       case HOURS:
