@@ -52,6 +52,7 @@ public class ResizableDialogBox {
     boundaryPanel.setVisible(true);
     RootPanel.get().add(boundaryPanel, 0, 0);
     boundaryPanel.sinkEvents(Event.ONCLICK);
+    boundaryPanel.getElement().getStyle().setProperty("cursor", "wait");
 
     // initialize window controller which provides drag and resize windows
     WindowController windowController = new WindowController(boundaryPanel);
