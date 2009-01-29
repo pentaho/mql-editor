@@ -295,7 +295,7 @@ public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
    * @throws RuntimeException if the temporal value is invalid. This
    * condition occurs as a result of programmer error.
    */
-  public Integer getRepeatInSecs() throws RuntimeException {
+  public Long getRepeatInSecs() throws RuntimeException {
     return recurrenceEditor.getRepeatInSecs();
   }
 
