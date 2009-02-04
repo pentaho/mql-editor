@@ -1,29 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
-    <info organisation="pentaho" module="${ivy.artifact.id}" revision="${project.revision}" />
-    
-    <configurations>
-    	<conf name="default"/>
-    	<conf name="test" visibility="private"/>
-    	<conf name="source"/>
-    </configurations>
-    
-    <publications>
-	    <artifact name="${ivy.artifact.id}" type="jar" conf="default"/>
-	    <artifact name="${ivy.artifact.id}" m:classifier="sources" type="source" ext="jar" conf="source"/>
-    </publications>
-    
-    <dependencies defaultconf="default->default">
+  <info organisation="pentaho" module="${ivy.artifact.id}" revision="${project.revision}" />
 
-        <!--  internal dependencies -->
-        <dependency org="pentaho" name="pentaho-connections"  rev="${dependency.pentaho-connections.revision}" changing="true" transitive="false"/>
-        <dependency org="pentaho" name="pentaho-metadata"     rev="${dependency.pentaho-metadata.revision}"    changing="true" transitive="false"/>
-        <dependency org="pentaho" name="pentaho-cwm"          rev="1.5.4" />
-        <!--  dependency org="pentaho.kettle" name="kettle-core"   rev="${dependency.kettle-engine.revision}" / -->
-        <dependency org="pentaho.kettle" name="kettle-engine" rev="${dependency.kettle-engine.revision}" />
-        <dependency org="pentaho.kettle" name="kettle-core" rev="${dependency.kettle-engine.revision}" />
-        
-        <!--  Testing dependencies -->
-        <dependency org="junit" name="junit" rev="4.3.1" transitive="false" conf="test->default" />
-    </dependencies>
+  <configurations>
+    <conf name="default" />
+    <conf name="test" visibility="private" />
+    <conf name="source" />
+  </configurations>
+
+  <publications>
+    <artifact name="${ivy.artifact.id}" type="jar" conf="default" />
+    <artifact name="${ivy.artifact.id}" m:classifier="sources" type="source" ext="jar" conf="source" />
+  </publications>
+
+  <dependencies defaultconf="default->default">
+
+    <!--  internal dependencies -->
+    <dependency org="jfree" name="jcommon" rev="1.0.14" />
+    <dependency org="pentaho" name="pentaho-connections" rev="${dependency.pentaho-connections.revision}"
+      changing="true" transitive="false" />
+    <dependency org="pentaho" name="pentaho-metadata" rev="${dependency.pentaho-metadata.revision}" changing="true"
+      transitive="false" />
+    <dependency org="pentaho" name="pentaho-cwm" rev="1.5.4" />
+    <!--  dependency org="pentaho.kettle" name="kettle-core"   rev="${dependency.kettle-engine.revision}" / -->
+    <dependency org="pentaho.kettle" name="kettle-engine" rev="${dependency.kettle-engine.revision}" />
+    <dependency org="pentaho.kettle" name="kettle-core" rev="${dependency.kettle-engine.revision}" />
+    <dependency org="dom4j" name="dom4j" rev="1.6.1" />
+
+
+    <!--  internal dependencies -->
+    <dependency org="pentaho" name="pentaho-connections" rev="${dependency.pentaho-connections.revision}"
+      changing="true" />
+    <dependency org="pentaho" name="pentaho-cwm" rev="1.5.4" />
+    <dependency org="pentaho" name="libformula" rev="0.1.18.2" />
+    <dependency org="pentaho" name="pentaho-publisher" rev="1.6.0" />
+
+
+    <!--  Testing dependencies -->
+    <dependency org="junit" name="junit" rev="4.3.1" transitive="false" conf="test->default" />
+
+
+    <dependency org="org.zenica" name="gwt-datepicker" rev="r17" conf="default->default" />
+    <dependency org="com.google.gwt" name="gwt-servlet" rev="1.5.2" conf="default->default" />
+    <dependency org="com.google.gwt" name="gwt-incubator" rev="1-5_Sept_04" conf="default->default" />
+    <dependency org="com.allen_sauer" name="gwt-dnd" rev="2.5.6" conf="default->default" />
+    <dependency org="com.google.gwt" name="gwt-user" rev="1.5.2" conf="default->default" />
+    <dependency org="com.google.gwt" name="gwt-dev" rev="1.5.2" m:classifier="linux" conf="default->default" />
+    <dependency org="com.google.code.gwtx" name="gwtx" rev="1.5-20081002" />
+
+    <dependency org="pentaho" name="pentaho-gwt-widgets" rev="${project.revision}" conf="default->default"
+      changing="true">
+      <artifact name="pentaho-gwt-widgets" />
+      <artifact name="pentaho-gwt-widgets" type="source" ext="jar" m:classifier="sources" />
+    </dependency>
+
+    <dependency org="pentaho" name="pentaho-xul-core" rev="${project.revision}" conf="default->default"
+      changing="true">
+      <artifact name="pentaho-xul-core" />
+      <artifact name="pentaho-xul-core" type="source" ext="jar" m:classifier="sources" />
+    </dependency>
+
+    <dependency org="pentaho" name="pentaho-xul-gwt" rev="${project.revision}" conf="default->default"
+      changing="true">
+      <artifact name="pentaho-xul-gwt" />
+      <artifact name="pentaho-xul-gwt" type="source" ext="jar" m:classifier="sources" />
+    </dependency>
+
+    <dependency org="pentaho" name="pentaho-xul-swing" rev="${project.revision}" conf="default->default" />
+
+  </dependencies>
 </ivy-module>

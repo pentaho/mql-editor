@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="file://E:/workspaces/sprint_workspace/pentaho-xul/test/resource/documents/xul.css" type="text/css"?>
+<window id="label-test" title="MQL Query Builder" orient="vertical"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:pen="http://www.pentaho.org/2008/xul"
+  xmlns:HTML="http://www.w3.org/Profiles/XHTML-transitional" height="600" width="800" onload="mainController.init(), selectedColumns.init(), conditionsController.init(), orderController.init()">
+  <vbox padding="10" flex="1">
+    <hbox flex="1">
+      <vbox flex="1">
+        <label value="Business Models"/>
+        <menulist label="Model" id="modelList" pen:binding="name">
+          <menupopup/>
+        </menulist>
+        <label value="Categories / Columns"/>
+        <tree flex="1" hidecolumnpicker="true" id="categoryTree">
+          <treecols>
+            <treecol id="sex2" flex="1" label="Cats" primary="true" pen:binding="name" pen:childrenbinding="children" />
+          </treecols>
+          <treechildren>
+      
+            <treeitem container="true" open="true">
+              <treerow>
+                <treecell />
+              </treerow>
+              <treechildren>
+              </treechildren>
+            </treeitem>
+      
+          </treechildren>
+        </tree>
+      </vbox>
+      <vbox>
+        <spacer height="22"/>
+        <vbox flex="1">
+          <spacer flex="1"/>
+          <button image="images/e_forward.gif" onclick="mainController.moveSelectionToFields()"/>
+          <spacer flex="1"/>
+        </vbox>
+        <vbox flex="1">
+          <spacer flex="1"/>
+          <button image="images/e_forward.gif" onclick="mainController.moveSelectionToConditions()"/>
+          <spacer flex="1"/>
+        </vbox>
+        <vbox flex="1">
+          <spacer flex="1"/>
+          <button image="images/e_forward.gif" onclick="mainController.moveSelectionToOrders()"/>
+          <spacer flex="1"/>
+        </vbox>
+      </vbox>
+      <vbox flex="5">
+        <spacer height="22"/>
+        <hbox>
+          <label value="Select Columns" />
+          <spacer flex="1" />
+          <button id="colDown" disabled="true" onclick="selectedColumns.moveDown()" image="images/move_down.gif" />
+          <button id="colUp" disabled="true" onclick="selectedColumns.moveUp()" image="images/move_up.gif" />
+          <button id="colRemove" disabled="true" onclick="selectedColumns.remove()" image="images/delete.png" />
+        </hbox>
+        <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="selectedColumnTree" width="400">
+          <treecols>
+            <treecol label="Table" flex="1" pen:binding="tableName"/>
+            <treecol label="Column" flex="1" pen:binding="name"/>
+          </treecols>
+          <treechildren/>
+        </tree>
+  
+  
+        <hbox>
+          <label value="Conditions" />
+          <spacer flex="1" />
+          <button id="conditionDown" disabled="true" onclick="conditionsController.moveDown()" image="images/move_down.gif" />
+          <button id="conditionUp" disabled="true" onclick="conditionsController.moveUp()" image="images/move_up.gif" />
+          <button id="conditionRemove" disabled="true" onclick="conditionsController.remove()" image="images/delete.png" />
+        
+        </hbox>
+        <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="conditionsTree" width="400">
+          <treecols>
+            <treecol label="Combine" flex="1" pen:binding="combinationType" pen:combobinding="combinations" type="combobox" editable="true"/>
+            <treecol label="Table" flex="1" pen:binding="tableName"/>
+            <treecol label="Column" flex="1" pen:binding="columnName"/>
+            <treecol label="Comparison" flex="1" pen:binding="operator" type="combobox" pen:combobinding="comparisons" editable="true"/>
+            <treecol label="Value" flex="1" pen:binding="value" editable="true"/>
+          </treecols>
+          <treechildren/>
+        </tree>
+  
+  
+        <hbox>
+          <label value="Order By" />
+          <spacer flex="1" />
+          <button id="orderDown" disabled="true" onclick="orderController.moveDown()" image="images/move_down.gif" />
+          <button id="orderUp" disabled="true" onclick="orderController.moveUp()" image="images/move_up.gif" />
+          <button id="orderRemove" disabled="true" onclick="orderController.remove()" image="images/delete.png" />
+        
+        </hbox>
+        <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="orderTable" width="400">
+          <treecols>
+            <treecol label="Table" pen:binding="tableName" flex="1"/>
+            <treecol label="Column" pen:binding="columnName" flex="1"/>
+            <treecol label="Order" pen:binding="orderType" pen:combobinding="orderTypes" type="combobox" editable="true" flex="1"/>
+          </treecols>
+          <treechildren/>
+        </tree>
+  
+      </vbox>
+    </hbox>
+    <hbox>
+      <spacer flex="1"/>
+      <button label="OK" onclick="mainController.saveQuery()"/>
+      <button label="Cancel" onclick="mainController.closeDialog()"/>
+      
+    </hbox>
+  </vbox>
+</window>

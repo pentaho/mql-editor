@@ -1,7 +1,7 @@
 <!-- ======================================================================
      description: main build file for pentaho  . .                                                    
      ====================================================================== -->
-<project name="pentaho-commons-mql" default="dist">
+<project name="pentaho-commons-mql" default="dist" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 	<description>Pentaho Commons MQL Editor build file</description>
 
 	<property file="build.properties" />
@@ -18,4 +18,30 @@
 		</fileset>
 	</path>
 	
+  <!-- Define the default location of the gwt common build file -->
+  <property name="gwt.common.build.file" value="./gwt_common_build.xml" description="This is the location of the standardized common_build.xml file" />
+
+  <!-- Import the common_build.xml file which contains all the default tasks -->
+  <import file="${gwt.common.build.file}" />
+
+  <!--
+      AS STATED ABOVE, THE ONLY TASKS THAT SHOULD EXIST IN THIS BUILD FILE ARE
+      THE TASKS THAT NEED TO DIFFER FROM THE DEFAULT IMPLEMENTATION OF THE TASKS
+      FOUND IN common_build.xml.
+    -->
+
+  <!-- Directory in which the source will be copied before a compile -->
+  <property name="temp-src.dir" value="${bin.dir}/src" />
+
+  <!--=======================================================================
+      gwt-compile
+      
+      Performs the required gwt compiles
+      ====================================================================-->
+  <target name="gwt-compile" description="Performs the required GWT Compilation">
+    <!-- Compile the Mantle Application -->
+    <ant antfile="${gwt.common.build.file}" target="gwt-compile">
+      <property name="gwt-module.path" value="org.pentaho.metadata.Editor" />
+    </ant>
+  </target>
 </project>
