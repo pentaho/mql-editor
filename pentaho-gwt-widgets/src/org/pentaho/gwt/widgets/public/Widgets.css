@@ -93,7 +93,7 @@ which java class/code the style is associated with */
 }
 
 .blue-date-picker {
-	z-index: 310;
+	z-index: 1000;
 }
 
 /* begin schedule editor ------------------------------------------------------*/
