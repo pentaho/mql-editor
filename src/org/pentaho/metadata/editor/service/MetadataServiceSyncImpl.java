@@ -130,7 +130,7 @@ public class MetadataServiceSyncImpl {
     for (IBusinessColumn thincol : thincols) {
       UniqueList list = model.getAllBusinessColumns();
       for (Object col : list.getList()) {
-        if (((org.pentaho.pms.schema.BusinessColumn) col).getName(locale).equals(thincol.getName())) {
+        if (col.toString().equals(thincol.toString())) {
           cols[i++] = (org.pentaho.pms.schema.BusinessColumn) col;
         }
       }

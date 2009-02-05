@@ -72,4 +72,12 @@ public class UIBusinessColumn extends AbstractModelNode<UIBusinessColumn> implem
     this.name = name;
   }
   
+  public String toString(){
+    if(table != null){
+      return table.getName() + "." + id; //$NON-NLS-1$
+    }
+    
+    return id;
+  }
+  
 }
