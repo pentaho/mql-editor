@@ -51,6 +51,10 @@ public class MainController extends AbstractXulEventHandler {
 
     dialog = (XulDialog) document.getElementById("mqlEditorDialog");
     dialog.show();
+
+    XulDialog dialog2 = (XulDialog) document.getElementById("testDialog");
+    dialog2.show();
+    
   }
   
   public void clearWorkspace(){

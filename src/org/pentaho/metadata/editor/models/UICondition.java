@@ -25,6 +25,9 @@ public class UICondition extends XulEventSourceAdapter implements ICondition<UIB
 
   public UICondition(UIBusinessColumn column, Operator operator, String value){
     this.column = column;
+    if(this.getColumn().getType() == ColumnType.TEXT){
+      operator = Operator.EXACTLY_MATCHES;
+    }
     this.operator = operator;
     this.value = value;
   }
@@ -43,6 +46,9 @@ public class UICondition extends XulEventSourceAdapter implements ICondition<UIB
 
   public void setColumn(UIBusinessColumn column) {
     this.column = column;
+    if(this.getColumn().getType() == ColumnType.TEXT){
+      operator = Operator.EXACTLY_MATCHES;
+    }
   }
 
 

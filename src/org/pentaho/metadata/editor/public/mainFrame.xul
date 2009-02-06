@@ -5,8 +5,17 @@
   xmlns:HTML="http://www.w3.org/Profiles/XHTML-transitional" height="600" width="800"
   onload="mainController.init(), selectedColumns.init(), conditionsController.init(), orderController.init(), mainController.showDialog()">
 
-<button label="Open Editor" onclick="mainController.showDialog()"/>
+<hbox>
+  <button label="Open Editor" onclick="mainController.showDialog()"/>
+</hbox>
 
+  <dialog id="testDialog" buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttons="accept,cancel"
+    ondialogaccept="mainController.saveQuery()" ondialogcancel="mainController.closeDialog()" buttonalign="right"
+    title="${window.title}" width="300" height="200">
+    <vbox padding="10" flex="1">
+    <label value="testing"/>
+   </vbox>
+  </dialog>
   <dialog id="mqlEditorDialog" buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttons="accept,cancel"
     ondialogaccept="mainController.saveQuery()" ondialogcancel="mainController.closeDialog()" buttonalign="right"
     title="${window.title}" width="800" height="625">
@@ -34,8 +43,8 @@
             </treechildren>
           </tree>
         </vbox>
-        <vbox>
-          <spacer height="22" />
+        <vbox height="400">
+          <spacer height="50"/>
           <vbox flex="1">
             <spacer flex="1" />
             <button image="images/e_forward.gif" onclick="mainController.moveSelectionToFields()" />

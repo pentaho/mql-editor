@@ -56,7 +56,7 @@ public class GwtMqlEditor implements EntryPoint, IMessageBundleLoadCallback {
   public void show(){
     if(container == null){
       try {
-        bundle = new MessageBundle("","editor", this );
+        bundle = new MessageBundle(GWT.getModuleBaseURL(),"mainFrame", this );
       } catch (Exception e) {
         e.printStackTrace();
       }
