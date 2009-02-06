@@ -1,5 +1,6 @@
 package org.pentaho.metadata.beans;
 
+import org.pentaho.metadata.ColumnType;
 import org.pentaho.metadata.CombinationType;
 import org.pentaho.metadata.ICondition;
 import org.pentaho.metadata.Operator;
@@ -45,6 +46,10 @@ public class Condition implements ICondition<BusinessColumn> {
 
   public boolean validate() {
     return true;   
+  }
+
+  public String getCondition(String objName) {
+    return this.operator.formatCondition(objName, this.value);
   }
 
 }

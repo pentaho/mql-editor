@@ -11,7 +11,7 @@ public class UIOrder extends XulEventSourceAdapter implements IOrder {
   
   
   private UIBusinessColumn column;
-  private Type orderType;
+  private Type orderType = Type.DESC;
   
   public UIOrder(){
     

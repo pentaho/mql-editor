@@ -45,10 +45,17 @@ public class MainController extends AbstractXulEventHandler {
   public void init() {
 
     createBindings();
+  }
+  
+  public void showDialog(){
+
     dialog = (XulDialog) document.getElementById("mqlEditorDialog");
     dialog.show();
   }
   
+  public void clearWorkspace(){
+    workspace.clear();
+  }
   private void createBindings(){
     modelList = (XulMenuList) document.getElementById("modelList");
     categoryTree = (XulTree) document.getElementById("categoryTree");
@@ -120,7 +127,7 @@ public class MainController extends AbstractXulEventHandler {
   
   public void moveSelectionToFields(){
     UIBusinessColumn col = workspace.getSelectedColumn();
-    if(col != null){
+    if(col != null && workspace.getSelectedColumns().contains(col) == false){
       workspace.addColumn(col);
     }
   }
@@ -135,7 +142,7 @@ public class MainController extends AbstractXulEventHandler {
 
   public void moveSelectionToOrders(){
     UIBusinessColumn col = workspace.getSelectedColumn();
-    if(col != null){
+    if(col != null && workspace.getOrders().contains(col) == false){
       workspace.addOrder(col);
     }
   }

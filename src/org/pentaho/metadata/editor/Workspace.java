@@ -48,6 +48,12 @@ public class Workspace extends XulEventSourceAdapter{
     });
   }
   
+  public void clear(){
+    this.setOrders(new Orders());
+    this.setSelectedColumns(new Columns());
+    this.setConditions(new Conditions());
+    
+  }
   public void setSelectedModel(UIModel m){
     this.model = m;
 
@@ -167,6 +173,11 @@ public class Workspace extends XulEventSourceAdapter{
   public Columns getSelectedColumns() {
   
     return selectedColumns;
+  }
+
+  public void setSelectedColumns(Columns columns) {
+    this.selectedColumns = columns;
+    this.firePropertyChange("selectedColumns", null, getSelectedColumns());
   }
 
   public void setSelectedColumns(List<UIBusinessColumn> selectedColumns) {

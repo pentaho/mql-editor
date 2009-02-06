@@ -21,7 +21,7 @@ public class MqlEditor {
   
   public MqlEditor(){
     try{
-      XulDomContainer container = new SwingXulLoader().loadXul("org/pentaho/metadata/editor/xul/mainFrame.xul");
+      XulDomContainer container = new SwingXulLoader().loadXul("org/pentaho/metadata/editor/public/mainFrame.xul");
     
       final XulRunner runner = new SwingXulRunner();
       runner.addContainer(container);

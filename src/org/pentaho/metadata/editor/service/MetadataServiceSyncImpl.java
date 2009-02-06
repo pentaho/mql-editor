@@ -152,8 +152,12 @@ public class MetadataServiceSyncImpl {
     MQLWhereConditionModel[] conditions = new MQLWhereConditionModel[thinConditions.size()];
     int i = 0;
     for (ICondition thinCondition : thinConditions) {
-      MQLWhereConditionModel where = new MQLWhereConditionModel(thinCondition.getOperator().toString(), getColumn(
-          model, thinCondition.getColumn()), thinCondition.getValue());
+      org.pentaho.pms.schema.BusinessColumn col = getColumn(model, thinCondition.getColumn());
+      MQLWhereConditionModel where = new MQLWhereConditionModel(
+          thinCondition.getCombinationType().toString(), 
+          col, 
+          thinCondition.getCondition("["+col.toString()+"]")
+        );
       conditions[i++] = where;
     }
     return conditions;
@@ -204,8 +208,7 @@ public class MetadataServiceSyncImpl {
             BusinessCategory businessCategory = rootCat.findBusinessCategoryForBusinessColumn(wherelist[i].getField());
 
             constraints.add(new WhereCondition(businessModel, wherelist[i].getOperator(),
-                "[" + businessCategory.getId() + "." + //$NON-NLS-1$ //$NON-NLS-2$
-                    wherelist[i].getField().getId() + "] " + wherelist[i].getCondition()) //$NON-NLS-1$
+                wherelist[i].getCondition()) //$NON-NLS-1$
                 );
           }
           mqlQuery.setConstraints(constraints);

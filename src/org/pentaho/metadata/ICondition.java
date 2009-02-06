@@ -21,5 +21,10 @@ public interface ICondition<T extends IBusinessColumn> extends Serializable{
   public CombinationType getCombinationType() ;
 
   public void setCombinationType(CombinationType combinationType);
+  
+  /**
+   * Returns the comparision plus value, i.e "= 'Atlanta'"
+   */
+  public String getCondition(String objName);
 
 }

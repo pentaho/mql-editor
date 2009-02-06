@@ -3,9 +3,10 @@ package org.pentaho.metadata.editor.models;
 import java.util.Arrays;
 import java.util.Vector;
 
+import org.pentaho.metadata.ColumnType;
+import org.pentaho.metadata.CombinationType;
 import org.pentaho.metadata.ICondition;
 import org.pentaho.metadata.Operator;
-import org.pentaho.metadata.CombinationType;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
 public class UICondition extends XulEventSourceAdapter implements ICondition<UIBusinessColumn> {
@@ -15,7 +16,7 @@ public class UICondition extends XulEventSourceAdapter implements ICondition<UIB
   private UIBusinessColumn column;
   private Operator operator = Operator.EQUAL;
   private String value;
-  private CombinationType combinationType;
+  private CombinationType combinationType = CombinationType.AND;
   
   public UICondition(){
     
@@ -103,7 +104,13 @@ public class UICondition extends XulEventSourceAdapter implements ICondition<UIB
   
   public Vector getComparisons(){
     Vector v = new Vector();
-    v.addAll(Arrays.asList(Operator.values()));
+
+    v.addAll(
+        Arrays.asList(
+            Operator.values( this.getColumn().getType() == ColumnType.TEXT )
+        )
+    );
+    
     return v;
   }
   public void setComparisons(String str){}
@@ -115,6 +122,12 @@ public class UICondition extends XulEventSourceAdapter implements ICondition<UIB
   }
   
   public void setCombinations(String str){}
+
+
+  public String getCondition(String objName) {
+    return this.operator.formatCondition(objName, this.value);
+  }
+  
   
   
 }
