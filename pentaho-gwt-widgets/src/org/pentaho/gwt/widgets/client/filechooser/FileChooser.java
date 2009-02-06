@@ -82,7 +82,7 @@ public class FileChooser extends VerticalPanel {
   TreeItem selectedTreeItem;
   boolean showHiddenFiles = false;
   boolean showLocalizedFileNames = true;
-  boolean showSearch = true;
+  boolean showSearch = false;
   com.google.gwt.user.client.Element lastSelectedFileElement;
   TextBox fileNameTextBox = new TextBox();
   DateTimeFormat dateFormat = DateTimeFormat.getMediumDateTimeFormat();
