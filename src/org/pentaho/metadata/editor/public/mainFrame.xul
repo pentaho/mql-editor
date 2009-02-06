@@ -9,13 +9,6 @@
   <button label="Open Editor" onclick="mainController.showDialog()"/>
 </hbox>
 
-  <dialog id="testDialog" buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttons="accept,cancel"
-    ondialogaccept="mainController.saveQuery()" ondialogcancel="mainController.closeDialog()" buttonalign="right"
-    title="${window.title}" width="300" height="200">
-    <vbox padding="10" flex="1">
-    <label value="testing"/>
-   </vbox>
-  </dialog>
   <dialog id="mqlEditorDialog" buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttons="accept,cancel"
     ondialogaccept="mainController.saveQuery()" ondialogcancel="mainController.closeDialog()" buttonalign="right"
     title="${window.title}" width="800" height="625">
