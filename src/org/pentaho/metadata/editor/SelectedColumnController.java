@@ -19,7 +19,7 @@ public class SelectedColumnController extends AbstractXulEventHandler {
 
       @Override
       public Boolean sourceToTarget(int[] value) {
-        return (value != null && value.length > 0);  
+        return (value == null || value.length ==0);  
       }
 
       @Override
@@ -28,9 +28,9 @@ public class SelectedColumnController extends AbstractXulEventHandler {
     };
     
     bf.setBindingType(Binding.Type.ONE_WAY);
-    bf.createBinding(columnTree,"selectedRows", "colUp", "!disabled", buttonConvertor);
-    bf.createBinding(columnTree,"selectedRows", "colDown", "!disabled", buttonConvertor);
-    bf.createBinding(columnTree,"selectedRows", "colRemove", "!disabled", buttonConvertor);
+    bf.createBinding(columnTree,"selectedRows", "colUp", "disabled", buttonConvertor);
+    bf.createBinding(columnTree,"selectedRows", "colDown", "disabled", buttonConvertor);
+    bf.createBinding(columnTree,"selectedRows", "colRemove", "disabled", buttonConvertor);
   }
     
   public int getSelectedIndex() {

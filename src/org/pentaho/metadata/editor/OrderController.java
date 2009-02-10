@@ -21,7 +21,7 @@ public class OrderController extends AbstractXulEventHandler{
 
       @Override
       public Boolean sourceToTarget(int[] value) {
-        return (value != null && value.length > 0);  
+        return (value == null || value.length ==0);  
       }
 
       @Override
@@ -30,9 +30,9 @@ public class OrderController extends AbstractXulEventHandler{
     };
     
     bf.setBindingType(Binding.Type.ONE_WAY);
-    bf.createBinding(orderTree,"selectedRows", "orderUp", "!disabled", buttonConvertor);
-    bf.createBinding(orderTree,"selectedRows", "orderDown", "!disabled", buttonConvertor);
-    bf.createBinding(orderTree,"selectedRows", "orderRemove", "!disabled", buttonConvertor);
+    bf.createBinding(orderTree,"selectedRows", "orderUp", "disabled", buttonConvertor);
+    bf.createBinding(orderTree,"selectedRows", "orderDown", "disabled", buttonConvertor);
+    bf.createBinding(orderTree,"selectedRows", "orderRemove", "disabled", buttonConvertor);
   }
 
   public int getSelectedIndex() {

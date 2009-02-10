@@ -24,7 +24,7 @@ public class ConditionsController extends AbstractXulEventHandler{
 
       @Override
       public Boolean sourceToTarget(int[] value) {
-        return (value != null && value.length > 0);  
+        return (value == null || value.length ==0);
       }
 
       @Override
@@ -33,9 +33,9 @@ public class ConditionsController extends AbstractXulEventHandler{
     };
     
     bf.setBindingType(Binding.Type.ONE_WAY);
-    bf.createBinding(conditionTree,"selectedRows", "conditionUp", "!disabled", buttonConvertor);
-    bf.createBinding(conditionTree,"selectedRows", "conditionDown", "!disabled", buttonConvertor);
-    bf.createBinding(conditionTree,"selectedRows", "conditionRemove", "!disabled", buttonConvertor);
+    bf.createBinding(conditionTree,"selectedRows", "conditionUp", "disabled", buttonConvertor);
+    bf.createBinding(conditionTree,"selectedRows", "conditionDown", "disabled", buttonConvertor);
+    bf.createBinding(conditionTree,"selectedRows", "conditionRemove", "disabled", buttonConvertor);
   }
 
   public int getSelectedIndex() {
