@@ -94,6 +94,7 @@ public class FileChooser extends VerticalPanel {
 
   private static final String ACTUAL_FILE_NAME = "name"; //$NON-NLS-1$
   private static final String LOCALIZED_FILE_NAME = "localized-name"; //$NON-NLS-1$
+  private FileFilter fileFilter;
 
   public FileChooser() {
     fileNameTextBox.addKeyboardListener(new KeyboardListener() {
@@ -126,7 +127,7 @@ public class FileChooser extends VerticalPanel {
     this.solutionRepositoryDocument = solutionRepositoryDocument;
     this.showLocalizedFileNames = showLocalizedFileNames;
     if (null != solutionRepositoryDocument) {
-      repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames);
+      repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames, fileFilter);
       initUI(false);
     }
   }
@@ -160,7 +161,7 @@ public class FileChooser extends VerticalPanel {
         // ok, we have a repository document, we can build the GUI
         // consider caching the document
         solutionRepositoryDocument = (Document) XMLParser.parse((String) response.getText());
-        repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames);
+        repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames, fileFilter);
         initUI(false);
         if (completedCallback != null) {
           completedCallback.okPressed();
@@ -691,7 +692,7 @@ public class FileChooser extends VerticalPanel {
 
   public void setSolutionRepositoryDocument(Document doc) {
     solutionRepositoryDocument = doc;
-    repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames);
+    repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames, fileFilter);
     initUI(false);
   }
 
@@ -746,6 +747,20 @@ public class FileChooser extends VerticalPanel {
 
   public void removeFileChooserListener(FileChooserListener listener) {
     listeners.remove(listener);
+  }
+  
+  
+  public FileFilter getFileFilter() {
+  
+    return fileFilter;
+  }
+
+  public void setFileFilter(FileFilter fileFilter) {
+  
+    this.fileFilter = fileFilter;
+
+    repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames, fileFilter);
+    initUI(false);
   }
 
   public boolean doesSelectedFileExist() {

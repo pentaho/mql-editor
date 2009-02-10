@@ -36,6 +36,8 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
   
   FileChooser fileChooser;
 
+  private FileFilter filter;
+  
   public FileChooserDialog(FileChooserMode mode, String selectedPath, boolean autoHide, boolean modal) {
     this(mode, selectedPath, autoHide, modal, mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save");
 
@@ -71,7 +73,7 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
     fileChooser.setMode(mode);
     fileChooser.setSelectedPath(selectedPath);
     fileChooser.solutionRepositoryDocument = repositoryDocument;
-    fileChooser.repositoryTree = TreeBuilder.buildSolutionTree(repositoryDocument, fileChooser.showHiddenFiles, fileChooser.showLocalizedFileNames);
+    fileChooser.repositoryTree = TreeBuilder.buildSolutionTree(repositoryDocument, fileChooser.showHiddenFiles, fileChooser.showLocalizedFileNames, filter);
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
         return isFileNameValid();
@@ -118,6 +120,19 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
     return fileChooser.doesSelectedFileExist();
   }
   
+  
+  
+  public FileFilter getFileFilter() {
+  
+    return filter;
+  }
+
+  public void setFileFilter(FileFilter filter) {
+  
+    this.filter = filter;
+    fileChooser.setFileFilter(filter);
+  }
+
   /*
    * Give precedence to file name text box content as file name.
    * It should never be empty, but in the unlikely scenario of it 

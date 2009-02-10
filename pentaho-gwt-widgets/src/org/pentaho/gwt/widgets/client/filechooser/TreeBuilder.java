@@ -28,7 +28,7 @@ import com.google.gwt.xml.client.NodeList;
 
 public class TreeBuilder {
 
-  public static Tree buildSolutionTree(Document doc, boolean showHiddenFiles, boolean showLocalizedFileNames) {
+  public static Tree buildSolutionTree(Document doc, boolean showHiddenFiles, boolean showLocalizedFileNames, FileFilter filter) {
     // build a tree structure to represent the document
     Tree repositoryTree = new Tree();
     // get document root item
@@ -39,17 +39,28 @@ public class TreeBuilder {
     attributeMap.put("path", solutionRoot.getAttribute("path")); //$NON-NLS-1$ //$NON-NLS-2$
     rootItem.setUserObject(attributeMap);
     repositoryTree.addItem(rootItem);
-    buildSolutionTree(rootItem, solutionRoot, showHiddenFiles, showLocalizedFileNames);
+    
+    //default file filter that accepts anything
+    if(filter == null){
+      filter = new DefaultFileFilter();
+    }
+    buildSolutionTree(rootItem, solutionRoot, showHiddenFiles, showLocalizedFileNames, filter);
     return repositoryTree;
   }
 
-  private static void buildSolutionTree(TreeItem parentTreeItem, Element parentElement, boolean showHiddenFiles, boolean showLocalizedFileNames) {
+  private static void buildSolutionTree(TreeItem parentTreeItem, Element parentElement, boolean showHiddenFiles, boolean showLocalizedFileNames, FileFilter filter) {
     NodeList children = parentElement.getChildNodes();
     for (int i = 0; i < children.getLength(); i++) {
       Element childElement = (Element) children.item(i);
       boolean isVisible = "true".equals(childElement.getAttribute("visible")); //$NON-NLS-1$ //$NON-NLS-2$
+      boolean isDirectory = "true".equals(childElement.getAttribute("isDirectory")); //$NON-NLS-1$ //$NON-NLS-2$
+      
       if (isVisible || showHiddenFiles) {
         String fileName = childElement.getAttribute("name"); //$NON-NLS-1$
+        if(filter.accept(fileName, isDirectory, isVisible) == false){
+          continue;
+        }
+        
         String localizedName = childElement.getAttribute("localized-name"); //$NON-NLS-1$
         TreeItem childTreeItem = new TreeItem();
         if (showLocalizedFileNames) {
@@ -63,7 +74,7 @@ public class TreeBuilder {
         //ElementUtils.preventTextSelection(childTreeItem.getElement());
         
         HashMap<String, Object> attributeMap = new HashMap<String, Object>();
-        attributeMap.put("name", childElement.getAttribute("name")); //$NON-NLS-1$ //$NON-NLS-2$
+        attributeMap.put("name", fileName); //$NON-NLS-1$ //$NON-NLS-2$
         attributeMap.put("localized-name", childElement.getAttribute("localized-name")); //$NON-NLS-1$ //$NON-NLS-2$
         attributeMap.put("description", childElement.getAttribute("description")); //$NON-NLS-1$ //$NON-NLS-2$
         attributeMap.put("lastModifiedDate", childElement.getAttribute("lastModifiedDate")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -109,12 +120,16 @@ public class TreeBuilder {
           }
         }
 
-        boolean isDirectory = "true".equals(childElement.getAttribute("isDirectory")); //$NON-NLS-1$ //$NON-NLS-2$
         if (isDirectory) {
-          buildSolutionTree(childTreeItem, childElement, showHiddenFiles, showLocalizedFileNames);
+          buildSolutionTree(childTreeItem, childElement, showHiddenFiles, showLocalizedFileNames, filter);
         }
       }
     }
   }
 
+  private static class DefaultFileFilter implements FileFilter{
+    public boolean accept(String name, boolean isDirectory, boolean isVisible) {
+      return true;
+    }
+  }
 }
