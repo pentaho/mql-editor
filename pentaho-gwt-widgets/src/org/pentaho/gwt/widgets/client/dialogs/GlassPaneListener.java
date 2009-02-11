@@ -1,7 +1,7 @@
 package org.pentaho.gwt.widgets.client.dialogs;
 
 public interface GlassPaneListener {
-  public void glassPaneShown();
+  public void glassPaneShown() throws Exception;
 
-  public void glassPaneHidden();
+  public void glassPaneHidden() throws Exception;
 }

@@ -9,19 +9,28 @@ public class GlassPaneNativeListener implements GlassPaneListener {
     this.callback = callback;
   }
 
-  public void glassPaneHidden() {
+  public void glassPaneHidden() throws Exception{
     sendHide(callback);
   }
 
-  public void glassPaneShown() {
+  public void glassPaneShown() throws Exception{
     sendShown(callback);
   }
 
-  private native void sendHide(JavaScriptObject obj)/*-{
-    obj.glassPaneHidden();
+  private native void sendHide(JavaScriptObject obj) throws Exception/*-{
+    try{
+      obj.glassPaneHidden();
+    } catch(e){
+      throw e;
+    }
+    
   }-*/;
 
-  private native void sendShown(JavaScriptObject obj)/*-{
-    obj.glassPaneShown();
+  private native void sendShown(JavaScriptObject obj) throws Exception/*-{
+    try{
+      obj.glassPaneShown();
+    } catch (e){
+      throw e;
+    }
   }-*/;
 }

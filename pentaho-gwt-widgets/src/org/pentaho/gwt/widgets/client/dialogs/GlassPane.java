@@ -22,18 +22,41 @@ public class GlassPane {
   public void show() {
     if (!shown) {
       shown = true;
+      List<GlassPaneListener> listenersToRemove = new ArrayList<GlassPaneListener>();
+      
       for (GlassPaneListener listener : listeners) {
-        listener.glassPaneShown();
+        try{
+          listener.glassPaneShown();
+        } catch(Exception e){
+          // If a Listener is a reference from a window that has since closed, it throws an exception here. Remove it.
+          listenersToRemove.add(listener);
+        }
       }
+      removeBadListeners(listenersToRemove);
+    }
+  }
+  
+  private void removeBadListeners(List<GlassPaneListener> removeThese){
+    for (GlassPaneListener listener : removeThese) {
+      listeners.remove(listener);
     }
   }
 
   public void hide() {
     if (shown) {
       shown = false;
+
+      List<GlassPaneListener> listenersToRemove = new ArrayList<GlassPaneListener>();
+      
       for (GlassPaneListener listener : listeners) {
-        listener.glassPaneHidden();
+        try{
+          listener.glassPaneHidden();
+        } catch(Exception e){
+          // If a Listener is a reference from a window that has since closed, it throws an exception here. Remove it.
+          listenersToRemove.add(listener);
+        }
       }
+      removeBadListeners(listenersToRemove);
     }
 
   }
