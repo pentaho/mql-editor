@@ -78,7 +78,7 @@ public class MessageBundle {
     // 3. bundleName_en_US.properties
 
     // always fetch the base first
-    RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + PROPERTIES_EXTENSION); //$NON-NLS-1$
+    RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + PROPERTIES_EXTENSION); 
     try {
       requestBuilder.sendRequest(null, baseCallback);
     } catch (RequestException e) {
