@@ -43,7 +43,7 @@ import com.google.gwt.user.client.Window;
 public class MessageBundle {
   
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
-  
+  public static final String PROPERTIES_EXTENSION = ".properties"; //$NON-NLS-1$
   private HashMap<String, String> bundle = new HashMap<String, String>();
   private RequestCallback baseCallback = null;
   private RequestCallback langCallback = null;
@@ -78,7 +78,7 @@ public class MessageBundle {
     // 3. bundleName_en_US.properties
 
     // always fetch the base first
-    RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + ".properties"); //$NON-NLS-1$
+    RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + PROPERTIES_EXTENSION); //$NON-NLS-1$
     try {
       requestBuilder.sendRequest(null, baseCallback);
     } catch (RequestException e) {
@@ -110,7 +110,7 @@ public class MessageBundle {
             String lang = st.tokenAt(0);
             // 2. fetch bundleName_lang.properties
             // 3. fetch bundleName_lang_country.properties
-            RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + lang + ".properties"); //$NON-NLS-1$ //$NON-NLS-2$
+            RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + lang + PROPERTIES_EXTENSION); //$NON-NLS-1$ //$NON-NLS-2$
             try {
               requestBuilder.sendRequest(null, langCallback);
             } catch (RequestException e) {
@@ -131,7 +131,7 @@ public class MessageBundle {
         // does not exist but something like message_fr_CA.properties still could,
         // so we will go ahead and try that as well
         Window.alert("langCallback " + MSGS.error() + ":" + exception.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + localeName + ".properties"); //$NON-NLS-1$ //$NON-NLS-2$
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + localeName + PROPERTIES_EXTENSION); //$NON-NLS-1$ //$NON-NLS-2$
         try {
           requestBuilder.sendRequest(null, langCountryCallback);
         } catch (RequestException e) {
@@ -148,7 +148,7 @@ public class MessageBundle {
         StringTokenizer st = new StringTokenizer(localeName, '_');
         if (st.countTokens() == 2) {
           // 3. fetch bundleName_lang_country.properties
-          RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + localeName + ".properties"); //$NON-NLS-1$ //$NON-NLS-2$
+          RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + localeName + PROPERTIES_EXTENSION); //$NON-NLS-1$ //$NON-NLS-2$
           try {
             requestBuilder.sendRequest(null, langCountryCallback);
           } catch (RequestException e) {
