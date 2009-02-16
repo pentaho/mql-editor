@@ -146,7 +146,7 @@ public class FileChooser extends VerticalPanel {
   public void fetchRepositoryDocument(final IDialogCallback completedCallback) throws RequestException {
     RequestBuilder builder = null;
     if (GWT.isScript()) {
-      builder = new RequestBuilder(RequestBuilder.GET, "/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url"); //$NON-NLS-1$
+      builder = new RequestBuilder(RequestBuilder.GET, "SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url"); //$NON-NLS-1$
     } else {
       builder = new RequestBuilder(RequestBuilder.GET,
           "http://localhost:8080/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&userid=joe&password=password"); //$NON-NLS-1$
