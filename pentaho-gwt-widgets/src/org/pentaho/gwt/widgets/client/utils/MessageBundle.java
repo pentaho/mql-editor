@@ -239,6 +239,6 @@ public class MessageBundle {
         return m[i].content.substring(m[i].content.indexOf('=')+1); 
       } 
     }
-    return null;
+    return "default";
   }-*/;
 }
