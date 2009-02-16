@@ -51,7 +51,7 @@ public class MessageBundle {
   private String path = null;
   private String bundleName = null;
   private IMessageBundleLoadCallback bundleLoadCallback = null;
-  private String localeName = getLanguagePreference();
+  private String localeName = "default";
 
   /**
    * The MessageBundle class fetches localized properties files by using the GWT RequestBuilder against the supplied path. Ideally the path should be relative,
@@ -70,6 +70,8 @@ public class MessageBundle {
     this.path = path;
     this.bundleName = bundleName;
     this.bundleLoadCallback = bundleLoadCallback;
+    // get the locale meta property if the url parameter is missing
+    this.localeName = StringUtils.defaultIfEmpty(Window.Location.getParameter("locale"), getLanguagePreference());
     initCallbacks();
     // decompose locale
     // _en_US
@@ -237,6 +239,6 @@ public class MessageBundle {
         return m[i].content.substring(m[i].content.indexOf('=')+1); 
       } 
     }
-    return 'default';
+    return null;
   }-*/;
 }
