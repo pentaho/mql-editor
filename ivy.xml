@@ -21,7 +21,7 @@
       changing="true" transitive="false" />
     <dependency org="pentaho" name="pentaho-metadata" rev="${dependency.pentaho-metadata.revision}" changing="true"
       transitive="false" />
-    <dependency org="pentaho" name="pentaho-cwm" rev="1.5.4" />
+    <dependency org="pentaho" name="pentaho-cwm" rev="${dependency.pentaho-cwm.revision}" />
     <!--  dependency org="pentaho.kettle" name="kettle-core"   rev="${dependency.kettle-engine.revision}" / -->
     <dependency org="pentaho.kettle" name="kettle-engine" rev="${dependency.kettle-engine.revision}" />
     <dependency org="pentaho.kettle" name="kettle-core" rev="${dependency.kettle-engine.revision}" />
@@ -31,9 +31,8 @@
     <!--  internal dependencies -->
     <dependency org="pentaho" name="pentaho-connections" rev="${dependency.pentaho-connections.revision}"
       changing="true" />
-    <dependency org="pentaho" name="pentaho-cwm" rev="1.5.4" />
-    <dependency org="pentaho" name="libformula" rev="0.1.18.2" />
-    <dependency org="pentaho" name="pentaho-publisher" rev="1.6.0" />
+    <dependency org="pentaho" name="libformula" rev="${dependency.pentaho-reporting-libformula.revision}" />
+    <dependency org="pentaho" name="pentaho-publisher" rev="${dependency.pentaho-pentaho-publisher.revision}" />
 
 
     <!--  Testing dependencies -->
@@ -48,25 +47,25 @@
     <dependency org="com.google.gwt" name="gwt-dev" rev="1.5.2" m:classifier="linux" conf="default->default" />
     <dependency org="com.google.code.gwtx" name="gwtx" rev="1.5-20081002" />
 
-    <dependency org="pentaho" name="pentaho-gwt-widgets" rev="${project.revision}" conf="default->default"
+    <dependency org="pentaho" name="pentaho-gwt-widgets" rev="${dependency.pentaho-gwt-widgets.revision}" conf="default->default"
       changing="true">
       <artifact name="pentaho-gwt-widgets" />
       <artifact name="pentaho-gwt-widgets" type="source" ext="jar" m:classifier="sources" />
     </dependency>
 
-    <dependency org="pentaho" name="pentaho-xul-core" rev="${project.revision}" conf="default->default"
+    <dependency org="pentaho" name="pentaho-xul-core" rev="${dependency.pentaho-xul.revision}" conf="default->default"
       changing="true">
       <artifact name="pentaho-xul-core" />
       <artifact name="pentaho-xul-core" type="source" ext="jar" m:classifier="sources" />
     </dependency>
 
-    <dependency org="pentaho" name="pentaho-xul-gwt" rev="${project.revision}" conf="default->default"
+    <dependency org="pentaho" name="pentaho-xul-gwt" rev="${dependency.pentaho-xul.revision}" conf="default->default"
       changing="true">
       <artifact name="pentaho-xul-gwt" />
       <artifact name="pentaho-xul-gwt" type="source" ext="jar" m:classifier="sources" />
     </dependency>
 
-    <dependency org="pentaho" name="pentaho-xul-swing" rev="${project.revision}" conf="default->default" />
+    <dependency org="pentaho" name="pentaho-xul-swing" rev="${dependency.pentaho-xul.revision}" conf="default->default" />
 
   </dependencies>
 </ivy-module>
