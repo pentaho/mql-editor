@@ -18,6 +18,7 @@ package org.pentaho.gwt.widgets.client.filechooser;
 
 import java.util.ArrayList;
 
+import org.pentaho.gwt.widgets.client.dialogs.GlassPane;
 import org.pentaho.gwt.widgets.client.dialogs.IDialogCallback;
 import org.pentaho.gwt.widgets.client.dialogs.IDialogValidatorCallback;
 import org.pentaho.gwt.widgets.client.dialogs.MessageDialogBox;
@@ -26,6 +27,7 @@ import org.pentaho.gwt.widgets.client.filechooser.FileChooser.FileChooserMode;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.xml.client.Document;
 
 public class FileChooserDialog extends ResizableDialogBox implements FileChooserListener{
@@ -176,4 +178,17 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
       listener.fileSelectionChanged(solution, path, name);
     }
   }
+
+  @Override
+  public void hide() {
+    GlassPane.getInstance().hide();
+    super.hide();
+  }
+
+  @Override
+  public void center() {
+    GlassPane.getInstance().show();
+    super.center();
+  }
+  
 }
