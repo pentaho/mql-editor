@@ -166,4 +166,8 @@ public class GwtMqlEditor implements EntryPoint, IMessageBundleLoadCallback {
       e.printStackTrace();
     }
   }
+  
+  public Workspace getWorkspace() {
+    return workspace;
+  }
 }
