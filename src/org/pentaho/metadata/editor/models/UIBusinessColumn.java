@@ -1,8 +1,11 @@
 package org.pentaho.metadata.editor.models;
 
-import org.pentaho.metadata.IBusinessColumn;
-import org.pentaho.metadata.IBusinessTable;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.pentaho.metadata.ColumnType;
+import org.pentaho.metadata.IBusinessColumn;
+import org.pentaho.metadata.beans.BusinessColumn;
 
 public class UIBusinessColumn extends AbstractModelNode<UIBusinessColumn> implements IBusinessColumn<UIBusinessTable> {
 
@@ -12,72 +15,70 @@ public class UIBusinessColumn extends AbstractModelNode<UIBusinessColumn> implem
 
   private String name, id;
   
+  private BusinessColumn bean;
+  
+  // The supplied Beans are a Graph of objects. In order to maintain those relationships, we track
+  // previously created objects in order to serve the same objects when needed.
+  private static Map<BusinessColumn, UIBusinessColumn> wrappedCols = new HashMap<BusinessColumn, UIBusinessColumn>();
+  
+  public static UIBusinessColumn wrap(BusinessColumn col){
+    if(wrappedCols.containsKey(col)){
+      return wrappedCols.get(col);
+    }
+    UIBusinessColumn c = new UIBusinessColumn(col);
+    wrappedCols.put(col, c);
+    return c;
+  }
+
   public UIBusinessColumn() {
 
   }
 
-  public UIBusinessColumn(IBusinessColumn col) {
-    this.id = col.getId();
-    this.name = col.getName();
-    this.type = col.getType();
-    this.table = new UIBusinessTable(col.getTable());
+  private UIBusinessColumn(BusinessColumn col) {
+    this.bean = col;
+    this.table = UIBusinessTable.wrap(col.getTable());
   }
-
-  public UIBusinessColumn(String name, UIBusinessTable table, ColumnType type) {
-    this.type = type;
-    this.name = name;
-    this.table = table;
-  }
-
+  
   public String getTableName() {
     return table.getName();
   }
 
-  public void setTableName(String name) {
+  public void setTableName(String name){
+    //TODO: Ignored! remove once Tree bindings respect one-way with editable="false"
   }
-
+  
   public UIBusinessTable getTable() {
 
     return table;
   }
 
-  public void setTable(UIBusinessTable table) {
-
-    this.table = table;
-  }
-
   public ColumnType getType() {
 
-    return type;
-  }
-
-  public void setType(ColumnType type) {
-
-    this.type = type;
+    return bean.getType();
   }
 
   public String getId() {
-    return id;
+    return bean.getId();
   }
 
   public String getName() {
-   return name;   
+   return bean.getName();   
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public void setName(String name) {
-    this.name = name;
+  public void setName(String name){
+    //TODO: Ignored! remove once Tree bindings respect one-way with editable="false"
   }
   
   public String toString(){
-    if(table != null){
-      return table.getName() + "." + id; //$NON-NLS-1$
+    if(bean.getTable() != null){
+      return bean.getTable().getName() + "." + bean.getId(); //$NON-NLS-1$
     }
     
     return id;
+  }
+  
+  public BusinessColumn getBean(){
+    return bean;
   }
   
 }

@@ -1,15 +1,12 @@
 package org.pentaho.metadata.editor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.pentaho.gwt.widgets.client.utils.IMessageBundleLoadCallback;
 import org.pentaho.gwt.widgets.client.utils.MessageBundle;
 import org.pentaho.metadata.IDomain;
+import org.pentaho.metadata.beans.Domain;
 import org.pentaho.metadata.editor.models.UIDomain;
 import org.pentaho.metadata.editor.service.MetadataService;
 import org.pentaho.metadata.editor.service.MetadataServiceGwtImpl;
-import org.pentaho.ui.xul.XulException;
 import org.pentaho.ui.xul.XulServiceCallback;
 import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.gwt.GwtXulDomContainer;
@@ -25,7 +22,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.xml.client.XMLParser;
 
@@ -50,7 +46,7 @@ public class GwtMqlEditor implements EntryPoint, IMessageBundleLoadCallback {
   }
   
   public String getMqlQuery(){
-    return workspace.getMqlQuery();
+    return workspace.getMqlQueryStr();
   }
   
   public void show(){
@@ -135,7 +131,7 @@ public class GwtMqlEditor implements EntryPoint, IMessageBundleLoadCallback {
       }
 
       public void success(IDomain retVal) {
-        UIDomain domain = new UIDomain(retVal);
+        UIDomain domain = new UIDomain((Domain) retVal);
         workspace.setDomain(domain);
       }
       

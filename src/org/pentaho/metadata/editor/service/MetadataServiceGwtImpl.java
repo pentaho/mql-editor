@@ -7,6 +7,7 @@ import org.pentaho.metadata.ICondition;
 import org.pentaho.metadata.IDomain;
 import org.pentaho.metadata.IModel;
 import org.pentaho.metadata.IOrder;
+import org.pentaho.metadata.IQuery;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 import com.google.gwt.core.client.GWT;
@@ -47,14 +48,14 @@ public class MetadataServiceGwtImpl implements MetadataService {
 
   }
 
-  public void getMetadataDomains(final XulServiceCallback<String[]> callback) {
-    SERVICE.getMetadataDomains(new AsyncCallback<String[]>() {
+  public void getMetadataDomains(final XulServiceCallback<List<IDomain>> callback) {
+    SERVICE.getMetadataDomains(new AsyncCallback<List<IDomain>>() {
 
       public void onFailure(Throwable arg0) {
         callback.error("error loading metadata domains: ", arg0);
       }
 
-      public void onSuccess(String[] arg0) {
+      public void onSuccess(List<IDomain> arg0) {
         callback.success(arg0);
       }
 
@@ -77,4 +78,20 @@ public class MetadataServiceGwtImpl implements MetadataService {
 
   }
 
+  public void serializeModel(IQuery query, final XulServiceCallback<String> callback) {
+    SERVICE.serialzieModel(query, new AsyncCallback<String>() {
+
+      public void onFailure(Throwable arg0) {
+        callback.error("error loading metadata domains: ", arg0);
+      }
+
+      public void onSuccess(String arg0) {
+        callback.success(arg0);
+      }
+
+    });
+
+  }
+
+  
 }

@@ -7,15 +7,14 @@ import org.pentaho.metadata.ICondition;
 import org.pentaho.metadata.IDomain;
 import org.pentaho.metadata.IModel;
 import org.pentaho.metadata.IOrder;
-import org.pentaho.metadata.editor.models.Columns;
-import org.pentaho.metadata.editor.models.Conditions;
-import org.pentaho.metadata.editor.models.Orders;
+import org.pentaho.metadata.IQuery;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 public interface MetadataService {
-  void getMetadataDomains(XulServiceCallback<String[]> callback);
+  void getMetadataDomains(XulServiceCallback<List<IDomain>> callback);
   void getDomainByName(String name, XulServiceCallback<IDomain> callback);
   void saveQuery(IModel model, List<? extends IBusinessColumn> cols, List<? extends ICondition> conditions, List<? extends IOrder> orders, XulServiceCallback<String> callback);
+  void serializeModel(IQuery query, XulServiceCallback<String> callback);
 }
 
   

@@ -12,6 +12,7 @@ import org.pentaho.metadata.ICondition;
 import org.pentaho.metadata.IDomain;
 import org.pentaho.metadata.IModel;
 import org.pentaho.metadata.IOrder;
+import org.pentaho.metadata.IQuery;
 import org.pentaho.metadata.beans.BusinessColumn;
 import org.pentaho.metadata.beans.BusinessTable;
 import org.pentaho.metadata.beans.Category;
@@ -49,12 +50,18 @@ public class MetadataGwtServlet extends RemoteServiceServlet implements Metadata
     return SERVICE.getDomainByName(name);
   }
 
-  public String[] getMetadataDomains() {
+  public List<IDomain> getMetadataDomains() {
     return SERVICE.getMetadataDomains();
   }
 
   public String saveQuery(IModel model, List<IBusinessColumn> cols, List<ICondition> conditions, List<IOrder> orders) {
     return SERVICE.saveQuery(model, cols, conditions, orders);
   }
+
+  public String serialzieModel(IQuery query) {
+    return SERVICE.serializeModel(query);  
+  }
+
+
 
 }

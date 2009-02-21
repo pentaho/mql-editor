@@ -1,10 +1,10 @@
+package org.pentaho.metadata.editor;
 
-     package org.pentaho.metadata.editor;
+import org.pentaho.metadata.IQuery;
 
-     public interface MqlDialogListener {
+public interface MqlDialogListener {
 
-       public void onDialogAccept();
-       public void onDialogCancel();
+  public void onDialogAccept(IQuery queryModel);
+
+  public void onDialogCancel();
 }
-
-  

@@ -12,6 +12,7 @@ import org.pentaho.metadata.ICondition;
 import org.pentaho.metadata.IDomain;
 import org.pentaho.metadata.IModel;
 import org.pentaho.metadata.IOrder;
+import org.pentaho.metadata.IQuery;
 import org.pentaho.metadata.beans.BusinessColumn;
 import org.pentaho.metadata.beans.BusinessTable;
 import org.pentaho.metadata.beans.Category;
@@ -48,13 +49,17 @@ public class MetadataServiceImpl implements MetadataService{
     callback.success(SERVICE.getDomainByName(name));
   }
 
-  public void getMetadataDomains(XulServiceCallback<String[]> callback) {
+  public void getMetadataDomains(XulServiceCallback<List<IDomain>> callback) {
     callback.success(SERVICE.getMetadataDomains());  
   }
 
   public void saveQuery(IModel model, List<? extends IBusinessColumn> cols, List<? extends ICondition> conditions,
       List<? extends IOrder> orders, XulServiceCallback<String> callback) {
     callback.success(SERVICE.saveQuery(model, cols, conditions, orders)); 
+  }
+
+  public void serializeModel(IQuery query, XulServiceCallback<String> callback) {
+    callback.success(SERVICE.serializeModel(query));
   }
   
   

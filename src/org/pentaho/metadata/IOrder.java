@@ -11,10 +11,6 @@ public interface IOrder extends Serializable{
   
   public IBusinessColumn getColumn();
   
-  public void setColumn(IBusinessColumn column);
-
   public Type getOrderType();
-
-  public void setOrderType(Type orderType);
 
 }

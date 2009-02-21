@@ -1,8 +1,12 @@
 package org.pentaho.metadata.editor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.metadata.IDomain;
+import org.pentaho.metadata.beans.Domain;
 import org.pentaho.metadata.editor.models.UIDomain;
 import org.pentaho.metadata.editor.service.MetadataService;
 import org.pentaho.metadata.editor.service.MetadataServiceImpl;
@@ -49,17 +53,25 @@ public class MqlEditor {
       MetadataService service = new MetadataServiceImpl();
       mainController.setService(service);
       
-      service.getDomainByName("bs", new XulServiceCallback<IDomain>(){
+      service.getMetadataDomains(new XulServiceCallback<List<IDomain>>(){
 
         public void error(String message, Throwable error) {
           
         }
 
-        public void success(IDomain retVal) {
+        public void success(List<IDomain> retVal) {
           
-          UIDomain domain = new UIDomain(retVal);
+          List<UIDomain> uiDomains = new ArrayList<UIDomain>();
+          for(IDomain d : retVal){
+            uiDomains.add(new UIDomain((Domain) d));
+          }
+          
           Workspace workspace = new Workspace();
-          workspace.setDomain(domain);
+
+          // Currently there's only one domain supported.
+          if(uiDomains.size() > 0){
+            workspace.setDomain(uiDomains.get(0));
+          }
           mainController.setWorkspace(workspace);
           selectedColumnController.setWorkspace(workspace);
           constraintController.setWorkspace(workspace);

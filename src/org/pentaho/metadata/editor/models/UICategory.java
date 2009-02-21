@@ -1,31 +1,37 @@
 package org.pentaho.metadata.editor.models;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.pentaho.metadata.IBusinessColumn;
 import org.pentaho.metadata.ICategory;
+import org.pentaho.metadata.beans.BusinessColumn;
+import org.pentaho.metadata.beans.Category;
 
 public class UICategory extends AbstractModelNode<UIBusinessColumn> implements ICategory<UIBusinessColumn>{
   
-  private String name, id;
+  private Category bean;
+
+  // The supplied Beans are a Graph of objects. In order to maintain those relationships, we track
+  // previously created objects in order to serve the same objects when needed.
+  private static Map<Category, UICategory> wrappedCats = new HashMap<Category, UICategory>();
   
-  public UICategory(ICategory<IBusinessColumn> category){
-    this.name = category.getName();
-    this.id = category.getId();
-    
-    for(IBusinessColumn col : category.getBusinessColumns()){
-      UIBusinessColumn c = new UIBusinessColumn(col);
+  public static UICategory wrap(Category cat){
+    if(wrappedCats.containsKey(cat)){
+      return wrappedCats.get(cat);
+    }
+    UICategory c = new UICategory(cat);
+    wrappedCats.put(cat, c);
+    return c;
+  }
+  
+  private UICategory(Category category){
+    this.bean = category;
+    for(BusinessColumn col : category.getBusinessColumns()){
+      UIBusinessColumn c = UIBusinessColumn.wrap(col);
       this.children.add(c);
     }
-  }
-  
-  public UICategory(String name){
-    this.name = name;
-  }
-  
-  public UICategory(String name, List<UIBusinessColumn> columns){
-    super(columns);
-    this.name = name;
   }
   
   public UICategory(){
@@ -36,27 +42,13 @@ public class UICategory extends AbstractModelNode<UIBusinessColumn> implements I
     return this.getChildren(); 
   }
 
-  public void setBusinessColumns(List<UIBusinessColumn> columns) {
-    this.children = columns;
-  }
-
-
   public String getId() {
-    return id;
+    return bean.getId();
   }
 
   public String getName() {
-   return name;   
+   return bean.getName();
   }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-  
   
 }
 

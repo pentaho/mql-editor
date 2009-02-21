@@ -4,6 +4,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import org.pentaho.metadata.IDomain;
+import org.pentaho.metadata.IModel;
+import org.pentaho.metadata.IQuery;
+import org.pentaho.metadata.beans.Query;
 import org.pentaho.metadata.editor.models.Columns;
 import org.pentaho.metadata.editor.models.Conditions;
 import org.pentaho.metadata.editor.models.Orders;
@@ -15,10 +19,11 @@ import org.pentaho.metadata.editor.models.UIModel;
 import org.pentaho.metadata.editor.models.UIOrder;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
-public class Workspace extends XulEventSourceAdapter{
+public class Workspace extends XulEventSourceAdapter implements IQuery{
 
   private UIModel model;
-  private UIDomain domain;
+  private UIDomain selectedDomain;
+  private List<UIDomain> domains;
   private List<UICategory> categories;
   private UICategory selectedCategory;
   private UIOrder selectedOrder;
@@ -28,7 +33,7 @@ public class Workspace extends XulEventSourceAdapter{
   private Columns selectedColumns = new Columns();
   private Conditions conditions = new Conditions();
   private Orders orders = new Orders();
-  private String query;
+  private String queryStr;
   
   public Workspace(){
     selectedColumns.addPropertyChangeListener("children", new PropertyChangeListener(){
@@ -66,6 +71,9 @@ public class Workspace extends XulEventSourceAdapter{
   }
   
   public UIBusinessColumn getColumnByPos(int pos){
+    if(pos < 0 || getSelectedModel() == null){
+      return null;
+    }
     List<UICategory> children = getSelectedModel().getChildren();
     int curpos = 0;
     for(UICategory child : children){
@@ -93,17 +101,6 @@ public class Workspace extends XulEventSourceAdapter{
   public void setCategories(List<UICategory> categories) {
     this.categories = categories;
     this.firePropertyChange("categories", null, getCategories());
-  }
-
-  public UIDomain getDomain() {
-  
-    return domain;
-  }
-
-  public void setDomain(UIDomain domain) {
-  
-    this.domain = domain;
-    this.firePropertyChange("domain", null, domain);
   }
 
   public UICategory getSelectedCategory() {
@@ -203,13 +200,46 @@ public class Workspace extends XulEventSourceAdapter{
     this.firePropertyChange("orders", null, getOrders());
   }
 
-  public void setMqlQuery(String query) {
-    this.query = query;
+  public void setMqlQueryStr(String query) {
+    this.queryStr = query;
   }
   
-  public String getMqlQuery(){
-    return this.query;
+  public String getMqlQueryStr(){
+    return this.queryStr;
   }
+
+  public IModel getModel() {
+    return this.model;   
+  }
+
+  public UIDomain getSelectedDomain() {
+  
+    return selectedDomain;
+  }
+
+  public void setDomain(UIDomain selectedDomain){
+    this.selectedDomain = selectedDomain;
+    this.firePropertyChange("domain", null, selectedDomain);
+  }
+
+ 
+  public IDomain getDomain(){
+    return this.selectedDomain;
+  }
+  
+  public Query getQueryModel(){
+    Query query = new Query();
+    query.setCols(this.selectedColumns.getBeanCollection());
+    query.setConditions(this.conditions.getBeanCollection());
+    return query;
+  }
+
+  public String getMqlStr() {
+    return queryStr;
+  }
+  
+  
+  
 }
 
   

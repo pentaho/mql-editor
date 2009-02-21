@@ -3,28 +3,24 @@ package org.pentaho.metadata.editor.models;
 import java.util.List;
 
 import org.pentaho.metadata.IDomain;
-import org.pentaho.metadata.IModel;
+import org.pentaho.metadata.beans.Domain;
+import org.pentaho.metadata.beans.Model;
 
 public class UIDomain extends AbstractModelNode<UIModel> implements IDomain<UIModel>{
   
-  private String id, name;
+  private Domain bean;
   
-  public UIDomain(IDomain<IModel> domain){
-    this.name = domain.getName();
-    this.id = domain.getId();
-    for(IModel model : domain.getModels()){
-      this.children.add(new UIModel(model));
+  public UIDomain(){
+    this.bean = new Domain();
+  }
+  
+  public UIDomain(Domain domain){
+    this.bean = domain;
+    for(Model model : domain.getModels()){
+      this.children.add(UIModel.wrap(model));
     }
   }
-  public UIDomain(String name){
-    this.name = name;
-  }
   
-  public UIDomain(List<UIModel> models, String name){
-    super(models);
-    this.name = name;
-  }
-
   public List<UIModel> getModels() {
     return this.getChildren();
   }
@@ -34,25 +30,16 @@ public class UIDomain extends AbstractModelNode<UIModel> implements IDomain<UIMo
   }
 
   public String getId() {
-    return id;
+    return bean.getId();
   }
 
   public String getName() {
-   return name;   
+   return bean.getName();
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public Domain getBean(){
+    return bean;
   }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-  
-  
-  
-  
-  
   
 }
 

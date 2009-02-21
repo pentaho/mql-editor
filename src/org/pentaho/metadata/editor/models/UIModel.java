@@ -1,59 +1,56 @@
 package org.pentaho.metadata.editor.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.pentaho.metadata.ICategory;
 import org.pentaho.metadata.IModel;
+import org.pentaho.metadata.beans.Category;
+import org.pentaho.metadata.beans.Model;
 
 public class UIModel extends AbstractModelNode<UICategory> implements IModel<UICategory>{
   
   private List<UICategory> categories = new ArrayList<UICategory>();
-  private String name, id;
+
+  private Model bean;
+
+  // The supplied Beans are a Graph of objects. In order to maintain those relationships, we track
+  // previously created objects in order to serve the same objects when needed.
+  private static Map<Model, UIModel> wrappedModels = new HashMap<Model, UIModel>();
   
-  public UIModel(IModel<ICategory> model){
-    this.id = model.getId();
-    this.name = model.getName();
+  public static UIModel wrap(Model model){
+    if(wrappedModels.containsKey(model)){
+      return wrappedModels.get(model);
+    }
+    UIModel m = new UIModel(model);
+    wrappedModels.put(model, m);
+    return m;
+  }
+  
+  private UIModel(Model model){
+    this.bean = model;
     
-    for(ICategory cat : model.getCategories()){
-      this.children.add(new UICategory(cat));
+    for(Category cat : model.getCategories()){
+      this.children.add(UICategory.wrap(cat));
     }
   }
   
   public UIModel(){
-    
+    bean = new Model();
   }
   
-  public UIModel(List<UICategory> categories, String name){
-    super(categories);
-    this.name = name;
-  }
-
   public List<UICategory> getCategories() {
     return this.getChildren();  
   }
 
-  public void setCategories(List<UICategory> categories) {
-    this.categories = categories;
-  }
-
   public String getId() {
-    return id;
+    return bean.getId();
   }
 
   public String getName() {
-   return name;   
+   return bean.getName();   
   }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-  
-  
   
 }
 

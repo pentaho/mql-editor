@@ -8,12 +8,12 @@ import org.pentaho.metadata.Operator;
 public class Condition implements ICondition<BusinessColumn> {
 
   private BusinessColumn column;
-  private Operator operator;
+  private Operator operator = Operator.EQUAL;
   private String value;
-  private CombinationType comboType;
+  private CombinationType comboType = CombinationType.AND;
   
   public BusinessColumn getColumn() {
-  return this.column;    
+    return this.column;    
   }
 
   public CombinationType getCombinationType() {
@@ -25,11 +25,15 @@ public class Condition implements ICondition<BusinessColumn> {
   }
 
   public String getValue() {
-    return this.value;  
+    return this.value;
   }
 
   public void setColumn(BusinessColumn column) {
     this.column = column;  
+
+    if(column.getType() == ColumnType.TEXT){
+      operator = Operator.EXACTLY_MATCHES;
+    }
   }
 
   public void setCombinationType(CombinationType combinationType) {

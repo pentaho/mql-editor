@@ -88,11 +88,11 @@ public class MainController extends AbstractXulEventHandler {
     bf.createBinding(modelList, "selectedIndex", workspace, "selectedModel", new BindingConvertor<Integer, UIModel>() {
       @Override
       public UIModel sourceToTarget(Integer value) {
-        return workspace.getDomain().getChildren().get(value);
+        return (UIModel) workspace.getDomain().getModels().get(value);
       }
       @Override
       public Integer targetToSource(UIModel value) {
-        return workspace.getDomain().getChildren().indexOf(value);
+        return workspace.getDomain().getModels().indexOf(value);
       }
     });
     
@@ -147,10 +147,7 @@ public class MainController extends AbstractXulEventHandler {
       workspace.addOrder(col);
     }
   }
-  public void selectModel() {
-    UIModel m = workspace.getDomain().getChildren().get(modelList.getSelectedIndex());
 
-  }
 
   public void setBindingFactory(BindingFactory bf) {
 
@@ -192,10 +189,10 @@ public class MainController extends AbstractXulEventHandler {
           } catch(Exception e){
             //ignore
           }
-          workspace.setMqlQuery(retVal);
+          workspace.setMqlQueryStr(retVal);
           dialog.hide();
           for(MqlDialogListener listener : listeners){
-            listener.onDialogAccept();
+            listener.onDialogAccept(workspace.getQueryModel());
           }
           System.out.println(retVal);
           

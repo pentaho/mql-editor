@@ -64,6 +64,9 @@ public enum Operator implements Serializable{
   public String formatCondition(String objectName, String value){
     String retVal = "";
     switch(this){
+      case EXACTLY_MATCHES:
+        retVal += objectName+" = \"" + value + "\"";
+        break;
       case CONTAINS:
         retVal += "LIKE("+objectName+"; \"%" + value + "%\")";
         break;

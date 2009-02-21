@@ -7,29 +7,24 @@ import org.pentaho.metadata.ColumnType;
 import org.pentaho.metadata.CombinationType;
 import org.pentaho.metadata.ICondition;
 import org.pentaho.metadata.Operator;
+import org.pentaho.metadata.beans.Condition;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
 public class UICondition extends XulEventSourceAdapter implements ICondition<UIBusinessColumn> {
   
-  
-  
-  private UIBusinessColumn column;
-  private Operator operator = Operator.EQUAL;
-  private String value;
-  private CombinationType combinationType = CombinationType.AND;
+  private Condition bean;
   
   public UICondition(){
-    
+    bean = new Condition();
   }
   
 
   public UICondition(UIBusinessColumn column, Operator operator, String value){
-    this.column = column;
-    if(this.getColumn().getType() == ColumnType.TEXT){
-      operator = Operator.EXACTLY_MATCHES;
-    }
-    this.operator = operator;
-    this.value = value;
+    this();
+    bean.setColumn(column.getBean());
+    bean.setOperator(operator);
+    bean.setValue(value);
+    
   }
   
   
@@ -40,72 +35,67 @@ public class UICondition extends XulEventSourceAdapter implements ICondition<UIB
 
 
   public UIBusinessColumn getColumn() {
-    return column;
+    return UIBusinessColumn.wrap(bean.getColumn());
   }
 
+  
 
   public void setColumn(UIBusinessColumn column) {
-    this.column = column;
-    if(this.getColumn().getType() == ColumnType.TEXT){
-      operator = Operator.EXACTLY_MATCHES;
-    }
+    bean.setColumn(column.getBean());
   }
 
 
   public Operator getOperator() {
-    return operator;
+    return bean.getOperator();
   }
 
 
   public void setOperator(Operator operator) {
-    this.operator = operator;
+    bean.setOperator(operator);
   }
 
-
-
   public void setOperator(Object operator) {
-    this.operator = (Operator) operator;
+    setOperator((Operator) operator);
   }
 
   public String getValue() {
-    return value;
+    return bean.getValue();
   }
 
 
   public void setValue(String value) {
-    this.value = value;
+    bean.setValue(value);
   }
 
 
   public CombinationType getCombinationType() {
-    return combinationType;
+    return bean.getCombinationType();
   }
 
 
   public void setCombinationType(CombinationType combinationType) {
-    this.combinationType = combinationType;
+    bean.setCombinationType(combinationType);
   }
   
   //Binding value comes in as Object unfortunately.
   public void setCombinationType(Object combinationType) {
-    this.combinationType = (CombinationType) combinationType;
+    setCombinationType((CombinationType) combinationType);
   }
-  
 
   public String getTableName(){
-    return this.column.getTableName();
+    return bean.getColumn().getTable().getName();
   }
-  
-  public void setTableName(String str){
-    
-  }
-  
-  public void setColumnName(String str){
-    
+
+  public void setTableName(String name){
+    //TODO: Ignored! remove once Tree bindings respect one-way with editable="false"
   }
   
   public String getColumnName(){
-    return this.column.getName();
+    return bean.getColumn().getName();
+  }
+
+  public void setColumnName(String name){
+    //TODO: Ignored! remove once Tree bindings respect one-way with editable="false"
   }
   
   public Vector getComparisons(){
@@ -131,9 +121,12 @@ public class UICondition extends XulEventSourceAdapter implements ICondition<UIB
 
 
   public String getCondition(String objName) {
-    return this.operator.formatCondition(objName, this.value);
+    return bean.getCondition(objName);
   }
   
+  public Condition getBean(){
+    return bean;
+  }
   
   
 }

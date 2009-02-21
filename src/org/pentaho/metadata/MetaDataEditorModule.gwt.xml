@@ -11,6 +11,7 @@
         <exclude name="**/MetadataServiceImpl*"/>
         <exclude name="**/MetadataGwtServlet*"/>
         <exclude name="**/MetadataServiceSyncImpl*"/>
+        <exclude name="**/ModelSerializer*"/>
         
     </source>
     <public path="editor/public"/>

@@ -2,65 +2,61 @@ package org.pentaho.metadata.editor.models;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.pentaho.metadata.IBusinessColumn;
 import org.pentaho.metadata.IBusinessTable;
+import org.pentaho.metadata.beans.BusinessColumn;
+import org.pentaho.metadata.beans.BusinessTable;
 
 public class UIBusinessTable extends AbstractModelNode<UIBusinessColumn> implements IBusinessTable<UIBusinessColumn>{
 
-  private String name, id;
+  private BusinessTable bean;
+
+  // The supplied Beans are a Graph of objects. In order to maintain those relationships, we track
+  // previously created objects in order to serve the same objects when needed.
+  private static Map<BusinessTable, UIBusinessTable> wrappedTables = new HashMap<BusinessTable, UIBusinessTable>();
+  
+  public static UIBusinessTable wrap(BusinessTable table){
+    if(wrappedTables.containsKey(table)){
+      return wrappedTables.get(table);
+    }
+    UIBusinessTable t = new UIBusinessTable(table);
+    wrappedTables.put(table, t);
+    return t;
+  }
   
   public UIBusinessTable(){
     
   }
   
-  public UIBusinessTable(IBusinessTable<IBusinessColumn> table){
-    this.id = table.getId();
-    this.name = table.getName();
+  private UIBusinessTable(BusinessTable table){
+    this.bean = table;
 
-
-    for(IBusinessColumn col : table.getBusinessColumns()){
-      UIBusinessColumn c = new UIBusinessColumn(col);
+    for(BusinessColumn col : table.getBusinessColumns()){
+      UIBusinessColumn c = UIBusinessColumn.wrap(col);
       this.children.add(c);
     }
   }
-  
-  public UIBusinessTable(String name){
-    this.name = name;
-  }
-  
-  public UIBusinessTable(String name, List<UIBusinessColumn> columns){
-    super(columns);
-    this.name = name;
-  }
-
+ 
   public List<UIBusinessColumn> getBusinessColumns() {
     return this.getChildren();  
   }
 
-  public void setBusinessColumns(List<UIBusinessColumn> columns) {
-    this.children = columns;
-  }
-
   public String getId() {
-    return id;
+    return bean.getId();
   }
 
   public String getName() {
-   return name;   
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public void setName(String name) {
-    this.name = name;
+   return bean.getName();   
   }
   
-  
+  public BusinessTable getBean(){
+    return bean;
+  }
   
 }
 

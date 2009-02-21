@@ -12,11 +12,13 @@ import org.pentaho.metadata.ICondition;
 import org.pentaho.metadata.IDomain;
 import org.pentaho.metadata.IModel;
 import org.pentaho.metadata.IOrder;
+import org.pentaho.metadata.IQuery;
 import org.pentaho.metadata.beans.BusinessColumn;
 import org.pentaho.metadata.beans.BusinessTable;
 import org.pentaho.metadata.beans.Category;
 import org.pentaho.metadata.beans.Domain;
 import org.pentaho.metadata.beans.Model;
+import org.pentaho.metadata.utils.ModelSerializer;
 import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.factory.CwmSchemaFactory;
 import org.pentaho.pms.mql.MQLQuery;
@@ -114,8 +116,10 @@ public class MetadataServiceSyncImpl {
     return table;
   }
 
-  public String[] getMetadataDomains() {
-    return new String[] { domain.getName() };
+  public List<IDomain> getMetadataDomains() {
+    List<IDomain> domains = new ArrayList<IDomain>();
+    domains.add(domain);
+    return domains;
   }
 
   public IDomain getDomainByName(String name) {
@@ -226,4 +230,7 @@ public class MetadataServiceSyncImpl {
     return null;
   }
 
+  public String serializeModel(IQuery query){
+    return ModelSerializer.serialize(query);
+  }
 }

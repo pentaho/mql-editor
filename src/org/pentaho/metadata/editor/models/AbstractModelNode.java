@@ -5,10 +5,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
-public class AbstractModelNode<T> extends XulEventSourceAdapter implements Collection<T>, Iterable<T> {
+public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<T>, Iterable<T> {
 
   protected List<T> children = new ArrayList<T>();
 
@@ -35,8 +36,10 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements Colle
     return retVal;
   }
 
-  public boolean remove(int idx){
-    return this.remove(this.children.get(idx));
+  public T remove(int idx){
+    T t = children.remove(idx);
+    fireCollectionChanged();
+    return t;
   }
   public boolean remove(Object child) {
     if (!this.children.contains(child)) {
@@ -163,6 +166,47 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements Colle
 
   public <T> T[] toArray(T[] a) {
     return this.children.toArray(a);
+  }
+
+  public void add(int index, T element) {
+    children.add(index, element);
+  }
+
+  public boolean addAll(int index, Collection<? extends T> c) {
+    return children.addAll(index, c);  
+  }
+
+  public T get(int index) {
+    return children.get(index);  
+  }
+
+  public int indexOf(Object o) {
+    return children.indexOf(o);  
+  }
+
+  public int lastIndexOf(Object o) {
+    return children.lastIndexOf(o);
+  }
+
+  public ListIterator<T> listIterator() {
+    return children.listIterator();  
+  }
+
+  public ListIterator<T> listIterator(int index) {
+    return children.listIterator(index);
+  }
+
+  public T set(int index, T element) {
+    return children.set(index, element);
+  }
+
+  public List<T> subList(int fromIndex, int toIndex) {
+    // children.subList() does not compile in GWT, re-implemented here
+    List<T> newList = new ArrayList<T>();
+    for(int i=fromIndex; i<children.size() && i < toIndex; i++){
+      newList.add(children.get(i));
+    }
+    return newList;
   }
 
 }
