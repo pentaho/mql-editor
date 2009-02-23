@@ -73,10 +73,8 @@ public class MqlEditor {
           
           Workspace workspace = new Workspace();
 
-          // Currently there's only one domain supported.
-          if(uiDomains.size() > 0){
-            workspace.setDomain(uiDomains.get(0));
-          }
+          workspace.setDomains(uiDomains);
+
           mainController.setWorkspace(workspace);
           selectedColumnController.setWorkspace(workspace);
           constraintController.setWorkspace(workspace);

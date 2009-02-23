@@ -23,6 +23,7 @@ public class MainController extends AbstractXulEventHandler {
 
 
   private XulMenuList modelList;
+  private XulMenuList domainList;
   //private XulMenuList viewList;
   private XulTree categoryTree;
   //private XulListbox columnList;
@@ -57,30 +58,43 @@ public class MainController extends AbstractXulEventHandler {
   }
   private void createBindings(){
     modelList = (XulMenuList) document.getElementById("modelList");
+    domainList = (XulMenuList) document.getElementById("domainList");
     categoryTree = (XulTree) document.getElementById("categoryTree");
     constraintTree = (XulTree) document.getElementById("constraintTree");
     
     fieldTable = (XulTree) document.getElementById("selectedColumnTree");
     
-    //Start out one-way
     bf.setBindingType(Binding.Type.ONE_WAY);
 
-    final Binding domainBinding = bf.createBinding(this.workspace, "domain", modelList, "elements", 
-        new BindingConvertor<UIDomain, List>(){
+    final Binding domainBinding = bf.createBinding(this.workspace, "domains", domainList, "elements");
 
-          @Override
-          public List sourceToTarget(UIDomain value) {
-            return value == null ? null : value.getChildren();
-          }
+    bf.setBindingType(Binding.Type.BI_DIRECTIONAL);
 
-          //not used
-          @Override
-          public UIDomain targetToSource(List value) {
-            return null;
-          }
-      
+    bf.createBinding(domainList, "selectedIndex", workspace, "selectedDomain", new BindingConvertor<Integer, UIDomain>() {
+      @Override
+      public UIDomain sourceToTarget(Integer value) {
+        return workspace.getDomains().get(value);
+      }
+      @Override
+      public Integer targetToSource(UIDomain value) {
+        return workspace.getDomains().indexOf(value);
+      }
     });
     
+    bf.setBindingType(Binding.Type.ONE_WAY);
+    bf.createBinding(this.workspace, "selectedDomain", modelList, "elements", new BindingConvertor<UIDomain, List<UIModel>>() {
+
+      @Override
+      public List<UIModel> sourceToTarget(UIDomain value) {
+        return value.getModels();
+      }
+
+      @Override
+      public UIDomain targetToSource(List<UIModel> value) {
+        return null; // not used   
+      }
+      
+    });
     
 
     bf.createBinding(modelList, "selectedIndex", workspace, "selectedModel", new BindingConvertor<Integer, UIModel>() {
@@ -90,7 +104,7 @@ public class MainController extends AbstractXulEventHandler {
       }
       @Override
       public Integer targetToSource(UIModel value) {
-        return workspace.getDomain().getModels().indexOf(value);
+        return workspace.getSelectedDomain().getModels().indexOf(value);
       }
     });
     

@@ -196,20 +196,19 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
   }
 
   public UIDomain getSelectedDomain() {
-  
     return selectedDomain;
   }
 
-  public void setDomain(UIDomain selectedDomain){
+  public void setSelectedDomain(UIDomain selectedDomain){
     this.selectedDomain = selectedDomain;
-    this.firePropertyChange("domain", null, selectedDomain);
+    this.firePropertyChange("selectedDomain", null, selectedDomain);
   }
 
- 
   public IDomain getDomain(){
     return this.selectedDomain;
   }
   
+ 
   public Query getQueryModel(){
     Query query = new Query();
     query.setCols(this.selectedColumns.getBeanCollection());
@@ -224,6 +223,15 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
   
   public void setMqlStr(String query){
     this.queryStr = query;
+  }
+
+  public List<UIDomain> getDomains() {
+    return domains;
+  }
+
+  public void setDomains(List<UIDomain> domains) {
+    this.domains = domains;
+    this.firePropertyChange("domains", null, domains); //$NON-NLS-1$
   }
   
   

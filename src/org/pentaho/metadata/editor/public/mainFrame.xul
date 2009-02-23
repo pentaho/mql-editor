@@ -23,8 +23,12 @@
     <vbox padding="10" flex="1">
       <hbox flex="1">
         <vbox flex="1">
+          <label value="${business.domains}" />
+          <menulist label="Domain" id="domainList" pen:binding="name">
+            <menupopup />
+          </menulist>
           <label value="${business.models}" />
-          <menulist label="Model" id="modelList" oncommand="mainController.clearWorkspace()" pen:binding="name">
+          <menulist label="Model" id="modelList" pen:binding="name">
             <menupopup />
           </menulist>
           <label value="${categories.columns}" />
@@ -71,7 +75,7 @@
             <button id="colUp" disabled="true" onclick="selectedColumns.moveUp()" image="images/move_up.gif" />
             <button id="colRemove" disabled="true" onclick="selectedColumns.remove()" image="images/delete.png" />
           </hbox>
-          <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="selectedColumnTree"
+          <tree flex="1" editable="false" seltype="single" enableColumnDrag="false" id="selectedColumnTree"
             height="143">
             <treecols>
               <treecol label="${table}" flex="1" pen:binding="tableName" />

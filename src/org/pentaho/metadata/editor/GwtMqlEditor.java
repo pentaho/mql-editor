@@ -1,5 +1,8 @@
 package org.pentaho.metadata.editor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.pentaho.gwt.widgets.client.utils.IMessageBundleLoadCallback;
 import org.pentaho.gwt.widgets.client.utils.MessageBundle;
 import org.pentaho.metadata.IDomain;
@@ -27,6 +30,7 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.xml.client.XMLParser;
 
@@ -129,18 +133,22 @@ public class GwtMqlEditor implements EntryPoint, IMessageBundleLoadCallback {
   
   public void setService(MetadataService service){
     mainController.setService(service);
-    service.getDomainByName("bs", new XulServiceCallback<IDomain>(){
+    service.getMetadataDomains(new XulServiceCallback<List<IDomain>>() {
 
       public void error(String message, Throwable error) {
-        int i=0;
+        Window.alert("could not get list of metadata domains");
       }
 
-      public void success(IDomain retVal) {
-        UIDomain domain = new UIDomain((Domain) retVal);
-        workspace.setDomain(domain);
+      public void success(List<IDomain> domains) {
+        List<UIDomain> uiDomains = new ArrayList<UIDomain>();
+        for (IDomain domain : domains) {
+          uiDomains.add(new UIDomain((Domain) domain));
+        }
+        workspace.setDomains(uiDomains);
       }
       
     });
+    
   }
   
   public void bundleLoaded(String bundleName) {

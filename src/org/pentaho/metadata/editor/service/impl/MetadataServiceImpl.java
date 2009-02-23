@@ -1,5 +1,6 @@
 package org.pentaho.metadata.editor.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.pentaho.commons.mql.ui.mqldesigner.CWMStartup;
@@ -21,11 +22,14 @@ public class MetadataServiceImpl implements MetadataService{
 
     CWMStartup.loadCWMInstance("src/org/pentaho/metadata/sampleMql/metadata/repository.properties", "src/org/pentaho/metadata/sampleMql/metadata/PentahoCWM.xml"); //$NON-NLS-1$ //$NON-NLS-2$
     CWMStartup.loadMetadata("src/org/pentaho/metadata/sampleMql/metadata_steelwheels.xmi", "src/org/pentaho/metadata/sampleMql"); //$NON-NLS-1$ //$NON-NLS-2$
-    CWM cwm = CWM.getInstance("src/org/pentaho/metadata/sampleMql");
+    CWM cwm = CWM.getInstance("src/org/pentaho/metadata/sampleMql"); //$NON-NLS-1$
 
     CwmSchemaFactory factory = new CwmSchemaFactory();
     
-    SERVICE = new MetadataServiceSyncImpl(cwm, factory);
+    List<CWM> cwms = new ArrayList<CWM>();
+    cwms.add(cwm);
+    
+    SERVICE = new MetadataServiceSyncImpl(cwms, factory);
   }
 
   public void getDomainByName(String name, XulServiceCallback<IDomain> callback) {

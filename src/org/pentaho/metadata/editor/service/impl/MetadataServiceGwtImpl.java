@@ -81,7 +81,7 @@ public class MetadataServiceGwtImpl implements MetadataService {
   }
 
   public void serializeModel(IQuery query, final XulServiceCallback<String> callback) {
-    SERVICE.serialzieModel(query, new AsyncCallback<String>() {
+    SERVICE.serializeModel(query, new AsyncCallback<String>() {
 
       public void onFailure(Throwable arg0) {
         callback.error("error loading metadata domains: ", arg0);

@@ -16,7 +16,7 @@ public interface MetadataGwtServiceAsync {
   void getMetadataDomains(AsyncCallback<List<IDomain>> callback);
   void getDomainByName(String name, AsyncCallback<IDomain> callback);
   void saveQuery(IModel model, List<? extends IBusinessColumn> cols, List<? extends ICondition> conditions, List<? extends IOrder> orders, AsyncCallback<String> callback);
-  void serialzieModel(IQuery query, AsyncCallback<String> callback);
+  void serializeModel(IQuery query, AsyncCallback<String> callback);
 }
 
   

@@ -1,8 +1,10 @@
 package org.pentaho.metadata.editor.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.pentaho.commons.mql.ui.mqldesigner.MQLWhereConditionModel;
 import org.pentaho.metadata.ColumnType;
@@ -35,24 +37,30 @@ public class MetadataServiceSyncImpl {
 
   private String locale = Locale.getDefault().toString();
 
-  private Domain domain;
+  private List<IDomain> domains = new ArrayList<IDomain>();
 
   private CwmSchemaFactory factory;
 
-  private SchemaMeta meta;
+  /**
+   * Keeps track of where a particular model came from.
+   */
+  private Map<String, SchemaMeta> modelIdToSchemaMetaMap = new HashMap<String, SchemaMeta>();
 
-  public MetadataServiceSyncImpl(CWM cwm, CwmSchemaFactory factory) {
+  public MetadataServiceSyncImpl(List<CWM> cwms, CwmSchemaFactory factory) {
     this.factory = factory;
-    meta = factory.getSchemaMeta(cwm);
 
-    domain = new Domain();
-    domain.setName(meta.getDomainName());
-
-    UniqueList<BusinessModel> models = meta.getBusinessModels();
-    for (BusinessModel model : models) {
-      domain.getModels().add(createModel(model));
+    for (CWM cwm : cwms) {
+      SchemaMeta meta = factory.getSchemaMeta(cwm);
+      Domain domain = new Domain();
+      domain.setName(meta.getDomainName());
+      UniqueList<BusinessModel> models = meta.getBusinessModels();
+      for (BusinessModel model : models) {
+        Model myModel = createModel(model);
+        domain.getModels().add(myModel);
+        modelIdToSchemaMetaMap.put(myModel.getId(), meta);
+      }
+      domains.add(domain);
     }
-
   }
 
   private Model createModel(BusinessModel m) {
@@ -115,13 +123,16 @@ public class MetadataServiceSyncImpl {
   }
 
   public List<IDomain> getMetadataDomains() {
-    List<IDomain> domains = new ArrayList<IDomain>();
-    domains.add(domain);
     return domains;
   }
 
   public IDomain getDomainByName(String name) {
-    return domain;
+    for (IDomain domain : domains) {
+      if (domain.getName().equals(name)) {
+        return domain;
+      }
+    }
+    return null;
   }
 
   private org.pentaho.pms.schema.BusinessColumn[] getColumns(BusinessModel model,
@@ -155,21 +166,18 @@ public class MetadataServiceSyncImpl {
     int i = 0;
     for (ICondition thinCondition : thinConditions) {
       org.pentaho.pms.schema.BusinessColumn col = getColumn(model, thinCondition.getColumn());
-      MQLWhereConditionModel where = new MQLWhereConditionModel(
-          thinCondition.getCombinationType().toString(), 
-          col, 
-          thinCondition.getCondition("["+col.toString()+"]")
-        );
+      MQLWhereConditionModel where = new MQLWhereConditionModel(thinCondition.getCombinationType().toString(), col,
+          thinCondition.getCondition("[" + col.toString() + "]"));
       conditions[i++] = where;
     }
     return conditions;
   }
-  
-  private List<OrderBy> getOrders(BusinessModel model, List<? extends IOrder> thinOrders){
+
+  private List<OrderBy> getOrders(BusinessModel model, List<? extends IOrder> thinOrders) {
     List<OrderBy> ord = new ArrayList<OrderBy>();
-    
-    for(IOrder thinOrder : thinOrders){
-      Selection selection = new Selection(getColumn(model , thinOrder.getColumn()));
+
+    for (IOrder thinOrder : thinOrders) {
+      Selection selection = new Selection(getColumn(model, thinOrder.getColumn()));
       ord.add(new OrderBy(selection, (thinOrder.getOrderType() == IOrder.Type.ASC)));
     }
     return ord;
@@ -177,7 +185,7 @@ public class MetadataServiceSyncImpl {
 
   public String saveQuery(IModel model, List<? extends IBusinessColumn> cols, List<? extends ICondition> conditions,
       List<? extends IOrder> orders) {
-    model.getName();
+    SchemaMeta meta = modelIdToSchemaMetaMap.get(model.getId());
 
     UniqueList<BusinessModel> models = meta.getBusinessModels();
     BusinessModel realModel = null;
@@ -195,7 +203,7 @@ public class MetadataServiceSyncImpl {
         org.pentaho.pms.schema.BusinessColumn[] businessColumns = getColumns(realModel, cols);
         if (businessColumns.length > 0) {
           BusinessModel businessModel = realModel;
-          mqlQuery = new MQLQueryImpl(this.meta, businessModel, null, meta.getActiveLocale()); //$NON-NLS-1$
+          mqlQuery = new MQLQueryImpl(meta, businessModel, null, meta.getActiveLocale());
           List<Selection> selections = new ArrayList<Selection>();
           for (int i = 0; i < businessColumns.length; i++) {
             selections.add(new Selection(businessColumns[i]));
@@ -209,8 +217,7 @@ public class MetadataServiceSyncImpl {
           for (int i = 0; i < wherelist.length; i++) {
             BusinessCategory businessCategory = rootCat.findBusinessCategoryForBusinessColumn(wherelist[i].getField());
 
-            constraints.add(new WhereCondition(businessModel, wherelist[i].getOperator(),
-                wherelist[i].getCondition()) //$NON-NLS-1$
+            constraints.add(new WhereCondition(businessModel, wherelist[i].getOperator(), wherelist[i].getCondition()) //$NON-NLS-1$
                 );
           }
           mqlQuery.setConstraints(constraints);
@@ -228,7 +235,7 @@ public class MetadataServiceSyncImpl {
     return null;
   }
 
-  public String serializeModel(IQuery query){
+  public String serializeModel(IQuery query) {
     return ModelSerializer.serialize(query);
   }
 }

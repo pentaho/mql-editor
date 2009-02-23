@@ -1,5 +1,6 @@
 package org.pentaho.metadata.editor.service.gwt;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.pentaho.commons.mql.ui.mqldesigner.CWMStartup;
@@ -24,8 +25,10 @@ public class MetadataGwtServlet extends RemoteServiceServlet implements Metadata
     CWMStartup.loadCWMInstance("src/org/pentaho/metadata/sampleMql/metadata/repository.properties", "src/org/pentaho/metadata/sampleMql/metadata/PentahoCWM.xml"); //$NON-NLS-1$ //$NON-NLS-2$
     CWMStartup.loadMetadata("src/org/pentaho/metadata/sampleMql/metadata_steelwheels.xmi", "src/org/pentaho/metadata/sampleMql"); //$NON-NLS-1$ //$NON-NLS-2$
     CWM cwm = CWM.getInstance("src/org/pentaho/metadata/sampleMql");
+    List<CWM> cwms = new ArrayList<CWM>();
+    cwms.add(cwm);
     CwmSchemaFactory factory = new CwmSchemaFactory();
-    SERVICE = new MetadataServiceSyncImpl(cwm, factory);
+    SERVICE = new MetadataServiceSyncImpl(cwms, factory);
   }
 
   public IDomain getDomainByName(String name) {
@@ -40,7 +43,7 @@ public class MetadataGwtServlet extends RemoteServiceServlet implements Metadata
     return SERVICE.saveQuery(model, cols, conditions, orders);
   }
 
-  public String serialzieModel(IQuery query) {
+  public String serializeModel(IQuery query) {
     return SERVICE.serializeModel(query);  
   }
 
