@@ -1,10 +1,9 @@
-package org.pentaho.metadata.editor.service;
+package org.pentaho.metadata.editor.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.pentaho.commons.mql.ui.mqldesigner.CWMStartup;
 import org.pentaho.commons.mql.ui.mqldesigner.MQLWhereConditionModel;
 import org.pentaho.metadata.ColumnType;
 import org.pentaho.metadata.IBusinessColumn;
@@ -31,7 +30,6 @@ import org.pentaho.pms.schema.BusinessModel;
 import org.pentaho.pms.schema.SchemaMeta;
 import org.pentaho.pms.schema.concept.types.datatype.DataTypeSettings;
 import org.pentaho.pms.util.UniqueList;
-import org.pentaho.ui.xul.XulServiceCallback;
 
 public class MetadataServiceSyncImpl {
 

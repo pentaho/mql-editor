@@ -1,5 +1,6 @@
-package org.pentaho.metadata.editor;
+package org.pentaho.metadata.editor.controllers;
 
+import org.pentaho.metadata.editor.models.Workspace;
 import org.pentaho.ui.xul.binding.Binding;
 import org.pentaho.ui.xul.binding.BindingConvertor;
 import org.pentaho.ui.xul.binding.BindingFactory;

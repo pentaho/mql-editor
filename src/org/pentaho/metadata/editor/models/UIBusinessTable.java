@@ -1,13 +1,9 @@
 package org.pentaho.metadata.editor.models;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.pentaho.metadata.IBusinessColumn;
 import org.pentaho.metadata.IBusinessTable;
 import org.pentaho.metadata.beans.BusinessColumn;
 import org.pentaho.metadata.beans.BusinessTable;

@@ -1,5 +1,5 @@
 
-package org.pentaho.metadata.editor.service;
+package org.pentaho.metadata.editor.service.gwt;
 
 import java.util.List;
 
@@ -10,7 +10,6 @@ import org.pentaho.metadata.IModel;
 import org.pentaho.metadata.IOrder;
 import org.pentaho.metadata.IQuery;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
      
 public interface MetadataGwtService extends RemoteService{

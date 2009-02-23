@@ -1,4 +1,4 @@
-package org.pentaho.metadata.editor.service;
+package org.pentaho.metadata.editor.service.impl;
 
 import java.util.List;
 
@@ -8,10 +8,12 @@ import org.pentaho.metadata.IDomain;
 import org.pentaho.metadata.IModel;
 import org.pentaho.metadata.IOrder;
 import org.pentaho.metadata.IQuery;
+import org.pentaho.metadata.editor.service.MetadataService;
+import org.pentaho.metadata.editor.service.gwt.MetadataGwtService;
+import org.pentaho.metadata.editor.service.gwt.MetadataGwtServiceAsync;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 

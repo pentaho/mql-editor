@@ -1,4 +1,4 @@
-package org.pentaho.metadata.editor;
+package org.pentaho.metadata.editor.models;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -8,15 +8,6 @@ import org.pentaho.metadata.IDomain;
 import org.pentaho.metadata.IModel;
 import org.pentaho.metadata.IQuery;
 import org.pentaho.metadata.beans.Query;
-import org.pentaho.metadata.editor.models.Columns;
-import org.pentaho.metadata.editor.models.Conditions;
-import org.pentaho.metadata.editor.models.Orders;
-import org.pentaho.metadata.editor.models.UIBusinessColumn;
-import org.pentaho.metadata.editor.models.UICategory;
-import org.pentaho.metadata.editor.models.UICondition;
-import org.pentaho.metadata.editor.models.UIDomain;
-import org.pentaho.metadata.editor.models.UIModel;
-import org.pentaho.metadata.editor.models.UIOrder;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
 public class Workspace extends XulEventSourceAdapter implements IQuery{

@@ -15,8 +15,8 @@
         
     </source>
     <public path="editor/public"/>
-    <entry-point class="org.pentaho.metadata.editor.GwtMqlEditor"/>
+    <entry-point class="org.pentaho.mql.editor.GwtMqlEditor"/>
     
-  <servlet path="/MqlService" class="org.pentaho.metadata.editor.service.MetadataGwtServlet" />
+  <servlet path="/MqlService" class="org.pentaho.mql.editor.service.gwt.MetadataGwtServlet" />
   
  </module>

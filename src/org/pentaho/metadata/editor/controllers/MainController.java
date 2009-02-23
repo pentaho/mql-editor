@@ -1,16 +1,14 @@
-package org.pentaho.metadata.editor;
+package org.pentaho.metadata.editor.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.metadata.IDomain;
+import org.pentaho.metadata.editor.MqlDialogListener;
 import org.pentaho.metadata.editor.models.UIBusinessColumn;
-import org.pentaho.metadata.editor.models.UICondition;
 import org.pentaho.metadata.editor.models.UIDomain;
 import org.pentaho.metadata.editor.models.UIModel;
-import org.pentaho.metadata.editor.models.UIOrder;
+import org.pentaho.metadata.editor.models.Workspace;
 import org.pentaho.metadata.editor.service.MetadataService;
-import org.pentaho.ui.xul.XulException;
 import org.pentaho.ui.xul.XulServiceCallback;
 import org.pentaho.ui.xul.binding.Binding;
 import org.pentaho.ui.xul.binding.BindingConvertor;
@@ -224,5 +222,4 @@ public class MainController extends AbstractXulEventHandler {
       listeners.remove(listener);
     }
   }
-  
 }

@@ -15,6 +15,6 @@
         
     </source>
     <public path="editor/public"/>
-  <servlet path="/MqlService" class="org.pentaho.metadata.editor.service.MetadataGwtServlet" />
+  <servlet path="/MqlService" class="org.pentaho.mql.editor.service.gwt.MetadataGwtServlet" />
   
  </module>

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.pentaho.metadata.IBusinessColumn;
 import org.pentaho.metadata.ICategory;
 import org.pentaho.metadata.beans.BusinessColumn;
 import org.pentaho.metadata.beans.Category;

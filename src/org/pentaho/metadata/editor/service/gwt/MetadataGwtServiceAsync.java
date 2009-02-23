@@ -1,4 +1,4 @@
-package org.pentaho.metadata.editor.service;
+package org.pentaho.metadata.editor.service.gwt;
 
 import java.util.List;
 

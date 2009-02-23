@@ -1,34 +1,17 @@
-package org.pentaho.metadata.editor.service;
+package org.pentaho.metadata.editor.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.pentaho.commons.mql.ui.mqldesigner.CWMStartup;
-import org.pentaho.commons.mql.ui.mqldesigner.MQLWhereConditionModel;
-import org.pentaho.metadata.ColumnType;
 import org.pentaho.metadata.IBusinessColumn;
 import org.pentaho.metadata.ICondition;
 import org.pentaho.metadata.IDomain;
 import org.pentaho.metadata.IModel;
 import org.pentaho.metadata.IOrder;
 import org.pentaho.metadata.IQuery;
-import org.pentaho.metadata.beans.BusinessColumn;
-import org.pentaho.metadata.beans.BusinessTable;
-import org.pentaho.metadata.beans.Category;
-import org.pentaho.metadata.beans.Domain;
-import org.pentaho.metadata.beans.Model;
+import org.pentaho.metadata.editor.service.MetadataService;
 import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.factory.CwmSchemaFactory;
-import org.pentaho.pms.mql.MQLQuery;
-import org.pentaho.pms.mql.MQLQueryImpl;
-import org.pentaho.pms.mql.Selection;
-import org.pentaho.pms.mql.WhereCondition;
-import org.pentaho.pms.schema.BusinessCategory;
-import org.pentaho.pms.schema.BusinessModel;
-import org.pentaho.pms.schema.SchemaMeta;
-import org.pentaho.pms.schema.concept.types.datatype.DataTypeSettings;
-import org.pentaho.pms.util.UniqueList;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 public class MetadataServiceImpl implements MetadataService{
