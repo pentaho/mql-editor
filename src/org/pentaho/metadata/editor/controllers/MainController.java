@@ -187,7 +187,7 @@ public class MainController extends AbstractXulEventHandler {
           } catch(Exception e){
             //ignore
           }
-          workspace.setMqlQueryStr(retVal);
+          workspace.setMqlStr(retVal);
           dialog.hide();
           for(MqlDialogListener listener : listeners){
             listener.onDialogAccept(workspace.getQueryModel());

@@ -191,14 +191,6 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     this.firePropertyChange("orders", null, getOrders());
   }
 
-  public void setMqlQueryStr(String query) {
-    this.queryStr = query;
-  }
-  
-  public String getMqlQueryStr(){
-    return this.queryStr;
-  }
-
   public IModel getModel() {
     return this.model;   
   }
@@ -222,11 +214,16 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     Query query = new Query();
     query.setCols(this.selectedColumns.getBeanCollection());
     query.setConditions(this.conditions.getBeanCollection());
+    query.setMqlStr(this.getMqlStr());
     return query;
   }
 
   public String getMqlStr() {
     return queryStr;
+  }
+  
+  public void setMqlStr(String query){
+    this.queryStr = query;
   }
   
   

@@ -51,7 +51,7 @@ public class GwtMqlEditor implements EntryPoint, IMessageBundleLoadCallback {
   }
   
   public String getMqlQuery(){
-    return workspace.getMqlQueryStr();
+    return workspace.getMqlStr();
   }
   
   public void show(){
