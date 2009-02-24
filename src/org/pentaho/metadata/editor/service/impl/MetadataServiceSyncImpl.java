@@ -22,6 +22,7 @@ import org.pentaho.metadata.beans.Model;
 import org.pentaho.metadata.utils.ModelSerializer;
 import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.factory.CwmSchemaFactory;
+import org.pentaho.pms.factory.CwmSchemaFactoryInterface;
 import org.pentaho.pms.mql.MQLQuery;
 import org.pentaho.pms.mql.MQLQueryImpl;
 import org.pentaho.pms.mql.OrderBy;
@@ -39,14 +40,14 @@ public class MetadataServiceSyncImpl {
 
   private List<IDomain> domains = new ArrayList<IDomain>();
 
-  private CwmSchemaFactory factory;
+  private CwmSchemaFactoryInterface factory;
 
   /**
    * Keeps track of where a particular model came from.
    */
   private Map<String, SchemaMeta> modelIdToSchemaMetaMap = new HashMap<String, SchemaMeta>();
 
-  public MetadataServiceSyncImpl(List<CWM> cwms, CwmSchemaFactory factory) {
+  public MetadataServiceSyncImpl(List<CWM> cwms, CwmSchemaFactoryInterface factory) {
     this.factory = factory;
 
     for (CWM cwm : cwms) {
