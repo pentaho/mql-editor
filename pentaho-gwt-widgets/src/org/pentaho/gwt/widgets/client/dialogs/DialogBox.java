@@ -89,8 +89,11 @@ public class DialogBox extends com.google.gwt.user.client.ui.DialogBox implement
       focusWidget.setFocus(true);
     }
     //hide <embeds>
+    //TODO: migrate to GlassPane Listener
     FrameUtils.toggleEmbedVisibility(false);
     
+    // Notify listeners that we're showing a dialog (hide PDFs, flash).
+    GlassPane.getInstance().show();
   }
 
   public void show() {
@@ -117,6 +120,7 @@ public class DialogBox extends com.google.gwt.user.client.ui.DialogBox implement
         
         //reshow <embeds>
         if(this.isVisible()){
+          // TODO: migrate to glasspane listener
           FrameUtils.toggleEmbedVisibility(true);
         }
         
@@ -124,6 +128,9 @@ public class DialogBox extends com.google.gwt.user.client.ui.DialogBox implement
         dialogDepthCount = 0;
       }
     }
+
+    // Notify listeners that we're hiding a dialog (re-show PDFs, flash).
+    GlassPane.getInstance().hide();
   }
   
 }
