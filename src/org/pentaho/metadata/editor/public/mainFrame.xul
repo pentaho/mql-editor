@@ -2,23 +2,37 @@
 <?xml-stylesheet href="file://E:/workspaces/sprint_workspace/pentaho-xul/test/resource/documents/xul.css" type="text/css"?>
 <window id="label-test" title="MQL Query Builder" orient="vertical"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:pen="http://www.pentaho.org/2008/xul"
-  xmlns:HTML="http://www.w3.org/Profiles/XHTML-transitional" height="600" width="800"
-  onload="mainController.init(), selectedColumns.init(), conditionsController.init(), orderController.init(), mainController.showDialog()">
+  height="600" width="800"
+  onload="mainController.init(), selectedColumns.init(), conditionsController.init(), orderController.init(), previewController.init(), mainController.showDialog()">
 
-<hbox>
-  <button label="Open Editor" onclick="mainController.showDialog()"/>
-</hbox>
+  <hbox>
+    <button label="Open Editor" onclick="mainController.showDialog()" />
+  </hbox>
 
-<!-- <dialog id="testDialog" buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttons="accept,cancel"
-    ondialogaccept="mainController.saveQuery()" ondialogcancel="mainController.closeDialog()" buttonalign="right"
-    title="${window.title}" width="300" height="200">
+  <dialog id="previewDialog" buttonlabelcancel="${close}" buttons="cancel"
+    ondialogcancel="previewController.closeDialog()" buttonalign="right" title="${window.title}"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:pen="http://www.pentaho.org/2008/xul"
+    height="300" width="400">
+
     <vbox padding="10" flex="1">
-    <label value="testing"/>
-   </vbox>
+      <tree editable="false" seltype="none" enableColumnDrag="false" id="previewTree" flex="1" height="250">
+        <treecols>
+          <treecol label="Preview" flex="1" />
+        </treecols>
+        <treechildren />
+      </tree>
+      <hbox>
+        <spacer flex="1"/>
+        <label value="Limit:"/>
+        <textbox id="previewLimit" value="10" width="30"/>
+        <button label="update" onclick="previewController.upateQuery()"/>
+      </hbox>
+    </vbox>
   </dialog>
--->  
-  <dialog id="mqlEditorDialog" buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttons="accept,cancel"
-    ondialogaccept="mainController.saveQuery()" ondialogcancel="mainController.closeDialog()" buttonalign="right"
+
+  <dialog id="mqlEditorDialog" buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttonlabelextra1="preview"
+    buttons="accept,cancel" ondialogaccept="mainController.saveQuery()"
+    ondialogcancel="mainController.closeDialog()" buttonalign="right"
     title="${window.title}" width="800" height="625">
     <vbox padding="10" flex="1">
       <hbox flex="1">
@@ -48,8 +62,8 @@
             </treechildren>
           </tree>
         </vbox>
-        <vbox >
-          <spacer height="24"/>
+        <vbox>
+          <spacer height="24" />
           <vbox flex="1">
             <spacer flex="1" />
             <button image="images/e_forward.gif" onclick="mainController.moveSelectionToFields()" />
@@ -100,8 +114,8 @@
                 type="combobox" editable="true" />
               <treecol label="${table}" flex="1" pen:binding="tableName" />
               <treecol label="${column}" flex="1" pen:binding="columnName" />
-              <treecol label="${comparison}" flex="1" pen:binding="operator" type="combobox" pen:combobinding="comparisons"
-                editable="true" />
+              <treecol label="${comparison}" flex="1" pen:binding="operator" type="combobox"
+                pen:combobinding="comparisons" editable="true" />
               <treecol label="${value}" flex="1" pen:binding="value" editable="true" type="text" />
             </treecols>
             <treechildren />
@@ -110,9 +124,9 @@
           <hbox>
             <label value="${order.by}" />
             <spacer flex="1" />
-          <button id="orderDown" disabled="true" onclick="orderController.moveDown()" image="images/move_down.gif" />
-          <button id="orderUp" disabled="true" onclick="orderController.moveUp()" image="images/move_up.gif" />
-          <button id="orderRemove" disabled="true" onclick="orderController.remove()" image="images/delete.png" />
+            <button id="orderDown" disabled="true" onclick="orderController.moveDown()" image="images/move_down.gif" />
+            <button id="orderUp" disabled="true" onclick="orderController.moveUp()" image="images/move_up.gif" />
+            <button id="orderRemove" disabled="true" onclick="orderController.remove()" image="images/delete.png" />
           </hbox>
           <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="orderTable" height="143">
             <treecols>
@@ -127,5 +141,10 @@
         </vbox>
       </hbox>
     </vbox>
+    <hbox>
+      <spacer flex="1"/>
+      <button label="Preview" onclick="previewController.showPreview()"/>
+      <spacer flex="1"/>
+    </hbox>
   </dialog>
 </window>

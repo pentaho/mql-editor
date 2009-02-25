@@ -47,6 +47,10 @@ public class MetadataGwtServlet extends RemoteServiceServlet implements Metadata
     return SERVICE.serializeModel(query);  
   }
 
+  public String[][] getPreviewData(String query, int page, int limit) {
+    return SERVICE.getPreviewData(query, page, limit);
+  }
 
+  
 
 }

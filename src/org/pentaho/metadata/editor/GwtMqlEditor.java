@@ -10,6 +10,7 @@ import org.pentaho.metadata.beans.Domain;
 import org.pentaho.metadata.editor.controllers.ConditionsController;
 import org.pentaho.metadata.editor.controllers.MainController;
 import org.pentaho.metadata.editor.controllers.OrderController;
+import org.pentaho.metadata.editor.controllers.PreviewController;
 import org.pentaho.metadata.editor.controllers.SelectedColumnController;
 import org.pentaho.metadata.editor.models.UIDomain;
 import org.pentaho.metadata.editor.models.Workspace;
@@ -40,10 +41,10 @@ public class GwtMqlEditor implements EntryPoint, IMessageBundleLoadCallback {
   private MainController mainController = new MainController();
   private Workspace workspace = new Workspace();
   private GwtXulDomContainer container;
-  final SelectedColumnController selectedColumnController = new SelectedColumnController();
-  final ConditionsController constraintController = new ConditionsController();
-  final OrderController orderController = new OrderController();
-  
+  SelectedColumnController selectedColumnController = new SelectedColumnController();
+  ConditionsController constraintController = new ConditionsController();
+  OrderController orderController = new OrderController();
+  PreviewController previewController = new PreviewController();
   
   public GwtMqlEditor(){
     
@@ -115,13 +116,20 @@ public class GwtMqlEditor implements EntryPoint, IMessageBundleLoadCallback {
       wrapper.setHandler(orderController);      
       container.addEventHandler(wrapper);
       
+      wrapper = GWT.create(PreviewController.class);
+      previewController.setBindingFactory(bf);
+      wrapper.setHandler(previewController);      
+      container.addEventHandler(wrapper);
+      
+      
       runner.addContainer(container);
       mainController.setWorkspace(workspace);
       selectedColumnController.setWorkspace(workspace);
       constraintController.setWorkspace(workspace);
       orderController.setWorkspace(workspace);
+      previewController.setWorkspace(workspace);
       
-
+      
       runner.initialize();
       runner.start();
       RootPanel.get().add(runner.getRootPanel());
@@ -132,6 +140,7 @@ public class GwtMqlEditor implements EntryPoint, IMessageBundleLoadCallback {
   }
   
   public void setService(MetadataService service){
+    previewController.setService(service);
     mainController.setService(service);
     service.getMetadataDomains(new XulServiceCallback<List<IDomain>>() {
 

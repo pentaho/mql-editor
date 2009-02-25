@@ -15,6 +15,7 @@ public interface MetadataService {
   void getDomainByName(String name, XulServiceCallback<IDomain> callback);
   void saveQuery(IModel model, List<? extends IBusinessColumn> cols, List<? extends ICondition> conditions, List<? extends IOrder> orders, XulServiceCallback<String> callback);
   void serializeModel(IQuery query, XulServiceCallback<String> callback);
+  void getPreviewData(String query, int page, int limit, XulServiceCallback<String[][]> callback);
 }
 
   

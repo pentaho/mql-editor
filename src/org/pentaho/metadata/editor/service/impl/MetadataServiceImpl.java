@@ -3,6 +3,7 @@ package org.pentaho.metadata.editor.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.pentaho.commons.mql.ui.mqldesigner.CWMStartup;
 import org.pentaho.metadata.IBusinessColumn;
 import org.pentaho.metadata.ICondition;
@@ -47,6 +48,10 @@ public class MetadataServiceImpl implements MetadataService{
 
   public void serializeModel(IQuery query, XulServiceCallback<String> callback) {
     callback.success(SERVICE.serializeModel(query));
+  }
+
+  public void getPreviewData(String query, int page, int limit, XulServiceCallback<String[][]> callback) {
+    callback.error("Operation not supported", new NotImplementedException("Implement in a subclass of this service"));
   }
   
   

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.pentaho.commons.mql.ui.mqldesigner.MQLWhereConditionModel;
 import org.pentaho.metadata.ColumnType;
 import org.pentaho.metadata.IBusinessColumn;
@@ -62,6 +63,11 @@ public class MetadataServiceSyncImpl {
       }
       domains.add(domain);
     }
+  }
+  
+
+  public String[][] getPreviewData(String query, int page, int limit) {
+    throw new NotImplementedException("Implement in your class");
   }
 
   private Model createModel(BusinessModel m) {

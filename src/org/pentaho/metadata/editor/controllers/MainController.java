@@ -236,4 +236,5 @@ public class MainController extends AbstractXulEventHandler {
       listeners.remove(listener);
     }
   }
+  
 }

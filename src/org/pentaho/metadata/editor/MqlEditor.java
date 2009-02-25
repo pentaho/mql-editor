@@ -10,6 +10,7 @@ import org.pentaho.metadata.beans.Domain;
 import org.pentaho.metadata.editor.controllers.ConditionsController;
 import org.pentaho.metadata.editor.controllers.MainController;
 import org.pentaho.metadata.editor.controllers.OrderController;
+import org.pentaho.metadata.editor.controllers.PreviewController;
 import org.pentaho.metadata.editor.controllers.SelectedColumnController;
 import org.pentaho.metadata.editor.models.UIDomain;
 import org.pentaho.metadata.editor.models.Workspace;
@@ -55,8 +56,13 @@ public class MqlEditor {
       orderController.setBindingFactory(bf);
       container.addEventHandler(orderController);
       
+      final PreviewController previewController = new PreviewController();
+      previewController.setBindingFactory(bf);
+      container.addEventHandler(previewController);
+      
       MetadataService service = new MetadataServiceImpl();
       mainController.setService(service);
+      previewController.setService(service);
       
       service.getMetadataDomains(new XulServiceCallback<List<IDomain>>(){
 
@@ -79,6 +85,7 @@ public class MqlEditor {
           selectedColumnController.setWorkspace(workspace);
           constraintController.setWorkspace(workspace);
           orderController.setWorkspace(workspace);
+          previewController.setWorkspace(workspace);
           
           try{
             runner.initialize();

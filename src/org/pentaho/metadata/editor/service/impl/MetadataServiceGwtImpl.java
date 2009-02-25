@@ -95,5 +95,18 @@ public class MetadataServiceGwtImpl implements MetadataService {
 
   }
 
+  public void getPreviewData(String query, int page, int limit, final XulServiceCallback<String[][]> callback) {
+    SERVICE.getPreviewData(query, page, limit, new AsyncCallback<String[][]>() {
+
+      public void onFailure(Throwable arg0) {
+        callback.error("error loading metadata domains: ", arg0);
+      }
+
+      public void onSuccess(String[][] arg0) {
+        callback.success(arg0);
+      }
+
+    });
+  }
   
 }

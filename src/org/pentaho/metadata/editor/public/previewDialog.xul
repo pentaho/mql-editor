@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="file://E:/workspaces/sprint_workspace/pentaho-xul/test/resource/documents/xul.css" type="text/css"?>
+
+<dialog id="previewDialog" buttonlabelcancel="${close}" buttons="cancel" ondialogcancel="previewController.closeDialog()"
+  buttonalign="right" title="${window.title}" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  xmlns:pen="http://www.pentaho.org/2008/xul" height="300" width="400">
+  
+  <vbox padding="10" flex="1">
+    <tree editable="false" seltype="none" enableColumnDrag="false" id="previewTree" flex="1">
+      <treecols>
+        <treecol label="${table}" flex="1" pen:binding="tableName" />
+        <treecol label="${column}" flex="1" pen:binding="columnName" />
+      </treecols>
+      <treechildren />
+    </tree>
+  </vbox>
+</dialog>
