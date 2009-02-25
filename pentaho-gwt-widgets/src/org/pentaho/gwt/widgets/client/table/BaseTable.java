@@ -140,6 +140,7 @@ public class BaseTable extends Composite {
 
       parentPanel.setWidth("100%"); //$NON-NLS-1$
       scrollTable.setWidth("100%");
+      scrollTable.setScrollPolicy(ScrollPolicy.BOTH);
       this.parentPanel.add(scrollTable);
       this.fillWidth();
     }else{
