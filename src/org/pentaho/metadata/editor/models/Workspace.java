@@ -135,7 +135,6 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
       return;
     }
     selectedColumns.add(col);
-    this.firePropertyChange("selectedColumns", null, getSelectedColumns());
     
   }
 
