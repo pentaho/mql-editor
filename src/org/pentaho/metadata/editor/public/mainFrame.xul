@@ -38,11 +38,11 @@
       <hbox flex="1">
         <vbox flex="1">
           <label value="${business.domains}" />
-          <menulist label="Domain" id="domainList" pen:binding="name">
+          <menulist label="Domain" id="domainList" pen:binding="name" width="150" oncommand="mainController.clearWorkspace()">
             <menupopup />
           </menulist>
           <label value="${business.models}" />
-          <menulist label="Model" id="modelList" pen:binding="name" oncommand="mainController.clearWorkspace()">
+          <menulist label="Model" id="modelList" width="150" pen:binding="name" oncommand="mainController.clearWorkspace()">
             <menupopup />
           </menulist>
           <label value="${categories.columns}" />
