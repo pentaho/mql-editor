@@ -42,7 +42,7 @@
             <menupopup />
           </menulist>
           <label value="${business.models}" />
-          <menulist label="Model" id="modelList" pen:binding="name">
+          <menulist label="Model" id="modelList" pen:binding="name" oncommand="mainController.clearWorkspace()">
             <menupopup />
           </menulist>
           <label value="${categories.columns}" />
