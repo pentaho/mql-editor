@@ -35,7 +35,7 @@
     <!--  internal dependencies -->
     <dependency org="pentaho" name="pentaho-connections" rev="${dependency.pentaho-connections.revision}"
       changing="true" />
-    <dependency org="pentaho" name="libformula" rev="${dependency.pentaho-reporting-libformula.revision}" />
+    <dependency org="pentaho-library" name="libformula" rev="${dependency.pentaho-reporting-libformula.revision}" />
     <dependency org="pentaho" name="pentaho-publisher" rev="${dependency.pentaho-pentaho-publisher.revision}" />
 
 
