@@ -1,0 +1,23 @@
+<module>
+
+  <inherits name='com.google.gwt.user.User'/>
+    <inherits name='com.googlecode.gwtx.Java'/>
+  <inherits name='com.google.gwt.xml.XML'/>
+    <inherits name="org.pentaho.gwt.widgets.Widgets"/>
+  
+    <inherits name="org.pentaho.ui.xul.Gwt"/>
+    <source path="">
+        <exclude name="**/MqlEditor*"/>
+        <exclude name="**/MetadataServiceImpl*"/>
+        <exclude name="**/MetadataGwtServlet*"/>
+        <exclude name="**/MetadataServiceSyncImpl*"/>
+        <exclude name="**/ModelSerializer*"/>
+        <exclude name="**/CWMStartup*"/>
+        
+    </source>
+    <public path="editor/public"/>
+    <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.GwtMqlEditor"/>
+    
+  <servlet path="/MqlService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.MetadataGwtServlet" />
+  
+ </module>

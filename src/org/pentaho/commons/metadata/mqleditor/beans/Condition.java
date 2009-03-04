@@ -1,0 +1,59 @@
+package org.pentaho.commons.metadata.mqleditor.beans;
+
+import org.pentaho.commons.metadata.mqleditor.ColumnType;
+import org.pentaho.commons.metadata.mqleditor.CombinationType;
+import org.pentaho.commons.metadata.mqleditor.ICondition;
+import org.pentaho.commons.metadata.mqleditor.Operator;
+
+public class Condition implements ICondition<BusinessColumn> {
+
+  private BusinessColumn column;
+  private Operator operator = Operator.EQUAL;
+  private String value;
+  private CombinationType comboType = CombinationType.AND;
+  
+  public BusinessColumn getColumn() {
+    return this.column;    
+  }
+
+  public CombinationType getCombinationType() {
+    return this.comboType;  
+  }
+
+  public Operator getOperator() {
+    return this.operator;
+  }
+
+  public String getValue() {
+    return this.value;
+  }
+
+  public void setColumn(BusinessColumn column) {
+    this.column = column;  
+
+    if(column.getType() == ColumnType.TEXT){
+      operator = Operator.EXACTLY_MATCHES;
+    }
+  }
+
+  public void setCombinationType(CombinationType combinationType) {
+    this.comboType = combinationType;
+  }
+
+  public void setOperator(Operator operator) {
+    this.operator = operator;
+  }
+
+  public void setValue(String value) {
+   this.value = value;   
+  }
+
+  public boolean validate() {
+    return true;   
+  }
+
+  public String getCondition(String objName) {
+    return this.operator.formatCondition(objName, this.value);
+  }
+
+}
