@@ -7,7 +7,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.pentaho.commons.mql.ui.mqldesigner.MQLWhereConditionModel;
 import org.pentaho.metadata.ColumnType;
 import org.pentaho.metadata.IBusinessColumn;
 import org.pentaho.metadata.ICondition;
@@ -22,7 +21,6 @@ import org.pentaho.metadata.beans.Domain;
 import org.pentaho.metadata.beans.Model;
 import org.pentaho.metadata.utils.ModelSerializer;
 import org.pentaho.pms.core.CWM;
-import org.pentaho.pms.factory.CwmSchemaFactory;
 import org.pentaho.pms.factory.CwmSchemaFactoryInterface;
 import org.pentaho.pms.mql.MQLQuery;
 import org.pentaho.pms.mql.MQLQueryImpl;
@@ -245,4 +243,39 @@ public class MetadataServiceSyncImpl {
   public String serializeModel(IQuery query) {
     return ModelSerializer.serialize(query);
   }
+  
+  private class MQLWhereConditionModel {
+    
+    private String operator;       // AND
+    private org.pentaho.pms.schema.BusinessColumn field;  // customer_name
+    private String condition;      // = 'Casters'
+    
+    public MQLWhereConditionModel(String operator, org.pentaho.pms.schema.BusinessColumn field,  String condition) {
+      this.operator  = operator;
+      this.field     = field;
+      this.condition = condition;
+    }
+    
+    public String getOperator() {
+      return operator;
+    }
+    
+    public org.pentaho.pms.schema.BusinessColumn getField() {
+      return field;
+    }
+      
+    public String getCondition() {
+      return condition;
+    }
+    
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+    
+    public void setOperator(String operator) {
+      this.operator = operator;
+    }
+    
+  }
+
 }

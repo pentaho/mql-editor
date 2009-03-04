@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.pentaho.commons.mql.ui.mqldesigner.CWMStartup;
 import org.pentaho.metadata.IBusinessColumn;
 import org.pentaho.metadata.ICondition;
 import org.pentaho.metadata.IDomain;
 import org.pentaho.metadata.IModel;
 import org.pentaho.metadata.IOrder;
 import org.pentaho.metadata.IQuery;
+import org.pentaho.metadata.editor.service.CWMStartup;
 import org.pentaho.metadata.editor.service.MetadataService;
 import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.factory.CwmSchemaFactory;

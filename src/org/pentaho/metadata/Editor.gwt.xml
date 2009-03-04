@@ -12,6 +12,7 @@
         <exclude name="**/MetadataGwtServlet*"/>
         <exclude name="**/MetadataServiceSyncImpl*"/>
         <exclude name="**/ModelSerializer*"/>
+        <exclude name="**/CWMStartup*"/>
         
     </source>
     <public path="editor/public"/>

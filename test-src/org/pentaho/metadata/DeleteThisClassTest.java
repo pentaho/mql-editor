@@ -1,4 +1,4 @@
-package org.pentaho.commons.mql.ui.mqldesigner;
+package org.pentaho.metadata;
 
 import org.junit.Test;
 
