@@ -38,15 +38,15 @@
       <hbox flex="1">
         <vbox flex="1">
           <label value="${business.domains}" />
-          <menulist label="Domain" id="domainList" pen:binding="name" width="150" oncommand="mainController.clearWorkspace()">
+          <menulist label="Domain" id="domainList" pen:binding="name" width="190" oncommand="mainController.clearWorkspace()">
             <menupopup />
           </menulist>
           <label value="${business.models}" />
-          <menulist label="Model" id="modelList" width="150" pen:binding="name" oncommand="mainController.clearWorkspace()">
+          <menulist label="Model" id="modelList" width="190" pen:binding="name" oncommand="mainController.clearWorkspace()">
             <menupopup />
           </menulist>
           <label value="${categories.columns}" />
-          <tree flex="1" id="categoryTree" height="475" width="190">
+          <tree flex="1" id="categoryTree" height="400" width="190">
             <treecols>
               <treecol flex="1" label="" primary="true" pen:binding="name" pen:childrenbinding="children" />
             </treecols>
@@ -90,7 +90,7 @@
             <button id="colRemove" disabled="true" onclick="selectedColumns.remove()" image="images/delete.png" />
           </hbox>
           <tree flex="1" editable="false" seltype="single" enableColumnDrag="false" id="selectedColumnTree"
-            height="143">
+            height="137">
             <treecols>
               <treecol label="${table}" flex="1" pen:binding="tableName" />
               <treecol label="${column}" flex="1" pen:binding="name" />
@@ -108,7 +108,7 @@
             <button id="conditionRemove" disabled="true" onclick="conditionsController.remove()"
               image="images/delete.png" />
           </hbox>
-          <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="conditionsTree" height="143">
+          <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="conditionsTree" height="137">
             <treecols>
               <treecol label="${combine}" flex="1" pen:binding="combinationType" pen:combobinding="combinations"
                 type="combobox" editable="true" />
@@ -128,7 +128,7 @@
             <button id="orderUp" disabled="true" onclick="orderController.moveUp()" image="images/move_up.gif" />
             <button id="orderRemove" disabled="true" onclick="orderController.remove()" image="images/delete.png" />
           </hbox>
-          <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="orderTable" height="143">
+          <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="orderTable" height="137">
             <treecols>
               <treecol label="${table}" pen:binding="tableName" flex="1" />
               <treecol label="${column}" pen:binding="columnName" flex="1" />
