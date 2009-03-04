@@ -27,6 +27,17 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
   private String queryStr;
   
   public Workspace(){
+    setupListeners();
+  }
+  
+  public void clear(){
+    this.setOrders(new Orders());
+    this.setSelectedColumns(new Columns());
+    this.setConditions(new Conditions());
+    setupListeners();
+  }
+  
+  public void setupListeners(){
     selectedColumns.addPropertyChangeListener("children", new PropertyChangeListener(){
       public void propertyChange(PropertyChangeEvent evt) {
         Workspace.this.firePropertyChange("selectedColumns", null, getSelectedColumns());
@@ -44,12 +55,6 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     });
   }
   
-  public void clear(){
-    this.setOrders(new Orders());
-    this.setSelectedColumns(new Columns());
-    this.setConditions(new Conditions());
-    
-  }
   public void setSelectedModel(UIModel m){
     this.model = m;
 
@@ -135,7 +140,6 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
       return;
     }
     selectedColumns.add(col);
-    this.firePropertyChange("selectedColumns", null, this.getSelectedColumns());
     
   }
 
@@ -144,7 +148,6 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     UICondition condition = new UICondition();
     condition.setColumn(col);
     conditions.add(condition);
-    this.firePropertyChange("conditions", null, getConditions());
     
   }
 
@@ -153,7 +156,6 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     UIOrder order = new UIOrder();
     order.setColumn(col);
     orders.add(order);
-    this.firePropertyChange("orders", null, getOrders());
     
   }
   
