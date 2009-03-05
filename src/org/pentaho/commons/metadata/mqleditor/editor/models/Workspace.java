@@ -49,7 +49,6 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
       conditions.add(UICondition.wrap(condition));
     }
     
-    setMqlStr(thinWorkspace.getMqlStr());
     setSelectedDomain(new UIDomain(thinWorkspace.getDomain()));
     setSelectedModel(UIModel.wrap(thinWorkspace.getModel()));
   }
@@ -83,7 +82,7 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     UIModel prevVal = this.model;
     this.model = m;
 
-    this.firePropertyChange("model", prevVal, this.model);
+    this.firePropertyChange("selectedModel", prevVal, this.model);
     this.firePropertyChange("categories", null, getCategories());
   }
   
