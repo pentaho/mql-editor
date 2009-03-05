@@ -23,23 +23,23 @@ public class Query implements IQuery {
 
   private String query;
   
-  public List<? extends IBusinessColumn> getColumns() {
+  public List<BusinessColumn> getColumns() {
     return cols;
   }
 
-  public List<? extends ICondition> getConditions() {
+  public List<Condition> getConditions() {
     return conditions;
   }
 
-  public IDomain getDomain() {
+  public Domain getDomain() {
     return domain;
   }
 
-  public IModel getModel() {
+  public Model getModel() {
     return model;
   }
 
-  public List<? extends IOrder> getOrders() {
+  public List<Order> getOrders() {
     return orders;
   }
 

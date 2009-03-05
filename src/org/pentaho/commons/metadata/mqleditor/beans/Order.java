@@ -5,11 +5,11 @@ import org.pentaho.commons.metadata.mqleditor.IOrder;
 
 public class Order implements IOrder {
 
-  private IBusinessColumn column;
+  private BusinessColumn column;
 
   private Type orderType;
 
-  public IBusinessColumn getColumn() {
+  public BusinessColumn getColumn() {
     return column;
   }
 
@@ -21,7 +21,7 @@ public class Order implements IOrder {
     this.orderType = orderType;
   }
 
-  public void setColumn(IBusinessColumn column) {
+  public void setColumn(BusinessColumn column) {
     this.column = column;
   }
 

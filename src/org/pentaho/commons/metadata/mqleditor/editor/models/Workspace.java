@@ -7,6 +7,10 @@ import java.util.List;
 import org.pentaho.commons.metadata.mqleditor.IDomain;
 import org.pentaho.commons.metadata.mqleditor.IModel;
 import org.pentaho.commons.metadata.mqleditor.IQuery;
+import org.pentaho.commons.metadata.mqleditor.beans.BusinessColumn;
+import org.pentaho.commons.metadata.mqleditor.beans.Category;
+import org.pentaho.commons.metadata.mqleditor.beans.Condition;
+import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
@@ -28,6 +32,26 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
   
   public Workspace(){
     setupListeners();
+  }
+  
+  /*
+   * Adopt all values of bean version of Query as UI-enabled "Workspace". 
+   */
+  public void wrap(Query thinWorkspace){
+    
+    for( BusinessColumn col : thinWorkspace.getColumns()){
+      selectedColumns.add(UIBusinessColumn.wrap(col));
+    }
+    for( Order order : thinWorkspace.getOrders()){
+      orders.add(UIOrder.wrap(order));
+    }
+    for( Condition condition : thinWorkspace.getConditions()){
+      conditions.add(UICondition.wrap(condition));
+    }
+    
+    setMqlStr(thinWorkspace.getMqlStr());
+    setSelectedDomain(new UIDomain(thinWorkspace.getDomain()));
+    setSelectedModel(UIModel.wrap(thinWorkspace.getModel()));
   }
   
   public void clear(){
@@ -56,9 +80,10 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
   }
   
   public void setSelectedModel(UIModel m){
+    UIModel prevVal = this.model;
     this.model = m;
 
-    this.firePropertyChange("model", null, this.selectedCategory);
+    this.firePropertyChange("model", prevVal, this.model);
     this.firePropertyChange("categories", null, getCategories());
   }
   
@@ -195,6 +220,10 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
 
   public IModel getModel() {
     return this.model;   
+  }
+  
+  protected void setModel(UIModel model){
+    this.model = model;
   }
 
   public UIDomain getSelectedDomain() {

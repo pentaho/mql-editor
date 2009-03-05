@@ -1,6 +1,8 @@
 package org.pentaho.commons.metadata.mqleditor.editor.models;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
@@ -8,6 +10,7 @@ import org.pentaho.commons.metadata.mqleditor.CombinationType;
 import org.pentaho.commons.metadata.mqleditor.ICondition;
 import org.pentaho.commons.metadata.mqleditor.Operator;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
+import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
 public class UICondition extends XulEventSourceAdapter implements ICondition<UIBusinessColumn> {
@@ -18,6 +21,19 @@ public class UICondition extends XulEventSourceAdapter implements ICondition<UIB
     bean = new Condition();
   }
   
+  
+  //The supplied Beans are a Graph of objects. In order to maintain those relationships, we track
+  // previously created objects in order to serve the same objects when needed.
+  private static Map<Condition, UICondition> wrappedConditions = new HashMap<Condition, UICondition>();
+  
+  public static UICondition wrap(Condition condition){
+    if(wrappedConditions.containsKey(condition)){
+      return wrappedConditions.get(condition);
+    }
+    UICondition c = new UICondition(condition);
+    wrappedConditions.put(condition, c);
+    return c;
+  }
 
   public UICondition(UIBusinessColumn column, Operator operator, String value){
     this();
@@ -27,6 +43,9 @@ public class UICondition extends XulEventSourceAdapter implements ICondition<UIB
     
   }
   
+  private UICondition(Condition bean){
+    this.bean = bean;
+  }
   
   public boolean validate(){
     //add type checking by column type

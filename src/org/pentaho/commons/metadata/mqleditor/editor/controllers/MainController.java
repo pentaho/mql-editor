@@ -97,6 +97,7 @@ public class MainController extends AbstractXulEventHandler {
     });
     
 
+    bf.setBindingType(Binding.Type.BI_DIRECTIONAL);
     bf.createBinding(modelList, "selectedIndex", workspace, "selectedModel", new BindingConvertor<Integer, UIModel>() {
       @Override
       public UIModel sourceToTarget(Integer value) {
@@ -107,7 +108,8 @@ public class MainController extends AbstractXulEventHandler {
         return workspace.getSelectedDomain().getModels().indexOf(value);
       }
     });
-    
+
+    bf.setBindingType(Binding.Type.ONE_WAY);
     bf.createBinding(workspace, "categories", categoryTree, "elements");
     
     
