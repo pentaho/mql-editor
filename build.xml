@@ -5,10 +5,6 @@
 	<description>Pentaho Commons MQL Editor build file</description>
 
 	<property file="build.properties" />
-
-	<!-- Import the common_build.xml file which contains all the default tasks -->
-	<import file="common_build.xml"/>
-
 	
 	<!-- override classpath to use recurse lib -->
 	<path id="classpath">

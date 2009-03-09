@@ -35,7 +35,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.xml.client.XMLParser;
 
-public class GwtMqlEditor implements EntryPoint, IMessageBundleLoadCallback {
+public class GwtMqlEditor implements IMessageBundleLoadCallback {
 
   private MessageBundle bundle;
   private MainController mainController = new MainController();
@@ -48,11 +48,6 @@ public class GwtMqlEditor implements EntryPoint, IMessageBundleLoadCallback {
   
   public GwtMqlEditor(){
     
-  }
-  
-  public void onModuleLoad() {
-    this.setService(new MetadataServiceGwtImpl());
-    show();
   }
   
   public String getMqlQuery(){
@@ -70,6 +65,11 @@ public class GwtMqlEditor implements EntryPoint, IMessageBundleLoadCallback {
       XulDialog dialog = (XulDialog) container.getDocumentRoot().getElementById("mqlEditorDialog");
       dialog.show();
     }
+  }
+
+  public void hide(){
+    XulDialog dialog = (XulDialog) container.getDocumentRoot().getElementById("mqlEditorDialog");
+    dialog.hide();
   }
   
   public void addMqlDialogListener(MqlDialogListener listener){

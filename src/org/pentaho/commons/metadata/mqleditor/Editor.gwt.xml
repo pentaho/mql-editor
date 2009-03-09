@@ -16,7 +16,7 @@
         
     </source>
     <public path="editor/public"/>
-    <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.GwtMqlEditor"/>
+    <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.JavascriptEditor"/>
     
   <servlet path="/MqlService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.MetadataGwtServlet" />
   
