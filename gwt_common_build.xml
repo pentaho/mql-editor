@@ -39,7 +39,7 @@
   <property name="codegenlib.dir"
             value="${basedir}/codegen-lib"
             description="Location of the libraries needed for code generation" />
-
+  <property name="gwt-compile.maxmemory" value="512M" description="maxmemory argument for com.google.gwt.dev.GWTCompiler java task" />
 
   <!--=======================================================================
 	    init (override)
@@ -91,10 +91,10 @@
       Performs GWT Compile which generates JavaScript
       ====================================================================-->
   <target name="gwt-compile"
-          depends="gwt-compile.check"
+          depends="gwt-compile.check, init"
           unless="gwtBuild.notRequired"
           description="Perform GWT Compile">
-    <java classname="com.google.gwt.dev.GWTCompiler" fork="true" failonerror="true" maxmemory="512M">
+    <java classname="com.google.gwt.dev.GWTCompiler" fork="true" failonerror="true" maxmemory="${gwt-compile.maxmemory}">
       <classpath>
         <path refid="classpath" />
         <fileset dir="${codegenlib.dir}">
