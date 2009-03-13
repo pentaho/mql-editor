@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+
+      <!-- Inherit the core Web Toolkit stuff.                         -->
+      <inherits name='org.pentaho.gwt.widgets.Widgets'/>
+      <inherits name='com.google.gwt.user.User'/>
+      <!-- required for date picker control -->
+      <inherits name='org.zenika.widget.DatePickerModule'/>
+
+      <inherits name='com.google.gwt.widgetideas.WidgetIdeas'/>
+      <inherits name='com.google.gwt.widgetideas.ScrollTable'/>
+
+      <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
+
+      <source path=""/>
+
+      <!-- Inherit the default GWT style sheet.  You can change       -->
+      <!-- the theme of your GWT application by uncommenting          -->
+      <!-- any one of the following lines.                            -->
+      <!-- inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
+      <!-- <inherits name="com.google.gwt.user.theme.chrome.Chrome"/> -->
+      <!-- <inherits name="com.google.gwt.user.theme.dark.Dark"/>     -->
+
+      <!-- Other module inherits                                      -->
+
+      <!-- Specify the application specific style sheet.              -->
+    <entry-point class="org.pentaho.gwt.widgets.samples.SampleApp"/>
+</module>
