@@ -9,7 +9,6 @@ import org.pentaho.commons.metadata.mqleditor.IDomain;
 import org.pentaho.commons.metadata.mqleditor.IModel;
 import org.pentaho.commons.metadata.mqleditor.IOrder;
 import org.pentaho.commons.metadata.mqleditor.IQuery;
-import org.pentaho.ui.xul.XulServiceCallback;
 
 import com.google.gwt.user.client.rpc.RemoteService;
      
@@ -19,6 +18,7 @@ public interface MetadataGwtService extends RemoteService{
   IDomain getDomainByName(String name);
   String saveQuery(IModel model, List<IBusinessColumn> cols, List<ICondition> conditions, List<IOrder> orders);
   String serializeModel(IQuery query);
+  IQuery deserializeModel(String serializedQuery);
   String[][] getPreviewData(String query, int page, int limit);
 
 }

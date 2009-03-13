@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.IDomain;
 import org.pentaho.commons.metadata.mqleditor.beans.Domain;
+import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.ConditionsController;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.MainController;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.OrderController;
@@ -13,7 +14,6 @@ import org.pentaho.commons.metadata.mqleditor.editor.controllers.SelectedColumnC
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
 import org.pentaho.commons.metadata.mqleditor.editor.service.MetadataService;
-import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MetadataServiceGwtImpl;
 import org.pentaho.gwt.widgets.client.utils.IMessageBundleLoadCallback;
 import org.pentaho.gwt.widgets.client.utils.MessageBundle;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -24,7 +24,6 @@ import org.pentaho.ui.xul.gwt.GwtXulRunner;
 import org.pentaho.ui.xul.gwt.binding.GwtBindingFactory;
 import org.pentaho.ui.xul.gwt.util.EventHandlerWrapper;
 
-import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -48,6 +47,10 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
   
   public GwtMqlEditor(){
     
+  }
+  
+  public void setSavedQuery(Query savedQuery) {
+    mainController.setSavedQuery(savedQuery);  
   }
   
   public String getMqlQuery(){

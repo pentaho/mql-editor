@@ -52,6 +52,16 @@ public class UIModel extends AbstractModelNode<UICategory> implements IModel<UIC
    return bean.getName();   
   }
   
+  /**
+   * Returns a simplified bean that only has a model id and model name.
+   */
+  public Model getBean() {
+    Model simpleModel = new Model();
+    simpleModel.setId(bean.getId());
+    simpleModel.setName(bean.getName());
+    return simpleModel;
+  }
+  
 }
 
   

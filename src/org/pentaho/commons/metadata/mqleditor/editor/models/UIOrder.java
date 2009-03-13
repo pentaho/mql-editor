@@ -92,5 +92,9 @@ public class UIOrder extends XulEventSourceAdapter implements IOrder {
     return v;
   }
   
+  public Order getBean() {
+    return bean;
+  }
+  
   
 }

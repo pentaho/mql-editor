@@ -244,6 +244,10 @@ public class MetadataServiceSyncImpl {
     return ModelSerializer.serialize(query);
   }
   
+  public IQuery deserializeModel(String serializedQuery) {
+    return ModelSerializer.deSerialize(serializedQuery);
+  }
+  
   private class MQLWhereConditionModel {
     
     private String operator;       // AND

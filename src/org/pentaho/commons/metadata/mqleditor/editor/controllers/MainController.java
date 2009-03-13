@@ -3,6 +3,7 @@ package org.pentaho.commons.metadata.mqleditor.editor.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.MqlDialogListener;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIBusinessColumn;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
@@ -30,10 +31,14 @@ public class MainController extends AbstractXulEventHandler {
 
   private Workspace workspace;
   private XulTree fieldTable;
-  private XulTree constraintTree;
+  private XulTree conditionsTable;
+  private XulTree ordersTable;
   private XulDialog dialog;
   private MetadataService service;
   private List<MqlDialogListener> listeners = new ArrayList<MqlDialogListener>();
+  
+  private Query savedQuery;
+  
   BindingFactory bf;
 
   public MainController() {
@@ -41,9 +46,17 @@ public class MainController extends AbstractXulEventHandler {
     
   }
 
+  public void setSavedQuery(Query savedQuery) {
+    this.savedQuery = savedQuery;  
+  }
+  
   public void init() {
 
     createBindings();
+    
+    if (savedQuery != null) {
+      workspace.wrap(savedQuery);
+    }
   }
   
   public void showDialog(){
@@ -60,7 +73,8 @@ public class MainController extends AbstractXulEventHandler {
     modelList = (XulMenuList) document.getElementById("modelList");
     domainList = (XulMenuList) document.getElementById("domainList");
     categoryTree = (XulTree) document.getElementById("categoryTree");
-    constraintTree = (XulTree) document.getElementById("constraintTree");
+    conditionsTable = (XulTree) document.getElementById("conditionsTree");
+    ordersTable = (XulTree) document.getElementById("orderTable");
     
     fieldTable = (XulTree) document.getElementById("selectedColumnTree");
     
@@ -82,7 +96,7 @@ public class MainController extends AbstractXulEventHandler {
     });
     
     bf.setBindingType(Binding.Type.ONE_WAY);
-    bf.createBinding(this.workspace, "selectedDomain", modelList, "elements", new BindingConvertor<UIDomain, List<UIModel>>() {
+    Binding domainToList = bf.createBinding(this.workspace, "selectedDomain", modelList, "elements", new BindingConvertor<UIDomain, List<UIModel>>() {
 
       @Override
       public List<UIModel> sourceToTarget(UIDomain value) {
@@ -96,17 +110,21 @@ public class MainController extends AbstractXulEventHandler {
       
     });
     
+    // Update Model list selectedIndex when selectedModel changes in Workspace
 
     bf.setBindingType(Binding.Type.BI_DIRECTIONAL);
-    bf.createBinding(modelList, "selectedIndex", workspace, "selectedModel", new BindingConvertor<Integer, UIModel>() {
+    Binding modelToList = bf.createBinding(workspace, "selectedModel", modelList, "selectedIndex", new BindingConvertor<UIModel, Integer>() {
+
       @Override
-      public UIModel sourceToTarget(Integer value) {
-        return (UIModel) workspace.getDomain().getModels().get(value);
-      }
-      @Override
-      public Integer targetToSource(UIModel value) {
+      public Integer sourceToTarget(UIModel value) {
         return workspace.getSelectedDomain().getModels().indexOf(value);
       }
+
+      @Override
+      public UIModel targetToSource(Integer value) {
+        return workspace.getSelectedDomain().getModels().get(value);
+      }
+
     });
 
     bf.setBindingType(Binding.Type.ONE_WAY);
@@ -133,11 +151,18 @@ public class MainController extends AbstractXulEventHandler {
     
 
     bf.createBinding(workspace, "selectedColumns", fieldTable, "elements");
-    
+    bf.createBinding(workspace, "conditions", conditionsTable, "elements");
+    bf.createBinding(workspace, "orders", ordersTable, "elements");
+
     try {
+      
       //fires the population of the model listbox. This cascades down to the views and columns!
       domainBinding.fireSourceChanged();
+      
     } catch (Exception e) {System.out.println(e.getMessage()); e.printStackTrace();}
+
+    
+    
   }
   
   public void moveSelectionToFields(){

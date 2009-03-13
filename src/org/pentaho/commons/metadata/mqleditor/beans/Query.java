@@ -1,27 +1,30 @@
 package org.pentaho.commons.metadata.mqleditor.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.IBusinessColumn;
-import org.pentaho.commons.metadata.mqleditor.ICondition;
-import org.pentaho.commons.metadata.mqleditor.IDomain;
-import org.pentaho.commons.metadata.mqleditor.IModel;
-import org.pentaho.commons.metadata.mqleditor.IOrder;
 import org.pentaho.commons.metadata.mqleditor.IQuery;
 
 public class Query implements IQuery {
 
-  private List<BusinessColumn> cols;
+  private List<BusinessColumn> cols = new ArrayList<BusinessColumn>();
 
-  private List<Condition> conditions;
+  private List<Condition> conditions = new ArrayList<Condition>();
 
-  private List<Order> orders;
+  private List<Order> orders = new ArrayList<Order>();
 
   private Domain domain;
 
   private Model model;
 
   private String query;
+  
+  public Query() {
+    super();
+    cols = new ArrayList<BusinessColumn>();
+    conditions = new ArrayList<Condition>();
+    orders = new ArrayList<Order>();
+  }
   
   public List<BusinessColumn> getColumns() {
     return cols;

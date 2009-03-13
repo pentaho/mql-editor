@@ -53,6 +53,10 @@ public class MetadataServiceImpl implements MetadataService{
   public void getPreviewData(String query, int page, int limit, XulServiceCallback<String[][]> callback) {
     callback.error("Operation not supported", new NotImplementedException("Implement in a subclass of this service"));
   }
+
+  public void deserializeModel(String serializedQuery, XulServiceCallback<IQuery> callback) {
+    callback.success(SERVICE.deserializeModel(serializedQuery));  
+  }
   
   
   

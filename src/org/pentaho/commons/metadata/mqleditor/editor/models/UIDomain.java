@@ -37,9 +37,16 @@ public class UIDomain extends AbstractModelNode<UIModel> implements IDomain<UIMo
    return bean.getName();
   }
 
-  public Domain getBean(){
-    return bean;
+  /**
+   * Returns a simplified bean that only has a domain id and domain name.
+   */
+  public Domain getBean() {
+    Domain simpleDomain = new Domain();
+    simpleDomain.setId(bean.getId());
+    simpleDomain.setName(bean.getName());
+    return simpleDomain;
   }
+
   
 }
 

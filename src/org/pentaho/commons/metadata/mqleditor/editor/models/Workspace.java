@@ -8,8 +8,9 @@ import org.pentaho.commons.metadata.mqleditor.IDomain;
 import org.pentaho.commons.metadata.mqleditor.IModel;
 import org.pentaho.commons.metadata.mqleditor.IQuery;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessColumn;
-import org.pentaho.commons.metadata.mqleditor.beans.Category;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
+import org.pentaho.commons.metadata.mqleditor.beans.Domain;
+import org.pentaho.commons.metadata.mqleditor.beans.Model;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
@@ -34,23 +35,48 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     setupListeners();
   }
   
+ 
   /*
    * Adopt all values of bean version of Query as UI-enabled "Workspace". 
    */
   public void wrap(Query thinWorkspace){
+
+    // TODO mlowery need to validate incoming (deserialized) model by making sure that objects still exist on the server
+
+    Domain domain = thinWorkspace.getDomain();
+    if (domain != null) {
+      for (UIDomain uiDomain : domains) {
+        if (uiDomain.getName().equals(domain.getName())) {
+          setSelectedDomain(uiDomain);
+        }
+      }
+    }
     
-    for( BusinessColumn col : thinWorkspace.getColumns()){
-      selectedColumns.add(UIBusinessColumn.wrap(col));
+    Model model = thinWorkspace.getModel();
+    if (model != null) {
+      for (UIModel uiModel : getSelectedDomain().getModels()) {
+        if (uiModel.getId().equals(model.getId())) {
+          setSelectedModel(uiModel);
+        }
+      }
     }
-    for( Order order : thinWorkspace.getOrders()){
-      orders.add(UIOrder.wrap(order));
-    }
-    for( Condition condition : thinWorkspace.getConditions()){
-      conditions.add(UICondition.wrap(condition));
-    }
+
     
-    setSelectedDomain(new UIDomain(thinWorkspace.getDomain()));
-    setSelectedModel(UIModel.wrap(thinWorkspace.getModel()));
+    if (thinWorkspace.getColumns() != null) {
+      for( BusinessColumn col : thinWorkspace.getColumns()){
+        selectedColumns.add(UIBusinessColumn.wrap(col));
+      }
+    }
+    if (thinWorkspace.getOrders() != null) {
+      for( Order order : thinWorkspace.getOrders()){
+        orders.add(UIOrder.wrap(order));
+      }
+    }
+    if (thinWorkspace.getConditions() != null) {
+      for( Condition condition : thinWorkspace.getConditions()){
+        conditions.add(UICondition.wrap(condition));
+      }
+    }
   }
   
   public void clear(){
@@ -243,7 +269,10 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     Query query = new Query();
     query.setCols(this.selectedColumns.getBeanCollection());
     query.setConditions(this.conditions.getBeanCollection());
+    query.setOrders(orders.getBeanCollection());
     query.setMqlStr(this.getMqlStr());
+    query.setDomain(this.selectedDomain.getBean());
+    query.setModel(this.model.getBean());
     return query;
   }
 
