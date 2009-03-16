@@ -80,5 +80,14 @@ public class SampleApp implements EntryPoint {
     RootPanel.get().add(new Label(""));
     RootPanel.get().add(new Label("Combo2: "));
     RootPanel.get().add(list2);
+
+    
+    CustomListBox list3 = new CustomListBox();
+
+    list3.addItem("Alberta");
+    list3.addItem("San Francisco");    
+    RootPanel.get().add(new Label(""));
+    RootPanel.get().add(new Label("Combo3: "));
+    RootPanel.get().add(list3);
   }
 }

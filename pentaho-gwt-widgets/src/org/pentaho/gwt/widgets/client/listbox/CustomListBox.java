@@ -328,9 +328,8 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
     // This cannot be set here as the popup is not visible :(
 
     if(maxDropVisible > 0){
-      this.popupHeight = (this.maxDropVisible * averageHeight) + "px";
+      this.popupHeight = (Math.min(this.maxDropVisible, this.items.size()) * averageHeight) + "px";
     }
-    System.out.println("Average Height: " + averageHeight + ", MaxVisible: " + maxDropVisible + " height to: " + (this.maxDropVisible * averageHeight));
   }
 
   /**
@@ -340,10 +339,9 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
     if(popupShowing == false){
 
       popupScrollPanel.setWidth(this.getElement().getOffsetWidth() - 8 +"px");
-      //popupVbox.setWidth("100%");
-      //popup.setHeight(this.getElement().getOffsetHeight() - 8 +"px");
-      popup.setPopupPosition(this.getElement().getOffsetLeft(), this.getElement().getOffsetTop() + this.getElement().getOffsetHeight()+2);
 
+      popup.setPopupPosition(this.getElement().getAbsoluteLeft(), this.getElement().getAbsoluteTop() + this.getElement().getOffsetHeight()+2);
+      
       popup.show();
 
       // Set the size of the popup calculated in updateDropDown().
