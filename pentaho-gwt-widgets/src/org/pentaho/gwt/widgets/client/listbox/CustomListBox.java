@@ -88,7 +88,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
     //default to drop-down
     fPanel.add(dropGrid);
     fPanel.setHeight("100%");
-    this.add(fPanel);
+    super.add(fPanel);
 
     popup.addPopupListener(this);
     popupScrollPanel.add(popupVbox);
@@ -102,6 +102,31 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
 
     setStyleName("custom-list");
 
+  }
+  
+  /**
+   * Only {@link: DefaultListItem} and Strings (as labels) may be passed into this Widget
+   */
+  @Override
+  public void add(Widget child) {
+    throw new UnsupportedOperationException(
+        "This panel does not support no-arg add()");
+  }
+  
+  /**
+   * Convenience method to support the more conventional method of child attachment
+   * @param listItem
+   */
+  public void add(ListItem listItem){
+    this.addItem(listItem);
+  }
+  
+  /**
+   * Convenience method to support the more conventional method of child attachment
+   * @param label
+   */
+  public void add(String label){
+    this.addItem(label);
   }
 
   /**
@@ -579,7 +604,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
       Image img = new Image("arrow.png");
 
       this.setStylePrimaryName("combo-arrow");
-      this.add(img);
+      super.add(img);
       ElementUtils.preventTextSelection(this.getElement());
     }
   }

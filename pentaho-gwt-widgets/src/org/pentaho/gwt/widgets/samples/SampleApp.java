@@ -28,14 +28,14 @@ public class SampleApp implements EntryPoint {
     list.addItem("Alberta");
     list.addItem("Atlanta");
     list.addItem("San Francisco");
-    list.addItem("Alberta");
-    list.addItem("Atlanta");
-    list.addItem("San Francisco");
-    list.addItem("Alberta");
-    list.addItem("Atlanta");
-    list.addItem("San Francisco");
+    list.add("Alberta");
+    list.add("Atlanta");
+    list.add("San Francisco");
+    list.add("Alberta");
+    list.add("Atlanta");
+    list.add("San Francisco");
     list.addItem(new DefaultListItem("Testing", new Image("16x16sample.png")));
-    list.addItem(new DefaultListItem("Testing 2", new CheckBox()));
+    list.add(new DefaultListItem("Testing 2", new CheckBox()));
 
 //    list.setVisibleRowCount(6);
 
@@ -67,13 +67,13 @@ public class SampleApp implements EntryPoint {
     list2.addItem("Alberta");
     list2.addItem("Atlanta");
     list2.addItem("San Francisco");
-    list2.addItem("Alberta");
-    list2.addItem("Atlanta");
-    list2.addItem("San Francisco");
-    list2.addItem("Alberta");
-    list2.addItem("Atlanta");
-    list2.addItem("San Francisco");
-    list2.addItem(new DefaultListItem("Testing", new Image("16x16sample.png")));
+    list2.add("Alberta");
+    list2.add("Atlanta");
+    list2.add("San Francisco");
+    list2.add("Alberta");
+    list2.add("Atlanta");
+    list2.add("San Francisco");
+    list2.add(new DefaultListItem("Testing", new Image("16x16sample.png")));
     list2.addItem(new DefaultListItem("Testing 2", new CheckBox()));
 
 
