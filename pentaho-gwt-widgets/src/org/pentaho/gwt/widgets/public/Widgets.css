@@ -5,6 +5,12 @@ which java class/code the style is associated with */
 /* start snb */
 /* default style for java class Schedule Editor caption panels */
 /* begin recurrence dialog ------------------------------------------------------*/
+
+html, body{
+  margin: 0px;
+  padding: 0px;
+}
+
 .schedule-editor-caption-panel {
   margin-top: 6px;
   padding: 5px;
@@ -621,6 +627,42 @@ body{
 
 .dialog-resize-se {
   cursor: se-resize;
+}
+
+.custom-list-item {
+  white-space: nowrap;
+}
+
+.combo-arrow{
+  padding: 5px;
+  background: url("arrow_slice.png");
+  background-repeat: repeat-x;
+  border: 1px outset gray;
+  cursor: pointer;
+}
+
+.custom-list{
+ padding: 0px;
+  margin: 0px;
+  border: 1px solid gray;
+}
+
+.drop-popup{
+  background: white;
+  border: 1px solid gray;
+  padding: 2px 2px 2px 5px;
+}
+
+.default-list-item{
+  background-color: white;
+}
+
+.default-list-item-hover{
+  background-color: #DDD;
+}
+
+.default-list-item-selected{
+  background-color: #BEBEBE;
 }
 
 /* end resizable dialogbox styles ------------------------------------------------ */

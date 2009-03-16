@@ -20,9 +20,8 @@ package org.pentaho.gwt.widgets.client.utils;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
-import com.google.gwt.user.client.ui.HorizontalSplitPanel;
-import com.google.gwt.user.client.ui.VerticalSplitPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.DOM;
 
 public class ElementUtils {
 
@@ -30,7 +29,15 @@ public class ElementUtils {
   public static final int RIGHT = 1;
   public static final int TOP = 0;
   public static final int BOTTOM = 1;
-  
+  private static AbsolutePanel sandbox = new AbsolutePanel(); //Used to find the size of elements
+
+  static{
+    sandbox.getElement().getStyle().setProperty("overflow","hidden");
+    sandbox.getElement().getStyle().setProperty("width","0px");
+    sandbox.getElement().getStyle().setProperty("height","0px");
+    RootPanel.get().add(sandbox);
+  }
+
   public static native void blur(Element e)/*-{
    e.blur();
   }-*/;
@@ -188,7 +195,32 @@ public class ElementUtils {
     return r1.intersects(r2);
     
   }
-  
+
+  public static Rectangle getSize(com.google.gwt.user.client.Element ele){
+    com.google.gwt.user.client.Element e = DOM.clone(ele, true);
+    sandbox.getElement().appendChild(e);
+    Rectangle r = new Rectangle();
+    r.width = e.getOffsetWidth();
+    r.height = e.getOffsetHeight();
+
+    sandbox.getElement().removeChild(e);
+    
+    return r;
+  }
+
+  public boolean isVisible(com.google.gwt.user.client.Element ele){
+    if(ele.getStyle().getProperty("display").equals("none")){
+      return false;
+    }
+    if(ele.getStyle().getProperty("visibility").equals("hidden")){
+      return false;
+    }
+
+    // TODO: add scrollpanel checking here
+    return true;
+    
+  }
+
 }
 
 

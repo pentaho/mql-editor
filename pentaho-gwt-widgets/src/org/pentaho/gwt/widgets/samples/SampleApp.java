@@ -37,7 +37,7 @@ public class SampleApp implements EntryPoint {
     list.addItem(new DefaultListItem("Testing", new Image("16x16sample.png")));
     list.addItem(new DefaultListItem("Testing 2", new CheckBox()));
 
-    list.setVisibleRowCount(6);
+//    list.setVisibleRowCount(6);
 
     list.addChangeListener(new ChangeListener(){
       public void onChange(Widget widget) {
@@ -46,8 +46,8 @@ public class SampleApp implements EntryPoint {
     });
 
 
-    list.setWidth("150px");
-    //list.setHeight("150px");
+    list.setWidth("100%");
+    list.setHeight("100%");
 
     RootPanel.get().add(new Label("Combo: "));
     RootPanel.get().add(list);
