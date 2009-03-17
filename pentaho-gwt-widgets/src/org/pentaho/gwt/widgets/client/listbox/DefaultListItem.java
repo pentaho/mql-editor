@@ -12,7 +12,7 @@ import org.pentaho.gwt.widgets.client.utils.ElementUtils;
  * Date: Mar 9, 2009
  * Time: 11:28:45 AM
  */
-public class DefaultListItem  implements ListItem {
+public class DefaultListItem  implements ListItem<Object> {
 
   private String text = "";
   private CustomListBox listBox;
@@ -32,6 +32,15 @@ public class DefaultListItem  implements ListItem {
     createWidgets();
   }
 
+
+  /**
+   * Convenience constructor for creating a listItem with an Image followed by a string..
+   * <p>
+   * NOTE: The Image needs to have been constructed with a specified size (ie new Image("src.png",0,0,100,100);)
+   *
+   * @param str
+   * @param img
+   */
   public DefaultListItem(String str, Image img){
     this();
     this.text = str;
