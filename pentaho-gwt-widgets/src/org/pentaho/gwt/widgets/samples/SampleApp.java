@@ -2,6 +2,7 @@ package org.pentaho.gwt.widgets.samples;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.*;
+
 import org.pentaho.gwt.widgets.client.listbox.CustomListBox;
 import org.pentaho.gwt.widgets.client.listbox.DefaultListItem;
 
@@ -84,10 +85,34 @@ public class SampleApp implements EntryPoint {
     
     CustomListBox list3 = new CustomListBox();
 
-    list3.add(new DefaultListItem("Testing", new Image("16x16sample.png")));
-    list3.addItem(new DefaultListItem("Testing 2", new CheckBox()));  
+    DefaultListItem dli = null;
+    dli = new DefaultListItem("Testing 1", new Image("16x16sample.png"));
+    dli.setValue("Value of Testing 1");
+    list3.add(dli);
+    
+    dli = new DefaultListItem("Testing 2", new CheckBox());
+    dli.setValue("Value of Testing 2");
+    list3.add(dli);
+
     RootPanel.get().add(new Label(""));
     RootPanel.get().add(new Label("Combo3: "));
     RootPanel.get().add(list3);
+    
+    Label showSelectedLabel = new Label("Selected item's value:");
+    
+    final TextBox showSelectedTextBox = new TextBox();
+    showSelectedTextBox.setReadOnly(true);
+    
+    list3.addChangeListener(new ChangeListener(){
+
+    public void onChange(Widget widget) {
+      String val = (String)((CustomListBox)widget).getSelectedItem().getValue();
+      if(val != null){
+        showSelectedTextBox.setText(val);
+      }
+    }});
+    
+    RootPanel.get().add(showSelectedLabel);
+    RootPanel.get().add(showSelectedTextBox);
   }
 }

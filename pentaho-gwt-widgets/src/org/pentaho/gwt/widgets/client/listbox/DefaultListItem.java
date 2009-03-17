@@ -14,13 +14,14 @@ import org.pentaho.gwt.widgets.client.utils.ElementUtils;
  */
 public class DefaultListItem  implements ListItem<Object> {
 
-  private String text = "";
+  private String text = ""; //$NON-NLS-1$
   private CustomListBox listBox;
   private Widget widget;
   private Widget dropWidget;
   private Image img;
   private Widget extraWidget;
-  private String baseStyleName = "default-list";
+  private String baseStyleName = "default-list"; //$NON-NLS-1$
+  private Object value;
 
   public DefaultListItem(){
 
@@ -86,26 +87,26 @@ public class DefaultListItem  implements ListItem<Object> {
       Image i = new Image(img.getUrl());
       panel.add(i);
       panel.setCellVerticalAlignment(i, HasVerticalAlignment.ALIGN_MIDDLE);
-      i.getElement().getStyle().setProperty("marginRight","2px");
+      i.getElement().getStyle().setProperty("marginRight","2px"); //$NON-NLS-1$ //$NON-NLS-2$
     } else if(extraWidget != null){
       Element ele = DOM.clone(extraWidget.getElement(), true);
       Widget w = new WrapperWidget(ele);
       panel.add(w);
       panel.setCellVerticalAlignment(w, HasVerticalAlignment.ALIGN_MIDDLE);
-      w.getElement().getStyle().setProperty("marginRight","2px");
+      w.getElement().getStyle().setProperty("marginRight","2px"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     Label label = new Label(text);
-    label.getElement().getStyle().setProperty("cursor","pointer");
-    label.setWidth("100%");
+    label.getElement().getStyle().setProperty("cursor","pointer"); //$NON-NLS-1$ //$NON-NLS-2$
+    label.setWidth("100%"); //$NON-NLS-1$
     panel.add(label);
-    panel.setCellWidth(label, "100%");
+    panel.setCellWidth(label, "100%"); //$NON-NLS-1$
     panel.setCellVerticalAlignment(label, HasVerticalAlignment.ALIGN_MIDDLE);
 
     ElementUtils.preventTextSelection(panel.getElement());
 
-    label.setStylePrimaryName("custom-list-item");
-    panel.setWidth("100%");
+    label.setStylePrimaryName("custom-list-item"); //$NON-NLS-1$
+    panel.setWidth("100%"); //$NON-NLS-1$
   }
 
   public Widget getWidgetForDropdown() {
@@ -118,27 +119,25 @@ public class DefaultListItem  implements ListItem<Object> {
 
 
   public Object getValue() {
-    return null;  //To change body of implemented methods use File | Settings | File Templates.
+    return this.value;
   }
 
   public void setValue(Object o) {
-    //To change body of implemented methods use File | Settings | File Templates.
+    this.value = o;
   }
 
   public void onHoverEnter() {
-    //To change body of implemented methods use File | Settings | File Templates.
   }
 
   public void onHoverExit() {
-    //To change body of implemented methods use File | Settings | File Templates.
   }
 
   public void onSelect() {
-    widget.addStyleDependentName("selected");
+    widget.addStyleDependentName("selected"); //$NON-NLS-1$
   }
 
   public void onDeselect() {
-    widget.removeStyleDependentName("selected");
+    widget.removeStyleDependentName("selected"); //$NON-NLS-1$
   }
 
   private class WrapperPanel extends HorizontalPanel {
@@ -146,7 +145,7 @@ public class DefaultListItem  implements ListItem<Object> {
     public WrapperPanel(String styleName){
       this.sinkEvents(Event.MOUSEEVENTS);
       if(styleName == null){
-        styleName = "default-list-item";
+        styleName = "default-list-item"; //$NON-NLS-1$
       }
       this.setStylePrimaryName(styleName);
     }
@@ -156,14 +155,14 @@ public class DefaultListItem  implements ListItem<Object> {
         int code = event.getTypeInt();
         switch(code){
           case Event.ONMOUSEOVER:
-            this.addStyleDependentName("hover");
+            this.addStyleDependentName("hover"); //$NON-NLS-1$
             break;
           case Event.ONMOUSEOUT:
-            this.removeStyleDependentName("hover");
+            this.removeStyleDependentName("hover"); //$NON-NLS-1$
             break;
           case Event.ONMOUSEUP:
             listBox.setSelectedItem(DefaultListItem.this);
-            this.removeStyleDependentName("hover");
+            this.removeStyleDependentName("hover"); //$NON-NLS-1$
         }
       }
     }
