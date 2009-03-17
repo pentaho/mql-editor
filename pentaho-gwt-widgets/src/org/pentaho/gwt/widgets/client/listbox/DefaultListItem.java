@@ -48,8 +48,8 @@ public class DefaultListItem  implements ListItem {
 
   public void setStylePrimaryName(String style){
     baseStyleName = style;
-    dropWidget.setStylePrimaryName(style+"-item");
-    widget.setStylePrimaryName(style+"-item");
+    dropWidget.setStylePrimaryName(style+"-item"); //$NON-NLS-1$
+    widget.setStylePrimaryName(style+"-item"); //$NON-NLS-1$
 
   }
 
@@ -59,11 +59,12 @@ public class DefaultListItem  implements ListItem {
    */
   private void createWidgets(){
 
-    HorizontalPanel hbox = new WrapperPanel(baseStyleName+"-item");
+    HorizontalPanel hbox = new WrapperPanel(baseStyleName+"-item"); //$NON-NLS-1$
     formatWidget(hbox);
     widget = hbox;
 
     hbox = new HorizontalPanel();
+    hbox.setStylePrimaryName(baseStyleName+"-item"); //$NON-NLS-1$
     formatWidget(hbox);
     dropWidget = hbox;
 
@@ -124,12 +125,10 @@ public class DefaultListItem  implements ListItem {
   }
 
   public void onSelect() {
-    dropWidget.addStyleDependentName("selected");
     widget.addStyleDependentName("selected");
   }
 
   public void onDeselect() {
-    dropWidget.removeStyleDependentName("selected");
     widget.removeStyleDependentName("selected");
   }
 

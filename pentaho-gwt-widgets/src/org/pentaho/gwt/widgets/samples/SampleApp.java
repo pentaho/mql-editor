@@ -84,8 +84,8 @@ public class SampleApp implements EntryPoint {
     
     CustomListBox list3 = new CustomListBox();
 
-    list3.addItem("Alberta");
-    list3.addItem("San Francisco");    
+    list3.add(new DefaultListItem("Testing", new Image("16x16sample.png")));
+    list3.addItem(new DefaultListItem("Testing 2", new CheckBox()));  
     RootPanel.get().add(new Label(""));
     RootPanel.get().add(new Label("Combo3: "));
     RootPanel.get().add(list3);
