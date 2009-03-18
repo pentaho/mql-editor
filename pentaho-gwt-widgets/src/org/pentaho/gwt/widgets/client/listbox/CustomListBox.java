@@ -3,6 +3,7 @@ package org.pentaho.gwt.widgets.client.listbox;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.*;
+import com.google.gwt.core.client.GWT;
 import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 import org.pentaho.gwt.widgets.client.utils.Rectangle;
 
@@ -599,7 +600,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
    */
   private class DropDownArrow extends SimplePanel{
     public DropDownArrow(){
-      Image img = new Image("arrow.png");
+      Image img = new Image(GWT.getModuleBaseURL() + "arrow.png");
 
       this.setStylePrimaryName("combo-arrow");
       super.add(img);
