@@ -645,6 +645,7 @@ body{
  padding: 0px;
   margin: 0px;
   border: 1px solid gray;
+  background-color: white;
 }
 
 .drop-popup{
