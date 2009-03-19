@@ -17,10 +17,13 @@
 package org.pentaho.gwt.widgets.client.utils;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 
+import com.google.gwt.http.client.Header;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -42,6 +45,7 @@ import com.google.gwt.user.client.Window;
  */
 public class MessageBundle {
   
+  private static final Map<String, String> bundleCache = new HashMap<String, String>();
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
   public static final String PROPERTIES_EXTENSION = ".properties"; //$NON-NLS-1$
   private HashMap<String, String> bundle = new HashMap<String, String>();
@@ -52,7 +56,42 @@ public class MessageBundle {
   private String bundleName = null;
   private IMessageBundleLoadCallback bundleLoadCallback = null;
   private String localeName = "default";
+  private String currentAttemptUrl = null;
+  
+  private class FakeResponse extends Response {
 
+    private String text;
+    
+    public FakeResponse(String text) {
+      this.text = text;
+    }
+    
+    public String getHeader(String arg0) {
+      return null;
+    }
+
+    public Header[] getHeaders() {
+      return null;
+    }
+
+    public String getHeadersAsString() {
+      return null;
+    }
+
+    public int getStatusCode() {
+      return Response.SC_OK;
+    }
+
+    public String getStatusText() {
+      return null;
+    }
+
+    public String getText() {
+      return text;
+    }
+    
+  }
+  
   /**
    * The MessageBundle class fetches localized properties files by using the GWT RequestBuilder against the supplied path. Ideally the path should be relative,
    * but absolute paths are accepted. When the ResourceBundle has fetched and loaded all available resources it will notify the caller by way of
@@ -80,12 +119,17 @@ public class MessageBundle {
     // 3. bundleName_en_US.properties
 
     // always fetch the base first
-    RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + PROPERTIES_EXTENSION); 
-    try {
-      requestBuilder.sendRequest(null, baseCallback);
-    } catch (RequestException e) {
-      Window.alert("base load " + MSGS.error() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
-      fireBundleLoadCallback();
+    currentAttemptUrl = path + bundleName + PROPERTIES_EXTENSION;
+    if (bundleCache.containsKey(currentAttemptUrl)) {
+      baseCallback.onResponseReceived(null, new FakeResponse(bundleCache.get(currentAttemptUrl)));
+    } else {
+      RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, currentAttemptUrl); 
+      try {
+        requestBuilder.sendRequest(null, baseCallback);
+      } catch (RequestException e) {
+        Window.alert("base load " + MSGS.error() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+        fireBundleLoadCallback();
+      }
     }
   }
 
@@ -98,9 +142,19 @@ public class MessageBundle {
 
       public void onResponseReceived(Request request, Response response) {
         String propertiesFileText = response.getText();
+        
         // build a simple map of key/value pairs from the properties file
-        bundle = PropertiesUtil.buildProperties(propertiesFileText, bundle);
-
+        if (response.getStatusCode() == Response.SC_OK) {
+          bundle = PropertiesUtil.buildProperties(propertiesFileText, bundle);
+          if (response instanceof FakeResponse == false) {
+            // this is a real bundle load
+            bundleCache.put(currentAttemptUrl, propertiesFileText);
+          }
+        } else {
+          // put empty bundle in cache (not found, but we want to remember it was not found)
+          bundleCache.put(currentAttemptUrl, "");
+        }
+        
         // now fetch the the lang/country variants
         if (localeName.equalsIgnoreCase("default")) { //$NON-NLS-1$
           // process only bundleName.properties
@@ -112,12 +166,17 @@ public class MessageBundle {
             String lang = st.tokenAt(0);
             // 2. fetch bundleName_lang.properties
             // 3. fetch bundleName_lang_country.properties
-            RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + lang + PROPERTIES_EXTENSION); //$NON-NLS-1$ //$NON-NLS-2$
-            try {
-              requestBuilder.sendRequest(null, langCallback);
-            } catch (RequestException e) {
-              Window.alert("lang " + MSGS.error() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
-              fireBundleLoadCallback();
+            currentAttemptUrl = path + bundleName + "_" + lang + PROPERTIES_EXTENSION;
+            if (bundleCache.containsKey(currentAttemptUrl)) {
+              langCallback.onResponseReceived(null, new FakeResponse(bundleCache.get(currentAttemptUrl)));
+            } else {
+              RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, currentAttemptUrl); //$NON-NLS-1$ //$NON-NLS-2$
+              try {
+                requestBuilder.sendRequest(null, langCallback);
+              } catch (RequestException e) {
+                Window.alert("lang " + MSGS.error() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+                fireBundleLoadCallback();
+              }
             }
           } else if (st.countTokens() == 0) {
             // already fetched
@@ -129,33 +188,39 @@ public class MessageBundle {
     };
     langCallback = new RequestCallback() {
       public void onError(Request request, Throwable exception) {
-        // if the language callback fails this means that message_fr.properties
-        // does not exist but something like message_fr_CA.properties still could,
-        // so we will go ahead and try that as well
         Window.alert("langCallback " + MSGS.error() + ":" + exception.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + localeName + PROPERTIES_EXTENSION); //$NON-NLS-1$ //$NON-NLS-2$
-        try {
-          requestBuilder.sendRequest(null, langCountryCallback);
-        } catch (RequestException e) {
-          Window.alert("langCountry " + MSGS.error() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
-          fireBundleLoadCallback();
-        }
+        fireBundleLoadCallback();
       }
 
       public void onResponseReceived(Request request, Response response) {
         String propertiesFileText = response.getText();
         // build a simple map of key/value pairs from the properties file
-        bundle = PropertiesUtil.buildProperties(propertiesFileText, bundle);
+        if (response.getStatusCode() == Response.SC_OK) {
+          bundle = PropertiesUtil.buildProperties(propertiesFileText, bundle);
+          if (response instanceof FakeResponse == false) {
+            // this is a real bundle load
+            bundleCache.put(currentAttemptUrl, propertiesFileText);
+          }
+        } else {
+          // put empty bundle in cache (not found, but we want to remember it was not found)
+          bundleCache.put(currentAttemptUrl, "");
+        }
 
+        
         StringTokenizer st = new StringTokenizer(localeName, '_');
         if (st.countTokens() == 2) {
           // 3. fetch bundleName_lang_country.properties
-          RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, path + bundleName + "_" + localeName + PROPERTIES_EXTENSION); //$NON-NLS-1$ //$NON-NLS-2$
-          try {
-            requestBuilder.sendRequest(null, langCountryCallback);
-          } catch (RequestException e) {
-            Window.alert("langCountry " + MSGS.error() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
-            fireBundleLoadCallback();
+          currentAttemptUrl = path + bundleName + "_" + localeName + PROPERTIES_EXTENSION;
+          if (bundleCache.containsKey(currentAttemptUrl)) {
+            langCountryCallback.onResponseReceived(null, new FakeResponse(bundleCache.get(currentAttemptUrl)));
+          } else {
+            RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, currentAttemptUrl); //$NON-NLS-1$ //$NON-NLS-2$
+            try {
+              requestBuilder.sendRequest(null, langCountryCallback);
+            } catch (RequestException e) {
+              Window.alert("langCountry " + MSGS.error() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+              fireBundleLoadCallback();
+            }
           }
         } else {
           // already fetched
@@ -173,7 +238,16 @@ public class MessageBundle {
       public void onResponseReceived(Request request, Response response) {
         String propertiesFileText = response.getText();
         // build a simple map of key/value pairs from the properties file
-        bundle = PropertiesUtil.buildProperties(propertiesFileText, bundle);
+        if (response.getStatusCode() == Response.SC_OK) {
+          bundle = PropertiesUtil.buildProperties(propertiesFileText, bundle);
+          if (response instanceof FakeResponse == false) {
+            // this is a real bundle load
+            bundleCache.put(currentAttemptUrl, propertiesFileText);
+          }
+        } else {
+          // put empty bundle in cache (not found, but we want to remember it was not found)
+          bundleCache.put(currentAttemptUrl, "");
+        }
         fireBundleLoadCallback();
       }
     };
@@ -219,6 +293,15 @@ public class MessageBundle {
     return decodeUTF8(resource);
   }
 
+  /**
+   * This method return the set of keys for the MessageBundle
+   * 
+   * @return The key set for the message bundle
+   */
+  public Set<String> getKeys() {
+    return bundle.keySet();
+  }
+  
   private String decodeUTF8(String str) {
     if (str == null) {
       return str;

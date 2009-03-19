@@ -39,6 +39,9 @@ public class PropertiesUtil {
     if (defaultProperties != null) {
       settings.putAll(defaultProperties);
     }
+    if (StringUtils.isEmpty(text)) {
+      return settings;
+    }
     StringTokenizer lineTokenizer = new StringTokenizer(text, '\n');
     for (int i = 0; i < lineTokenizer.countTokens(); i++) {
       String line = lineTokenizer.tokenAt(i);
