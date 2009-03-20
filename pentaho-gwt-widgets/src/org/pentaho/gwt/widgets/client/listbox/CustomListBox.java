@@ -66,7 +66,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
   private int maxHeight, maxWidth, averageHeight; //height and width of largest ListItem
   private String primaryStyleName;
   private String height, width;
-  private String popupHeight;
+  private String popupHeight, popupWidth;
 
 
   public CustomListBox(){
@@ -95,6 +95,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
     popupScrollPanel.add(popupVbox);
     popupScrollPanel.getElement().getStyle().setProperty("overflowX","hidden");
     popupVbox.setWidth("100%");
+    popupVbox.setSpacing(spacing);
     popup.add(popupScrollPanel);
 
     fPanel.addMouseListener(this);
@@ -321,6 +322,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
     // Set the size of the drop-down based on the largest list item
     if(width == null){
       dropGrid.setWidth(maxWidth + (spacing*4) + maxHeight + "px");
+      this.popupWidth = maxWidth + (spacing*4) + maxHeight + "px";
     } else {
       dropGrid.setWidth("100%");
     }
@@ -349,7 +351,11 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
       if(this.popupHeight != null){
         this.popupScrollPanel.getElement().getStyle().setProperty("height", this.popupHeight);
       }
-
+      
+      if(this.popupWidth != null){
+        this.popupScrollPanel.getElement().getStyle().setProperty("width", this.popupWidth);
+      }
+      
       scrollSelectedItemIntoView();
 
       popupShowing = true;

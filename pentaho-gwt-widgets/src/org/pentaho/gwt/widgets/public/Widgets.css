@@ -651,7 +651,6 @@ body{
 .drop-popup{
   background: white;
   border: 1px solid gray;
-  padding: 2px 2px 2px 5px;
   z-index: 1350;
 }
 
