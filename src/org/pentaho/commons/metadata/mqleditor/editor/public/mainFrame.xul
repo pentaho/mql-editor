@@ -5,9 +5,10 @@
   height="600" width="800"
   onload="mainController.init(), selectedColumns.init(), conditionsController.init(), orderController.init(), previewController.init(), mainController.showDialog()">
 
-  <hbox>
+<!-- <hbox>
     <button label="Open Editor" onclick="mainController.showDialog()" />
   </hbox>
+  -->
 
   <dialog id="previewDialog" buttonlabelcancel="${close}" buttons="cancel"
     ondialogcancel="previewController.closeDialog()" buttonalign="right" title="${window.title}"
@@ -54,7 +55,7 @@
 
               <treeitem container="true" open="true">
                 <treerow>
-                  <treecell label="foo" />
+                  <treecell label="" />
                 </treerow>
                 <treechildren></treechildren>
               </treeitem>
@@ -62,19 +63,20 @@
             </treechildren>
           </tree>
         </vbox>
+        
         <vbox>
-          <spacer height="24" />
-          <vbox flex="1">
+          <spacer height="33" />
+          <vbox height="126">
             <spacer flex="1" />
             <button image="images/e_forward.gif" onclick="mainController.moveSelectionToFields()" />
             <spacer flex="1" />
           </vbox>
-          <vbox flex="1">
+          <vbox height="126">
             <spacer flex="1" />
             <button image="images/e_forward.gif" onclick="mainController.moveSelectionToConditions()" />
             <spacer flex="1" />
           </vbox>
-          <vbox flex="1">
+          <vbox height="126">
             <spacer flex="1" />
             <button image="images/e_forward.gif" onclick="mainController.moveSelectionToOrders()" />
             <spacer flex="1" />
@@ -92,8 +94,8 @@
           <tree flex="1" editable="false" seltype="single" enableColumnDrag="false" id="selectedColumnTree"
             height="137">
             <treecols>
-              <treecol label="${table}" flex="1" pen:binding="tableName" />
-              <treecol label="${column}" flex="1" pen:binding="name" />
+              <treecol label="${column}" pen:binding="name" />
+              <treecol label="" />
             </treecols>
             <treechildren />
           </tree>
@@ -112,7 +114,6 @@
             <treecols>
               <treecol label="${combine}" flex="1" pen:binding="combinationType" pen:combobinding="combinations"
                 type="combobox" editable="true" />
-              <treecol label="${table}" flex="1" pen:binding="tableName" />
               <treecol label="${column}" flex="1" pen:binding="columnName" />
               <treecol label="${comparison}" flex="1" pen:binding="operator" type="combobox"
                 pen:combobinding="comparisons" editable="true" />
@@ -130,7 +131,6 @@
           </hbox>
           <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="orderTable" height="137">
             <treecols>
-              <treecol label="${table}" pen:binding="tableName" flex="1" />
               <treecol label="${column}" pen:binding="columnName" flex="1" />
               <treecol label="${order}" pen:binding="orderType" pen:combobinding="orderTypes" type="combobox"
                 editable="true" flex="1" />
