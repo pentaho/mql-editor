@@ -167,10 +167,19 @@ public class MessageBundle {
             // 2. fetch bundleName_lang.properties
             // 3. fetch bundleName_lang_country.properties
             currentAttemptUrl = path + bundleName + "_" + lang + PROPERTIES_EXTENSION;
+            
+            // IE caches the file and causes an issue with the request
+            
+            
             if (bundleCache.containsKey(currentAttemptUrl)) {
               langCallback.onResponseReceived(null, new FakeResponse(bundleCache.get(currentAttemptUrl)));
             } else {
               RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, currentAttemptUrl); //$NON-NLS-1$ //$NON-NLS-2$
+              
+              // Caching causing some strange behavior with IE6. 
+              // TODO: Investigate caching issue.
+              requestBuilder.setHeader("Cache-Control", "no-cache");
+              
               try {
                 requestBuilder.sendRequest(null, langCallback);
               } catch (RequestException e) {
@@ -203,6 +212,7 @@ public class MessageBundle {
           }
         } else {
           // put empty bundle in cache (not found, but we want to remember it was not found)
+          Window.alert("response received not OK: "+response.getStatusCode()+" : "+response.getStatusText()+"\n\n"+propertiesFileText);
           bundleCache.put(currentAttemptUrl, "");
         }
 
