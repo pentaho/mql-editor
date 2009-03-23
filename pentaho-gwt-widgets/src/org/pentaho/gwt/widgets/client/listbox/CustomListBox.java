@@ -278,10 +278,10 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
 
     // we only care about this if the user has specified a visible row count and no heihgt
     if(height == null){
-      this.fPanel.setHeight((this.visible * (maxHeight + spacing)) + "px");
+      this.listScrollPanel.setHeight((this.visible * (maxHeight + spacing)) + "px");
     }
     if(width == null){
-      this.fPanel.setWidth(maxWidth + 20 + "px"); //20 is scrollbar space
+      this.fPanel.setWidth(maxWidth + 40 + "px"); //20 is scrollbar space
     }
 
   }
@@ -321,8 +321,9 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
 
     // Set the size of the drop-down based on the largest list item
     if(width == null){
-      dropGrid.setWidth(maxWidth + (spacing*6) + maxHeight + "px");
-      this.popupWidth = maxWidth + (spacing*6) + maxHeight + "px";
+      //TODO: move "10" to a static member  
+      dropGrid.setWidth(maxWidth + (spacing*6) + maxHeight + 10 + "px"); //adding a little more room with the 10 
+      this.popupWidth = maxWidth + (spacing*6) + maxHeight + 10 + "px";
     } else {
       dropGrid.setWidth("100%");
     }
