@@ -321,8 +321,8 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
 
     // Set the size of the drop-down based on the largest list item
     if(width == null){
-      dropGrid.setWidth(maxWidth + (spacing*4) + maxHeight + "px");
-      this.popupWidth = maxWidth + (spacing*4) + maxHeight + "px";
+      dropGrid.setWidth(maxWidth + (spacing*6) + maxHeight + "px");
+      this.popupWidth = maxWidth + (spacing*6) + maxHeight + "px";
     } else {
       dropGrid.setWidth("100%");
     }
@@ -331,7 +331,9 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
     // This cannot be set here as the popup is not visible :(
 
     if(maxDropVisible > 0){
-      this.popupHeight = (Math.min(this.maxDropVisible, this.items.size()) * averageHeight) + "px";
+      
+      // (Lesser of maxDropVisible or items size) * (Average item height + spacing value) 
+      this.popupHeight = (Math.min(this.maxDropVisible, this.items.size()) * (averageHeight + this.spacing * this.items.size())) + "px";
     }
   }
 
