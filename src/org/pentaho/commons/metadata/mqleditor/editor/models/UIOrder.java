@@ -20,7 +20,7 @@ public class UIOrder extends XulEventSourceAdapter implements IOrder {
   // previously created objects in order to serve the same objects when needed.
   private static Map<Order, UIOrder> wrappedOrders = new HashMap<Order, UIOrder>();
   
-  private Order bean;
+
   public static UIOrder wrap(Order order){
     if(wrappedOrders.containsKey(order)){
       return wrappedOrders.get(order);
@@ -31,12 +31,11 @@ public class UIOrder extends XulEventSourceAdapter implements IOrder {
   }
   
   public UIOrder(){
-    bean = new Order();
   }
   
   private UIOrder(Order order){
-    this.bean = order;
     this.column = UIBusinessColumn.wrap(order.getColumn());
+    this.orderType = order.getOrderType();
   }
 
   public UIOrder(UIBusinessColumn column, Type type){
@@ -93,6 +92,9 @@ public class UIOrder extends XulEventSourceAdapter implements IOrder {
   }
   
   public Order getBean() {
+    Order bean = new Order();
+    bean.setColumn(column.getBean());
+    bean.setOrderType(orderType);
     return bean;
   }
   
