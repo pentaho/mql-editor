@@ -333,7 +333,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
     if(maxDropVisible > 0){
       
       // (Lesser of maxDropVisible or items size) * (Average item height + spacing value) 
-      this.popupHeight = (Math.min(this.maxDropVisible, this.items.size()) * (averageHeight + this.spacing * this.items.size())) + "px";
+      this.popupHeight = (Math.min(this.maxDropVisible, this.items.size()) * (averageHeight + this.spacing )) + "px";
     }
   }
 
