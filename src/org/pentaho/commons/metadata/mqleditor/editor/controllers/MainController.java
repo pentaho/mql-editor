@@ -203,8 +203,10 @@ public class MainController extends AbstractXulEventHandler {
   
   public void closeDialog(){
     this.dialog.hide();
-    for(MqlDialogListener listener : listeners){
-      listener.onDialogCancel();
+    
+    // listeners may remove themselves, old-style iteration
+    for(int i=0; i<listeners.size(); i++){
+      listeners.get(i).onDialogCancel();
     }
   }
   public void saveQuery(){
