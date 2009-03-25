@@ -212,7 +212,6 @@ public class MessageBundle {
           }
         } else {
           // put empty bundle in cache (not found, but we want to remember it was not found)
-          Window.alert("response received not OK: "+response.getStatusCode()+" : "+response.getStatusText()+"\n\n"+propertiesFileText);
           bundleCache.put(currentAttemptUrl, "");
         }
 
