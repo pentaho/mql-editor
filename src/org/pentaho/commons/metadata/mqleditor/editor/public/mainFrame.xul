@@ -66,17 +66,17 @@
         
         <vbox>
           <spacer height="33" />
-          <vbox height="126">
+          <vbox id="buttonVbox1" flex="1">
             <spacer flex="1" />
             <button image="images/e_forward.gif" onclick="mainController.moveSelectionToFields()" />
             <spacer flex="1" />
           </vbox>
-          <vbox height="126">
+          <vbox id="buttonVbox2" flex="1">
             <spacer flex="1" />
             <button image="images/e_forward.gif" onclick="mainController.moveSelectionToConditions()" />
             <spacer flex="1" />
           </vbox>
-          <vbox height="126">
+          <vbox id="buttonVbox3" flex="1">
             <spacer flex="1" />
             <button image="images/e_forward.gif" onclick="mainController.moveSelectionToOrders()" />
             <spacer flex="1" />
@@ -94,8 +94,8 @@
           <tree flex="1" editable="false" seltype="single" enableColumnDrag="false" id="selectedColumnTree"
             height="137">
             <treecols>
-              <treecol label="${column}" pen:binding="name" />
-              <treecol label="" />
+              <treecol flex="5" label="${column}" pen:binding="name" />
+              <treecol label="" flex="1"/>
             </treecols>
             <treechildren />
           </tree>
