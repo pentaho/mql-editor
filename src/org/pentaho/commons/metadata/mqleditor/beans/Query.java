@@ -1,13 +1,13 @@
 package org.pentaho.commons.metadata.mqleditor.beans;
 
+import org.pentaho.commons.metadata.mqleditor.MqlQuery;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.IQuery;
+public class Query implements MqlQuery {
 
-public class Query implements IQuery {
-
-  private List<BusinessColumn> cols = new ArrayList<BusinessColumn>();
+  private List<Column> cols = new ArrayList<Column>();
 
   private List<Condition> conditions = new ArrayList<Condition>();
 
@@ -21,12 +21,12 @@ public class Query implements IQuery {
   
   public Query() {
     super();
-    cols = new ArrayList<BusinessColumn>();
+    cols = new ArrayList<Column>();
     conditions = new ArrayList<Condition>();
     orders = new ArrayList<Order>();
   }
   
-  public List<BusinessColumn> getColumns() {
+  public List<Column> getColumns() {
     return cols;
   }
 
@@ -46,12 +46,12 @@ public class Query implements IQuery {
     return orders;
   }
 
-  public List<BusinessColumn> getCols() {
+  public List<Column> getCols() {
 
     return cols;
   }
 
-  public void setCols(List<BusinessColumn> cols) {
+  public void setCols(List<Column> cols) {
 
     this.cols = cols;
   }

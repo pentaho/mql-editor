@@ -1,3 +1,8 @@
+<!--
+This module serves as the Debuging environment and default implementation for integration with Javascript applications
+
+-->
+
 <module>
 
   <inherits name='com.google.gwt.user.User'/>
@@ -7,10 +12,11 @@
   
     <inherits name="org.pentaho.ui.xul.Gwt"/>
     <source path="">
-        <exclude name="**/MqlEditor*"/>
-        <exclude name="**/MetadataServiceImpl*"/>
-        <exclude name="**/MetadataGwtServlet*"/>
-        <exclude name="**/MetadataServiceSyncImpl*"/>
+        <exclude name="**/SwingMqlEditor*"/>
+        <exclude name="**/MQLEditorServiceImpl*"/>
+        <exclude name="**/MQLEditorServiceDeligate*"/>
+        <exclude name="**/MQLEditorGwtServlet*"/>
+        <exclude name="**/MQLEditorServiceSyncImpl*"/>
         <exclude name="**/ModelSerializer*"/>
         <exclude name="**/CWMStartup*"/>
         
@@ -18,6 +24,6 @@
     <public path="editor/public"/>
     <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.JavascriptEditor"/>
     
-  <servlet path="/MqlService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.MetadataGwtServlet" />
+  <servlet path="/MqlService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.MQLEditorDebugGwtServlet" />
   
  </module>

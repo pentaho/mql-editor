@@ -3,9 +3,9 @@ package org.pentaho.commons.metadata.mqleditor.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.IDomain;
+import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 
-public class Domain implements IDomain<Model> {
+public class Domain implements MqlDomain<Model> {
 
   private String id, name;
 

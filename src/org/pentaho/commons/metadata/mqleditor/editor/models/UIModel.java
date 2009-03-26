@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.pentaho.commons.metadata.mqleditor.IModel;
+import org.pentaho.commons.metadata.mqleditor.MqlModel;
 import org.pentaho.commons.metadata.mqleditor.beans.Category;
 import org.pentaho.commons.metadata.mqleditor.beans.Model;
 
-public class UIModel extends AbstractModelNode<UICategory> implements IModel<UICategory>{
+public class UIModel extends AbstractModelNode<UICategory> implements MqlModel<UICategory> {
   
   private List<UICategory> categories = new ArrayList<UICategory>();
 

@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import org.pentaho.commons.metadata.mqleditor.IBusinessColumn;
-import org.pentaho.commons.metadata.mqleditor.IOrder;
+import org.pentaho.commons.metadata.mqleditor.MqlColumn;
+import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
-public class UIOrder extends XulEventSourceAdapter implements IOrder {
+public class UIOrder extends XulEventSourceAdapter implements MqlOrder {
   
   
-  private UIBusinessColumn column;
+  private UIColumn column;
   private Type orderType = Type.DESC;
   
   //The supplied Beans are a Graph of objects. In order to maintain those relationships, we track
@@ -34,23 +34,23 @@ public class UIOrder extends XulEventSourceAdapter implements IOrder {
   }
   
   private UIOrder(Order order){
-    this.column = UIBusinessColumn.wrap(order.getColumn());
+    this.column = UIColumn.wrap(order.getColumn());
     this.orderType = order.getOrderType();
   }
 
-  public UIOrder(UIBusinessColumn column, Type type){
+  public UIOrder(UIColumn column, Type type){
     this.column = column;
     this.orderType = type;
   }
   
-  public UIBusinessColumn getColumn() {
+  public UIColumn getColumn() {
   
     return column;
   }
 
-  public void setColumn(IBusinessColumn column) {
+  public void setColumn(MqlColumn column) {
   
-    this.column = (UIBusinessColumn) column;
+    this.column = (UIColumn) column;
   }
 
   public Type getOrderType() {
@@ -87,7 +87,7 @@ public class UIOrder extends XulEventSourceAdapter implements IOrder {
 
   public Vector getOrderTypes(){
     Vector v = new Vector();
-    v.addAll(Arrays.asList(IOrder.Type.values()));
+    v.addAll(Arrays.asList(MqlOrder.Type.values()));
     return v;
   }
   

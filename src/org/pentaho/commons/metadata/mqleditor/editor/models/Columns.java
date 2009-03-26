@@ -3,22 +3,22 @@ package org.pentaho.commons.metadata.mqleditor.editor.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.beans.BusinessColumn;
+import org.pentaho.commons.metadata.mqleditor.beans.Column;
 
-public class Columns extends AbstractModelNode<UIBusinessColumn>{
+public class Columns extends AbstractModelNode<UIColumn>{
 
     
   public Columns(){
   }
   
-  public Columns(List<UIBusinessColumn> conditions){
+  public Columns(List<UIColumn> conditions){
     super(conditions);
   }
   
-  public List<BusinessColumn> getBeanCollection(){
-    List<BusinessColumn> cols = new ArrayList<BusinessColumn>();
+  public List<Column> getBeanCollection(){
+    List<Column> cols = new ArrayList<Column>();
     
-    for(UIBusinessColumn c : this.getChildren()){
+    for(UIColumn c : this.getChildren()){
       cols.add(c.getBean());
     }
     return cols;

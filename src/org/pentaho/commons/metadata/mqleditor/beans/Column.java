@@ -1,11 +1,9 @@
 package org.pentaho.commons.metadata.mqleditor.beans;
 
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
-import org.pentaho.commons.metadata.mqleditor.IBusinessColumn;
-import org.pentaho.commons.metadata.mqleditor.IBusinessTable;
-import org.pentaho.commons.metadata.mqleditor.editor.models.UIBusinessTable;
+import org.pentaho.commons.metadata.mqleditor.MqlColumn;
 
-public class BusinessColumn implements IBusinessColumn<BusinessTable>{
+public class Column implements MqlColumn<BusinessTable> {
 
   private String id, name;
   private BusinessTable table;

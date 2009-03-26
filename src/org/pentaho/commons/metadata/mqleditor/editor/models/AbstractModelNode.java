@@ -9,6 +9,11 @@ import java.util.ListIterator;
 
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
+/**
+ * Base class for UI model objects that provides {@see java.util.List} implementations and XulEventSource support
+ *
+ * @param <T> type of children
+ */
 public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<T>, Iterable<T> {
 
   protected List<T> children = new ArrayList<T>();
@@ -68,7 +73,7 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<
     fireCollectionChanged();
   }
 
-  public void moveChildUp(UIBusinessColumn column) {
+  public void moveChildUp(UIColumn column) {
     if (!this.children.contains(column)) {
       throw new IllegalArgumentException("child does not exist in collection");
     }
@@ -91,7 +96,7 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<
     fireCollectionChanged();
   }
 
-  public void moveChildDown(UIBusinessColumn column) {
+  public void moveChildDown(UIColumn column) {
     if (!this.children.contains(column)) {
       throw new IllegalArgumentException("child does not exist in collection");
     }

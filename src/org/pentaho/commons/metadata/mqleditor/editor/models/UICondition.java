@@ -7,13 +7,12 @@ import java.util.Vector;
 
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.CombinationType;
-import org.pentaho.commons.metadata.mqleditor.ICondition;
+import org.pentaho.commons.metadata.mqleditor.MqlCondition;
 import org.pentaho.commons.metadata.mqleditor.Operator;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
-import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
-public class UICondition extends XulEventSourceAdapter implements ICondition<UIBusinessColumn> {
+public class UICondition extends XulEventSourceAdapter implements MqlCondition<UIColumn> {
   
   private Condition bean;
   
@@ -35,7 +34,7 @@ public class UICondition extends XulEventSourceAdapter implements ICondition<UIB
     return c;
   }
 
-  public UICondition(UIBusinessColumn column, Operator operator, String value){
+  public UICondition(UIColumn column, Operator operator, String value){
     this();
     bean.setColumn(column.getBean());
     bean.setOperator(operator);
@@ -53,13 +52,13 @@ public class UICondition extends XulEventSourceAdapter implements ICondition<UIB
   }
 
 
-  public UIBusinessColumn getColumn() {
-    return UIBusinessColumn.wrap(bean.getColumn());
+  public UIColumn getColumn() {
+    return UIColumn.wrap(bean.getColumn());
   }
 
   
 
-  public void setColumn(UIBusinessColumn column) {
+  public void setColumn(UIColumn column) {
     bean.setColumn(column.getBean());
   }
 

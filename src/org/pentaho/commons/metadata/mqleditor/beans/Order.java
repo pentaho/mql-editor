@@ -1,15 +1,14 @@
 package org.pentaho.commons.metadata.mqleditor.beans;
 
-import org.pentaho.commons.metadata.mqleditor.IBusinessColumn;
-import org.pentaho.commons.metadata.mqleditor.IOrder;
+import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 
-public class Order implements IOrder {
+public class Order implements MqlOrder {
 
-  private BusinessColumn column;
+  private Column column;
 
   private Type orderType;
 
-  public BusinessColumn getColumn() {
+  public Column getColumn() {
     return column;
   }
 
@@ -21,7 +20,7 @@ public class Order implements IOrder {
     this.orderType = orderType;
   }
 
-  public void setColumn(BusinessColumn column) {
+  public void setColumn(Column column) {
     this.column = column;
   }
 

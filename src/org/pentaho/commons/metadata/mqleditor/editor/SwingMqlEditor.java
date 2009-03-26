@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.pentaho.commons.metadata.mqleditor.IDomain;
+import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.ConditionsController;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.MainController;
@@ -14,8 +14,8 @@ import org.pentaho.commons.metadata.mqleditor.editor.controllers.PreviewControll
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.SelectedColumnController;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
-import org.pentaho.commons.metadata.mqleditor.editor.service.MetadataService;
-import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MetadataServiceImpl;
+import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
+import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDebugImpl;
 import org.pentaho.ui.xul.XulDomContainer;
 import org.pentaho.ui.xul.XulException;
 import org.pentaho.ui.xul.XulRunner;
@@ -25,11 +25,14 @@ import org.pentaho.ui.xul.binding.DefaultBindingFactory;
 import org.pentaho.ui.xul.swing.SwingXulLoader;
 import org.pentaho.ui.xul.swing.SwingXulRunner;
 
-public class MqlEditor {
+/**
+ * Default Swing implementation. This class requires a concreate Service implemetation
+ */
+public class SwingMqlEditor {
 
-  private static Log log = LogFactory.getLog(MqlEditor.class);
+  private static Log log = LogFactory.getLog(SwingMqlEditor.class);
   
-  public MqlEditor(){
+  public SwingMqlEditor(MQLEditorService service){
     try{
       XulDomContainer container = new SwingXulLoader().loadXul("org/pentaho/commons/metadata/mqleditor/editor/public/mainFrame.xul");
     
@@ -60,20 +63,20 @@ public class MqlEditor {
       previewController.setBindingFactory(bf);
       container.addEventHandler(previewController);
       
-      MetadataService service = new MetadataServiceImpl();
+
       mainController.setService(service);
       previewController.setService(service);
       
-      service.getMetadataDomains(new XulServiceCallback<List<IDomain>>(){
+      service.getMetadataDomains(new XulServiceCallback<List<MqlDomain>>(){
 
         public void error(String message, Throwable error) {
           
         }
 
-        public void success(List<IDomain> retVal) {
+        public void success(List<MqlDomain> retVal) {
           
           List<UIDomain> uiDomains = new ArrayList<UIDomain>();
-          for(IDomain d : retVal){
+          for(MqlDomain d : retVal){
             uiDomains.add(new UIDomain((Domain) d));
           }
           
@@ -102,9 +105,9 @@ public class MqlEditor {
       log.error("error loading Xul application", e);
     }
   }
-  
+
   public static void main(String[] args){
-    new MqlEditor();
+    new SwingMqlEditor(new MQLEditorServiceDebugImpl());
   }
   
 }

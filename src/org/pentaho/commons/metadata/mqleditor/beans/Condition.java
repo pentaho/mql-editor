@@ -2,17 +2,17 @@ package org.pentaho.commons.metadata.mqleditor.beans;
 
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.CombinationType;
-import org.pentaho.commons.metadata.mqleditor.ICondition;
+import org.pentaho.commons.metadata.mqleditor.MqlCondition;
 import org.pentaho.commons.metadata.mqleditor.Operator;
 
-public class Condition implements ICondition<BusinessColumn> {
+public class Condition implements MqlCondition<Column> {
 
-  private BusinessColumn column;
+  private Column column;
   private Operator operator = Operator.EQUAL;
   private String value;
   private CombinationType comboType = CombinationType.AND;
   
-  public BusinessColumn getColumn() {
+  public Column getColumn() {
     return this.column;    
   }
 
@@ -28,7 +28,7 @@ public class Condition implements ICondition<BusinessColumn> {
     return this.value;
   }
 
-  public void setColumn(BusinessColumn column) {
+  public void setColumn(Column column) {
     this.column = column;  
 
     if(column.getType() == ColumnType.TEXT){

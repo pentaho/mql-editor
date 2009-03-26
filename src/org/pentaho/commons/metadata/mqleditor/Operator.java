@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-//TODO: I18n
+/**
+ * Operator is used in the definition of a @see MqlCondition 
+ */
 public enum Operator implements Serializable{
   GREATER_THAN(">", false, true), 
   LESS_THAN("<", false, true), 

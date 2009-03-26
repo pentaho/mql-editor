@@ -2,9 +2,8 @@ package org.pentaho.commons.metadata.mqleditor.editor;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JavaScriptObject;
-import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MetadataServiceGwtImpl;
-import org.pentaho.commons.metadata.mqleditor.editor.service.MetadataService;
-import org.pentaho.commons.metadata.mqleditor.IQuery;
+import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
+import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 /**
@@ -20,11 +19,11 @@ import org.pentaho.ui.xul.XulServiceCallback;
 public class JavascriptEditor implements EntryPoint{
 
   private GwtMqlEditor editor;
-  private MetadataService service;
+  private MQLEditorService service;
 
   public void onModuleLoad() {
     editor = new GwtMqlEditor();
-    service = new MetadataServiceGwtImpl();
+    service = new org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceGwtImpl();
 
     editor.setService(service);
     setupNativeHooks(this);
@@ -52,7 +51,7 @@ public class JavascriptEditor implements EntryPoint{
    */
   private void show(final JavaScriptObject callback){
     final MqlDialogListener listener = new MqlDialogListener(){
-      public void onDialogAccept(final IQuery queryModel) {
+      public void onDialogAccept(final MqlQuery queryModel) {
         service.serializeModel(queryModel, new XulServiceCallback<String>(){
           public void success(String s) {
             notifyCallbackSuccess(callback, s, queryModel.getMqlStr());

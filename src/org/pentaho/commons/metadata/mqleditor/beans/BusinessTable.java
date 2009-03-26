@@ -3,13 +3,12 @@ package org.pentaho.commons.metadata.mqleditor.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.IBusinessColumn;
-import org.pentaho.commons.metadata.mqleditor.IBusinessTable;
+import org.pentaho.commons.metadata.mqleditor.MqlBusinessTable;
 
-public class BusinessTable implements IBusinessTable<BusinessColumn> {
+public class BusinessTable implements MqlBusinessTable<Column> {
 
   private String id, name;
-  private List<BusinessColumn> columns = new ArrayList<BusinessColumn>();
+  private List<Column> columns = new ArrayList<Column>();
   
   public String getId() {
     return this.id;  
@@ -27,11 +26,11 @@ public class BusinessTable implements IBusinessTable<BusinessColumn> {
     this.name = name;  
   }
 
-  public List<BusinessColumn> getBusinessColumns() {
+  public List<Column> getBusinessColumns() {
     return columns;  
   }
 
-  public void setBusinessColumns(List<BusinessColumn> columns) {
+  public void setBusinessColumns(List<Column> columns) {
     this.columns = columns;
   }
 

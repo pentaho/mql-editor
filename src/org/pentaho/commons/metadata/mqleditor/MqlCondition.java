@@ -2,7 +2,7 @@ package org.pentaho.commons.metadata.mqleditor;
 
 import java.io.Serializable;
 
-public interface ICondition<T extends IBusinessColumn> extends Serializable{
+public interface MqlCondition<T extends MqlColumn> extends Serializable{
 
   public boolean validate();
 

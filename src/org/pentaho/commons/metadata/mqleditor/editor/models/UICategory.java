@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.pentaho.commons.metadata.mqleditor.ICategory;
-import org.pentaho.commons.metadata.mqleditor.beans.BusinessColumn;
+import org.pentaho.commons.metadata.mqleditor.MqlCategory;
+import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Category;
 
-public class UICategory extends AbstractModelNode<UIBusinessColumn> implements ICategory<UIBusinessColumn>{
+public class UICategory extends AbstractModelNode<UIColumn> implements MqlCategory<UIColumn> {
   
   private Category bean;
 
@@ -27,8 +27,8 @@ public class UICategory extends AbstractModelNode<UIBusinessColumn> implements I
   
   private UICategory(Category category){
     this.bean = category;
-    for(BusinessColumn col : category.getBusinessColumns()){
-      UIBusinessColumn c = UIBusinessColumn.wrap(col);
+    for(Column col : category.getBusinessColumns()){
+      UIColumn c = UIColumn.wrap(col);
       this.children.add(c);
     }
   }
@@ -37,7 +37,7 @@ public class UICategory extends AbstractModelNode<UIBusinessColumn> implements I
     
   }
 
-  public List<UIBusinessColumn> getBusinessColumns() {
+  public List<UIColumn> getBusinessColumns() {
     return this.getChildren(); 
   }
 

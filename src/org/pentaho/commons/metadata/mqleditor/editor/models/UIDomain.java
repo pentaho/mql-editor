@@ -2,11 +2,11 @@ package org.pentaho.commons.metadata.mqleditor.editor.models;
 
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.IDomain;
+import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.beans.Model;
 
-public class UIDomain extends AbstractModelNode<UIModel> implements IDomain<UIModel>{
+public class UIDomain extends AbstractModelNode<UIModel> implements MqlDomain<UIModel> {
   
   private Domain bean;
   

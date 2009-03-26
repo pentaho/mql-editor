@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.pentaho.commons.metadata.mqleditor.IBusinessTable;
-import org.pentaho.commons.metadata.mqleditor.beans.BusinessColumn;
+import org.pentaho.commons.metadata.mqleditor.MqlBusinessTable;
+import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessTable;
 
-public class UIBusinessTable extends AbstractModelNode<UIBusinessColumn> implements IBusinessTable<UIBusinessColumn>{
+public class UIBusinessTable extends AbstractModelNode<UIColumn> implements MqlBusinessTable<UIColumn> {
 
   private BusinessTable bean;
 
@@ -32,13 +32,13 @@ public class UIBusinessTable extends AbstractModelNode<UIBusinessColumn> impleme
   private UIBusinessTable(BusinessTable table){
     this.bean = table;
 
-    for(BusinessColumn col : table.getBusinessColumns()){
-      UIBusinessColumn c = UIBusinessColumn.wrap(col);
+    for(Column col : table.getBusinessColumns()){
+      UIColumn c = UIColumn.wrap(col);
       this.children.add(c);
     }
   }
  
-  public List<UIBusinessColumn> getBusinessColumns() {
+  public List<UIColumn> getBusinessColumns() {
     return this.getChildren();  
   }
 

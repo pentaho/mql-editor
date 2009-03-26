@@ -2,7 +2,12 @@ package org.pentaho.commons.metadata.mqleditor;
 
 import java.io.Serializable;
 
-public interface IBusinessColumn<T extends IBusinessTable> extends Serializable {
+/**
+ * Represents a Metadata Column object
+ *
+ * @param <T> implementation of a MqlBusinessTable
+ */
+public interface MqlColumn<T extends MqlBusinessTable> extends Serializable {
 
   public T getTable();
 

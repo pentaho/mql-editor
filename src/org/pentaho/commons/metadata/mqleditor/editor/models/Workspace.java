@@ -4,10 +4,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.IDomain;
-import org.pentaho.commons.metadata.mqleditor.IModel;
-import org.pentaho.commons.metadata.mqleditor.IQuery;
-import org.pentaho.commons.metadata.mqleditor.beans.BusinessColumn;
+import org.pentaho.commons.metadata.mqleditor.MqlDomain;
+import org.pentaho.commons.metadata.mqleditor.MqlModel;
+import org.pentaho.commons.metadata.mqleditor.MqlQuery;
+import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
 import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.beans.Model;
@@ -15,7 +15,12 @@ import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
-public class Workspace extends XulEventSourceAdapter implements IQuery{
+/**
+ *
+ * Main state model for the Mql Editor dialog
+ * 
+ */
+public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
   private UIModel model;
   private UIDomain selectedDomain;
@@ -24,7 +29,7 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
   private UICategory selectedCategory;
   private UIOrder selectedOrder;
   
-  private UIBusinessColumn selectedColumn;
+  private UIColumn selectedColumn;
   
   private Columns selectedColumns = new Columns();
   private Conditions conditions = new Conditions();
@@ -63,8 +68,8 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
 
     
     if (thinWorkspace.getColumns() != null) {
-      for( BusinessColumn col : thinWorkspace.getColumns()){
-        selectedColumns.add(UIBusinessColumn.wrap(col));
+      for( Column col : thinWorkspace.getColumns()){
+        selectedColumns.add(UIColumn.wrap(col));
       }
     }
     if (thinWorkspace.getOrders() != null) {
@@ -116,7 +121,7 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     return model;
   }
   
-  public UIBusinessColumn getColumnByPos(int pos){
+  public UIColumn getColumnByPos(int pos){
     if(pos < 0 || getSelectedModel() == null){
       return null;
     }
@@ -170,22 +175,22 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     
   }
   
-  public List<UIBusinessColumn> getColumns(){
+  public List<UIColumn> getColumns(){
     return (this.selectedCategory != null) ? this.selectedCategory.getChildren() : null;
   }
 
-  public UIBusinessColumn getSelectedColumn() {
+  public UIColumn getSelectedColumn() {
   
     return selectedColumn;
   }
 
-  public void setSelectedColumn(UIBusinessColumn selectedColumn) {
+  public void setSelectedColumn(UIColumn selectedColumn) {
   
     this.selectedColumn = selectedColumn;
     this.firePropertyChange("selectedColumn", null, getSelectedColumn());
   }
   
-  public void addColumn(UIBusinessColumn col){
+  public void addColumn(UIColumn col){
     if(selectedColumns.contains(col)){
       return;
     }
@@ -193,7 +198,7 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     
   }
 
-  public void addCondition(UIBusinessColumn col){
+  public void addCondition(UIColumn col){
     
     UICondition condition = new UICondition();
     condition.setColumn(col);
@@ -201,7 +206,7 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     
   }
 
-  public void addOrder(UIBusinessColumn col){
+  public void addOrder(UIColumn col){
     
     UIOrder order = new UIOrder();
     order.setColumn(col);
@@ -220,7 +225,7 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     this.firePropertyChange("selectedColumns", null, getSelectedColumns());
   }
 
-  public void setSelectedColumns(List<UIBusinessColumn> selectedColumns) {
+  public void setSelectedColumns(List<UIColumn> selectedColumns) {
     this.selectedColumns = new Columns(selectedColumns);
     this.firePropertyChange("selectedColumns", null, getSelectedColumns());
   }
@@ -243,7 +248,7 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     this.firePropertyChange("orders", null, getOrders());
   }
 
-  public IModel getModel() {
+  public MqlModel getModel() {
     return this.model;   
   }
   
@@ -260,12 +265,12 @@ public class Workspace extends XulEventSourceAdapter implements IQuery{
     this.firePropertyChange("selectedDomain", null, selectedDomain);
   }
 
-  public IDomain getDomain(){
+  public MqlDomain getDomain(){
     return this.selectedDomain;
   }
   
  
-  public Query getQueryModel(){
+  public Query getMqlQuery(){
     Query query = new Query();
     query.setCols(this.selectedColumns.getBeanCollection());
     query.setConditions(this.conditions.getBeanCollection());

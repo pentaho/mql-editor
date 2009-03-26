@@ -1,11 +1,11 @@
 package org.pentaho.commons.metadata.mqleditor.beans;
 
+import org.pentaho.commons.metadata.mqleditor.MqlModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.IModel;
-
-public class Model implements IModel<Category> {
+public class Model implements MqlModel<Category> {
 
   private List<Category> categories = new ArrayList<Category>();
 

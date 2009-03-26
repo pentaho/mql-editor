@@ -3,7 +3,7 @@ package org.pentaho.commons.metadata.mqleditor.editor.controllers;
 import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
-import org.pentaho.commons.metadata.mqleditor.editor.service.MetadataService;
+import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
 import org.pentaho.ui.xul.XulComponent;
 import org.pentaho.ui.xul.XulException;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -27,7 +27,7 @@ public class PreviewController extends AbstractXulEventHandler {
   
   private XulDialog previewDialog;
 
-  private MetadataService service;
+  private MQLEditorService service;
 
   private String query;
 
@@ -68,12 +68,12 @@ public class PreviewController extends AbstractXulEventHandler {
 
   }
 
-  public MetadataService getService() {
+  public MQLEditorService getService() {
 
     return service;
   }
 
-  public void setService(MetadataService service) {
+  public void setService(MQLEditorService service) {
 
     this.service = service;
   }

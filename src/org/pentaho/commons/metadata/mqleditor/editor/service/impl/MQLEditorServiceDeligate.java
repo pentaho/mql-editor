@@ -7,18 +7,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.pentaho.commons.metadata.mqleditor.ColumnType;
-import org.pentaho.commons.metadata.mqleditor.IBusinessColumn;
-import org.pentaho.commons.metadata.mqleditor.ICondition;
-import org.pentaho.commons.metadata.mqleditor.IDomain;
-import org.pentaho.commons.metadata.mqleditor.IModel;
-import org.pentaho.commons.metadata.mqleditor.IOrder;
-import org.pentaho.commons.metadata.mqleditor.IQuery;
-import org.pentaho.commons.metadata.mqleditor.beans.BusinessColumn;
-import org.pentaho.commons.metadata.mqleditor.beans.BusinessTable;
-import org.pentaho.commons.metadata.mqleditor.beans.Category;
-import org.pentaho.commons.metadata.mqleditor.beans.Domain;
-import org.pentaho.commons.metadata.mqleditor.beans.Model;
+import org.pentaho.commons.metadata.mqleditor.MqlColumn;
+import org.pentaho.commons.metadata.mqleditor.*;
+import org.pentaho.commons.metadata.mqleditor.beans.Column;
+import org.pentaho.commons.metadata.mqleditor.beans.*;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
 import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.factory.CwmSchemaFactoryInterface;
@@ -33,11 +25,21 @@ import org.pentaho.pms.schema.SchemaMeta;
 import org.pentaho.pms.schema.concept.types.datatype.DataTypeSettings;
 import org.pentaho.pms.util.UniqueList;
 
-public class MetadataServiceSyncImpl {
+/**
+ * 
+ * This deligate class provides the majority of functionality needed by an implementation of the MQLEditor Service.
+ * If you wish to use this file as a starting point for your implementation you'll need to provide a CWM isntance and
+ * CWMSchemaFactory
+ *
+ * This deligate is used in the debug services provided in the base application.
+ *
+ */
+
+public class MQLEditorServiceDeligate {
 
   private String locale = Locale.getDefault().toString();
 
-  private List<IDomain> domains = new ArrayList<IDomain>();
+  private List<MqlDomain> domains = new ArrayList<MqlDomain>();
 
   private CwmSchemaFactoryInterface factory;
 
@@ -46,7 +48,7 @@ public class MetadataServiceSyncImpl {
    */
   private Map<String, SchemaMeta> modelIdToSchemaMetaMap = new HashMap<String, SchemaMeta>();
 
-  public MetadataServiceSyncImpl(List<CWM> cwms, CwmSchemaFactoryInterface factory) {
+  public MQLEditorServiceDeligate(List<CWM> cwms, CwmSchemaFactoryInterface factory) {
     this.factory = factory;
 
     for (CWM cwm : cwms) {
@@ -62,7 +64,7 @@ public class MetadataServiceSyncImpl {
       domains.add(domain);
     }
   }
-  
+
 
   public String[][] getPreviewData(String query, int page, int limit) {
     throw new NotImplementedException("Implement in your class");
@@ -93,8 +95,8 @@ public class MetadataServiceSyncImpl {
     return cat;
   }
 
-  private BusinessColumn createColumn(org.pentaho.pms.schema.BusinessColumn c) {
-    BusinessColumn col = new BusinessColumn();
+  private Column createColumn(org.pentaho.pms.schema.BusinessColumn c) {
+    Column col = new Column();
     col.setName(c.getName(locale));
     col.setId(c.getId());
     col.setTable(createTable(c.getBusinessTable()));
@@ -127,12 +129,12 @@ public class MetadataServiceSyncImpl {
     return table;
   }
 
-  public List<IDomain> getMetadataDomains() {
+  public List<MqlDomain> getMetadataDomains() {
     return domains;
   }
 
-  public IDomain getDomainByName(String name) {
-    for (IDomain domain : domains) {
+  public MqlDomain getDomainByName(String name) {
+    for (MqlDomain domain : domains) {
       if (domain.getName().equals(name)) {
         return domain;
       }
@@ -141,11 +143,11 @@ public class MetadataServiceSyncImpl {
   }
 
   private org.pentaho.pms.schema.BusinessColumn[] getColumns(BusinessModel model,
-      List<? extends IBusinessColumn> thincols) {
+      List<? extends MqlColumn> thincols) {
     org.pentaho.pms.schema.BusinessColumn[] cols = new org.pentaho.pms.schema.BusinessColumn[thincols.size()];
 
     int i = 0;
-    for (IBusinessColumn thincol : thincols) {
+    for (MqlColumn thincol : thincols) {
       UniqueList list = model.getAllBusinessColumns();
       for (Object col : list.getList()) {
         if (col.toString().equals(thincol.toString())) {
@@ -156,7 +158,7 @@ public class MetadataServiceSyncImpl {
     return cols;
   }
 
-  private org.pentaho.pms.schema.BusinessColumn getColumn(BusinessModel model, IBusinessColumn thinCol) {
+  private org.pentaho.pms.schema.BusinessColumn getColumn(BusinessModel model, MqlColumn thinCol) {
     UniqueList list = model.getAllBusinessColumns();
     for (Object col : list.getList()) {
       if (((org.pentaho.pms.schema.BusinessColumn) col).getName(locale).equals(thinCol.getName())) {
@@ -166,10 +168,10 @@ public class MetadataServiceSyncImpl {
     return null;
   }
 
-  private MQLWhereConditionModel[] getConditions(BusinessModel model, List<? extends ICondition> thinConditions) {
+  private MQLWhereConditionModel[] getConditions(BusinessModel model, List<? extends MqlCondition> thinConditions) {
     MQLWhereConditionModel[] conditions = new MQLWhereConditionModel[thinConditions.size()];
     int i = 0;
-    for (ICondition thinCondition : thinConditions) {
+    for (MqlCondition thinCondition : thinConditions) {
       org.pentaho.pms.schema.BusinessColumn col = getColumn(model, thinCondition.getColumn());
       MQLWhereConditionModel where = new MQLWhereConditionModel(thinCondition.getCombinationType().toString(), col,
           thinCondition.getCondition("[" + col.toString() + "]"));
@@ -178,18 +180,18 @@ public class MetadataServiceSyncImpl {
     return conditions;
   }
 
-  private List<OrderBy> getOrders(BusinessModel model, List<? extends IOrder> thinOrders) {
+  private List<OrderBy> getOrders(BusinessModel model, List<? extends MqlOrder> thinOrders) {
     List<OrderBy> ord = new ArrayList<OrderBy>();
 
-    for (IOrder thinOrder : thinOrders) {
+    for (MqlOrder thinOrder : thinOrders) {
       Selection selection = new Selection(getColumn(model, thinOrder.getColumn()));
-      ord.add(new OrderBy(selection, (thinOrder.getOrderType() == IOrder.Type.ASC)));
+      ord.add(new OrderBy(selection, (thinOrder.getOrderType() == MqlOrder.Type.ASC)));
     }
     return ord;
   }
 
-  public String saveQuery(IModel model, List<? extends IBusinessColumn> cols, List<? extends ICondition> conditions,
-      List<? extends IOrder> orders) {
+  public String saveQuery(MqlModel model, List<? extends MqlColumn> cols, List<? extends MqlCondition> conditions,
+      List<? extends MqlOrder> orders) {
     SchemaMeta meta = modelIdToSchemaMetaMap.get(model.getId());
 
     UniqueList<BusinessModel> models = meta.getBusinessModels();
@@ -240,11 +242,11 @@ public class MetadataServiceSyncImpl {
     return null;
   }
 
-  public String serializeModel(IQuery query) {
+  public String serializeModel(MqlQuery query) {
     return ModelSerializer.serialize(query);
   }
   
-  public IQuery deserializeModel(String serializedQuery) {
+  public MqlQuery deserializeModel(String serializedQuery) {
     return ModelSerializer.deSerialize(serializedQuery);
   }
   

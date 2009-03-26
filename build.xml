@@ -37,7 +37,7 @@
   <target name="gwt-compile" description="Performs the required GWT Compilation">
     <!-- Compile the Mantle Application -->
     <ant antfile="${gwt.common.build.file}" target="gwt-compile">
-      <property name="gwt-module.path" value="org.pentaho.commons.metadata.mqleditor.Editor" />
+      <property name="gwt-module.path" value="org.pentaho.commons.metadata.mqleditor.JavascriptEditor" />
     </ant>
   </target>
 </project>

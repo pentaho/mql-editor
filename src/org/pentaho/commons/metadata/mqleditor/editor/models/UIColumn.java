@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
-import org.pentaho.commons.metadata.mqleditor.IBusinessColumn;
-import org.pentaho.commons.metadata.mqleditor.beans.BusinessColumn;
+import org.pentaho.commons.metadata.mqleditor.MqlColumn;
+import org.pentaho.commons.metadata.mqleditor.beans.Column;
 
-public class UIBusinessColumn extends AbstractModelNode<UIBusinessColumn> implements IBusinessColumn<UIBusinessTable> {
+public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn<UIBusinessTable> {
 
   private UIBusinessTable table;
 
@@ -15,26 +15,26 @@ public class UIBusinessColumn extends AbstractModelNode<UIBusinessColumn> implem
 
   private String name, id;
   
-  private BusinessColumn bean;
+  private Column bean;
   
   // The supplied Beans are a Graph of objects. In order to maintain those relationships, we track
   // previously created objects in order to serve the same objects when needed.
-  private static Map<BusinessColumn, UIBusinessColumn> wrappedCols = new HashMap<BusinessColumn, UIBusinessColumn>();
+  private static Map<Column, UIColumn> wrappedCols = new HashMap<Column, UIColumn>();
   
-  public static UIBusinessColumn wrap(BusinessColumn col){
+  public static UIColumn wrap(Column col){
     if(wrappedCols.containsKey(col)){
       return wrappedCols.get(col);
     }
-    UIBusinessColumn c = new UIBusinessColumn(col);
+    UIColumn c = new UIColumn(col);
     wrappedCols.put(col, c);
     return c;
   }
 
-  public UIBusinessColumn() {
+  public UIColumn() {
 
   }
 
-  private UIBusinessColumn(BusinessColumn col) {
+  private UIColumn(Column col) {
     this.bean = col;
     this.table = UIBusinessTable.wrap(col.getTable());
   }
@@ -77,7 +77,7 @@ public class UIBusinessColumn extends AbstractModelNode<UIBusinessColumn> implem
     return id;
   }
   
-  public BusinessColumn getBean(){
+  public Column getBean(){
     return bean;
   }
   

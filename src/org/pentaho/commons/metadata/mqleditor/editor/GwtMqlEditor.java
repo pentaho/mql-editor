@@ -3,7 +3,7 @@ package org.pentaho.commons.metadata.mqleditor.editor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.IDomain;
+import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.ConditionsController;
@@ -13,7 +13,7 @@ import org.pentaho.commons.metadata.mqleditor.editor.controllers.PreviewControll
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.SelectedColumnController;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
-import org.pentaho.commons.metadata.mqleditor.editor.service.MetadataService;
+import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
 import org.pentaho.gwt.widgets.client.utils.IMessageBundleLoadCallback;
 import org.pentaho.gwt.widgets.client.utils.MessageBundle;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -187,18 +187,18 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
     }
   }
   
-  public void setService(MetadataService service){
+  public void setService(MQLEditorService service){
     previewController.setService(service);
     mainController.setService(service);
-    service.getMetadataDomains(new XulServiceCallback<List<IDomain>>() {
+    service.getMetadataDomains(new XulServiceCallback<List<MqlDomain>>() {
 
       public void error(String message, Throwable error) {
         Window.alert("could not get list of metadata domains");
       }
 
-      public void success(List<IDomain> domains) {
+      public void success(List<MqlDomain> domains) {
         List<UIDomain> uiDomains = new ArrayList<UIDomain>();
-        for (IDomain domain : domains) {
+        for (MqlDomain domain : domains) {
           uiDomains.add(new UIDomain((Domain) domain));
         }
         workspace.setDomains(uiDomains);

@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.MqlDialogListener;
-import org.pentaho.commons.metadata.mqleditor.editor.models.UIBusinessColumn;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumn;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
-import org.pentaho.commons.metadata.mqleditor.editor.service.MetadataService;
+import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
 import org.pentaho.ui.xul.XulServiceCallback;
 import org.pentaho.ui.xul.binding.Binding;
 import org.pentaho.ui.xul.binding.BindingConvertor;
@@ -20,21 +20,26 @@ import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
 
+
+/**
+ *
+ * This is the main XulEventHandler for the dialog. It sets up the main bindings for the user interface and responds
+ * to some of the main UI events such as closing and accepting the dialog.
+ * 
+ */
 public class MainController extends AbstractXulEventHandler {
 
 
   private XulMenuList modelList;
   private XulMenuList domainList;
-  //private XulMenuList viewList;
-  private XulTree categoryTree;
-  //private XulListbox columnList;
+  private XulTree categoryTree;;
 
   private Workspace workspace;
   private XulTree fieldTable;
   private XulTree conditionsTable;
   private XulTree ordersTable;
   private XulDialog dialog;
-  private MetadataService service;
+  private MQLEditorService service;
   private List<MqlDialogListener> listeners = new ArrayList<MqlDialogListener>();
   
   private Query savedQuery;
@@ -75,15 +80,14 @@ public class MainController extends AbstractXulEventHandler {
     categoryTree = (XulTree) document.getElementById("categoryTree");
     conditionsTable = (XulTree) document.getElementById("conditionsTree");
     ordersTable = (XulTree) document.getElementById("orderTable");
-    
     fieldTable = (XulTree) document.getElementById("selectedColumnTree");
-    
-    bf.setBindingType(Binding.Type.ONE_WAY);
 
+    // Bind the domain list to the domain menulist drop-down.
+    bf.setBindingType(Binding.Type.ONE_WAY);
     final Binding domainBinding = bf.createBinding(this.workspace, "domains", domainList, "elements");
 
+    // Bind the selected index from the domain drop-down to the selectedDomain in the workspace
     bf.setBindingType(Binding.Type.BI_DIRECTIONAL);
-
     bf.createBinding(domainList, "selectedIndex", workspace, "selectedDomain", new BindingConvertor<Integer, UIDomain>() {
       @Override
       public UIDomain sourceToTarget(Integer value) {
@@ -94,7 +98,8 @@ public class MainController extends AbstractXulEventHandler {
         return workspace.getDomains().indexOf(value);
       }
     });
-    
+
+    // Bind the selectedDomain to the list of models menulist drop-down
     bf.setBindingType(Binding.Type.ONE_WAY);
     Binding domainToList = bf.createBinding(this.workspace, "selectedDomain", modelList, "elements", new BindingConvertor<UIDomain, List<UIModel>>() {
 
@@ -110,8 +115,7 @@ public class MainController extends AbstractXulEventHandler {
       
     });
     
-    // Update Model list selectedIndex when selectedModel changes in Workspace
-
+    // Bind the selected index of the model dro-down the the selectedModel in the workspace
     bf.setBindingType(Binding.Type.BI_DIRECTIONAL);
     Binding modelToList = bf.createBinding(workspace, "selectedModel", modelList, "selectedIndex", new BindingConvertor<UIModel, Integer>() {
 
@@ -127,13 +131,14 @@ public class MainController extends AbstractXulEventHandler {
 
     });
 
+    // Bind the available categories from  the selected model to the category/column tree.
     bf.setBindingType(Binding.Type.ONE_WAY);
     bf.createBinding(workspace, "categories", categoryTree, "elements");
     
-    
-    bf.createBinding(categoryTree, "selectedRows", workspace, "selectedColumn", new BindingConvertor<int[], UIBusinessColumn>() {
+    // Bind the selected column from the tree to the workspace 
+    bf.createBinding(categoryTree, "selectedRows", workspace, "selectedColumn", new BindingConvertor<int[], UIColumn>() {
       @Override
-      public UIBusinessColumn sourceToTarget(int[] array) {
+      public UIColumn sourceToTarget(int[] array) {
         if(array.length == 0){
           return null;
         }
@@ -144,29 +149,31 @@ public class MainController extends AbstractXulEventHandler {
         return workspace.getColumnByPos(value);
       }
       @Override
-      public int[] targetToSource(UIBusinessColumn value) {
+      public int[] targetToSource(UIColumn value) {
         return new int[]{workspace.getSelectedCategory().getChildren().indexOf(value)};
       }
     });
     
-
+    // Bind the selected columns, conditions and orders to their respective tables
     bf.createBinding(workspace, "selectedColumns", fieldTable, "elements");
     bf.createBinding(workspace, "conditions", conditionsTable, "elements");
     bf.createBinding(workspace, "orders", ordersTable, "elements");
 
     try {
-      
-      //fires the population of the model listbox. This cascades down to the views and columns!
+      // Fires the population of the model listbox. This cascades down to the categories and columns. In essence, this
+      // call initializes the entire UI.
       domainBinding.fireSourceChanged();
       
-    } catch (Exception e) {System.out.println(e.getMessage()); e.printStackTrace();}
+    } catch (Exception e) {
+      System.out.println(e.getMessage()); e.printStackTrace();
+    }
 
     
     
   }
   
   public void moveSelectionToFields(){
-    UIBusinessColumn col = workspace.getSelectedColumn();
+    UIColumn col = workspace.getSelectedColumn();
     if(col != null && workspace.getSelectedColumns().contains(col) == false){
       workspace.addColumn(col);
     }
@@ -174,14 +181,14 @@ public class MainController extends AbstractXulEventHandler {
   
 
   public void moveSelectionToConditions(){
-    UIBusinessColumn col = workspace.getSelectedColumn();
+    UIColumn col = workspace.getSelectedColumn();
     if(col != null){
       workspace.addCondition(col);
     }
   }
 
   public void moveSelectionToOrders(){
-    UIBusinessColumn col = workspace.getSelectedColumn();
+    UIColumn col = workspace.getSelectedColumn();
     if(col != null && workspace.getOrders().contains(col) == false){
       workspace.addOrder(col);
     }
@@ -233,7 +240,7 @@ public class MainController extends AbstractXulEventHandler {
           workspace.setMqlStr(retVal);
           dialog.hide();
           for(MqlDialogListener listener : listeners){
-            listener.onDialogAccept(workspace.getQueryModel());
+            listener.onDialogAccept(workspace.getMqlQuery());
           }
           System.out.println(retVal);
           
@@ -243,12 +250,12 @@ public class MainController extends AbstractXulEventHandler {
     );
   }
 
-  public MetadataService getService() {
+  public MQLEditorService getService() {
   
     return service;
   }
 
-  public void setService(MetadataService service) {
+  public void setService(MQLEditorService service) {
   
     this.service = service;
   }
