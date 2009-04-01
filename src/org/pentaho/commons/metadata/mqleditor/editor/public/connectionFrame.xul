@@ -78,21 +78,12 @@
 	                        </hbox>
 	                  </groupbox>
 	            </vbox>
-            	<vbox flex="1" style="overflow: scroll">
+            	<vbox flex="1">
 				    <hbox id="datatypeRow" >
-				        <menulist id="dataTypeMenuList" label="DataType">
-					     <menupopup id="dataTypeMenuPopup">
-					      <menuitem label="DataType" selected="true"/>
-					     </menupopup>
-					    </menulist>
-				     </hbox>
+			        </hbox>
 				    <hbox id="columnHeaderRow">
-				    	<textbox id="columnHeader" multiline="false" rows="1" cols="40" />
 				    </hbox>
 				    <hbox id="dataRow">
-				    	<vbox id="dataColumn1">
-				    		<label id="dataColumn1Label" value="data"/>
-				    	</vbox>
 				    </hbox>
 				</vbox>
             </deck>

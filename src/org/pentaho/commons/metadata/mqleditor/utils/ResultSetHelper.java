@@ -176,6 +176,22 @@ public class ResultSetHelper extends java.lang.Object
   }
 
 
+  /**
+   * The following method returns an array of int(java.sql.Types) containing the column types for
+   * a given ResultSetMetaData object.
+   */
+  public int[] getColumnTypes(ResultSetMetaData resultSetMetaData) throws SQLException {
+    int columnCount = resultSetMetaData.getColumnCount();
+    int[] columnTypes = new int[columnCount];
+
+    for(int colIndex=1; colIndex<=columnCount; colIndex++){
+      columnTypes[colIndex-1] = resultSetMetaData.getColumnType(colIndex);
+    }
+
+    return columnTypes;
+  }
+
+  
 
   /**
    * The following method returns an array of strings containing the column names for

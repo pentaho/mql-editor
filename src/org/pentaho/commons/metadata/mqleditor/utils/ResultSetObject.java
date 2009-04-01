@@ -17,6 +17,7 @@ import java.sql.SQLException;
 public class ResultSetObject extends java.lang.Object
 {
    private final String[] metaData;// contains column name of the ResultSetObject (ResultSetObject metadata)
+   private final int[] columnTypes;// contains column type of the ResultSetObject (ResultSetObject metadata)
    private final Object[][] resultSet;// 2 dimensional array version of the ResultSetObject
    private ArrayHeaderLocator locator;
 
@@ -28,13 +29,15 @@ public class ResultSetObject extends java.lang.Object
             ResultSetHelper rsu=ResultSetHelper.createInstance();
 
             metaData  = rsu.getColumnNames(rs.getMetaData());
+            columnTypes = rsu.getColumnTypes(rs.getMetaData());
             resultSet = rsu.resultSetToObjectArray(rs);
             locator   = new ArrayHeaderLocator(metaData, true);
    }
 
    /** A constructor that supports converting header and body arrays to a ResultSetObject */
-   public ResultSetObject(String[] metaData, Object[][] resultSet) {
+   public ResultSetObject(String[] metaData, int[] columnTypes, Object[][] resultSet) {
        this.metaData=metaData;
+       this.columnTypes=columnTypes;
        this.resultSet=resultSet;
        // true means throw exceptions if column name doesn't exit in ArrayHeaderLocator
        this.locator = new ArrayHeaderLocator(metaData, true);
@@ -45,6 +48,11 @@ public class ResultSetObject extends java.lang.Object
    /** Returns at 1 dimensional array of column names from the ResultSetObject. */
    public String[] getMetaData() {
        return metaData;
+   }
+
+   /** Returns at 1 dimensional array of column names from the ResultSetObject. */
+   public int[] getColumnTypes() {
+       return columnTypes;
    }
 
    /** Returns a 2 dimensional array containing the data in the ResultSetObject */

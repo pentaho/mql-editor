@@ -16,6 +16,8 @@ public interface DatasourceService {
   void deleteDatasource(String name, XulServiceCallback<Boolean> callback);
   void doPreview(IConnection connection, String query, String previewLimit, XulServiceCallback<ResultSetObject> callback) throws DatasourceServiceException;
   void doPreview(IDatasource datasource, XulServiceCallback<ResultSetObject> callback) throws DatasourceServiceException;
+  void getBusinessData(IDatasource datasource, XulServiceCallback<ResultSetObject> callback) throws DatasourceServiceException;
+  void getBusinessData(IConnection connection, String query, String previewLimit, XulServiceCallback<ResultSetObject> callback) throws DatasourceServiceException;
 }
 
   

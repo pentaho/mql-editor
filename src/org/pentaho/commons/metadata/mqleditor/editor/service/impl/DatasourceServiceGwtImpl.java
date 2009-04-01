@@ -145,6 +145,38 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
     
   }
   
-  
+
+  public void getBusinessData(IConnection connection, String query, String previewLimit, final XulServiceCallback<ResultSetObject> callback)
+      throws DatasourceServiceException {
+    SERVICE.doPreview(connection, query, previewLimit, new AsyncCallback<ResultSetObject>() {
+
+      public void onFailure(Throwable arg0) {
+        callback.error("error doing preview: ", arg0);
+      }
+
+      public void onSuccess(ResultSetObject arg0) {
+        callback.success(arg0);
+      }
+
+    }); 
+   
+  }
+
+  public void getBusinessData(IDatasource datasource, final XulServiceCallback<ResultSetObject> callback)
+      throws DatasourceServiceException {
+    SERVICE.doPreview(datasource, new AsyncCallback<ResultSetObject>() {
+
+      public void onFailure(Throwable arg0) {
+        callback.error("error doing preview: ", arg0);
+      }
+
+      public void onSuccess(ResultSetObject arg0) {
+        callback.success(arg0);
+      }
+
+    });
+    
+  }
+
   
 }

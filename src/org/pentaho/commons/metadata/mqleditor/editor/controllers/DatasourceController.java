@@ -3,6 +3,7 @@ package org.pentaho.commons.metadata.mqleditor.editor.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hsqldb.Types;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource.EditType;
 import org.pentaho.commons.metadata.mqleditor.editor.DatasourceDialogListener;
@@ -18,16 +19,22 @@ import org.pentaho.ui.xul.binding.Binding;
 import org.pentaho.ui.xul.binding.BindingConvertor;
 import org.pentaho.ui.xul.binding.BindingFactory;
 import org.pentaho.ui.xul.components.XulButton;
+import org.pentaho.ui.xul.components.XulLabel;
+import org.pentaho.ui.xul.components.XulMenuList;
+import org.pentaho.ui.xul.components.XulMenuitem;
 import org.pentaho.ui.xul.components.XulMessageBox;
 import org.pentaho.ui.xul.components.XulTextbox;
 import org.pentaho.ui.xul.components.XulTreeCell;
 import org.pentaho.ui.xul.components.XulTreeCol;
 import org.pentaho.ui.xul.containers.XulDeck;
 import org.pentaho.ui.xul.containers.XulDialog;
+import org.pentaho.ui.xul.containers.XulHbox;
 import org.pentaho.ui.xul.containers.XulListbox;
+import org.pentaho.ui.xul.containers.XulMenupopup;
 import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.containers.XulTreeCols;
 import org.pentaho.ui.xul.containers.XulTreeRow;
+import org.pentaho.ui.xul.containers.XulVbox;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
 
 public class DatasourceController extends AbstractXulEventHandler {
@@ -66,12 +73,21 @@ public class DatasourceController extends AbstractXulEventHandler {
   XulButton cancelButton = null;
   XulButton previewButton = null;
   XulDeck datasourceDeck = null;
-  
+  XulHbox datatypeRow = null;
+  XulHbox columnHeaderRow = null;
+  XulHbox dataRow = null;
+  XulMenuList<XulMenupopup> dataTypeMenuList = null; 
   public DatasourceController() {
 
   }
 
   public void init() {
+    
+    
+    datatypeRow = (XulHbox) document.getElementById("datatypeRow"); //$NON-NLS-1$
+    columnHeaderRow = (XulHbox) document.getElementById("columnHeaderRow"); //$NON-NLS-1$
+    dataRow = (XulHbox) document.getElementById("dataRow"); //$NON-NLS-1$
+    dataTypeMenuList = (XulMenuList<XulMenupopup>) document.getElementById("dataTypeMenuList"); //$NON-NLS-1$
     
     datasourceDeck = (XulDeck) document.getElementById("datasourceDeck"); //$NON-NLS-1$
     datasourceName = (XulTextbox) document.getElementById("datasourcename"); //$NON-NLS-1$
@@ -212,6 +228,68 @@ public class DatasourceController extends AbstractXulEventHandler {
     }
   }
 
+  private XulMenuList<XulMenupopup> createMenuList(int columnType) {
+    XulMenuList<XulMenupopup> menuList = null;
+    try {
+      menuList = (XulMenuList<XulMenupopup>) document.createElement("menulist");
+      menuList.setFlex(1);
+      XulMenupopup menuPopup = (XulMenupopup) document.createElement("menupopup");
+      XulMenuitem menuItem1 = (XulMenuitem) document.createElement("menuitem");
+      XulMenuitem menuItem2 = (XulMenuitem) document.createElement("menuitem");
+      XulMenuitem menuItem3 = (XulMenuitem) document.createElement("menuitem");
+      XulMenuitem menuItem4 = (XulMenuitem) document.createElement("menuitem");
+      XulMenuitem menuItem5 = (XulMenuitem) document.createElement("menuitem");
+      XulMenuitem menuItem6 = (XulMenuitem) document.createElement("menuitem");
+      XulMenuitem menuItem7 = (XulMenuitem) document.createElement("menuitem");
+      XulMenuitem menuItem8 = (XulMenuitem) document.createElement("menuitem");
+      
+      menuItem1.setAttribute("DataType","DataType");
+      
+      menuItem2.setLabel(Types.getTypeName(Types.BOOLEAN));
+      menuItem3.setLabel(Types.getTypeName(Types.DATE));
+      menuItem4.setLabel(Types.getTypeName(Types.DECIMAL));
+      menuItem5.setLabel(Types.getTypeName(Types.INTEGER));
+      menuItem6.setLabel(Types.getTypeName(Types.NUMERIC));
+      menuItem7.setLabel(Types.getTypeName(Types.VARCHAR));
+      menuItem8.setLabel(Types.getTypeName(Types.TIMESTAMP));
+      if(columnType == Types.BOOLEAN) {
+        menuItem2.setSelected(true);
+      }
+      if(columnType == Types.DATE) {
+        menuItem2.setSelected(true);
+      }
+
+      if(columnType == Types.DECIMAL) {
+        menuItem2.setSelected(true);
+      }
+      if(columnType == Types.INTEGER) {
+        menuItem5.setSelected(true);
+      }
+      if(columnType == Types.NUMERIC) {
+        menuItem6.setSelected(true);
+      }      
+      if(columnType == Types.VARCHAR) {
+        menuItem7.setSelected(true);
+      }      
+      if(columnType == Types.TIMESTAMP) {
+        menuItem8.setSelected(true);
+      }
+      
+      menuPopup.addComponent(menuItem1);
+      menuPopup.addComponent(menuItem2);
+      menuPopup.addComponent(menuItem3);
+      menuPopup.addComponent(menuItem4);
+      menuPopup.addComponent(menuItem5);
+      menuPopup.addComponent(menuItem6);
+      menuPopup.addComponent(menuItem7);
+      menuPopup.addComponent(menuItem8);
+      menuList.addComponent(menuPopup);
+
+    } catch(XulException xe) {
+      
+    }
+    return menuList;    
+  }
   public void executeNext() {
     if(allInputsSatisfiedForNext()) {
       if(datasourceDeck.getSelectedIndex()== CONNECTION_DECK) {
@@ -219,6 +297,57 @@ public class DatasourceController extends AbstractXulEventHandler {
         finishButton.setDisabled(false);
         backButton.setDisabled(false);
         nextButton.setDisabled(true);
+        try {
+            
+          service.getBusinessData(datasourceModel.getSelectedConnection(), datasourceModel.getQuery(), datasourceModel.getPreviewLimit(), 
+              new XulServiceCallback<ResultSetObject>(){
+  
+                public void error(String message, Throwable error) {
+                  System.out.println(message);
+                  error.printStackTrace();
+                }
+  
+                public void success(ResultSetObject rs) {
+                      try {
+                        String[] columns = rs.getMetaData();
+                        int[] columnTypes = rs.getColumnTypes();
+                        int columnCount = columns.length;
+                        // We will build this ui column by column
+                        for(int i=0;i<columnTypes.length;i++) {
+                          // Add the row for DataType. 
+                          datatypeRow.addComponent(createMenuList(columnTypes[i]));
+                          XulTextbox textBox = (XulTextbox) document.createElement("textbox");
+                          textBox.setId("columnHeader" + (i+1));
+                          textBox.setMultiline(false);
+                          textBox.setHeight(5);
+                          textBox.setWidth(10);
+                          textBox.setValue(columns[i]);
+                          textBox.setFlex(1);
+                          // Add the row for column header.
+                          columnHeaderRow.addComponent(textBox);
+                          XulVbox vBox = (XulVbox) document.createElement("vbox");
+                          vBox.setId("dataColumn"+ (i+1));
+                          vBox.setFlex(1);
+                          for(int j=0;j<rs.getRowCount();j++) {
+                            XulLabel label = (XulLabel) document.createElement("label");
+                            label.setValue(rs.getCellData(j, i) != null ? rs.getCellData(j, i).toString(): "");
+                            label.setId("dataColumn" + (i+1) + "Label");
+                            vBox.addComponent(label);
+                          }
+                          // Add the row for data.
+                          dataRow.addComponent(vBox) ;                          
+                        }
+                      } catch(XulException xe) {
+                        
+                      }
+                }
+            });
+          } catch (DatasourceServiceException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+        
+        
       }
     } else {
       displayMissingInputDialog();

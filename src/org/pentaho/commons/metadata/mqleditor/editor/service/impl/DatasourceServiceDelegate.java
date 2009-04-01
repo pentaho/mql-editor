@@ -16,6 +16,7 @@ import org.pentaho.commons.metadata.mqleditor.IDatasource;
 import org.pentaho.commons.metadata.mqleditor.editor.i18n.Messages;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
 import org.pentaho.commons.metadata.mqleditor.utils.ResultSetObject;
+import org.pentaho.ui.xul.XulServiceCallback;
 
 public class DatasourceServiceDelegate {
 
@@ -207,4 +208,12 @@ public class DatasourceServiceDelegate {
     }
     return true;
   }
+  
+  public ResultSetObject getBusinessData(IDatasource datasource) throws DatasourceServiceException {
+    return doPreview(datasource);
+  }
+  public ResultSetObject getBusinessData(IConnection connection, String query, String previewLimit) throws DatasourceServiceException {
+    return doPreview(connection, query, previewLimit);
+  }
+
 }
