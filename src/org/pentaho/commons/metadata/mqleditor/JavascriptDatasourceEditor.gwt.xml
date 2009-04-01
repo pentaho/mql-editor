@@ -18,7 +18,6 @@ This module serves as the Debuging environment and default implementation for in
         <exclude name="**/MQLEditorGwtServlet*"/>
         <exclude name="**/MQLEditorServiceSyncImpl*"/>
         <exclude name="**/ModelSerializer*"/>
-        <exclude name="**/CWMStartup*"/>
         <exclude name="**/SwingDatasourceEditor*"/>
         <exclude name="**/ConnectionServiceImpl*"/>
         <exclude name="**/DatasourceServiceImpl*"/>
@@ -27,10 +26,7 @@ This module serves as the Debuging environment and default implementation for in
         <exclude name="**/ConnectionGwtServlet*"/>
         <exclude name="**/DatasourceGwtServlet*"/>
         <exclude name="**/ConnectionServiceSyncImpl*"/>
-        <exclude name="**/DatasourceServiceSyncImpl*"/>
-        <exclude name="**/ArrayHeadLocator*"/>
-        <exclude name="**/ResultSetHelper*"/>
-        <exclude name="**/ResultSetObject*"/>       
+        <exclude name="**/DatasourceServiceSyncImpl*"/>       
     </source>
     <public path="datasourceeditor/public"/>
     <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.JavascriptDatasourceEditor"/>

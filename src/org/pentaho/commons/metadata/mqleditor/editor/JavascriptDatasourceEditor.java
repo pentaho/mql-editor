@@ -33,7 +33,7 @@ public class JavascriptDatasourceEditor implements EntryPoint{
 
   private native void setupNativeHooks(JavascriptDatasourceEditor editor)/*-{
 
-    $wnd.openJavascriptDatasourceEditor= function(callback) {
+    $wnd.openDatasourceEditor= function(callback) {
       editor.@org.pentaho.commons.metadata.mqleditor.editor.JavascriptDatasourceEditor::show(Lcom/google/gwt/core/client/JavaScriptObject;)(callback);
     }
   }-*/;

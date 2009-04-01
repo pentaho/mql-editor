@@ -13,10 +13,8 @@ import java.util.Locale;
 import org.apache.commons.lang.StringUtils;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
-import org.pentaho.commons.metadata.mqleditor.editor.i18n.Messages;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
 import org.pentaho.commons.metadata.mqleditor.utils.ResultSetObject;
-import org.pentaho.ui.xul.XulServiceCallback;
 
 public class DatasourceServiceDelegate {
 
@@ -81,10 +79,10 @@ public class DatasourceServiceDelegate {
         rs = stmt.executeQuery(query);
         rso =  new ResultSetObject(rs);
       } else {
-        throw new DatasourceServiceException(Messages.getErrorString("PacService.ERROR_0028_QUERY_NOT_VALID")); //$NON-NLS-1$
+        throw new DatasourceServiceException("ERROR_0028_QUERY_NOT_VALID"); //$NON-NLS-1$
       }
     } catch (SQLException e) {
-      throw new DatasourceServiceException(Messages.getErrorString("PacService.ERROR_0029_QUERY_VALIDATION_FAILED",query), e); //$NON-NLS-1$
+      throw new DatasourceServiceException("ERROR_0029_QUERY_VALIDATION_FAILED", e); //$NON-NLS-1$
     } finally {
       try {
         if (rs != null) {
@@ -117,10 +115,10 @@ public class DatasourceServiceDelegate {
         rs = stmt.executeQuery(query);
         rso =  new ResultSetObject(rs);
       } else {
-        throw new DatasourceServiceException(Messages.getErrorString("PacService.ERROR_0028_QUERY_NOT_VALID")); //$NON-NLS-1$
+        throw new DatasourceServiceException("PacService.ERROR_0028_QUERY_NOT_VALID"); //$NON-NLS-1$
       }
     } catch (SQLException e) {
-      throw new DatasourceServiceException(Messages.getErrorString("PacService.ERROR_0029_QUERY_VALIDATION_FAILED",query), e); //$NON-NLS-1$
+      throw new DatasourceServiceException("PacService.ERROR_0029_QUERY_VALIDATION_FAILED", e); //$NON-NLS-1$
     } finally {
       try {
         if (rs != null) {
@@ -161,33 +159,33 @@ public class DatasourceServiceDelegate {
 
     String driverClass = connection.getDriverClass();
     if (StringUtils.isEmpty(driverClass)) {
-      throw new DatasourceServiceException(Messages.getErrorString("PacService.ERROR_0024_CONNECTION_ATTEMPT_FAILED",driverClass)); //$NON-NLS-1$  
+      throw new DatasourceServiceException("ERROR_0024_CONNECTION_ATTEMPT_FAILED"); //$NON-NLS-1$  
     }
     Class<?> driverC = null;
 
     try {
       driverC = Class.forName(driverClass);
     } catch (ClassNotFoundException e) {
-      throw new DatasourceServiceException(Messages.getErrorString("PacService.ERROR_0026_DRIVER_NOT_FOUND_IN_CLASSPATH",driverClass), e); //$NON-NLS-1$
+      throw new DatasourceServiceException("ERROR_0026_DRIVER_NOT_FOUND_IN_CLASSPATH", e); //$NON-NLS-1$
     }
     if (!Driver.class.isAssignableFrom(driverC)) {
-      throw new DatasourceServiceException(Messages.getErrorString("PacService.ERROR_0026_DRIVER_NOT_FOUND_IN_CLASSPATH",driverClass)); //$NON-NLS-1$    }
+      throw new DatasourceServiceException("ERROR_0026_DRIVER_NOT_FOUND_IN_CLASSPATH"); //$NON-NLS-1$    }
     }
     Driver driver = null;
     
     try {
       driver = driverC.asSubclass(Driver.class).newInstance();
     } catch (InstantiationException e) {
-      throw new DatasourceServiceException(Messages.getErrorString("PacService.ERROR_0027_UNABLE_TO_INSTANCE_DRIVER",driverClass), e); //$NON-NLS-1$
+      throw new DatasourceServiceException("PacService.ERROR_0027_UNABLE_TO_INSTANCE_DRIVER", e); //$NON-NLS-1$
     } catch (IllegalAccessException e) {
-      throw new DatasourceServiceException(Messages.getErrorString("PacService.ERROR_0027_UNABLE_TO_INSTANCE_DRIVER",driverClass), e); //$NON-NLS-1$    }
+      throw new DatasourceServiceException("PacService.ERROR_0027_UNABLE_TO_INSTANCE_DRIVER", e); //$NON-NLS-1$    }
     }
     try {
       DriverManager.registerDriver(driver);
       conn = DriverManager.getConnection(connection.getUrl(), connection.getUsername(), connection.getPassword());
       return conn;
     } catch (SQLException e) {
-      throw new DatasourceServiceException(Messages.getErrorString("PacService.ERROR_0025_UNABLE_TO_CONNECT",e.getMessage()), e); //$NON-NLS-1$
+      throw new DatasourceServiceException("PacService.ERROR_0025_UNABLE_TO_CONNECT", e); //$NON-NLS-1$
     }
   }
 

@@ -1,11 +1,10 @@
 <module>
 
   <inherits name='com.google.gwt.user.User'/>
-    <inherits name='com.googlecode.gwtx.Java'/>
+  <inherits name='com.googlecode.gwtx.Java'/>
   <inherits name='com.google.gwt.xml.XML'/>
-    <inherits name="org.pentaho.gwt.widgets.Widgets"/>
-  
-    <inherits name="org.pentaho.ui.xul.Gwt"/>
+  <inherits name="org.pentaho.gwt.widgets.Widgets"/>
+  <inherits name="org.pentaho.ui.xul.Gwt"/>
     <source path="">
         <exclude name="**/SwingMqlEditor*"/>
         <exclude name="**/MQLEditorServiceImpl*"/>
@@ -13,7 +12,6 @@
         <exclude name="**/MQLEditorGwtServlet*"/>
         <exclude name="**/MQLEditorServiceSyncImpl*"/>
         <exclude name="**/ModelSerializer*"/>
-        <exclude name="**/CWMStartup*"/>
         <exclude name="**/SwingDatasourceEditor*"/>
         <exclude name="**/ConnectionServiceImpl*"/>
         <exclude name="**/DatasourceServiceImpl*"/>
@@ -22,12 +20,9 @@
         <exclude name="**/ConnectionGwtServlet*"/>
         <exclude name="**/DatasourceGwtServlet*"/>
         <exclude name="**/ConnectionServiceSyncImpl*"/>
-        <exclude name="**/DatasourceServiceSyncImpl*"/>
-        <exclude name="**/ArrayHeadLocator*"/>
-        <exclude name="**/ResultSetHelper*"/>
-        <exclude name="**/ResultSetObject*"/>          
+        <exclude name="**/DatasourceServiceSyncImpl*"/>         
     </source>
     <public path="datasourceeditor/public"/>
-  <servlet path="/ConnectionService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.DatasourceGwtServlet" />
+  <servlet path="/DatasourceService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.DatasourceGwtServlet" />
   <servlet path="/ConnectionService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.ConnectionGwtServlet" />
  </module>
