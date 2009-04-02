@@ -9,18 +9,24 @@
         <exclude name="**/SwingMqlEditor*"/>
         <exclude name="**/MQLEditorServiceImpl*"/>
         <exclude name="**/MQLEditorServiceDeligate*"/>
+        <exclude name="**/ConnectionServiceDeligate*"/>
+        <exclude name="**/DatasourceServiceDeligate*"/>
         <exclude name="**/MQLEditorGwtServlet*"/>
         <exclude name="**/MQLEditorServiceSyncImpl*"/>
+        <exclude name="**/MQLEditorServiceDebugImpl*"/>
+        <exclude name="**/ConnectionServiceDebugImpl*"/>
+        <exclude name="**/DatasourceServiceDebugImpl*"/>
         <exclude name="**/ModelSerializer*"/>
         <exclude name="**/SwingDatasourceEditor*"/>
         <exclude name="**/ConnectionServiceImpl*"/>
         <exclude name="**/DatasourceServiceImpl*"/>
-        <exclude name="**/ConnectionServiceDelegate*"/>
-        <exclude name="**/DatasourceServiceDelegate*"/>
         <exclude name="**/ConnectionGwtServlet*"/>
         <exclude name="**/DatasourceGwtServlet*"/>
         <exclude name="**/ConnectionServiceSyncImpl*"/>
-        <exclude name="**/DatasourceServiceSyncImpl*"/>         
+        <exclude name="**/DatasourceServiceSyncImpl*"/>
+        <exclude name="**/CWMStartup*"/>
+        
+        
     </source>
     <public path="datasourceeditor/public"/>
   <servlet path="/DatasourceService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.DatasourceGwtServlet" />

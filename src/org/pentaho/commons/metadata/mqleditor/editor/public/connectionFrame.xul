@@ -47,7 +47,7 @@
               <button flex="1" id="xml" image="images/saveAs_32.png"  pen:disabledimage="images/saveAs_32_disabled.png" tooltiptext="${datasourceDialog.XmlImageToolTip}" onclick="datasourceController.selectXml()"  disabled="false" align="bottom"/>
             </vbox>
             <deck id="datasourceDeck" flex="1">
-	            <vbox flex="1">
+	            <vbox flex="1" style="overflow: auto">
 	            	  <hbox>
 		                  <groupbox>
 		                      <hbox>
@@ -78,12 +78,12 @@
 	                        </hbox>
 	                  </groupbox>
 	            </vbox>
-            	<vbox flex="1">
-				    <hbox id="datatypeRow" >
+            	<vbox flex="1" style="overflow: auto">
+				    <hbox id="datatypeRow" style="overflow: auto">
 			        </hbox>
-				    <hbox id="columnHeaderRow">
+				    <hbox id="columnHeaderRow" style="overflow: auto">
 				    </hbox>
-				    <hbox id="dataRow">
+				    <hbox id="dataRow" style="overflow: auto">
 				    </hbox>
 				</vbox>
             </deck>

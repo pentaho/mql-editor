@@ -14,7 +14,7 @@ import java.sql.SQLException;
  * 
  *  */
 
-public class ResultSetObject extends java.lang.Object
+public class ResultSetObject extends java.lang.Object implements java.io.Serializable
 {
    private final String[] metaData;// contains column name of the ResultSetObject (ResultSetObject metadata)
    private final int[] columnTypes;// contains column type of the ResultSetObject (ResultSetObject metadata)

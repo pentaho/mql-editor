@@ -6,9 +6,9 @@ This module serves as the Debuging environment and default implementation for in
 <module>
 
   <inherits name='com.google.gwt.user.User'/>
-    <inherits name='com.googlecode.gwtx.Java'/>
+  <inherits name='com.googlecode.gwtx.Java'/>
   <inherits name='com.google.gwt.xml.XML'/>
-    <inherits name="org.pentaho.gwt.widgets.Widgets"/>
+  <inherits name="org.pentaho.gwt.widgets.Widgets"/>
   
     <inherits name="org.pentaho.ui.xul.Gwt"/>
     <source path="">
@@ -17,12 +17,12 @@ This module serves as the Debuging environment and default implementation for in
         <exclude name="**/MQLEditorServiceDeligate*"/>
         <exclude name="**/MQLEditorGwtServlet*"/>
         <exclude name="**/MQLEditorServiceSyncImpl*"/>
+        <exclude name="**/MQLEditorServiceDebugImpl*"/>
         <exclude name="**/ModelSerializer*"/>
+        <exclude name="**/CWMStartup*"/>
         <exclude name="**/SwingDatasourceEditor*"/>
         <exclude name="**/ConnectionServiceImpl*"/>
         <exclude name="**/DatasourceServiceImpl*"/>
-        <exclude name="**/ConnectionServiceDelegate*"/>
-        <exclude name="**/DatasourceServiceDelegate*"/>
         <exclude name="**/ConnectionGwtServlet*"/>
         <exclude name="**/DatasourceGwtServlet*"/>
         <exclude name="**/ConnectionServiceSyncImpl*"/>

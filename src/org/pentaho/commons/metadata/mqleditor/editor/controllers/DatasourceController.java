@@ -309,6 +309,16 @@ public class DatasourceController extends AbstractXulEventHandler {
   
                 public void success(ResultSetObject rs) {
                       try {
+                        // Remove any existing children
+                        List<XulComponent> dataTypeRowList = datatypeRow.getChildNodes();
+                        List<XulComponent> columnHeaderRowList = columnHeaderRow.getChildNodes();
+                        List<XulComponent> dataRowList = dataRow.getChildNodes();
+                        for(int i=0;i<dataRowList.size();i++) {
+                          datatypeRow.removeComponent(dataTypeRowList.get(i));
+                          columnHeaderRow.removeComponent(columnHeaderRowList.get(i));
+                          dataRow.removeComponent(dataRowList.get(i));
+                        }
+                        
                         String[] columns = rs.getMetaData();
                         int[] columnTypes = rs.getColumnTypes();
                         int columnCount = columns.length;

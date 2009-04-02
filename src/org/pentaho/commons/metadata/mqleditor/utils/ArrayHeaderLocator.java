@@ -17,7 +17,7 @@ import java.util.Map;
  * <br><br><a href="http://www.fdsapi.com/javadocs/com/fdsapi/arrays/ArrayHeaderLocator.htm">View Code</a>
  * 
  */
-public class ArrayHeaderLocator implements Cloneable {
+public class ArrayHeaderLocator implements Cloneable, java.io.Serializable {
     
     /** Creates a new instance of ArrayHeaderLocator */
     // Contains logic column names.  Arrays are typically index based not name based.

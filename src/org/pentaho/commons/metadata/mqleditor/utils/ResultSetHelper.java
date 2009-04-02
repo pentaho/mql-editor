@@ -15,7 +15,7 @@ import java.util.Map;
  */
 
 
-public class ResultSetHelper extends java.lang.Object
+public class ResultSetHelper extends java.lang.Object implements java.io.Serializable
 {
 
     static ResultSetHelper resultSetHelper = new ResultSetHelper();
