@@ -13,8 +13,9 @@ import java.util.Locale;
 import org.apache.commons.lang.StringUtils;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
+import org.pentaho.commons.metadata.mqleditor.beans.ResultSetObject;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
-import org.pentaho.commons.metadata.mqleditor.utils.ResultSetObject;
+import org.pentaho.commons.metadata.mqleditor.utils.ResultSetConverter;
 
 public class DatasourceServiceDelegate {
 
@@ -66,7 +67,8 @@ public class DatasourceServiceDelegate {
     Connection conn = null;
     Statement stmt = null;
     ResultSet rs = null;
-    ResultSetObject rso  = null;
+    ResultSetConverter rsc  = null;
+    ResultSetObject rso = null;
     int limit = (previewLimit != null && previewLimit.length() > 0) ? Integer.parseInt(previewLimit): -1;
     try {
       conn = getDataSourceConnection(connection);
@@ -77,7 +79,8 @@ public class DatasourceServiceDelegate {
           stmt.setMaxRows(limit);
         }        
         rs = stmt.executeQuery(query);
-        rso =  new ResultSetObject(rs);
+        rsc =  new ResultSetConverter(rs);
+        rso = new ResultSetObject(rsc.getColumnTypes(), rsc.getMetaData(), rsc.getResultSet());
       } else {
         throw new DatasourceServiceException("ERROR_0028_QUERY_NOT_VALID"); //$NON-NLS-1$
       }
@@ -106,14 +109,16 @@ public class DatasourceServiceDelegate {
     Connection conn = null;
     Statement stmt = null;
     ResultSet rs = null;
-    ResultSetObject rso  = null;
+    ResultSetConverter rsc  = null;
+    ResultSetObject rso = null;
     try {
       conn = getDataSourceConnection(connection);
 
       if (!StringUtils.isEmpty(query)) {
         stmt = conn.createStatement();
         rs = stmt.executeQuery(query);
-        rso =  new ResultSetObject(rs);
+        rsc =  new ResultSetConverter(rs);
+        rso = new ResultSetObject(rsc.getColumnTypes(), rsc.getMetaData(), rsc.getResultSet());
       } else {
         throw new DatasourceServiceException("PacService.ERROR_0028_QUERY_NOT_VALID"); //$NON-NLS-1$
       }

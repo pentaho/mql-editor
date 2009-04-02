@@ -7,25 +7,28 @@
   <inherits name="org.pentaho.ui.xul.Gwt"/>
     <source path="">
         <exclude name="**/SwingMqlEditor*"/>
-        <exclude name="**/MQLEditorServiceImpl*"/>
         <exclude name="**/MQLEditorServiceDeligate*"/>
-        <exclude name="**/ConnectionServiceDeligate*"/>
-        <exclude name="**/DatasourceServiceDeligate*"/>
+        <exclude name="**/MQLEditorServiceImpl*"/>
+        <exclude name="**/MQLEditorDebugGwtServlet*"/>
+        <exclude name="**/MQLEditorServiceDebugImpl*"/>
         <exclude name="**/MQLEditorGwtServlet*"/>
         <exclude name="**/MQLEditorServiceSyncImpl*"/>
-        <exclude name="**/MQLEditorServiceDebugImpl*"/>
-        <exclude name="**/ConnectionServiceDebugImpl*"/>
-        <exclude name="**/DatasourceServiceDebugImpl*"/>
         <exclude name="**/ModelSerializer*"/>
+        <exclude name="**/CWMStartup*"/>
         <exclude name="**/SwingDatasourceEditor*"/>
+        <exclude name="**/ConnectionServiceDelegate*"/>
+        <exclude name="**/DatasourceServiceDelegate*"/>
         <exclude name="**/ConnectionServiceImpl*"/>
         <exclude name="**/DatasourceServiceImpl*"/>
+        <exclude name="**/ConnectionServiceDebugImpl*"/>
+        <exclude name="**/DatasourceServiceDebugImpl*"/>
         <exclude name="**/ConnectionGwtServlet*"/>
         <exclude name="**/DatasourceGwtServlet*"/>
         <exclude name="**/ConnectionServiceSyncImpl*"/>
         <exclude name="**/DatasourceServiceSyncImpl*"/>
-        <exclude name="**/CWMStartup*"/>
-        
+        <exclude name="**/ArrayHeaderLocator*"/>
+        <exclude name="**/ResultSetConverter*"/>
+        <exclude name="**/ResultSetHelper*"/>
         
     </source>
     <public path="datasourceeditor/public"/>

@@ -23,10 +23,18 @@ This module serves as the Debuging environment and default implementation for in
         <exclude name="**/SwingDatasourceEditor*"/>
         <exclude name="**/ConnectionServiceImpl*"/>
         <exclude name="**/DatasourceServiceImpl*"/>
+        <exclude name="**/ConnectionServiceDelegate*"/>
+        <exclude name="**/DatasourceServiceDelegate*"/>        
         <exclude name="**/ConnectionGwtServlet*"/>
         <exclude name="**/DatasourceGwtServlet*"/>
         <exclude name="**/ConnectionServiceSyncImpl*"/>
-        <exclude name="**/DatasourceServiceSyncImpl*"/>       
+        <exclude name="**/DatasourceServiceSyncImpl*"/> 
+        <exclude name="**/ConnectionServiceDebugImpl*"/>
+        <exclude name="**/DatasourceServiceDebugImpl*"/>
+        <exclude name="**/ArrayHeaderLocator*"/>
+        <exclude name="**/ResultSetConverter*"/>
+        <exclude name="**/ResultSetHelper*"/>        
+      
     </source>
     <public path="datasourceeditor/public"/>
     <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.JavascriptDatasourceEditor"/>

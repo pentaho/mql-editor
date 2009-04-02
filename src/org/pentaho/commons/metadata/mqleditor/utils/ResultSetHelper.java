@@ -30,15 +30,15 @@ public class ResultSetHelper extends java.lang.Object implements java.io.Seriali
 
 
   /**
-   * The following method returns a List containing the ResultSetObject data.
-   * Rows contain ResultSetObject rows as object arrays. The method getRowData() converts ResultSetObject
+   * The following method returns a List containing the ResultSetConverter data.
+   * Rows contain ResultSetConverter rows as object arrays. The method getRowData() converts ResultSetConverter
    * row data into an object array.
    */
   public void resultSetToList(List list, ResultSet resultSet) throws SQLException {
     ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
     int columnCount = resultSetMetaData.getColumnCount();
 
-    //Loop through the ResultSetObject data rows and add each one to the List
+    //Loop through the ResultSetConverter data rows and add each one to the List
     while(resultSet.next()) {
       list.add(getRowData(resultSet, columnCount));
     }
@@ -60,13 +60,13 @@ public class ResultSetHelper extends java.lang.Object implements java.io.Seriali
 
 
  /**
-   * <p>The following method converts ResultSetObject data to a Map of object keys and values using an instance
+   * <p>The following method converts ResultSetConverter data to a Map of object keys and values using an instance
    * of HashMap.</p>
    *
-   * <p>The first column in the ResultSetObject supplies the key, the second column the value. If the ResultSetObject
-   * contains more than two columns then subsequent columns are ignored. If the ResultSetObject supplies
-   * only one column then an SQLException is thrown. The ResultSetObject values are converted to objects
-   * using the getRowData() method which converts a ResultSetObject row into an array of objects.</p>
+   * <p>The first column in the ResultSetConverter supplies the key, the second column the value. If the ResultSetConverter
+   * contains more than two columns then subsequent columns are ignored. If the ResultSetConverter supplies
+   * only one column then an SQLException is thrown. The ResultSetConverter values are converted to objects
+   * using the getRowData() method which converts a ResultSetConverter row into an array of objects.</p>
    */
   public void resultSetToMap(Map map, ResultSet resultSet) throws SQLException {
     int columnCount = resultSet.getMetaData().getColumnCount();
@@ -76,7 +76,7 @@ public class ResultSetHelper extends java.lang.Object implements java.io.Seriali
       throw new SQLException("resultSetToMap: At least two columns needed for conversion.");
     }
 
-    //Loop through the ResultSetObject data rows and adding to the HashMap the first column as the key,
+    //Loop through the ResultSetConverter data rows and adding to the HashMap the first column as the key,
     //and the second column as the value.
     while(resultSet.next()) {
       rowData = getRowData(resultSet, columnCount);
@@ -93,7 +93,7 @@ public class ResultSetHelper extends java.lang.Object implements java.io.Seriali
    * <p>The first column in the array supplies the key, the second column the value. If the array
    * contains more than two columns then subsequent columns are ignored. If the array supplies
    * only one column then a RuntimeException is thrown. This method may be used to convert the
-   * data in a ResultSetObject to a map.</p>
+   * data in a ResultSetConverter to a map.</p>
    */
   public void objectArrayToMap(Map map, Object[][] data) {
     int rowCount = (data==null) ? 0 : data.length;
@@ -148,7 +148,7 @@ public class ResultSetHelper extends java.lang.Object implements java.io.Seriali
   
 
   /**
-   * The following method simply takes the ResultSetObject and converts it to a two dimensional
+   * The following method simply takes the ResultSetConverter and converts it to a two dimensional
    * array of Objects containing data.
    */
    public Object[][] resultSetToObjectArray(ResultSet resultSet) throws SQLException {
@@ -211,7 +211,7 @@ public class ResultSetHelper extends java.lang.Object implements java.io.Seriali
 
   /**
    * The following method returns an array of objects containing the data values for
-   * each column for the current row in a given ResultSetObject. The columnCount parameter
+   * each column for the current row in a given ResultSetConverter. The columnCount parameter
    * saves the method having to address the ResultSetMetaData to obtain the number of
    * columns.
    */
