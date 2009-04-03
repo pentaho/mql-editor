@@ -8,15 +8,21 @@ import java.sql.Date;
  *
  */
 public enum ColumnType implements Serializable{
-  NUMERIC(Integer.class), TEXT(String.class), FLOAT(Float.class), BOOLEAN(Boolean.class), DATE(Date.class);
+  NUMERIC(Integer.class, "Integer"), TEXT(String.class, "Text"), FLOAT(Float.class,"Float"), BOOLEAN(Boolean.class, "Boolean"), DATE(Date.class, "Date");
 
   private final Class clazz;
 
-  ColumnType(Class cls) {
+  private final String name;
+  ColumnType(Class cls, String name) {
     this.clazz = cls;
+    this.name = name;
   }
 
   boolean validate(Object val) {
     return clazz.getClass().equals(clazz);
+  }
+  
+  public String toString(){
+    return name;
   }
 }
