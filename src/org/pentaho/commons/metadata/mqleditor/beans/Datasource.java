@@ -13,6 +13,7 @@ public class Datasource implements IDatasource{
   private IConnection selectedConnection;
   private DatasourceType type;
   private String previewLimit;
+  private ResultSetObject object;
   public Datasource(){
     
   }
@@ -82,6 +83,17 @@ public class Datasource implements IDatasource{
 
   public void setSelectedConnection(IConnection connection) {
     selectedConnection = connection;
+  }
+
+  @Override
+  public ResultSetObject getResultSetObject() {
+    // TODO Auto-generated method stub
+    return object;
+  }
+
+  @Override
+  public void setResultSetObject(ResultSetObject object) {
+    this.object = object;
   }
 
 }

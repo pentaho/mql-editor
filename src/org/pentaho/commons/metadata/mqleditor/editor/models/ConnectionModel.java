@@ -62,7 +62,7 @@ public class ConnectionModel extends XulEventSourceAdapter implements IConnectio
     return password;
   }
   public void setUrl(String url) {
-    String previousVal = this.password;     
+    String previousVal = this.url;     
     this.url = url;
     this.firePropertyChange("url",previousVal, url); //$NON-NLS-1$
     validate();

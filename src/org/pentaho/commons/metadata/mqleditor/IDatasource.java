@@ -2,6 +2,8 @@ package org.pentaho.commons.metadata.mqleditor;
 
 import java.util.List;
 
+import org.pentaho.commons.metadata.mqleditor.beans.ResultSetObject;
+
 public interface IDatasource {
   public enum DatasourceType {SQL, OLAP, CSV, XML}; 
   public enum EditType {ADD, EDIT};
@@ -17,5 +19,6 @@ public interface IDatasource {
   public void setQuery(String query);
   public String getPreviewLimit();
   public void setPreviewLimit(String limit);
-  
+  public ResultSetObject getResultSetObject();
+  public void setResultSetObject(ResultSetObject object);
 }

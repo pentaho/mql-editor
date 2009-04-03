@@ -7,7 +7,7 @@
 
 
   <dialog id="connectionDialog" buttonlabelaccept="${connectionDialog.OK}" buttonlabelcancel="${connectionDialog.CANCEL}"
-    buttons="accept,cancel" ondialogaccept="connectionController.saveConnection()"
+    buttons="accept,cancel" ondialogaccept="connectionController.addConnection()"
     ondialogcancel="connectionController.closeDialog()" buttonalign="right"
     title="${connectionDialog.Title}" width="400" height="400">
     <groupbox>
@@ -22,11 +22,15 @@
         <textbox id="password" multiline="false" rows="1" cols="30" type="password" />
         <label value="${connectionDialog.URL}" tooltiptext="${connectionDialog.URLToolTip}"/>
         <textbox id="url" multiline="false" rows="1" cols="60" />
+        <hbox>
+        	<spacer flex="1"/>
+        	<button id="testButton" label="${connectionDialog.TEST}" tooltiptext="${connectionDialog.testButtonToolTip}" onclick="connectionController.testConnection()"  disabled="false" align="top"/>
+        </hbox>
       </vbox>
     </groupbox>
   </dialog>
   <dialog id="datasourceDialog" buttonlabelaccept="${datasourceDialog.BACK}" buttonlabelcancel="${datasourceDialog.NEXT}" buttonlabelextra1="${datasourceDialog.FINISH}" buttonlabelextra2="${datasourceDialog.CANCEL}"
-    buttons="accept,cancel, extra1, extra2" ondialogaccept="datasourceController.executeBack()"   ondialogcancel="datasourceController.executeNext()" buttonalign="right"  ondialogaextra1="datasourceController.executeFinish()" ondialogextra2="datasourceController.executeCancel()" title="${datasourceDialog.Title}" width="800" height="625">
+    buttons="accept,cancel,extra1,extra2" ondialogaccept="datasourceController.executeBack()"   ondialogcancel="datasourceController.executeNext()" ondialogextra1="datasourceController.executeFinish()" ondialogextra2="datasourceController.executeCancel()" title="${datasourceDialog.Title}" width="800" height="625" buttonalign="right">
     <groupbox flex="1">
       <vbox>
         <label value="${datasourceDialog.DatasourceName}" tooltiptext="${datasourceDialog.DatasourceNameToolTip}"/>
@@ -111,8 +115,18 @@
         <label value="${removeConfirmationDialog.confirmMessage}"/>
       </vbox>
   </dialog>
-  <dialog id="waitingDialog" title="${removeConfirmationDialog.previewLoading}" width="200" height="100">
-        <label value="${removeConfirmationDialog.generatingPreview}"/>
+  
+    <dialog id="saveConnectionConfirmationDialog" buttonlabelaccept="${saveConnectionConfirmationDialog.OK}" buttonlabelcancel="${saveConnectionConfirmationDialog.CANCEL}" buttons="accept, cancel" ondialogcancel="connectionController.closeSaveConnectionConfirmationDialog()"
+  ondialogaccept="connectionController.saveConnection()" buttonalign="right" title="${saveConnectionConfirmationDialog.title}" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  xmlns:pen="http://www.pentaho.org/2008/xul" height="150" width="200">
+       <vbox>
+        <label value="${saveConnectionConfirmationDialog.confirmMessage}"/>
+      </vbox>
+  </dialog>
+
+  
+  <dialog id="waitingDialog" title="${waitingDialog.previewLoading}" width="150" height="200">
+        <label value="${waitingDialog.generatingPreview}"/>
   </dialog>
   
 </window>

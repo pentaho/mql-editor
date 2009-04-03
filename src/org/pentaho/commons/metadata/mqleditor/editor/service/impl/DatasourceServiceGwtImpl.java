@@ -178,5 +178,21 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
     
   }
 
+  public void createCategory(String categoryName, IConnection connection, String query, ResultSetObject rso,
+      final XulServiceCallback<Boolean> callback) {
+    SERVICE.createCategory(categoryName, connection, query, rso, new AsyncCallback<Boolean>() {
+
+      public void onFailure(Throwable arg0) {
+        callback.error("error doing preview: ", arg0);
+      }
+
+      public void onSuccess(Boolean arg0) {
+        callback.success(arg0);
+      }
+
+    });
+    
+  }
+
   
 }

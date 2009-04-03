@@ -12,6 +12,7 @@ public interface ConnectionService {
   void updateConnection(IConnection connection, XulServiceCallback<Boolean> callback);
   void deleteConnection(IConnection connection, XulServiceCallback<Boolean> callback);
   void deleteConnection(String name, XulServiceCallback<Boolean> callback);
+  void testConnection(IConnection connection, XulServiceCallback<Boolean> callback) throws ConnectionServiceException;
 }
 
   

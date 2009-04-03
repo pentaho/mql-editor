@@ -48,14 +48,18 @@ public class DatasourceServiceDebugImpl implements DatasourceService{
   
   public void getBusinessData(IConnection connection, String query, String previewLimit, XulServiceCallback<ResultSetObject> callback)
     throws DatasourceServiceException {
-    callback.success(SERVICE.doPreview(connection, query, previewLimit));
+    callback.success(SERVICE.getBusinessData(connection, query, previewLimit));
   }
 
   public void getBusinessData(IDatasource datasource, XulServiceCallback<ResultSetObject> callback)
     throws DatasourceServiceException {
-    callback.success(SERVICE.doPreview(datasource));
+    callback.success(SERVICE.getBusinessData(datasource));
   }
   
+  public void createCategory(String categoryName, IConnection connection, String query, ResultSetObject rso,XulServiceCallback<Boolean> callback) {
+    callback.success(SERVICE.createCategory(categoryName, connection, query, rso));
+    
+  }
 }
 
   

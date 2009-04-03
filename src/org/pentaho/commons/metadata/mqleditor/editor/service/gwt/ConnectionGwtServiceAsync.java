@@ -13,6 +13,7 @@ public interface ConnectionGwtServiceAsync {
   void updateConnection(IConnection connection, AsyncCallback<Boolean> callback);
   void deleteConnection(IConnection connection, AsyncCallback<Boolean> callback);
   void deleteConnection(String name, AsyncCallback<Boolean> callback);
+  void testConnection(IConnection connection, AsyncCallback<Boolean> callback);
 }
 
   

@@ -18,6 +18,7 @@ public interface DatasourceService {
   void doPreview(IDatasource datasource, XulServiceCallback<ResultSetObject> callback) throws DatasourceServiceException;
   void getBusinessData(IDatasource datasource, XulServiceCallback<ResultSetObject> callback) throws DatasourceServiceException;
   void getBusinessData(IConnection connection, String query, String previewLimit, XulServiceCallback<ResultSetObject> callback) throws DatasourceServiceException;
+  void createCategory(String categoryName, IConnection connection, String query, ResultSetObject rso,XulServiceCallback<Boolean> callback);
 }
 
   

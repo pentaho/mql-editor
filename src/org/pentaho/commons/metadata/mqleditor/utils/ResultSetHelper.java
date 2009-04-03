@@ -191,7 +191,20 @@ public class ResultSetHelper extends java.lang.Object implements java.io.Seriali
     return columnTypes;
   }
 
-  
+  /**
+   * The following method returns an array of String(java.sql.Types) containing the column types for
+   * a given ResultSetMetaData object.
+   */
+  public String[] getColumnTypesNames(ResultSetMetaData resultSetMetaData) throws SQLException {
+    int columnCount = resultSetMetaData.getColumnCount();
+    String[] columnTypes = new String[columnCount];
+
+    for(int colIndex=1; colIndex<=columnCount; colIndex++){
+      columnTypes[colIndex-1] = resultSetMetaData.getColumnTypeName(colIndex);
+    }
+
+    return columnTypes;
+  }
 
   /**
    * The following method returns an array of strings containing the column names for

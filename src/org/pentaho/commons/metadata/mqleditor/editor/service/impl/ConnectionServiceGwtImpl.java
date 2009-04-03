@@ -109,4 +109,18 @@ public class ConnectionServiceGwtImpl implements ConnectionService {
 
     }); 
   }
+  
+  public void testConnection(IConnection connection,  final XulServiceCallback<Boolean> callback) {
+    SERVICE.testConnection(connection, new AsyncCallback<Boolean>() {
+
+      public void onFailure(Throwable arg0) {
+        callback.error("error testing connection: ", arg0);
+      }
+
+      public void onSuccess(Boolean arg0) {
+        callback.success(arg0);
+      }
+
+    }); 
+  }  
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.editor.service.ConnectionService;
+import org.pentaho.commons.metadata.mqleditor.editor.service.ConnectionServiceException;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 public class ConnectionServiceDebugImpl implements ConnectionService{
@@ -32,7 +33,9 @@ public class ConnectionServiceDebugImpl implements ConnectionService{
   public void deleteConnection(String name, XulServiceCallback<Boolean> callback) {
     callback.success(SERVICE.deleteConnection(name));
   }
-  
+  public void testConnection(IConnection connection, XulServiceCallback<Boolean> callback)throws ConnectionServiceException  {
+    callback.success(SERVICE.testConnection(connection));
+  }  
   
 }
 
