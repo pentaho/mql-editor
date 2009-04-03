@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
+import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.beans.ResultSetObject;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
@@ -46,18 +47,18 @@ public class DatasourceServiceDebugImpl implements DatasourceService{
     callback.success(SERVICE.doPreview(datasource));
   }
   
-  public void getBusinessData(IConnection connection, String query, String previewLimit, XulServiceCallback<ResultSetObject> callback)
+  public void getBusinessData(IConnection connection, String query, String previewLimit, XulServiceCallback<BusinessData> callback)
     throws DatasourceServiceException {
     callback.success(SERVICE.getBusinessData(connection, query, previewLimit));
   }
 
-  public void getBusinessData(IDatasource datasource, XulServiceCallback<ResultSetObject> callback)
+  public void getBusinessData(IDatasource datasource, XulServiceCallback<BusinessData> callback)
     throws DatasourceServiceException {
     callback.success(SERVICE.getBusinessData(datasource));
   }
   
-  public void createCategory(String categoryName, IConnection connection, String query, ResultSetObject rso,XulServiceCallback<Boolean> callback) {
-    callback.success(SERVICE.createCategory(categoryName, connection, query, rso));
+  public void createCategory(String categoryName, IConnection connection, String query, BusinessData businessData,XulServiceCallback<Boolean> callback) {
+    callback.success(SERVICE.createCategory(categoryName, connection, query, businessData));
     
   }
 }

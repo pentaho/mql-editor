@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
+import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.beans.ResultSetObject;
 import org.pentaho.ui.xul.XulServiceCallback;
 
@@ -16,9 +17,9 @@ public interface DatasourceService {
   void deleteDatasource(String name, XulServiceCallback<Boolean> callback);
   void doPreview(IConnection connection, String query, String previewLimit, XulServiceCallback<ResultSetObject> callback) throws DatasourceServiceException;
   void doPreview(IDatasource datasource, XulServiceCallback<ResultSetObject> callback) throws DatasourceServiceException;
-  void getBusinessData(IDatasource datasource, XulServiceCallback<ResultSetObject> callback) throws DatasourceServiceException;
-  void getBusinessData(IConnection connection, String query, String previewLimit, XulServiceCallback<ResultSetObject> callback) throws DatasourceServiceException;
-  void createCategory(String categoryName, IConnection connection, String query, ResultSetObject rso,XulServiceCallback<Boolean> callback);
+  void getBusinessData(IDatasource datasource, XulServiceCallback<BusinessData> callback) throws DatasourceServiceException;
+  void getBusinessData(IConnection connection, String query, String previewLimit, XulServiceCallback<BusinessData> callback) throws DatasourceServiceException;
+  void createCategory(String categoryName, IConnection connection, String query, BusinessData data,XulServiceCallback<Boolean> callback);
 }
 
   

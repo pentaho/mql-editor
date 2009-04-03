@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
+import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.beans.ResultSetObject;
-import org.pentaho.ui.xul.XulServiceCallback;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -18,9 +18,9 @@ public interface DatasourceGwtServiceAsync {
   void deleteDatasource(String name, AsyncCallback<Boolean> callback);
   void doPreview(IConnection connection, String query, String previewLimit, AsyncCallback<ResultSetObject> callback);
   void doPreview(IDatasource datasource, AsyncCallback<ResultSetObject> callback);
-  void getBusinessData(IConnection connection, String query, String previewLimit, AsyncCallback<ResultSetObject> callback);
-  void getBusinessData(IDatasource datasource, AsyncCallback<ResultSetObject> callback);
-  void createCategory(String categoryName, IConnection connection, String query, ResultSetObject rso,AsyncCallback<Boolean> callback);
+  void getBusinessData(IConnection connection, String query, String previewLimit, AsyncCallback<BusinessData> callback);
+  void getBusinessData(IDatasource datasource, AsyncCallback<BusinessData> callback);
+  void createCategory(String categoryName, IConnection connection, String query, BusinessData businessData,AsyncCallback<Boolean> callback);
 }
 
   

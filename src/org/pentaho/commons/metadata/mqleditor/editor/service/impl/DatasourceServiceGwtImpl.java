@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
+import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.beans.ResultSetObject;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
@@ -146,15 +147,15 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
   }
   
 
-  public void getBusinessData(IConnection connection, String query, String previewLimit, final XulServiceCallback<ResultSetObject> callback)
+  public void getBusinessData(IConnection connection, String query, String previewLimit, final XulServiceCallback<BusinessData> callback)
       throws DatasourceServiceException {
-    SERVICE.doPreview(connection, query, previewLimit, new AsyncCallback<ResultSetObject>() {
+    SERVICE.getBusinessData(connection, query, previewLimit, new AsyncCallback<BusinessData>() {
 
       public void onFailure(Throwable arg0) {
         callback.error("error doing preview: ", arg0);
       }
 
-      public void onSuccess(ResultSetObject arg0) {
+      public void onSuccess(BusinessData arg0) {
         callback.success(arg0);
       }
 
@@ -162,15 +163,15 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
    
   }
 
-  public void getBusinessData(IDatasource datasource, final XulServiceCallback<ResultSetObject> callback)
+  public void getBusinessData(IDatasource datasource, final XulServiceCallback<BusinessData> callback)
       throws DatasourceServiceException {
-    SERVICE.doPreview(datasource, new AsyncCallback<ResultSetObject>() {
+    SERVICE.getBusinessData(datasource, new AsyncCallback<BusinessData>() {
 
       public void onFailure(Throwable arg0) {
         callback.error("error doing preview: ", arg0);
       }
 
-      public void onSuccess(ResultSetObject arg0) {
+      public void onSuccess(BusinessData arg0) {
         callback.success(arg0);
       }
 
@@ -178,9 +179,9 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
     
   }
 
-  public void createCategory(String categoryName, IConnection connection, String query, ResultSetObject rso,
+  public void createCategory(String categoryName, IConnection connection, String query, BusinessData businessData,
       final XulServiceCallback<Boolean> callback) {
-    SERVICE.createCategory(categoryName, connection, query, rso, new AsyncCallback<Boolean>() {
+    SERVICE.createCategory(categoryName, connection, query, businessData, new AsyncCallback<Boolean>() {
 
       public void onFailure(Throwable arg0) {
         callback.error("error doing preview: ", arg0);

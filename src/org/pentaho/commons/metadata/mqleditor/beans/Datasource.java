@@ -13,7 +13,7 @@ public class Datasource implements IDatasource{
   private IConnection selectedConnection;
   private DatasourceType type;
   private String previewLimit;
-  private ResultSetObject object;
+  private BusinessData businessData;
   public Datasource(){
     
   }
@@ -85,15 +85,12 @@ public class Datasource implements IDatasource{
     selectedConnection = connection;
   }
 
-  @Override
-  public ResultSetObject getResultSetObject() {
-    // TODO Auto-generated method stub
-    return object;
+  public BusinessData getBusinessData() {
+    return businessData;
   }
 
-  @Override
-  public void setResultSetObject(ResultSetObject object) {
-    this.object = object;
+  public void setBusinessData(BusinessData businessData) {
+    this.businessData = businessData;
   }
 
 }

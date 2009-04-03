@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
-import org.pentaho.commons.metadata.mqleditor.beans.ResultSetObject;
+import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
 
@@ -18,7 +18,7 @@ public class DatasourceModel extends XulEventSourceAdapter implements IDatasourc
   private String previewLimit;
   private EditType editType = EditType.ADD;
   private DatasourceType datasourceType = DatasourceType.SQL;
-  private ResultSetObject object;
+  private BusinessData object;
   
   public DatasourceModel() {
     previewLimit="10";
@@ -128,11 +128,11 @@ public class DatasourceModel extends XulEventSourceAdapter implements IDatasourc
     }
   }
 
-  public ResultSetObject getResultSetObject() {
+  public BusinessData getBusinessData() {
     return object;
   }
 
-  public void setResultSetObject(ResultSetObject object) {
+  public void setBusinessData(BusinessData object) {
     this.object = object;
   }
 }

@@ -3,16 +3,17 @@ package org.pentaho.commons.metadata.mqleditor.editor.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.DatabaseColumnType;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource.EditType;
+import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.beans.ResultSetObject;
 import org.pentaho.commons.metadata.mqleditor.editor.DatasourceDialogListener;
 import org.pentaho.commons.metadata.mqleditor.editor.models.ConnectionModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.DatasourceModel;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
+import org.pentaho.pms.schema.v3.model.Column;
 import org.pentaho.ui.xul.XulComponent;
 import org.pentaho.ui.xul.XulException;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -76,7 +77,7 @@ public class DatasourceController extends AbstractXulEventHandler {
   XulDeck datasourceDeck = null;
   XulHbox datatypeRow = null;
   XulHbox columnHeaderRow = null;
-  XulHbox dataRow = null;
+  XulVbox dataRow = null;
   XulMenuList<XulMenupopup> dataTypeMenuList = null; 
   public DatasourceController() {
 
@@ -87,7 +88,7 @@ public class DatasourceController extends AbstractXulEventHandler {
     
     datatypeRow = (XulHbox) document.getElementById("datatypeRow"); //$NON-NLS-1$
     columnHeaderRow = (XulHbox) document.getElementById("columnHeaderRow"); //$NON-NLS-1$
-    dataRow = (XulHbox) document.getElementById("dataRow"); //$NON-NLS-1$
+    dataRow = (XulVbox) document.getElementById("dataRow"); //$NON-NLS-1$
     dataTypeMenuList = (XulMenuList<XulMenupopup>) document.getElementById("dataTypeMenuList"); //$NON-NLS-1$
     
     datasourceDeck = (XulDeck) document.getElementById("datasourceDeck"); //$NON-NLS-1$
@@ -261,54 +262,66 @@ public class DatasourceController extends AbstractXulEventHandler {
         try {
             
           service.getBusinessData(datasourceModel.getSelectedConnection(), datasourceModel.getQuery(), datasourceModel.getPreviewLimit(), 
-              new XulServiceCallback<ResultSetObject>(){
+              new XulServiceCallback<BusinessData>(){
   
                 public void error(String message, Throwable error) {
                   System.out.println(message);
                   error.printStackTrace();
                 }
   
-                public void success(ResultSetObject rs) {
+                public void success(BusinessData businessData) {
                       try {
+                        datasourceModel.setBusinessData(businessData);
                         // Remove any existing children
                         List<XulComponent> dataTypeRowList = datatypeRow.getChildNodes();
                         List<XulComponent> columnHeaderRowList = columnHeaderRow.getChildNodes();
                         List<XulComponent> dataRowList = dataRow.getChildNodes();
+                        List<Column> columns = businessData.getColumns();
+                        List<List<String>> data = businessData.getData();
+                        
                         for(int i=0;i<dataRowList.size();i++) {
                           datatypeRow.removeComponent(dataTypeRowList.get(i));
                           columnHeaderRow.removeComponent(columnHeaderRowList.get(i));
                           dataRow.removeComponent(dataRowList.get(i));
                         }
                         
-                        Object[] columns = rs.getColumns();
-                        Object[] columnTypes = rs.getColumnTypes();
-                        Object[][] data =  rs.getData();
-                        
                         // We will build this ui column by column
-                        for(int i=0;i<columnTypes.length;i++) {
+                        int columnCounter=1;
+                        for(Column column:columns) {
                           // Add the row for DataType. 
-                          datatypeRow.addComponent(createMenuList(columnTypes[i]));
+                          datatypeRow.addComponent(createMenuList(column.getDataType()));
                           XulTextbox textBox = (XulTextbox) document.createElement("textbox"); //$NON-NLS-1$
-                          textBox.setId("columnHeader" + (i+1));//$NON-NLS-1$
+                          textBox.setId("columnHeader" + (columnCounter++));//$NON-NLS-1$
                           textBox.setMultiline(false);
                           textBox.setHeight(5);
                           textBox.setWidth(10);
-                          textBox.setValue(columns[i] != null ? columns[i].toString() : "");//$NON-NLS-1$
+                          textBox.setValue(column.getName());
                           textBox.setFlex(1);
                           // Add the row for column header.
                           columnHeaderRow.addComponent(textBox);
-                          XulVbox vBox = (XulVbox) document.createElement("vbox");//$NON-NLS-1$
-                          vBox.setId("dataColumn"+ (i+1));//$NON-NLS-1$
-                          vBox.setFlex(1);
-                          for(int j=0;j<data.length;j++) {
-                            XulLabel label = (XulLabel) document.createElement("label");//$NON-NLS-1$
-                            label.setValue(data[j][i] != null ? data[j][i].toString(): "");//$NON-NLS-1$
-                            label.setId("dataColumn" + (i+1) + "Label");//$NON-NLS-1$ //$NON-NLS-2$
-                            vBox.addComponent(label);
+                        }
+                        columnCounter=1;
+                        for(int row=0;row <data.size();row++) {
+                          XulHbox hBox = (XulHbox) document.createElement("hbox");//$NON-NLS-1$
+                          hBox.setId("dataRowHbox"+ (row+1));//$NON-NLS-1$
+                          hBox.setFlex(1);
+                          List<String> currentRow = data.get(row);
+                          for(int col=0;col<currentRow.size();col++) {
+                            XulTextbox textBox = (XulTextbox) document.createElement("textbox"); //$NON-NLS-1$
+                            textBox.setMultiline(false);
+                            textBox.setHeight(5);
+                            textBox.setId("dataRow" + (col+1) + "Label");//$NON-NLS-1$ //$NON-NLS-2$
+                            textBox.setWidth(10);
+                            textBox.setValue(currentRow.get(col));
+                            textBox.setFlex(1);
+                            textBox.setDisabled(true);
+                            textBox.setAlign("center"); //$NON-NLS-1$
+                            hBox.addComponent(textBox);
                           }
                           // Add the row for data.
-                          dataRow.addComponent(vBox) ;                          
+                          dataRow.addComponent(hBox) ;                          
                         }
+
                       } catch(XulException xe) {
                         
                       }
@@ -346,24 +359,27 @@ public class DatasourceController extends AbstractXulEventHandler {
   }
   
   public void executeFinish() {
-    List columTypeList = new ArrayList();
-    List columHeaderList = new ArrayList();
+    // Get the business data from the model
+    BusinessData businessData = datasourceModel.getBusinessData();
+    // Get the columns from the business data
+    List<Column> columns = businessData.getColumns();
 
     List<XulComponent> dataTypeRowList = datatypeRow.getChildNodes();
     List<XulComponent> comp = columnHeaderRow.getChildNodes();
 
     for(int i=0;i<dataTypeRowList.size();i++) {
+      Column column = columns.get(i);
+      // Get the menu list from the data type row
       XulMenuList<XulMenupopup> component = (XulMenuList<XulMenupopup>) dataTypeRowList.get(i);
+      // Get the selected item from the data type user selected
       DatabaseColumnType type = DatabaseColumnType.values()[component.getSelectedIndex()];
-      columTypeList.add(type.toString());
-    }
-
-    for(int i=0;i<comp.size();i++) {
+      // get the colum header user changed
       XulTextbox textBox = (XulTextbox) comp.get(i);
-      columHeaderList.add(textBox.getValue());
+      // updated the data type and name of the column
+      column.setDataType(type.toString());
+      column.setName(textBox.getValue());
     }
-    ResultSetObject rso = new ResultSetObject(columTypeList.toArray(),columHeaderList.toArray(), null); 
-    service.createCategory(datasourceModel.getDatasourceName(), datasourceModel.getSelectedConnection(), datasourceModel.getQuery(), rso, new XulServiceCallback<Boolean>() {
+    service.createCategory(datasourceModel.getDatasourceName(), datasourceModel.getSelectedConnection(), datasourceModel.getQuery(), businessData, new XulServiceCallback<Boolean>() {
       public void error(String message, Throwable error) {
         System.out.println(message);
         error.printStackTrace();
@@ -437,6 +453,12 @@ public class DatasourceController extends AbstractXulEventHandler {
                           Object[][] data =  rs.getData();
                           String[] columns = rs.getColumns();
                           int columnCount = columns.length;
+                          // Remove any existing children
+                          List<XulComponent> previewResultsList = previewResultsTable.getChildNodes();
+                               
+                          for(int i=0;i<previewResultsList.size();i++) {
+                            previewResultsTable.removeComponent(previewResultsList.get(i));
+                          }
                           int curTreeColCount = previewResultsTable.getColumns().getColumnCount();
                           try{
                             if(columnCount > curTreeColCount){ // Add new Columns
@@ -520,8 +542,19 @@ public class DatasourceController extends AbstractXulEventHandler {
                           Object[][] data =  rs.getData();
                           Object[] columns = rs.getColumns();
                           int columnCount = columns.length;
-                          int curTreeColCount = previewResultsTable.getColumns().getColumnCount();
                           try{
+                            // Remove any existing children
+                            previewResultsTable.getRootChildren().removeAll();
+                            XulTreeCols treeColumns = previewResultsTable.getColumns();
+                            
+                            for(int i=0;i<treeColumns.getColumnCount();i++) {
+                              XulTreeCol col = treeColumns.getColumn(i);
+                              treeColumns.removeComponent(col);
+                            }
+                            treeColumns.addChild((XulTreeCol) document.createElement("treecol"));
+
+                            int curTreeColCount = previewResultsTable.getColumns().getColumnCount();
+                            
                             if(columnCount > curTreeColCount){ // Add new Columns
                               for(int i = (columnCount - curTreeColCount); i > 0; i--){
                                 previewResultsTable.getColumns().addColumn( (XulTreeCol) document.createElement("treecol"));

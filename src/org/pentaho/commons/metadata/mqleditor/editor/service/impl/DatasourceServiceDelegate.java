@@ -13,6 +13,7 @@ import java.util.Locale;
 import org.apache.commons.lang.StringUtils;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
+import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.beans.ResultSetObject;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
 import org.pentaho.commons.metadata.mqleditor.utils.ResultSetConverter;
@@ -239,48 +240,21 @@ public class DatasourceServiceDelegate {
     DatabaseMeta dbMeta = new DatabaseMeta(databaseName, databaseType, "JDBC", hostname, databaseName, port, connection.getUsername(), connection.getPassword()); //$NON-NLS-1$
     return new SQLDataSource(dbMeta, query);
   }
-  public ResultSetObject getBusinessData(IDatasource datasource) throws DatasourceServiceException {
+  public BusinessData getBusinessData(IDatasource datasource) throws DatasourceServiceException {
     return getBusinessData(datasource.getSelectedConnection(), datasource.getQuery(), datasource.getPreviewLimit());  }
  
-  public ResultSetObject getBusinessData(IConnection connection, String query, String previewLimit) throws DatasourceServiceException {
+  public BusinessData getBusinessData(IConnection connection, String query, String previewLimit) throws DatasourceServiceException {
     ResultSetObject rso = null;
     IDataSource dataSource = constructIDataSource(connection, query);
-    List<Column> columnList = getModelManagementService().getColumns(dataSource);
+    List<Column> columns = getModelManagementService().getColumns(dataSource);
     List<List<String>> data = getModelManagementService().getDataSample(dataSource, Integer.parseInt(previewLimit));
-    List<String> columnsTypeList = new ArrayList<String>();
-    List<String> columnsList = new ArrayList<String>();
-    for(Column column:columnList) {
-      columnsList.add(column.getName());
-      columnsTypeList.add(column.getDataType());
-    }
-    Object[][] dataObject = new String[data.size()][data.get(0).size()]; 
-    for(int i=0; i<data.size();i++) {
-      List<String> rows = data.get(i);
-      for(int j=0;j<rows.size();j++) {
-        dataObject[i][j] = rows.get(j);
-      }
-    }
-    
-    rso = new ResultSetObject(columnsTypeList.toArray(), columnsList.toArray(), dataObject);
-    
-    return rso;
+    return new BusinessData(columns, data);
   }
 
   
-  public Boolean createCategory(String categoryName, IConnection connection, String query, ResultSetObject rso) {
+  public Boolean createCategory(String categoryName, IConnection connection, String query, BusinessData businessData) {
     IDataSource dataSource = constructIDataSource(connection, query);
-    Object[] columnArray = rso.getColumns();
-    Object[] columnTypeArray = rso.getColumnTypes();
-    List<Column> columns = new ArrayList<Column>();
-    if(columnArray.length == columnTypeArray.length) {
-      for(int i=0;i<columnArray.length;i++) {
-       Column column = new Column();
-       column.setName(columnArray[i] != null ? columnArray[i].toString():null);
-       column.setDataType(columnTypeArray[i] != null ? columnTypeArray[i].toString():null);
-       columns.add(column);
-      }
-    }
-    getModelManagementService().createCategory(dataSource, categoryName, columns);
+    getModelManagementService().createCategory(dataSource, categoryName, businessData.getColumns());
     return true;
   }
   

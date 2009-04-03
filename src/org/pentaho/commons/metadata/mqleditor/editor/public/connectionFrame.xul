@@ -87,8 +87,8 @@
 			        </hbox>
 				    <hbox id="columnHeaderRow" style="overflow: auto">
 				    </hbox>
-				    <hbox id="dataRow" style="overflow: auto">
-				    </hbox>
+				    <vbox id="dataRow" style="overflow: auto">
+				    </vbox>
 				</vbox>
             </deck>
          </hbox>
