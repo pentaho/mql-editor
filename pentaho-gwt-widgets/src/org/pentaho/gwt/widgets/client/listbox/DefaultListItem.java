@@ -30,6 +30,7 @@ public class DefaultListItem  implements ListItem<Object> {
   public DefaultListItem(String str){
     this();
     this.text = str;
+    this.value = this.text;
     createWidgets();
   }
 
@@ -45,6 +46,7 @@ public class DefaultListItem  implements ListItem<Object> {
   public DefaultListItem(String str, Image img){
     this();
     this.text = str;
+    this.value = this.text;
     this.img = img;
     createWidgets();
   }

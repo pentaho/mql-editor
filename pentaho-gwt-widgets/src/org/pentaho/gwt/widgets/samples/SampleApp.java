@@ -77,6 +77,8 @@ public class SampleApp implements EntryPoint {
     list2.add(new DefaultListItem("Testing", new Image("16x16sample.png")));
     list2.addItem(new DefaultListItem("Testing 2", new CheckBox()));
 
+    list2.setEditable(true);
+
 
     RootPanel.get().add(new Label(""));
     RootPanel.get().add(new Label("Combo2: "));

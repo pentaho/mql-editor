@@ -49,6 +49,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
   private DropDownArrow arrow = new DropDownArrow();
   private int visible = 1;
   private int maxDropVisible = 15;
+  private boolean editable = false;
   private VerticalPanel listPanel = new VerticalPanel();
   private ScrollPanel listScrollPanel = new ScrollPanel();
 
@@ -239,12 +240,31 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
     }
   }
 
+  private TextBox editableTextBox;
   private void updateSelectedDropWidget(){
     Widget selectedWidget = new Label(""); //Default to show in case of empty sets?
-    if(selectedIndex >= 0){
-      selectedWidget = items.get(selectedIndex).getWidgetForDropdown();
-    } else if(items.size() > 0){
-      selectedWidget = items.get(0).getWidgetForDropdown();
+    if(editable == false){ // only show their widget if editable is false
+      if(selectedIndex >= 0){
+        selectedWidget = items.get(selectedIndex).getWidgetForDropdown();
+      } else if(items.size() > 0){
+        selectedWidget = items.get(0).getWidgetForDropdown();
+      }
+    } else {
+      editableTextBox = new TextBox(){
+        @Override
+        public void onBrowserEvent(Event event) {
+          event.cancelBubble(true);
+        }
+      };
+      if(selectedIndex >= 0){
+        editableTextBox.setText(items.get(selectedIndex).getValue().toString());
+      } else if(items.size() > 0){
+        editableTextBox.setText(items.get(0).getValue().toString());
+      }
+      editableTextBox.setWidth("100%");
+      editableTextBox.sinkEvents(Event.MOUSEEVENTS);
+      selectedWidget = editableTextBox;
+
     }
     dropGrid.setWidget(0,0, selectedWidget);
   }
@@ -617,4 +637,32 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
     }
   }
 
+  /**
+   * Setting editable to true allows the user to specify their own value for the combobox.
+   *
+   * @param editable
+   */
+  public void setEditable(boolean editable){
+    this.editable = editable;
+    this.updateUI();
+  }
+
+  public boolean isEditable(){
+    return this.editable;
+  }
+
+  /**
+   * Returns the user-entered value in the case of an editable drop-down
+   *
+   * @return Value user has entered
+   */
+  public String getValue(){
+    if(!editable){
+      return null;
+    } else {
+      return (editableTextBox != null)
+        ? editableTextBox.getText()
+        : null;
+    }
+  }
 }
