@@ -18,9 +18,9 @@ public class MQLEditorServiceDebugImpl implements MQLEditorService{
 
   public MQLEditorServiceDebugImpl(){
 
-    CWMStartup.loadCWMInstance("org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/repository.properties", "org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/PentahoCWM.xml"); //$NON-NLS-1$ //$NON-NLS-2$
-    CWMStartup.loadMetadata("org/pentaho/commons/metadata/mqleditor/sampleMql/metadata_steelwheels.xmi", "org/pentaho/commons/metadata/mqleditor/sampleMql"); //$NON-NLS-1$ //$NON-NLS-2$
-    CWM cwm = CWM.getInstance("org/pentaho/commons/metadata/mqleditor/sampleMql"); //$NON-NLS-1$
+    CWMStartup.loadCWMInstance("src/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/repository.properties", "src/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/PentahoCWM.xml"); //$NON-NLS-1$ //$NON-NLS-2$
+    CWMStartup.loadMetadata("src/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata_steelwheels.xmi", "src/org/pentaho/commons/metadata/mqleditor/sampleMql"); //$NON-NLS-1$ //$NON-NLS-2$
+    CWM cwm = CWM.getInstance("src/org/pentaho/commons/metadata/mqleditor/sampleMql"); //$NON-NLS-1$
 
     CwmSchemaFactory factory = new CwmSchemaFactory();
     
