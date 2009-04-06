@@ -123,6 +123,34 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
   public void add(ListItem listItem){
     this.addItem(listItem);
   }
+
+  /**
+   * Removes the passed in ListItem
+   *
+   * @param listItem item to remove
+   */
+  public void remove(ListItem listItem){
+    this.items.remove(listItem);
+    setSelectedIndex(0);
+
+    updateUI();
+  }
+
+  /**
+   * Removes all items from the list.
+   */
+  public void removeAll(){
+    this.items.clear();
+    this.selectedIndex = -1;
+    updateUI();
+  }
+
+  /**
+   * Removes all items from the list.
+   */
+  public void clear(){
+    removeAll();
+  }
   
   /**
    * Convenience method to support the more conventional method of child attachment
@@ -479,7 +507,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
    *
    * @return Integer index
    */
-  public int getSelectedIdex(){
+  public int getSelectedIndex(){
     return selectedIndex;
   }
 

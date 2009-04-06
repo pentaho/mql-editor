@@ -42,7 +42,7 @@ public class SampleApp implements EntryPoint {
 
     list.addChangeListener(new ChangeListener(){
       public void onChange(Widget widget) {
-        System.out.println(""+list.getSelectedIdex());
+        System.out.println(""+list.getSelectedIndex());
       }
     });
 
