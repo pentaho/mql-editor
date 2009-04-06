@@ -73,7 +73,7 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<
     fireCollectionChanged();
   }
 
-  public void moveChildUp(UIBusinessColumn column) {
+  public void moveChildUp(UIColumn column) {
     if (!this.children.contains(column)) {
       throw new IllegalArgumentException("child does not exist in collection");
     }
@@ -96,7 +96,7 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<
     fireCollectionChanged();
   }
 
-  public void moveChildDown(UIBusinessColumn column) {
+  public void moveChildDown(UIColumn column) {
     if (!this.children.contains(column)) {
       throw new IllegalArgumentException("child does not exist in collection");
     }
