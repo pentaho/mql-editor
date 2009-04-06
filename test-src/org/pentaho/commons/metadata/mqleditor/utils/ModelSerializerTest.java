@@ -1,9 +1,12 @@
 package org.pentaho.commons.metadata.mqleditor.utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,7 +75,7 @@ public class ModelSerializerTest {
 
     mqlQuery.setModel(model);
 
-    mqlQuery.setCols(columns);
+    mqlQuery.setColumns(columns);
 
     List<Condition> conditions = new ArrayList<Condition>();
     Condition cond = new Condition();
@@ -89,6 +92,14 @@ public class ModelSerializerTest {
     cond2.setValue("myvalue2");
     conditions.add(cond2);
 
+    Condition cond3 = new Condition();
+    cond3.setParameterized(true);
+    cond3.setColumn(column);
+    cond3.setCombinationType(CombinationType.OR);
+    cond3.setOperator(Operator.EQUAL);
+    cond3.setValue("myparameter");
+    conditions.add(cond3);
+
     mqlQuery.setConditions(conditions);
 
     List<Order> orders = new ArrayList<Order>();
@@ -99,6 +110,10 @@ public class ModelSerializerTest {
 
     mqlQuery.setOrders(orders);
 
+    Map<String, String> defaultParameterMap = new HashMap<String, String>();
+
+    defaultParameterMap.put("myparameter", "myvalue3");
+    mqlQuery.setDefaultParameterMap(defaultParameterMap);
   }
 
   @After
@@ -117,7 +132,10 @@ public class ModelSerializerTest {
         .getName());
     assertEquals(mqlQuery.getConditions().get(0).getColumn().getId(), deserialized.getConditions().get(0).getColumn()
         .getId());
+    assertEquals(mqlQuery.getConditions().get(0).isParameterized(), deserialized.getConditions().get(0)
+        .isParameterized());
 
+    assertEquals(mqlQuery.getDefaultParameterMap(), deserialized.getDefaultParameterMap());
   }
 
 }

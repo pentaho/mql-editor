@@ -145,6 +145,14 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
   public Condition getBean(){
     return bean;
   }
+
+  public boolean isParameterized() {
+    return bean.isParameterized();
+  }
+
+  public void setParameterized(boolean parameterized) {
+    bean.setParameterized(parameterized);
+  }
   
   
 }

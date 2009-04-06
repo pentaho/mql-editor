@@ -14,6 +14,9 @@ public interface MqlCondition<T extends MqlColumn> extends Serializable{
 
   public void setOperator(Operator operator);
 
+  /**
+   * @return if isParameterized() then the name of the parameter whose value will be substituted before query execution, else the literal value
+   */
   public String getValue();
 
   public void setValue(String value);
@@ -27,4 +30,12 @@ public interface MqlCondition<T extends MqlColumn> extends Serializable{
    */
   public String getCondition(String objName);
 
+  /**
+   * Value in this condition is not static, but rather supplied for each execution of this query.
+   * 
+   * @return true if value denotes parameter name rather than a literal value
+   */
+  public boolean isParameterized();
+
+  public void setParameterized(boolean parameterized);
 }

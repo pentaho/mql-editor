@@ -11,6 +11,7 @@ public class Condition implements MqlCondition<Column> {
   private Operator operator = Operator.EQUAL;
   private String value;
   private CombinationType comboType = CombinationType.AND;
+  private boolean parameterized;
   
   public Column getColumn() {
     return this.column;    
@@ -54,6 +55,14 @@ public class Condition implements MqlCondition<Column> {
 
   public String getCondition(String objName) {
     return this.operator.formatCondition(objName, this.value);
+  }
+
+  public boolean isParameterized() {
+    return parameterized;
+  }
+
+  public void setParameterized(boolean parameterized) {
+   this.parameterized = parameterized;   
   }
 
 }

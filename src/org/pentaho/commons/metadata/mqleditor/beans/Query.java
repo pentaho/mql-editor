@@ -1,9 +1,10 @@
 package org.pentaho.commons.metadata.mqleditor.beans;
 
-import org.pentaho.commons.metadata.mqleditor.MqlQuery;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 
 public class Query implements MqlQuery {
 
@@ -18,6 +19,11 @@ public class Query implements MqlQuery {
   private Model model;
 
   private String query;
+  
+  /**
+   * Keys are parameter names; values are defaults for those parameters.
+   */
+  private Map<String, String> defaultParameterMap;
   
   public Query() {
     super();
@@ -46,12 +52,7 @@ public class Query implements MqlQuery {
     return orders;
   }
 
-  public List<Column> getCols() {
-
-    return cols;
-  }
-
-  public void setCols(List<Column> cols) {
+  public void setColumns(List<Column> cols) {
 
     this.cols = cols;
   }
@@ -83,4 +84,13 @@ public class Query implements MqlQuery {
   public void setMqlStr(String query){
     this.query = query;
   }
+
+  public Map<String, String> getDefaultParameterMap() {  
+    return defaultParameterMap;
+  }
+
+  public void setDefaultParameterMap(Map<String, String> defaultParameterMap) {
+    this.defaultParameterMap = defaultParameterMap;
+  }
+  
 }

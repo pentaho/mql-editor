@@ -3,6 +3,7 @@ package org.pentaho.commons.metadata.mqleditor.editor.models;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Map;
 
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlModel;
@@ -272,7 +273,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
  
   public Query getMqlQuery(){
     Query query = new Query();
-    query.setCols(this.selectedColumns.getBeanCollection());
+    query.setColumns(this.selectedColumns.getBeanCollection());
     query.setConditions(this.conditions.getBeanCollection());
     query.setOrders(orders.getBeanCollection());
     query.setMqlStr(this.getMqlStr());
@@ -296,6 +297,12 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   public void setDomains(List<UIDomain> domains) {
     this.domains = domains;
     this.firePropertyChange("domains", null, domains); //$NON-NLS-1$
+  }
+
+
+  public Map<String, String> getDefaultParameterMap() {
+    // TODO mlowery not sure what goes here
+    throw new UnsupportedOperationException();
   }
   
   
