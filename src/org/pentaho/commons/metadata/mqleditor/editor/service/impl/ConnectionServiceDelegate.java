@@ -11,7 +11,6 @@ import java.util.Locale;
 import org.apache.commons.lang.StringUtils;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.editor.service.ConnectionServiceException;
-import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
 
 public class ConnectionServiceDelegate {
 

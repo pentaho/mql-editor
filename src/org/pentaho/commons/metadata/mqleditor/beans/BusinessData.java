@@ -14,7 +14,10 @@ public class BusinessData implements java.io.Serializable{
     this.columns = columns2;
     this.data = data;
   }
-  
+  public BusinessData()
+  {
+    
+  }
   public List<Column> getColumns() {
     return columns;
   }

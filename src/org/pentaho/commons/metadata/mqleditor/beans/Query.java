@@ -1,9 +1,9 @@
 package org.pentaho.commons.metadata.mqleditor.beans;
 
-import org.pentaho.commons.metadata.mqleditor.MqlQuery;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 
 public class Query implements MqlQuery {
 

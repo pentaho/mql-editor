@@ -11,17 +11,26 @@
   
     <inherits name="org.pentaho.ui.xul.Gwt"/>
     <source path="">
+        <exclude name="**/MQLEditorDebugGwtServlet*"/>
         <exclude name="**/SwingMqlEditor*"/>
         <exclude name="**/MQLEditorServiceDeligate*"/>
-        <exclude name="**/MQLEditorServiceImpl*"/>
-        <exclude name="**/MQLEditorDebugGwtServlet*"/>
-        <exclude name="**/MQLEditorServiceDebugImpl*"/>
         <exclude name="**/MQLEditorGwtServlet*"/>
-        <exclude name="**/MQLEditorServiceSyncImpl*"/>
+        <exclude name="**/MQLEditorServiceDebugImpl*"/>
         <exclude name="**/ModelSerializer*"/>
         <exclude name="**/CWMStartup*"/>
-        
-    </source>
+        <exclude name="**/ConnectionDebugGwtServlet*"/>
+        <exclude name="**/DatasourceDebugGwtServlet*"/>
+        <exclude name="**/SwingDatasourceEditor*"/>
+        <exclude name="**/ConnectionServiceDelegate*"/>
+        <exclude name="**/DatasourceServiceDelegate*"/>        
+        <exclude name="**/ConnectionGwtServlet*"/>
+        <exclude name="**/DatasourceGwtServlet*"/>
+        <exclude name="**/ConnectionServiceDebugImpl*"/>
+        <exclude name="**/DatasourceServiceDebugImpl*"/>
+        <exclude name="**/ArrayHeaderLocator*"/>
+        <exclude name="**/ResultSetConverter*"/>
+        <exclude name="**/ResultSetHelper*"/> 
+     </source>
     <public path="editor/public"/>
   <servlet path="/MqlService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.MQLEditorDebugGwtServlet" />
   

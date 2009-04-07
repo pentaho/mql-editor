@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.pentaho.commons.metadata.mqleditor.MqlCategory;
-import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Category;
+import org.pentaho.commons.metadata.mqleditor.beans.Column;
 
 public class UICategory extends AbstractModelNode<UIColumn> implements MqlCategory<UIColumn> {
   

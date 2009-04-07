@@ -4,9 +4,10 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
-import org.pentaho.commons.metadata.mqleditor.beans.ResultSetObject;
+import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
 import org.pentaho.commons.metadata.mqleditor.editor.service.impl.DatasourceServiceDelegate;
+import org.pentaho.commons.metadata.mqleditor.utils.ResultSetObject;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -47,4 +48,18 @@ public class DatasourceDebugGwtServlet extends RemoteServiceServlet implements D
   public ResultSetObject doPreview(IDatasource datasource) throws DatasourceServiceException{
     return SERVICE.doPreview(datasource);
   }
+
+  public Boolean createCategory(String categoryName, IConnection connection, String query, BusinessData businessData) throws DatasourceServiceException {
+    return SERVICE.createCategory(categoryName,connection, query, businessData);  }
+
+  public BusinessData getBusinessData(IConnection connection, String query, String previewLimit)   throws DatasourceServiceException {
+    return SERVICE.getBusinessData(connection, query, previewLimit);
+  }
+
+  public BusinessData getBusinessData(IDatasource datasource) throws DatasourceServiceException {
+    return SERVICE.getBusinessData(datasource);    
+  }
+
+  
+
 }

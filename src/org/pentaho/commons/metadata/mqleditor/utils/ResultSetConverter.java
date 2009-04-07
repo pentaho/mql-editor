@@ -19,7 +19,7 @@ public class ResultSetConverter extends java.lang.Object implements java.io.Seri
    private String[] metaData;// contains column name of the ResultSetConverter (ResultSetConverter metadata)
    private int[] columnTypes;// contains column type of the ResultSetConverter (ResultSetConverter metadata)
    private String[] columnTypeNames;// contains column type of the ResultSetConverter (ResultSetConverter metadata)
-   private Object[][] resultSet;// 2 dimensional array version of the ResultSetConverter
+   private String[][] resultSet;// 2 dimensional array version of the ResultSetConverter
    private ArrayHeaderLocator locator;
 
    /** Convert the ResultSetConverter to a ResultSetConverter.  Note the ResultSetConverter will be iterated through
@@ -32,12 +32,12 @@ public class ResultSetConverter extends java.lang.Object implements java.io.Seri
             metaData  = rsu.getColumnNames(rs.getMetaData());
             columnTypes = rsu.getColumnTypes(rs.getMetaData());
             columnTypeNames = rsu.getColumnTypesNames(rs.getMetaData());
-            resultSet = rsu.resultSetToObjectArray(rs);
+            resultSet = rsu.resultSetToStringArray(rs);
             locator   = new ArrayHeaderLocator(metaData, true);
    }
 
    /** A constructor that supports converting header and body arrays to a ResultSetConverter */
-   public ResultSetConverter(String[] metaData, int[] columnTypes, Object[][] resultSet) {
+   public ResultSetConverter(String[] metaData, int[] columnTypes, String[][] resultSet) {
        this.metaData=metaData;
        this.columnTypes=columnTypes;
        this.resultSet=resultSet;
@@ -47,7 +47,7 @@ public class ResultSetConverter extends java.lang.Object implements java.io.Seri
    }
 
    /** A constructor that supports converting header and body arrays to a ResultSetConverter */
-   public ResultSetConverter(String[] metaData, String[] columnTypesNames, Object[][] resultSet) {
+   public ResultSetConverter(String[] metaData, String[] columnTypesNames, String[][] resultSet) {
        this.metaData=metaData;
        this.columnTypeNames=columnTypesNames;
        this.resultSet=resultSet;
@@ -71,7 +71,7 @@ public class ResultSetConverter extends java.lang.Object implements java.io.Seri
    }
    
    /** Returns a 2 dimensional array containing the data in the ResultSetConverter */
-   public Object[][] getResultSet() {
+   public String[][] getResultSet() {
        return resultSet;
    }
 

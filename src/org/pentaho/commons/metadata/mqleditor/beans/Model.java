@@ -1,9 +1,9 @@
 package org.pentaho.commons.metadata.mqleditor.beans;
 
-import org.pentaho.commons.metadata.mqleditor.MqlModel;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.pentaho.commons.metadata.mqleditor.MqlModel;
 
 public class Model implements MqlModel<Category> {
 

@@ -136,14 +136,21 @@ public class ResultSetHelper extends java.lang.Object implements java.io.Seriali
    * length of the string array in the first element of the List since:</p>
    *    1. The length of all arrays in the List must be the same.<br>
    */
-  public Object[][] listToObjectArray(List list) {
+  public String[][] listToStringArray(List list, int colCount) {
+        String[][] resultArr = null; 
         if (list==null || list.isEmpty())
           return null;
         else {
-            Object[][] resultArr = new Object[list.size()][];
-            list.toArray(resultArr);
-            return resultArr;
+          resultArr = new String[list.size()][colCount];
+          for(int i=0;i<list.size();i++) {
+            Object[] valueArray = (Object[]) list.get(i);
+            for(int j=0;j<colCount;j++) {
+              Object value = valueArray[j];
+              resultArr[i][j] = value != null ? value.toString() : "";
+            }
+          }
         }
+        return resultArr;
   }
   
 
@@ -151,10 +158,11 @@ public class ResultSetHelper extends java.lang.Object implements java.io.Seriali
    * The following method simply takes the ResultSetConverter and converts it to a two dimensional
    * array of Objects containing data.
    */
-   public Object[][] resultSetToObjectArray(ResultSet resultSet) throws SQLException {
+   public String[][] resultSetToStringArray(ResultSet resultSet) throws SQLException {
         List list = new ArrayList(); 
         resultSetToList(list, resultSet);
-        Object[][] arr=listToObjectArray(list); 
+        int colCount = resultSet.getMetaData().getColumnCount();
+        String[][] arr= listToStringArray(list, colCount); 
         return arr;
   }
   
@@ -268,6 +276,8 @@ public class ResultSetHelper extends java.lang.Object implements java.io.Seriali
         }
     }
     
+    
+    
  public static void main(String[] args) {
      Object[][] data={{"key1","value1","ignored"},{"key2","value2", "ignored"},};
      Object[] header={"fname","lname"};
@@ -279,9 +289,9 @@ public class ResultSetHelper extends java.lang.Object implements java.io.Seriali
      System.out.println(map);
      resultSetHelper.objectArrayToList(list, data); // add data to list
      resultSetHelper.objectArrayToList(list, data); // add data to list again
-     data=resultSetHelper.listToObjectArray(list);  // get both arrays out of list
+     data=resultSetHelper.listToStringArray(list, header.length);  // get both arrays out of list
      resultSetHelper.objectArrayToList(list, data); // add data to list again
-     data=resultSetHelper.listToObjectArray(list);  // get both arrays out of list
+     data=resultSetHelper.listToStringArray(list, header.length);  // get both arrays out of list
  }
 }
 

@@ -9,34 +9,30 @@ This module serves as the Debuging environment and default implementation for in
   <inherits name='com.googlecode.gwtx.Java'/>
   <inherits name='com.google.gwt.xml.XML'/>
   <inherits name="org.pentaho.gwt.widgets.Widgets"/>
-  
+  <inherits name="org.pentaho.pms.schema.v3.Column"/>
     <inherits name="org.pentaho.ui.xul.Gwt"/>
     <source path="">
+        <exclude name="**/MQLEditorDebugGwtServlet*"/>
         <exclude name="**/SwingMqlEditor*"/>
-        <exclude name="**/MQLEditorServiceImpl*"/>
         <exclude name="**/MQLEditorServiceDeligate*"/>
         <exclude name="**/MQLEditorGwtServlet*"/>
-        <exclude name="**/MQLEditorServiceSyncImpl*"/>
         <exclude name="**/MQLEditorServiceDebugImpl*"/>
         <exclude name="**/ModelSerializer*"/>
         <exclude name="**/CWMStartup*"/>
+        <exclude name="**/ConnectionDebugGwtServlet*"/>
+        <exclude name="**/DatasourceDebugGwtServlet*"/>
         <exclude name="**/SwingDatasourceEditor*"/>
-        <exclude name="**/ConnectionServiceImpl*"/>
-        <exclude name="**/DatasourceServiceImpl*"/>
         <exclude name="**/ConnectionServiceDelegate*"/>
         <exclude name="**/DatasourceServiceDelegate*"/>        
         <exclude name="**/ConnectionGwtServlet*"/>
         <exclude name="**/DatasourceGwtServlet*"/>
-        <exclude name="**/ConnectionServiceSyncImpl*"/>
-        <exclude name="**/DatasourceServiceSyncImpl*"/> 
         <exclude name="**/ConnectionServiceDebugImpl*"/>
         <exclude name="**/DatasourceServiceDebugImpl*"/>
         <exclude name="**/ArrayHeaderLocator*"/>
         <exclude name="**/ResultSetConverter*"/>
         <exclude name="**/ResultSetHelper*"/>        
-      
     </source>
-    <public path="datasourceeditor/public"/>
+    <public path="editor/public"/>
     <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.JavascriptDatasourceEditor"/>
     
   <servlet path="/ConnectionService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.ConnectionDebugGwtServlet" />

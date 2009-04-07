@@ -40,4 +40,42 @@
       <property name="gwt-module.path" value="org.pentaho.commons.metadata.mqleditor.JavascriptEditor" />
     </ant>
   </target>
+	<target name="gwt-package" depends="gwt-compile">
+		<zip destfile="${gwt.package.zipfile}" compress="true">
+			<zipfileset dir="${build.jars.dir}" prefix="lib" />
+			<zipfileset dir="lib" excludes="**/test/*" prefix="lib">
+				<!-- temporary fix to exclude jar slipping through the cracks and making it this far that shouldn't -->
+				<exclude name="**/gwt-user*.jar" />
+				<exclude name="**/gwt-dev*.jar" />
+				<exclude name="**/hsqldb*.jar" />
+				<exclude name="**/mysql*.jar" />
+			</zipfileset>
+			<zipfileset dir="build-res" includes="*.bat" prefix="${admin-console.name}" />
+			<zipfileset dir="build-res" includes="*.sh" prefix="${admin-console.name}" />
+		</zip>
+	</target>
+
+	  <target name="assemble">
+	    <mkdir dir="${stage.dir}" />
+	  	<mkdir dir="${stage.dir}/lib" />
+	    <copy todir="${stage.dir}/lib">
+			<fileset dir="${dist.dir}"/>
+			<fileset dir="lib"/>
+	   	</copy>
+	    <copy todir="${stage.dir}">	   
+			<fileset dir="build-res" includes="*.bat" />
+			<fileset dir="build-res" includes="*.sh"/>
+	    </copy>
+	    <chmod perm="a+x" dir="${stage.dir}" includes="**/*.sh" />
+	  </target>
+
+	  <target name="package" depends="package-zip" />
+
+	  <target name="package-zip" depends="jar, assemble">
+	    <zip destfile="${dist.dir}/${ivy.artifact.id}-${project.revision}.zip">
+		     <zipfileset dir="${stage.dir}" prefix="${ivy.artifact.id}"/>
+	    </zip>
+    	<delete dir="${stage.dir}"/>
+	  </target>
+
 </project>

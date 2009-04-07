@@ -3,6 +3,7 @@ package org.pentaho.commons.metadata.mqleditor.editor.service.gwt;
 import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.IConnection;
+import org.pentaho.commons.metadata.mqleditor.editor.service.ConnectionServiceException;
 import org.pentaho.commons.metadata.mqleditor.editor.service.impl.ConnectionServiceDelegate;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -35,5 +36,9 @@ public class ConnectionDebugGwtServlet extends RemoteServiceServlet implements C
     
   public Boolean deleteConnection(String name) {
     return SERVICE.deleteConnection(name);    
+  }
+
+  public Boolean testConnection(IConnection connection)  throws ConnectionServiceException{
+    return SERVICE.testConnection(connection);
   }
 }

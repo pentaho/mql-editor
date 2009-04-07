@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.editor.service.ConnectionService;
-import org.pentaho.commons.metadata.mqleditor.editor.service.gwt.ConnectionGwtService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.gwt.ConnectionGwtServiceAsync;
 import org.pentaho.ui.xul.XulServiceCallback;
 

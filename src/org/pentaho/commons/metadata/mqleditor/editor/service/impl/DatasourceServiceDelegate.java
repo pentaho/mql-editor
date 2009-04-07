@@ -14,9 +14,9 @@ import org.apache.commons.lang.StringUtils;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
-import org.pentaho.commons.metadata.mqleditor.beans.ResultSetObject;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
 import org.pentaho.commons.metadata.mqleditor.utils.ResultSetConverter;
+import org.pentaho.commons.metadata.mqleditor.utils.ResultSetObject;
 import org.pentaho.di.core.database.DatabaseMeta;
 import org.pentaho.pms.schema.v3.model.Column;
 import org.pentaho.pms.schema.v3.physical.IDataSource;
@@ -96,6 +96,7 @@ public class DatasourceServiceDelegate {
         throw new DatasourceServiceException("Query not valid"); //$NON-NLS-1$
       }
     } catch (SQLException e) {
+      e.printStackTrace();
       throw new DatasourceServiceException("Query validation failed", e); //$NON-NLS-1$
     } finally {
       try {
@@ -223,15 +224,28 @@ public class DatasourceServiceDelegate {
     return true;
   }
 
-  private IDataSource constructIDataSource(IConnection connection, String query) {
+  private IDataSource constructIDataSource(IConnection connection, String query) throws DatasourceServiceException{
     final String SLASH = "/"; //$NON-NLS-1$
     final String DOUBLE_SLASH = "//";//$NON-NLS-1$
     final String COLON = ":";//$NON-NLS-1$
     String databaseType = null;
+    String databaseName = null;
+    String hostname = null;
+    String port = null;
     String url = connection.getUrl();
-    String databaseName = url.substring(url.lastIndexOf(SLASH)+SLASH.length() ,url.length());
-    String hostname = url.substring(url.lastIndexOf(DOUBLE_SLASH)+DOUBLE_SLASH.length(), url.indexOf(COLON,url.lastIndexOf(DOUBLE_SLASH)));
-    String port = url.substring(url.indexOf(COLON,url.lastIndexOf(DOUBLE_SLASH)) + SLASH.length(), url.lastIndexOf(SLASH));
+    try {
+    int lastIndexOfSlash = url.lastIndexOf(SLASH); 
+    if((lastIndexOfSlash >= 0) &&( lastIndexOfSlash +SLASH.length() <=url.length())) {
+      databaseName = url.substring(lastIndexOfSlash+SLASH.length() ,url.length());
+    }
+    int lastIndexOfDoubleSlash =  url.lastIndexOf(DOUBLE_SLASH);
+    int indexOfColonFromDoubleSlash = url.indexOf(COLON,lastIndexOfDoubleSlash);
+    if(lastIndexOfDoubleSlash >=  0 && lastIndexOfDoubleSlash+DOUBLE_SLASH.length() <= url.length()) {
+      hostname = url.substring(lastIndexOfDoubleSlash+DOUBLE_SLASH.length(), indexOfColonFromDoubleSlash);
+    }
+    if(indexOfColonFromDoubleSlash >=0 && indexOfColonFromDoubleSlash + SLASH.length() <= url.length() &&  lastIndexOfSlash >=0 && lastIndexOfSlash <= url.length()) {
+      port = url.substring(indexOfColonFromDoubleSlash + SLASH.length(), lastIndexOfSlash);
+    }
     if(connection.getDriverClass().equals("org.hsqldb.jdbcDriver")) {//$NON-NLS-1$
       databaseType = "Hypersonic";//$NON-NLS-1$
     } else if(connection.getDriverClass().equals("com.mysql.jdbc.Driver") || connection.getDriverClass().equals("org.git.mm.mysql.Driver")){ //$NON-NLS-1$ //$NON-NLS-2$ 
@@ -239,20 +253,22 @@ public class DatasourceServiceDelegate {
     }
     DatabaseMeta dbMeta = new DatabaseMeta(databaseName, databaseType, "JDBC", hostname, databaseName, port, connection.getUsername(), connection.getPassword()); //$NON-NLS-1$
     return new SQLDataSource(dbMeta, query);
+    } catch(Exception e) {
+      throw new DatasourceServiceException(e);
+    }
   }
   public BusinessData getBusinessData(IDatasource datasource) throws DatasourceServiceException {
     return getBusinessData(datasource.getSelectedConnection(), datasource.getQuery(), datasource.getPreviewLimit());  }
  
   public BusinessData getBusinessData(IConnection connection, String query, String previewLimit) throws DatasourceServiceException {
-    ResultSetObject rso = null;
-    IDataSource dataSource = constructIDataSource(connection, query);
-    List<Column> columns = getModelManagementService().getColumns(dataSource);
-    List<List<String>> data = getModelManagementService().getDataSample(dataSource, Integer.parseInt(previewLimit));
-    return new BusinessData(columns, data);
+      IDataSource dataSource = constructIDataSource(connection, query);
+      List<Column> columns = getModelManagementService().getColumns(dataSource);
+      List<List<String>> data = getModelManagementService().getDataSample(dataSource, Integer.parseInt(previewLimit));
+      return new BusinessData(columns, data);
   }
 
   
-  public Boolean createCategory(String categoryName, IConnection connection, String query, BusinessData businessData) {
+  public Boolean createCategory(String categoryName, IConnection connection, String query, BusinessData businessData) throws DatasourceServiceException{
     IDataSource dataSource = constructIDataSource(connection, query);
     getModelManagementService().createCategory(dataSource, categoryName, businessData.getColumns());
     return true;

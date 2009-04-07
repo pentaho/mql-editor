@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.pentaho.commons.metadata.mqleditor.MqlBusinessTable;
-import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessTable;
+import org.pentaho.commons.metadata.mqleditor.beans.Column;
 
 public class UIBusinessTable extends AbstractModelNode<UIColumn> implements MqlBusinessTable<UIColumn> {
 

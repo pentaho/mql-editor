@@ -7,12 +7,12 @@ import org.pentaho.commons.metadata.mqleditor.DatabaseColumnType;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource.EditType;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
-import org.pentaho.commons.metadata.mqleditor.beans.ResultSetObject;
 import org.pentaho.commons.metadata.mqleditor.editor.DatasourceDialogListener;
 import org.pentaho.commons.metadata.mqleditor.editor.models.ConnectionModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.DatasourceModel;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
+import org.pentaho.commons.metadata.mqleditor.utils.ResultSetObject;
 import org.pentaho.pms.schema.v3.model.Column;
 import org.pentaho.ui.xul.XulComponent;
 import org.pentaho.ui.xul.XulException;
@@ -21,7 +21,6 @@ import org.pentaho.ui.xul.binding.Binding;
 import org.pentaho.ui.xul.binding.BindingConvertor;
 import org.pentaho.ui.xul.binding.BindingFactory;
 import org.pentaho.ui.xul.components.XulButton;
-import org.pentaho.ui.xul.components.XulLabel;
 import org.pentaho.ui.xul.components.XulMenuList;
 import org.pentaho.ui.xul.components.XulMenuitem;
 import org.pentaho.ui.xul.components.XulMessageBox;
@@ -254,11 +253,6 @@ public class DatasourceController extends AbstractXulEventHandler {
   }
   public void executeNext() {
     if(allInputsSatisfiedForNext()) {
-      if(datasourceDeck.getSelectedIndex()== CONNECTION_DECK) {
-        datasourceDeck.setSelectedIndex(MODELLING_DECK);
-        finishButton.setDisabled(false);
-        backButton.setDisabled(false);
-        nextButton.setDisabled(true);
         try {
             
           service.getBusinessData(datasourceModel.getSelectedConnection(), datasourceModel.getQuery(), datasourceModel.getPreviewLimit(), 
@@ -271,6 +265,12 @@ public class DatasourceController extends AbstractXulEventHandler {
   
                 public void success(BusinessData businessData) {
                       try {
+                        if(datasourceDeck.getSelectedIndex()== CONNECTION_DECK) {
+                          datasourceDeck.setSelectedIndex(MODELLING_DECK);
+                          finishButton.setDisabled(false);
+                          backButton.setDisabled(false);
+                          nextButton.setDisabled(true);
+                        }
                         datasourceModel.setBusinessData(businessData);
                         // Remove any existing children
                         List<XulComponent> dataTypeRowList = datatypeRow.getChildNodes();
@@ -279,11 +279,16 @@ public class DatasourceController extends AbstractXulEventHandler {
                         List<Column> columns = businessData.getColumns();
                         List<List<String>> data = businessData.getData();
                         
-                        for(int i=0;i<dataRowList.size();i++) {
+                        for(int i=0;i<dataTypeRowList.size();i++) {
                           datatypeRow.removeComponent(dataTypeRowList.get(i));
+                        }
+                        for(int i=0;i<columnHeaderRowList.size();i++) {
                           columnHeaderRow.removeComponent(columnHeaderRowList.get(i));
+                        }
+                        for(int i=0;i<dataRowList.size();i++) {
                           dataRow.removeComponent(dataRowList.get(i));
                         }
+                        
                         
                         // We will build this ui column by column
                         int columnCounter=1;
@@ -328,12 +333,17 @@ public class DatasourceController extends AbstractXulEventHandler {
                 }
             });
           } catch (DatasourceServiceException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            try {
+              XulMessageBox box = (XulMessageBox) document.createElement("messagebox");
+              box.setTitle("Business Column Retrieval Failed");
+              box.setMessage("Unable to retrieve business columns and data." + e.getLocalizedMessage());
+              box.setHeight(50);
+              box.setWidth(100);
+              box.open();
+            } catch(Exception ee) {
+              
+            }
           }
-        
-        
-      }
     } else {
       displayMissingInputDialog();
     }
@@ -344,7 +354,7 @@ public class DatasourceController extends AbstractXulEventHandler {
       box.setTitle("Missing Inputs");
       box.setMessage("Some of the required inputs are missing.");
       box.setHeight(50);
-      box.setHeight(100);
+      box.setWidth(100);
       box.open();
     } catch(Exception e){
     }
@@ -379,6 +389,7 @@ public class DatasourceController extends AbstractXulEventHandler {
       column.setDataType(type.toString());
       column.setName(textBox.getValue());
     }
+    try {
     service.createCategory(datasourceModel.getDatasourceName(), datasourceModel.getSelectedConnection(), datasourceModel.getQuery(), businessData, new XulServiceCallback<Boolean>() {
       public void error(String message, Throwable error) {
         System.out.println(message);
@@ -386,9 +397,31 @@ public class DatasourceController extends AbstractXulEventHandler {
       }
 
       public void success(Boolean value) {
+        try {
+        XulMessageBox box = (XulMessageBox) document.createElement("messagebox");
+        box.setTitle("Category Creation Successful");
+        box.setMessage("Successfully created category.");
+        box.setHeight(50);
+        box.setWidth(100);
+        box.open();
+        } catch(XulException xule) {
+          
+        }
         datasourceDialog.hide();
       }
     });
+    } catch(DatasourceServiceException e) {
+      try {
+        XulMessageBox box = (XulMessageBox) document.createElement("messagebox");
+        box.setTitle("Category creation failed");
+        box.setMessage("Unable to create category." + e.getLocalizedMessage());
+        box.setHeight(50);
+        box.setWidth(100);
+        box.open();
+      } catch(Exception ee) {
+        
+      }
+    }
   }
   public void editQuery() {
     
@@ -435,7 +468,7 @@ public class DatasourceController extends AbstractXulEventHandler {
     removeConfirmationDialog.hide();
   }
   
-  /*public void displayPreview() {
+ /* public void displayPreview() {
 
     if(!allInputsSatisfiedForNext()) {
       displayMissingInputDialog();
@@ -451,7 +484,7 @@ public class DatasourceController extends AbstractXulEventHandler {
   
                     public void success(ResultSetObject rs) {
                           Object[][] data =  rs.getData();
-                          String[] columns = rs.getColumns();
+                          Object[] columns = rs.getColumns();
                           int columnCount = columns.length;
                           // Remove any existing children
                           List<XulComponent> previewResultsList = previewResultsTable.getChildNodes();
@@ -481,7 +514,7 @@ public class DatasourceController extends AbstractXulEventHandler {
                           XulTreeCols treeCols = previewResultsTable.getColumns();
                           for(int i=0;i<previewResultsTable.getColumns().getColumnCount();i++) {
                            XulTreeCol treeCol = treeCols.getColumn(i);
-                           treeCol.setLabel(columns[i]);
+                           treeCol.setLabel(columns[i] != null ? columns[i].toString() : "");
                            treeCol.setFlex(1);
                           }
                           
@@ -539,8 +572,9 @@ public class DatasourceController extends AbstractXulEventHandler {
                     }
   
                     public void success(ResultSetObject rs) {
-                          Object[][] data =  rs.getData();
-                          Object[] columns = rs.getColumns();
+                          String[][] data =  rs.getData();
+                          String[] columns = rs.getColumns();
+                          System.out.println("columns");
                           int columnCount = columns.length;
                           try{
                             // Remove any existing children
@@ -585,7 +619,7 @@ public class DatasourceController extends AbstractXulEventHandler {
   
                               for (int j=0; j<columnCount; j++) {
                                 XulTreeCell cell = (XulTreeCell) document.createElement("treecell");
-                                cell.setLabel(data[i][j] != null ? data[i][j].toString(): "");
+                                cell.setLabel(data[i][j]);
                                 row.addCell(cell);
                               }
                               
@@ -606,7 +640,7 @@ public class DatasourceController extends AbstractXulEventHandler {
               box.setTitle("Preview generation failed");
               box.setMessage("Unable to generate preview." + e.getLocalizedMessage());
               box.setHeight(50);
-              box.setHeight(100);
+              box.setWidth(100);
               box.open();
             } catch(Exception ee) {
               

@@ -1,11 +1,12 @@
 package org.pentaho.commons.metadata.mqleditor.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
 
-public class Datasource implements IDatasource{
+public class Datasource implements IDatasource, Serializable{
 
   private String datasourceName;
   private String query;
