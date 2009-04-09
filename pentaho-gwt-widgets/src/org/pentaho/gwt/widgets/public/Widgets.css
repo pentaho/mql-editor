@@ -648,6 +648,14 @@ body{
   background-color: white;
 }
 
+
+.custom-list td{
+ padding: 0px;
+  margin: 0px;
+  border: none;
+}
+
+
 .drop-popup{
   background: white;
   border: 1px solid gray;

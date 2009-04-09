@@ -50,8 +50,8 @@ public class SampleApp implements EntryPoint {
     list.setWidth("100%");
     list.setHeight("100%");
 
-    RootPanel.get().add(new Label("Combo: "));
-    RootPanel.get().add(list);
+    //RootPanel.get().add(new Label("Combo: "));
+    //RootPanel.get().add(list);
 
 
     final CustomListBox list2 = new CustomListBox();
@@ -80,9 +80,9 @@ public class SampleApp implements EntryPoint {
     list2.setEditable(true);
 
 
-    RootPanel.get().add(new Label(""));
-    RootPanel.get().add(new Label("Combo2: "));
-    RootPanel.get().add(list2);
+    //RootPanel.get().add(new Label(""));
+    //RootPanel.get().add(new Label("Combo2: "));
+    //RootPanel.get().add(list2);
 
     
     CustomListBox list3 = new CustomListBox();
@@ -96,10 +96,10 @@ public class SampleApp implements EntryPoint {
     dli.setValue("Value of Testing 2");
     list3.add(dli);
 
-    RootPanel.get().add(new Label(""));
-    RootPanel.get().add(new Label("Combo3: "));
-    RootPanel.get().add(list3);
-    
+    //RootPanel.get().add(new Label(""));
+    //RootPanel.get().add(new Label("Combo3: "));
+    //RootPanel.get().add(list3);
+
     Label showSelectedLabel = new Label("Selected item's value:");
     
     final TextBox showSelectedTextBox = new TextBox();
@@ -113,7 +113,15 @@ public class SampleApp implements EntryPoint {
         showSelectedTextBox.setText(val);
       }
     }});
-    
+    final CustomListBox list4 = new CustomListBox();
+
+    list4.addItem("Albert");
+    list4.setWidth("170px");
+
+    RootPanel.get().add(new Label(""));
+    RootPanel.get().add(new Label("Combo4: "));
+    RootPanel.get().add(list4);
+
     RootPanel.get().add(showSelectedLabel);
     RootPanel.get().add(showSelectedTextBox);
   }
