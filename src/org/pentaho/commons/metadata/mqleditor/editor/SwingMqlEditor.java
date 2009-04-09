@@ -31,19 +31,21 @@ import org.pentaho.ui.xul.swing.SwingXulRunner;
 public class SwingMqlEditor {
 
   private static Log log = LogFactory.getLog(SwingMqlEditor.class);
-  
-  public SwingMqlEditor(MQLEditorService service){
+  private MainController mainController = new MainController();
+  private Workspace workspace = new Workspace();
+
+  public SwingMqlEditor(MQLEditorService service, List<String> availableFilters){
     try{
       XulDomContainer container = new SwingXulLoader().loadXul("org/pentaho/commons/metadata/mqleditor/editor/public/mainFrame.xul");
     
       final XulRunner runner = new SwingXulRunner();
       runner.addContainer(container);
-      
+
+      this.setAvailableFilters(availableFilters);
       
       BindingFactory bf = new DefaultBindingFactory();
       bf.setDocument(container.getDocumentRoot());
-      
-      final MainController mainController = new MainController();
+
       mainController.setBindingFactory(bf);
       container.addEventHandler(mainController);
       
@@ -79,8 +81,7 @@ public class SwingMqlEditor {
           for(MqlDomain d : retVal){
             uiDomains.add(new UIDomain((Domain) d));
           }
-          
-          Workspace workspace = new Workspace();
+
 
           workspace.setDomains(uiDomains);
 
@@ -107,7 +108,16 @@ public class SwingMqlEditor {
   }
 
   public static void main(String[] args){
-    new SwingMqlEditor(new MQLEditorServiceDebugImpl());
+    List<String> filters = new ArrayList<String>();
+    filters.add("Filter 1");
+    filters.add("Filter 2");
+    filters.add("Filter 3");
+    filters.add("Filter 4");
+    SwingMqlEditor editor = new SwingMqlEditor(new MQLEditorServiceDebugImpl(), filters);
+  }
+
+  public void setAvailableFilters(List<String> filters){
+    this.workspace.setAvailableFilters(filters);
   }
   
 }

@@ -17,9 +17,9 @@ public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQ
 
   public MQLEditorDebugGwtServlet() {
 
-    CWMStartup.loadCWMInstance("src/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/repository.properties", "src/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/PentahoCWM.xml"); //$NON-NLS-1$ //$NON-NLS-2$
-    CWMStartup.loadMetadata("src/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata_steelwheels.xmi", "src/org/pentaho/commons/metadata/mqleditor/sampleMql"); //$NON-NLS-1$ //$NON-NLS-2$
-    CWM cwm = CWM.getInstance("src/org/pentaho/commons/metadata/mqleditor/sampleMql");
+    CWMStartup.loadCWMInstance("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/repository.properties", "/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/PentahoCWM.xml"); //$NON-NLS-1$ //$NON-NLS-2$
+    CWM cwm = CWMStartup.loadMetadata("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata_steelwheels.xmi", "/org/pentaho/commons/metadata/mqleditor/sampleMql"); //$NON-NLS-1$ //$NON-NLS-2$
+
     List<CWM> cwms = new ArrayList<CWM>();
     cwms.add(cwm);
     CwmSchemaFactory factory = new CwmSchemaFactory();
@@ -34,8 +34,8 @@ public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQ
     return deligate.getMetadataDomains();
   }
 
-  public String saveQuery(MqlModel model, List<MqlColumn> cols, List<MqlCondition> conditions, List<MqlOrder> orders) {
-    return deligate.saveQuery(model, cols, conditions, orders);
+  public String saveQuery(MqlQuery model) {
+    return deligate.saveQuery(model);
   }
 
   public String serializeModel(MqlQuery query) {

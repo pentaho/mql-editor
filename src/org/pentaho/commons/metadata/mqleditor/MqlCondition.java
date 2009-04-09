@@ -38,4 +38,9 @@ public interface MqlCondition<T extends MqlColumn> extends Serializable{
   public boolean isParameterized();
 
   public void setParameterized(boolean parameterized);
+
+
+  public void setDefaultValue(String val);
+  
+  public String getDefaultValue();
 }

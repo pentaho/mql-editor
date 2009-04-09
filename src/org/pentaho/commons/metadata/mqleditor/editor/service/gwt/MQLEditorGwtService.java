@@ -12,7 +12,7 @@ public interface MQLEditorGwtService extends RemoteService{
 
   List<MqlDomain> getMetadataDomains();
   MqlDomain getDomainByName(String name);
-  String saveQuery(MqlModel model, List<MqlColumn> cols, List<MqlCondition> conditions, List<MqlOrder> orders);
+  String saveQuery(MqlQuery model);
   String serializeModel(MqlQuery query);
   MqlQuery deserializeModel(String serializedQuery);
   String[][] getPreviewData(String query, int page, int limit);

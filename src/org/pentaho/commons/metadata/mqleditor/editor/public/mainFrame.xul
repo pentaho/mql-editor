@@ -117,7 +117,8 @@
               <treecol label="${column}" flex="1" pen:binding="columnName" />
               <treecol label="${comparison}" flex="1" pen:binding="operator" type="combobox"
                 pen:combobinding="comparisons" editable="true" />
-              <treecol label="${value}" flex="1" pen:binding="value" editable="true" type="text" />
+              <treecol label="${value}" flex="1" pen:binding="value" editable="true" type="editablecombobox" pen:combobinding="availableFilters"/>
+              <treecol label="${default}" flex="1" pen:binding="defaultValue" editable="true" type="text" pen:disabledbinding="defaultDisabled" />
             </treecols>
             <treechildren />
           </tree>

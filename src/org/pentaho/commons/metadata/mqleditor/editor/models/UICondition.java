@@ -1,9 +1,6 @@
 package org.pentaho.commons.metadata.mqleditor.editor.models;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.CombinationType;
@@ -15,7 +12,8 @@ import org.pentaho.ui.xul.XulEventSourceAdapter;
 public class UICondition extends XulEventSourceAdapter implements MqlCondition<UIColumn> {
   
   private Condition bean;
-  
+  private String defaultValue;
+
   public UICondition(){
     bean = new Condition();
   }
@@ -83,6 +81,7 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
 
   public void setValue(String value) {
     bean.setValue(value);
+    this.setParameterized(value != null && value.contains("{") && value.contains("}"));
   }
 
 
@@ -151,10 +150,38 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
   }
 
   public void setParameterized(boolean parameterized) {
+    this.firePropertyChange("parameterized", bean.isParameterized(), parameterized);
     bean.setParameterized(parameterized);
+    this.firePropertyChange("defaultDisabled", null, isDefaultDisabled());
+    if(!parameterized){
+      setDefaultValue("");
+    }
+  }
+
+  public boolean isDefaultDisabled(){
+    return ! bean.isParameterized();
+  }
+
+  public void setDefaultValue(String val){
+    this.firePropertyChange("defaultValue", getDefaultValue(), val);
+    bean.setDefaultValue(val);
   }
   
-  
+  public String getDefaultValue(){
+    return bean.getDefaultValue();
+  }
+
+  private List<String> availableFilters = new ArrayList<String>();
+  public Vector getAvailableFilters(){
+    return new Vector(availableFilters);
+  }
+
+  public void setAvailableFilters(List<String> filters){
+    this.firePropertyChange("availableFilters", this.availableFilters, filters);
+    this.availableFilters = filters;
+
+  }
+
 }
 
   

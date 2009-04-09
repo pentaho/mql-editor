@@ -58,9 +58,8 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
     });
   }
 
-  public void saveQuery(MqlModel model, List<? extends MqlColumn> cols, List<? extends MqlCondition> conditions, List<? extends MqlOrder> orders,
-      final XulServiceCallback<String> callback) {
-    SERVICE.saveQuery(model, cols, conditions, orders, new AsyncCallback<String>() {
+  public void saveQuery(MqlQuery model, final XulServiceCallback<String> callback) {
+    SERVICE.saveQuery(model, new AsyncCallback<String>() {
 
       public void onFailure(Throwable arg0) {
         callback.error("error loading metadata domains: ", arg0);

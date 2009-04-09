@@ -63,7 +63,7 @@ public enum Operator implements Serializable{
     return ops.toArray(new Operator[]{});
   }
   
-  public String formatCondition(String objectName, String value){
+  public String formatCondition(String objectName, String value, boolean forceString){
     String retVal = "";
     switch(this){
       case EXACTLY_MATCHES:
@@ -92,7 +92,7 @@ public enum Operator implements Serializable{
       default:
         retVal = objectName + " " + this.toString();
         if(this.requiresValue){
-          if(this.stringType){
+          if(this.stringType || forceString){
             retVal += "\""+value+"\"";
           } else {
             retVal += value;

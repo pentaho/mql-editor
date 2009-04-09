@@ -79,8 +79,7 @@ public class PreviewController extends AbstractXulEventHandler {
   }
 
   public void showPreview() {
-    service.saveQuery(workspace.getSelectedModel(), workspace.getSelectedColumns().getChildren(), workspace
-        .getConditions().getChildren(), workspace.getOrders().getChildren(), new XulServiceCallback<String>() {
+    service.saveQuery(workspace.getMqlQuery(), new XulServiceCallback<String>() {
 
       public void error(String message, Throwable error) {
         System.out.println(message);

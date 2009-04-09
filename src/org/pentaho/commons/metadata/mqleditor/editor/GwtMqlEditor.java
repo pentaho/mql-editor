@@ -236,4 +236,9 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
   public Workspace getWorkspace() {
     return workspace;
   }
+
+  public void setAvailableFilters(List<String> filters){
+    this.workspace.setAvailableFilters(filters);
+  }
+    
 }

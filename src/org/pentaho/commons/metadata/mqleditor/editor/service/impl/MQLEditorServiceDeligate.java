@@ -22,6 +22,7 @@ import org.pentaho.pms.mql.WhereCondition;
 import org.pentaho.pms.schema.BusinessCategory;
 import org.pentaho.pms.schema.BusinessModel;
 import org.pentaho.pms.schema.SchemaMeta;
+import org.pentaho.pms.schema.BusinessColumn;
 import org.pentaho.pms.schema.concept.types.datatype.DataTypeSettings;
 import org.pentaho.pms.util.UniqueList;
 
@@ -150,7 +151,7 @@ public class MQLEditorServiceDeligate {
     for (MqlColumn thincol : thincols) {
       UniqueList list = model.getAllBusinessColumns();
       for (Object col : list.getList()) {
-        if (col.toString().equals(thincol.toString())) {
+        if (((BusinessColumn) col).getId().equals(thincol.getId())) {
           cols[i++] = (org.pentaho.pms.schema.BusinessColumn) col;
         }
       }
@@ -190,14 +191,15 @@ public class MQLEditorServiceDeligate {
     return ord;
   }
 
-  public String saveQuery(MqlModel model, List<? extends MqlColumn> cols, List<? extends MqlCondition> conditions,
-      List<? extends MqlOrder> orders) {
-    SchemaMeta meta = modelIdToSchemaMetaMap.get(model.getId());
+  public String saveQuery(MqlQuery query) {
+
+
+    SchemaMeta meta = modelIdToSchemaMetaMap.get(query.getModel().getId());
 
     UniqueList<BusinessModel> models = meta.getBusinessModels();
     BusinessModel realModel = null;
     for (BusinessModel m : models) {
-      if (m.getName(locale).equals(model.getName())) {
+      if (m.getName(locale).equals(query.getModel().getName())) {
         realModel = m;
         break;
       }
@@ -207,7 +209,7 @@ public class MQLEditorServiceDeligate {
       MQLQuery mqlQuery = null;
       try {
 
-        org.pentaho.pms.schema.BusinessColumn[] businessColumns = getColumns(realModel, cols);
+        org.pentaho.pms.schema.BusinessColumn[] businessColumns = getColumns(realModel, query.getColumns());
         if (businessColumns.length > 0) {
           BusinessModel businessModel = realModel;
           mqlQuery = new MQLQueryImpl(meta, businessModel, null, meta.getActiveLocale());
@@ -217,7 +219,7 @@ public class MQLEditorServiceDeligate {
           }
 
           mqlQuery.setSelections(selections);
-          MQLWhereConditionModel wherelist[] = getConditions(realModel, conditions);
+          MQLWhereConditionModel wherelist[] = getConditions(realModel, query.getConditions());
           ArrayList<WhereCondition> constraints = new ArrayList<WhereCondition>();
           BusinessCategory rootCat = businessModel.getRootCategory();
           //mqlQuery.setDisableDistinct(!this.distinctSelections.getSelection());
@@ -228,7 +230,7 @@ public class MQLEditorServiceDeligate {
                 );
           }
           mqlQuery.setConstraints(constraints);
-          mqlQuery.setOrder(getOrders(realModel, orders));
+          mqlQuery.setOrder(getOrders(realModel, query.getOrders()));
 
           return mqlQuery.getXML();
         }

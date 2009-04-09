@@ -15,7 +15,7 @@ import org.pentaho.ui.xul.XulServiceCallback;
 public interface MQLEditorService {
   void getMetadataDomains(XulServiceCallback<List<MqlDomain>> callback);
   void getDomainByName(String name, XulServiceCallback<MqlDomain> callback);
-  void saveQuery(MqlModel model, List<? extends MqlColumn> cols, List<? extends MqlCondition> conditions, List<? extends MqlOrder> orders, XulServiceCallback<String> callback);
+  void saveQuery(MqlQuery model, XulServiceCallback<String> callback);
   void serializeModel(MqlQuery query, XulServiceCallback<String> callback);
   void deserializeModel(String serializedQuery, XulServiceCallback<MqlQuery> callback);
   void getPreviewData(String query, int page, int limit, XulServiceCallback<String[][]> callback);
