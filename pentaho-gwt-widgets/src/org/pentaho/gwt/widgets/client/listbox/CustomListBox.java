@@ -43,7 +43,7 @@ import java.util.List;
  * Time: 11:01:57 AM
  * 
  */
-public class CustomListBox extends HorizontalPanel implements PopupListener, MouseListener, FocusListener, KeyboardListener{
+public class CustomListBox extends HorizontalPanel implements ChangeListener, PopupListener, MouseListener, FocusListener, KeyboardListener{
   private List<ListItem> items = new ArrayList<ListItem>();
   private int selectedIndex = -1;
   private DropDownArrow arrow = new DropDownArrow();
@@ -269,6 +269,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
   }
 
   private TextBox editableTextBox;
+  private SimplePanel selectedItemWrapper = new SimplePanel();
   private void updateSelectedDropWidget(){
     Widget selectedWidget = new Label(""); //Default to show in case of empty sets?
     if(editable == false){ // only show their widget if editable is false
@@ -284,6 +285,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
           event.cancelBubble(true);
         }
       };
+      editableTextBox.addChangeListener(this);
       if(selectedIndex >= 0){
         editableTextBox.setText(items.get(selectedIndex).getValue().toString());
       } else if(items.size() > 0){
@@ -294,7 +296,10 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
       selectedWidget = editableTextBox;
 
     }
-    dropGrid.setWidget(0,0, selectedWidget);
+    selectedItemWrapper.getElement().getStyle().setProperty("overflow", "hidden");
+    selectedItemWrapper.clear();
+    selectedItemWrapper.add(selectedWidget);
+    dropGrid.setWidget(0,0, selectedItemWrapper);
   }
 
   /**
@@ -374,15 +379,18 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
       this.popupWidth = maxWidth + (spacing*6) + maxHeight + 10 + "px";
     } else {
       dropGrid.setWidth("100%");
+      int w = Integer.parseInt(this.width.replace("px",""));
+
+      selectedItemWrapper.setWidth( (w - (averageHeight + (this.spacing*2))) + "px" );
+
     }
 
     // Store the the size of the popup to respect MaxDropVisible now that we know the item height
     // This cannot be set here as the popup is not visible :(
 
     if(maxDropVisible > 0){
-      
       // (Lesser of maxDropVisible or items size) * (Average item height + spacing value) 
-      this.popupHeight = (Math.min(this.maxDropVisible, this.items.size()) * (averageHeight + this.spacing )) + "px";
+      this.popupHeight = (Math.min(this.maxDropVisible, this.items.size()) * (averageHeight + (this.spacing * 2) )) + "px";
     }
   }
 
@@ -392,7 +400,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
   private void togglePopup(){
     if(popupShowing == false){
 
-      popupScrollPanel.setWidth(this.getElement().getOffsetWidth() - 8 +"px");
+//      popupScrollPanel.setWidth(this.getElement().getOffsetWidth() - 8 +"px");
 
       popup.setPopupPosition(this.getElement().getAbsoluteLeft(), this.getElement().getAbsoluteTop() + this.getElement().getOffsetHeight()+2);
       
@@ -404,7 +412,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
       }
       
       if(this.popupWidth != null){
-        this.popupScrollPanel.getElement().getStyle().setProperty("width", this.popupWidth);
+        this.popupScrollPanel.getElement().getStyle().setProperty("width", Math.max(this.getElement().getOffsetWidth()-2, this.maxWidth)+"px");
       }
       
       scrollSelectedItemIntoView();
@@ -476,6 +484,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
     items.get(idx).onSelect();
     for(ChangeListener l : listeners){
       l.onChange(this);
+      System.out.println("firing onchange in customlistbox");
     }
 
     if(visible == 1){
@@ -560,6 +569,7 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
     fPanel.setWidth(s);
     this.listScrollPanel.setWidth("100%");
     this.width = s;
+    this.popupWidth = s;
     super.setWidth(s);
   }
 
@@ -691,6 +701,12 @@ public class CustomListBox extends HorizontalPanel implements PopupListener, Mou
       return (editableTextBox != null)
         ? editableTextBox.getText()
         : null;
+    }
+  }
+
+  public void onChange(Widget sender) {
+    for(ChangeListener l : listeners){
+      l.onChange(this);
     }
   }
 }
