@@ -469,7 +469,7 @@ public class DatasourceController extends AbstractXulEventHandler {
     removeConfirmationDialog.hide();
   }
   
-  public void displayPreview() {
+/*  public void displayPreview() {
 
     if(!allInputsSatisfiedForNext()) {
       displayMissingInputDialog();
@@ -546,8 +546,8 @@ public class DatasourceController extends AbstractXulEventHandler {
           }
       }
    }
-
- /* public void displayPreview() {
+*/
+  public void displayPreview() {
     if(!allInputsSatisfiedForNext()) {
       displayMissingInputDialog();
     } else {
@@ -662,7 +662,6 @@ public class DatasourceController extends AbstractXulEventHandler {
         
    }
 
-*/
   
   public void closePreviewResultsDialog() {
     previewResultsDialog.hide(); 
