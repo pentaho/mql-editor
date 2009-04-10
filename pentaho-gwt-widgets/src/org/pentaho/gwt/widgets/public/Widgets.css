@@ -648,14 +648,6 @@ body{
   background-color: white;
 }
 
-
-.custom-list td{
- padding: 0px;
-  margin: 0px;
-  border: none;
-}
-
-
 .drop-popup{
   background: white;
   border: 1px solid gray;
@@ -675,3 +667,8 @@ body{
 }
 
 /* end resizable dialogbox styles ------------------------------------------------ */
+
+.customListBoxTdFix{
+  padding: 0px;
+  border: 0px;
+}

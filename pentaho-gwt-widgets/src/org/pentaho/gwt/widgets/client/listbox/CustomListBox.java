@@ -2,6 +2,7 @@ package org.pentaho.gwt.widgets.client.listbox;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.core.client.GWT;
 import org.pentaho.gwt.widgets.client.utils.ElementUtils;
@@ -105,8 +106,25 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
     setStyleName("custom-list");
 
+
+    setTdStyles(this.getElement());
+    setTdStyles(listPanel.getElement());
+
   }
-  
+
+  private native void setTdStyles(Element ele)/*-{
+  var tds = ele.getElementsByTagName("td");
+    for( var i=0; i< tds.length; i++){
+      var td = tds[i];
+      if(!td.style){
+        td.className = "customListBoxTdFix";
+      } else {
+        td.style.padding = "0px";
+        td.style.border = "none";
+      }
+    }
+  }-*/;
+
   /**
    * Only {@link: DefaultListItem} and Strings (as labels) may be passed into this Widget
    */
@@ -296,6 +314,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       selectedWidget = editableTextBox;
 
     }
+    this.setTdStyles(selectedWidget.getElement());
     selectedItemWrapper.getElement().getStyle().setProperty("overflow", "hidden");
     selectedItemWrapper.clear();
     selectedItemWrapper.add(selectedWidget);
