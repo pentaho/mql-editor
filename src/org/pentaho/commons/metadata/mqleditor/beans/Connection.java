@@ -1,8 +1,9 @@
 package org.pentaho.commons.metadata.mqleditor.beans;
 
 import org.pentaho.commons.metadata.mqleditor.IConnection;
+import org.pentaho.ui.xul.XulEventSourceAdapter;
 
-public class Connection implements IConnection{
+public class Connection extends XulEventSourceAdapter implements IConnection{
 
   private String name;
   private String driverClass;

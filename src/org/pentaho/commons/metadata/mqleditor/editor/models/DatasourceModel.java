@@ -57,6 +57,31 @@ public class DatasourceModel extends XulEventSourceAdapter implements IDatasourc
     return connections;
   }
 
+  public void addConnection(IConnection connection) {
+    connections.add(connection);
+    this.firePropertyChange("connections", null, connections); //$NON-NLS-1$
+  }
+  public void updateConnection(IConnection connection) {
+    IConnection conn = getConnectionByName(connection.getName());
+    conn.setDriverClass(connection.getDriverClass());
+    conn.setPassword(connection.getPassword());
+    conn.setUrl(connection.getUrl());
+    conn.setUsername(connection.getUsername());
+    this.firePropertyChange("connections", null, connections); //$NON-NLS-1$
+  }
+  public void deleteConnection(IConnection connection) {
+    List<IConnection> previousValue = connections;
+    connections.remove(connections.indexOf(connection));
+    this.firePropertyChange("connections", previousValue, connections); //$NON-NLS-1$
+  }
+  public void deleteConnection(String name) {
+    for(IConnection connection:connections) {
+      if(connection.getName().equals(name)) {
+        deleteConnection(connection);
+      }
+    }
+  }
+  
   public void setConnections(List<IConnection> connections) {
     this.connections = connections;
     this.firePropertyChange("connections", null, connections); //$NON-NLS-1$
