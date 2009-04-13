@@ -3,8 +3,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test-src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+    <classpathentry kind="lib" path="lib/commons-digester-1.8.jar"/>
+    <classpathentry kind="lib" path="lib/ognl-2.6.9.jar"/>
 	<classpathentry kind="lib" path="lib/jettison-1.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/gwt-datepicker-r17.jar"/>
+	<classpathentry kind="lib" path="lib/gwt-datepicker-r18.jar"/>
 	<classpathentry kind="lib" path="lib/gwtx-1.5-20081002.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-servlet-1.5.2.jar"/>
 	<classpathentry kind="lib" path="lib/pentaho-xul-swing-TRUNK-SNAPSHOT.jar"/>
@@ -27,7 +29,7 @@
 	<classpathentry kind="lib" path="lib/gwt-dnd-2.5.6.jar"/>
 	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/stax-api-1.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/kettle-engine-3.1.2.jar"/>
+    <classpathentry kind="lib" path="lib/kettle-engine-3.2.0-RC1.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-incubator-1-5_Sept_04.jar"/>
 	<classpathentry kind="lib" path="lib/libbase-TRUNK-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/pentaho-xul-gwt-TRUNK-SNAPSHOT.jar"/>
@@ -39,7 +41,7 @@
 	<classpathentry kind="lib" path="lib/openide-util-200507110943.jar"/>
 	<classpathentry kind="lib" path="lib/pentaho-gwt-widgets-TRUNK-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="lib" path="lib/jug-lgpl-2.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/kettle-core-3.1.2.jar"/>
+    <classpathentry kind="lib" path="lib/kettle-core-3.2.0-RC1.jar"/>
 	<classpathentry kind="lib" path="lib/groovy-all-1.5.6.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-api-1.0.4.jar"/>

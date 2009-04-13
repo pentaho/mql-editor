@@ -9,6 +9,9 @@ public class Column implements MqlColumn<BusinessTable> {
   private BusinessTable table;
   private ColumnType type;
   
+  // temporary hack for ietl example
+  public int agg;
+  
   public String getId() {
     return this.id;
   }
