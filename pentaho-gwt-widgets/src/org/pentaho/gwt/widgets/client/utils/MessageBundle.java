@@ -57,7 +57,7 @@ public class MessageBundle {
   private IMessageBundleLoadCallback bundleLoadCallback = null;
   private String localeName = "default";
   private String currentAttemptUrl = null;
-  
+
   private class FakeResponse extends Response {
 
     private String text;
@@ -119,7 +119,7 @@ public class MessageBundle {
     // 3. bundleName_en_US.properties
 
     // always fetch the base first
-    currentAttemptUrl = path + bundleName + PROPERTIES_EXTENSION;
+    currentAttemptUrl = path + bundleName + PROPERTIES_EXTENSION + getUrlExtras();
     if (bundleCache.containsKey(currentAttemptUrl)) {
       baseCallback.onResponseReceived(null, new FakeResponse(bundleCache.get(currentAttemptUrl)));
     } else {
@@ -132,6 +132,10 @@ public class MessageBundle {
       }
     }
   }
+
+  private native String getUrlExtras()/*-{
+    return (document.all) ? "?rand="+(Math.random()*10000) : "";
+  }-*/;
 
   private void initCallbacks() {
     baseCallback = new RequestCallback() {
@@ -166,7 +170,7 @@ public class MessageBundle {
             String lang = st.tokenAt(0);
             // 2. fetch bundleName_lang.properties
             // 3. fetch bundleName_lang_country.properties
-            currentAttemptUrl = path + bundleName + "_" + lang + PROPERTIES_EXTENSION;
+            currentAttemptUrl = path + bundleName + "_" + lang + PROPERTIES_EXTENSION + getUrlExtras();
             
             // IE caches the file and causes an issue with the request
             
@@ -219,7 +223,7 @@ public class MessageBundle {
         StringTokenizer st = new StringTokenizer(localeName, '_');
         if (st.countTokens() == 2) {
           // 3. fetch bundleName_lang_country.properties
-          currentAttemptUrl = path + bundleName + "_" + localeName + PROPERTIES_EXTENSION;
+          currentAttemptUrl = path + bundleName + "_" + localeName + PROPERTIES_EXTENSION + getUrlExtras();
           if (bundleCache.containsKey(currentAttemptUrl)) {
             langCountryCallback.onResponseReceived(null, new FakeResponse(bundleCache.get(currentAttemptUrl)));
           } else {
