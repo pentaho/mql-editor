@@ -2,6 +2,7 @@ package org.pentaho.commons.metadata.mqleditor;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents an MQL Query. Contains a list of selected columns, conditions and order information. For convenience it
@@ -21,5 +22,7 @@ public interface MqlQuery extends Serializable{
   public MqlModel getModel();
   
   public String getMqlStr();
+  
+  public Map<String, String> getDefaultParameterMap();
   
 }

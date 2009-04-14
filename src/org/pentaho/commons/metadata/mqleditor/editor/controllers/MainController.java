@@ -217,7 +217,7 @@ public class MainController extends AbstractXulEventHandler {
     }
   }
   public void saveQuery(){
-    service.saveQuery(workspace.getSelectedModel(), workspace.getSelectedColumns().getChildren(), workspace.getConditions().getChildren(), workspace.getOrders().getChildren(), 
+    service.saveQuery(workspace.getMqlQuery(),
       new XulServiceCallback<String>(){
 
         public void error(String message, Throwable error) {
@@ -227,18 +227,16 @@ public class MainController extends AbstractXulEventHandler {
 
         public void success(String retVal) {
           try{
-              XulMessageBox box = (XulMessageBox) document.createElement("messagebox");
-              box.setTitle("Mql Query");
-              retVal = retVal.replace("><", ">\n<");
-              box.setMessage(retVal);
-              box.open();
-              
-            
+            XulMessageBox box = (XulMessageBox) document.createElement("messagebox");
+            box.setTitle("Mql Query");
+            retVal = retVal.replace("><", ">\n<");
+            box.setMessage(retVal);
+            box.open();
           } catch(Exception e){
             //ignore
           }
           workspace.setMqlStr(retVal);
-          dialog.hide();
+          //dialog.hide();
           for(MqlDialogListener listener : listeners){
             listener.onDialogAccept(workspace.getMqlQuery());
           }
@@ -259,7 +257,6 @@ public class MainController extends AbstractXulEventHandler {
   
     this.service = service;
   }
-
   
   public void addMqlDialogListener(MqlDialogListener listener){
     if(listeners.contains(listener) == false){

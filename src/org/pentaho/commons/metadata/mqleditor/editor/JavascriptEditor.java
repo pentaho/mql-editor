@@ -1,11 +1,13 @@
 package org.pentaho.commons.metadata.mqleditor.editor;
 
-import org.pentaho.commons.metadata.mqleditor.MqlQuery;
-import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
-import org.pentaho.ui.xul.XulServiceCallback;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JavaScriptObject;
+import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
+import org.pentaho.commons.metadata.mqleditor.MqlQuery;
+import org.pentaho.ui.xul.XulServiceCallback;
+
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,6 +26,14 @@ public class JavascriptEditor implements EntryPoint{
 
   public void onModuleLoad() {
     editor = new GwtMqlEditor();
+
+
+    List<String> filters = new ArrayList<String>();
+    filters.add("Filter 1");
+    filters.add("Filter 2");
+    filters.add("Filter 3");
+    filters.add("Filter 4");
+    editor.setAvailableFilters(filters);
     service = new org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceGwtImpl();
 
     editor.setService(service);

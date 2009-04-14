@@ -23,7 +23,7 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
 
     SERVICE = (org.pentaho.commons.metadata.mqleditor.editor.service.gwt.DatasourceGwtServiceAsync) GWT.create(org.pentaho.commons.metadata.mqleditor.editor.service.gwt.DatasourceGwtService.class);
     ServiceDefTarget endpoint = (ServiceDefTarget) SERVICE;
-    String moduleRelativeURL = GWT.getModuleBaseURL() + "ConnectionService"; //$NON-NLS-1$
+    String moduleRelativeURL = GWT.getModuleBaseURL() + "DatasourceService"; //$NON-NLS-1$
     endpoint.setServiceEntryPoint(moduleRelativeURL);
 
   }

@@ -75,11 +75,11 @@ public class GwtDatasourceEditor implements IMessageBundleLoadCallback {
     connectionController.removeConnectionDialogListener(listener);
   }
   
-  private void displayXulDialog(String xul) {
-    try {
+  private void loadContainer(String xul){
+    try{
+
       
       GwtXulLoader loader = new GwtXulLoader();
-      final GwtXulRunner runner = new GwtXulRunner();
   
       com.google.gwt.xml.client.Document gwtDoc = XMLParser.parse(xul);
       
@@ -88,7 +88,52 @@ public class GwtDatasourceEditor implements IMessageBundleLoadCallback {
       } else {
         container = loader.loadXul(gwtDoc);
       }
+      
+      
 
+      try {
+
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "connectionFrame-gwt-overlay.xul");
+
+        try {
+          Request response = builder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable exception) {
+              // Code omitted for clarity
+            }
+
+            public void onResponseReceived(Request request, Response response) {
+              
+              loadOverlay(response.getText());
+            }
+          });
+        } catch (RequestException e) {
+          // Code omitted for clarity
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+  
+  private void loadOverlay(String xul){
+
+    com.google.gwt.xml.client.Document gwtDoc = XMLParser.parse(xul);
+    try{
+      container.loadOverlay(gwtDoc);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    displayXulDialog();
+  }
+  
+  private void displayXulDialog() {
+    try {
+      
+      final GwtXulRunner runner = new GwtXulRunner();
       GwtBindingFactory bf = new GwtBindingFactory(container.getDocumentRoot());
       
       EventHandlerWrapper wrapper = GWT.create(DatasourceController.class);
@@ -148,8 +193,9 @@ public class GwtDatasourceEditor implements IMessageBundleLoadCallback {
 
           public void onResponseReceived(Request request, Response response) {
             
-            displayXulDialog(response.getText());
+            loadContainer(response.getText());
             // Code omitted for clarity
+
           }
         });
       } catch (RequestException e) {

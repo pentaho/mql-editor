@@ -3,6 +3,9 @@ package org.pentaho.commons.metadata.mqleditor.editor.models;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlModel;
@@ -35,6 +38,8 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   private Conditions conditions = new Conditions();
   private Orders orders = new Orders();
   private String queryStr;
+
+  private List<String> availableFilters = new ArrayList<String>();
   
   public Workspace(){
     setupListeners();
@@ -202,6 +207,9 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     
     UICondition condition = new UICondition();
     condition.setColumn(col);
+    // Give it a list of the fitlers the MQL Editor was told are available in the outside application
+    condition.setAvailableFilters(this.availableFilters);
+
     conditions.add(condition);
     
   }
@@ -261,8 +269,10 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
 
   public void setSelectedDomain(UIDomain selectedDomain){
+    UIDomain prevDomain = this.selectedDomain;
     this.selectedDomain = selectedDomain;
-    this.firePropertyChange("selectedDomain", null, selectedDomain);
+
+    this.firePropertyChange("selectedDomain", prevDomain, selectedDomain);
   }
 
   public MqlDomain getDomain(){
@@ -272,12 +282,22 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
  
   public Query getMqlQuery(){
     Query query = new Query();
-    query.setCols(this.selectedColumns.getBeanCollection());
+    query.setColumns(this.selectedColumns.getBeanCollection());
     query.setConditions(this.conditions.getBeanCollection());
     query.setOrders(orders.getBeanCollection());
     query.setMqlStr(this.getMqlStr());
     query.setDomain(this.selectedDomain.getBean());
     query.setModel(this.model.getBean());
+
+
+    Map<String, String> params = new HashMap<String, String>();
+    for(UICondition c : this.conditions){
+      if(c.isParameterized()){
+        params.put(c.getValue().replaceAll("[\\{\\}]", ""), c.getDefaultValue());
+      }
+    }
+    query.setDefaultParameterMap(params);
+
     return query;
   }
 
@@ -297,8 +317,31 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     this.domains = domains;
     this.firePropertyChange("domains", null, domains); //$NON-NLS-1$
   }
+
+
+  public Map<String, String> getDefaultParameterMap() {
+    // TODO mlowery not sure what goes here
+    throw new UnsupportedOperationException();
+  }
   
-  
+
+  public void setAvailableFilters(List<String> availableFilters) {
+    // Must conform to \{\w*\}$
+
+    List<String> newParams = new ArrayList<String>();
+    for(String param : availableFilters){
+      if(param.matches("\\{[\\w*]$\\}")){
+        newParams.add(param);
+      } else {
+        newParams.add("{"+param+"}");
+      }
+    }
+    this.availableFilters = newParams;
+  }
+
+  public List<String> getAvailableFilters() {
+    return availableFilters;
+  }
   
 }
 

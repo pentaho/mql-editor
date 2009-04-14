@@ -9,7 +9,7 @@
   <dialog id="connectionDialog" buttonlabelaccept="${connectionDialog.OK}" buttonlabelcancel="${connectionDialog.CANCEL}"
     buttons="accept,cancel" ondialogaccept="connectionController.addConnection()"
     ondialogcancel="connectionController.closeDialog()" buttonalign="right"
-    title="${connectionDialog.Title}" width="400" height="400">
+    title="${connectionDialog.Title}" width="350" height="400">
     <groupbox flex="1">
     	<hbox>
     		<spacer width="10"/>
@@ -35,7 +35,7 @@
     </groupbox>
   </dialog>
   <dialog id="datasourceDialog" buttonlabelaccept="${datasourceDialog.BACK}" buttonlabelcancel="${datasourceDialog.NEXT}" buttonlabelextra1="${datasourceDialog.FINISH}" buttonlabelextra2="${datasourceDialog.CANCEL}"
-    buttons="accept,cancel,extra1,extra2" ondialogaccept="datasourceController.executeBack()"   ondialogcancel="datasourceController.executeNext()" ondialogextra1="datasourceController.executeFinish()" ondialogextra2="datasourceController.executeCancel()" title="${datasourceDialog.Title}" width="800" height="625" buttonalign="right">
+    buttons="accept,cancel,extra1,extra2" ondialogaccept="datasourceController.executeBack()"   ondialogcancel="datasourceController.executeNext()" ondialogextra1="datasourceController.executeFinish()" ondialogextra2="datasourceController.executeCancel()" title="${datasourceDialog.Title}" width="640" height="595" buttonalign="right">
     <groupbox flex="1">
       <vbox>
         <label value="${datasourceDialog.DatasourceName}" tooltiptext="${datasourceDialog.DatasourceNameToolTip}"/>
@@ -70,7 +70,6 @@
 		                </vbox>
 	                    <spacer flex="1"/>
 	                  </hbox>
-	                  <spacer height="20"/>
 	                  <vbox flex="1">
 	                        <hbox>
 	                            <label value="${datasourceDialog.Query}" tooltiptext="${datasourceDialog.QueryToolTip}"/>
@@ -78,7 +77,6 @@
 	                            <button id="editQuery" image="images/update.png" pen:disabledimage="images/update_disabled.png" tooltiptext="${datasourceDialog.editQueryImageToolTip}" onclick="datasourceController.editQuery()"  disabled="false"/>
 	                        </hbox>
 	                        <textbox id="query" multiline="true" rows="10" cols="80"/>
-	                        <spacer height="20"/>
 	                        <hbox>
 	                            <spacer flex="1"/>
 	                            <label value="Limit:"/>
@@ -87,10 +85,14 @@
 	                        </hbox>
 	                  </vbox>
 	            </vbox>
-            	<vbox flex="1">
-				    <hbox id="datatypeRow"/>
-				    <hbox id="columnHeaderRow"/>
-				    <vbox id="dataRow"/>
+	            <vbox>
+		            <pen:scrollbox id ="scrollbox" scrollx="true" scrolly="true">
+		            	<vbox flex="1">
+						    <hbox id="datatypeRow"/>
+						    <hbox id="columnHeaderRow"/>
+						    <vbox id="dataRow"/>
+						</vbox>
+					</pen:scrollbox>
 				</vbox>
             </deck>
          </hbox>
@@ -100,8 +102,8 @@
   
   <dialog id="previewResultsDialog" buttonlabelaccept="${previewResultsDialog.CLOSE}" pen:buttonlabelaccepttooltiptext="${previewResultsDialog.closeToolTip}" buttons="accept"
     ondialogaccept="datasourceController.closePreviewResultsDialog()" buttonalign="right"
-    title="${previewResultsDialog.title}" width="340" height="300">
-        <tree flex="1" id="previewResultsTable" height="400" seltype="single">
+    title="${previewResultsDialog.title}" width="340" height="400">
+        <tree flex="1" id="previewResultsTable" width ="400" height="350" seltype="single">
               <treecols>
 		   			<treecol label="Preview" flex="1" />
 		      </treecols>

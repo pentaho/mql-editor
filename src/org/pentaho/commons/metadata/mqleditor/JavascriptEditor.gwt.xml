@@ -6,9 +6,10 @@ This module serves as the Debuging environment and default implementation for in
 <module>
 
   <inherits name='com.google.gwt.user.User'/>
-    <inherits name='com.googlecode.gwtx.Java'/>
+  <inherits name='com.googlecode.gwtx.Java'/>
   <inherits name='com.google.gwt.xml.XML'/>
-    <inherits name="org.pentaho.gwt.widgets.Widgets"/>
+  <inherits name="org.pentaho.gwt.widgets.Widgets"/>
+  <inherits name="org.pentaho.pms.schema.v3.Column"/>
   
     <inherits name="org.pentaho.ui.xul.Gwt"/>
     <source path="">
@@ -30,7 +31,7 @@ This module serves as the Debuging environment and default implementation for in
         <exclude name="**/DatasourceServiceDebugImpl*"/>
         <exclude name="**/ArrayHeaderLocator*"/>
         <exclude name="**/ResultSetConverter*"/>
-        <exclude name="**/ResultSetHelper*"/> 
+        <exclude name="**/ResultSetHelper*"/>   
     </source>
     <public path="editor/public"/>
     <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.JavascriptEditor"/>

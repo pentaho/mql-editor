@@ -36,6 +36,8 @@ public class ConnectionController extends AbstractXulEventHandler {
 
   private XulDialog errorDialog;
   private XulDialog successDialog;
+  private XulLabel errorLabel = null;
+  private XulLabel successLabel = null;
   
   BindingFactory bf;
 
@@ -52,8 +54,7 @@ public class ConnectionController extends AbstractXulEventHandler {
   XulButton okBtn = null;
 
   XulButton testBtn = null;
-  XulLabel errorLabel = null;
-  XulLabel successLabel = null;
+
   XulListbox driverClassList = null;
   public ConnectionController() {
 
@@ -220,7 +221,7 @@ public class ConnectionController extends AbstractXulEventHandler {
         try {
           if (value) {
             openSuccesDialog("Connection Deleted","Successfully deleted the connection");            
-            datasourceModel.deleteConnection(connectionModel.getConnection());
+            datasourceModel.deleteConnection(connectionModel.getConnection().getName());
             List<IConnection> connections = datasourceModel.getConnections();
             if (connections != null && connections.size() > 0) {
               datasourceModel.setSelectedConnection(connections.get(connections.size() - 1));
@@ -233,6 +234,7 @@ public class ConnectionController extends AbstractXulEventHandler {
           }
 
         } catch (Exception e) {
+          e.printStackTrace();
         }
       }
     });
