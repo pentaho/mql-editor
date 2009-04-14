@@ -41,7 +41,7 @@ public class ExampleApp {
     cols.add(bizmodel.getCategories().get(0).getBusinessColumns().get(1));
     bizmodel.getCategories().get(0).getBusinessColumns().get(1).agg = GroupByMeta.TYPE_GROUP_SUM;
     query.setModel(bizmodel);
-    query.setCols(cols);
+    query.setColumns(cols);
     
     List<Order> orders = new ArrayList<Order>();
     Order order = new Order();

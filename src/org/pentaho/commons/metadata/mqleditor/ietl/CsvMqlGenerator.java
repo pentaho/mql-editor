@@ -27,7 +27,7 @@ import org.pentaho.di.trans.steps.sort.SortRowsMeta;
 public class CsvMqlGenerator {
   
   public List<Column> getAllColumns(Query query) {
-    return query.getCols();
+    return query.getColumns();
   }
   
   public IPentahoResultSet generate(CsvPhysicalModel model, Query query) throws Exception {
@@ -56,9 +56,9 @@ public class CsvMqlGenerator {
     StepMeta selections = getStepMeta(transMeta, "Select values");
 
     SelectValuesMeta selectVals = (SelectValuesMeta)selections.getStepMetaInterface();
-    selectVals.allocate(query.getCols().size(), 0, 0);
-    for (int i = 0; i < query.getCols().size(); i++) {
-      selectVals.getSelectName()[i] = query.getCols().get(i).getName();
+    selectVals.allocate(query.getColumns().size(), 0, 0);
+    for (int i = 0; i < query.getColumns().size(); i++) {
+      selectVals.getSelectName()[i] = query.getColumns().get(i).getName();
     }
 
     // 
@@ -71,10 +71,10 @@ public class CsvMqlGenerator {
     
     SortRowsMeta sortRows = (SortRowsMeta)sort.getStepMetaInterface();
     
-    sortRows.allocate(query.getCols().size());
+    sortRows.allocate(query.getColumns().size());
     
     List<Column> unordered = new ArrayList<Column>();
-    for (Column col : query.getCols()) {
+    for (Column col : query.getColumns()) {
       boolean found = false;
       for (Order order : query.getOrders()) {
         if (col == order.getColumn()) {
