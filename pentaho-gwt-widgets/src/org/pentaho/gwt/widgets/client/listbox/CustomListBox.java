@@ -409,7 +409,12 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       this.popupWidth = maxWidth + (spacing*6) + maxHeight + 10 + "px";
     } else {
       dropGrid.setWidth("100%");
-      int w = Integer.parseInt(this.width.replace("px",""));
+      int w = -1;
+      if(width.indexOf("px") > 0) {
+        w = Integer.parseInt(this.width.replace("px",""));
+      } else if(width.indexOf("%") > 0) {
+        w = Integer.parseInt(this.width.replace("%",""));
+      }
       selectedItemWrapper.setWidth( (w - (averageHeight + (this.spacing*2))) + "px" );
     }
 
