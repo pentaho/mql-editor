@@ -39,6 +39,6 @@ public class ConnectionGwtServlet extends RemoteServiceServlet implements Connec
   }
 
   public Boolean testConnection(IConnection connection) throws ConnectionServiceException {
-    return SERVICE.deleteConnection(connection);    
+    return SERVICE.testConnection(connection);    
   }
 }
