@@ -1,10 +1,10 @@
 package org.pentaho.gwt.widgets.client.listbox;
 
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.*;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.*;
 import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 import org.pentaho.gwt.widgets.client.utils.Rectangle;
 
@@ -300,16 +300,24 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       editableTextBox = new TextBox(){
         @Override
         public void onBrowserEvent(Event event) {
+          int code = event.getKeyCode();
+
+          switch(DOM.eventGetType(event)){
+            case Event.ONKEYUP:
+              onChange(editableTextBox);
+              break;
+          }
           event.cancelBubble(true);
         }
       };
-      editableTextBox.addChangeListener(this);
+      
       if(selectedIndex >= 0){
         editableTextBox.setText(items.get(selectedIndex).getValue().toString());
       } else if(items.size() > 0){
         editableTextBox.setText(items.get(0).getValue().toString());
       }
       editableTextBox.setWidth("100%");
+      editableTextBox.sinkEvents(Event.KEYEVENTS);
       editableTextBox.sinkEvents(Event.MOUSEEVENTS);
       selectedWidget = editableTextBox;
 
@@ -396,12 +404,13 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       //TODO: move "10" to a static member  
       dropGrid.setWidth(maxWidth + (spacing*6) + maxHeight + 10 + "px"); //adding a little more room with the 10 
       this.popupWidth = maxWidth + (spacing*6) + maxHeight + 10 + "px";
+    } else if(width.equals("100%")){
+      dropGrid.setWidth("100%");
+      this.popupWidth = maxWidth + (spacing*6) + maxHeight + 10 + "px";
     } else {
       dropGrid.setWidth("100%");
       int w = Integer.parseInt(this.width.replace("px",""));
-
       selectedItemWrapper.setWidth( (w - (averageHeight + (this.spacing*2))) + "px" );
-
     }
 
     // Store the the size of the popup to respect MaxDropVisible now that we know the item height
@@ -431,7 +440,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       }
       
       if(this.popupWidth != null){
-        this.popupScrollPanel.getElement().getStyle().setProperty("width", Math.max(this.getElement().getOffsetWidth()-2, this.maxWidth)+"px");
+        this.popupScrollPanel.getElement().getStyle().setProperty("width", Math.max(this.getElement().getOffsetWidth()-2, this.maxWidth+10)+"px");
       }
       
       scrollSelectedItemIntoView();
@@ -501,14 +510,15 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
     selectedIndex = idx;
     items.get(idx).onSelect();
-    for(ChangeListener l : listeners){
-      l.onChange(this);
-      System.out.println("firing onchange in customlistbox");
-    }
 
     if(visible == 1){
       updateSelectedDropWidget();
       scrollSelectedItemIntoView();
+    }
+    
+    for(ChangeListener l : listeners){
+      l.onChange(this);
+      System.out.println("firing onchange in customlistbox");
     }
   }
 

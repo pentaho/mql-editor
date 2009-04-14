@@ -101,7 +101,12 @@ public class DefaultListItem  implements ListItem<Object> {
     Label label = new Label(text);
     label.getElement().getStyle().setProperty("cursor","pointer"); //$NON-NLS-1$ //$NON-NLS-2$
     label.setWidth("100%"); //$NON-NLS-1$
-    panel.add(label);
+    SimplePanel sp = new SimplePanel();
+    sp.getElement().getStyle().setProperty("overflow-x","auto");
+    sp.add(label);
+
+
+    panel.add(sp);
     panel.setCellWidth(label, "100%"); //$NON-NLS-1$
     panel.setCellVerticalAlignment(label, HasVerticalAlignment.ALIGN_MIDDLE);
 
