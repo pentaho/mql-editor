@@ -95,7 +95,6 @@
             height="137">
             <treecols>
               <treecol flex="5" label="${column}" pen:binding="name" />
-              <treecol label="" flex="1"/>
             </treecols>
             <treechildren />
           </tree>
