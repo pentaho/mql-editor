@@ -30,7 +30,10 @@ This module serves as the Debuging environment and default implementation for in
         <exclude name="**/DatasourceServiceDebugImpl*"/>
         <exclude name="**/ArrayHeaderLocator*"/>
         <exclude name="**/ResultSetConverter*"/>
-        <exclude name="**/ResultSetHelper*"/>        
+        <exclude name="**/ResultSetHelper*"/>   
+        <exclude name="**/BusinessModelGenerator*"/>
+        <exclude name="**/ExampleApp*"/>
+        <exclude name="**/CsvMqlGenerator*"/>             
     </source>
     <public path="editor/public"/>
     <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.JavascriptDatasourceEditor"/>

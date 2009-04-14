@@ -26,6 +26,10 @@
         <exclude name="**/ArrayHeaderLocator*"/>
         <exclude name="**/ResultSetConverter*"/>
         <exclude name="**/ResultSetHelper*"/>    
+        <exclude name="**/BusinessModelGenerator*"/>
+        <exclude name="**/ExampleApp*"/>
+        <exclude name="**/CsvMqlGenerator*"/>
+        
     </source>
     <public path="editor/public"/>
   <servlet path="/DatasourceService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.DatasourceGwtServlet" />
