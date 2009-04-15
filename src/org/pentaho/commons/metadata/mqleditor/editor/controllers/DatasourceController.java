@@ -22,22 +22,23 @@ import org.pentaho.ui.xul.binding.BindingConvertor;
 import org.pentaho.ui.xul.binding.BindingFactory;
 import org.pentaho.ui.xul.components.XulButton;
 import org.pentaho.ui.xul.components.XulLabel;
-import org.pentaho.ui.xul.components.XulListitem;
 import org.pentaho.ui.xul.components.XulMenuList;
 import org.pentaho.ui.xul.components.XulMenuitem;
-import org.pentaho.ui.xul.components.XulMessageBox;
 import org.pentaho.ui.xul.components.XulTextbox;
 import org.pentaho.ui.xul.components.XulTreeCell;
 import org.pentaho.ui.xul.components.XulTreeCol;
+import org.pentaho.ui.xul.containers.XulColumn;
+import org.pentaho.ui.xul.containers.XulColumns;
 import org.pentaho.ui.xul.containers.XulDeck;
 import org.pentaho.ui.xul.containers.XulDialog;
-import org.pentaho.ui.xul.containers.XulHbox;
+import org.pentaho.ui.xul.containers.XulGrid;
 import org.pentaho.ui.xul.containers.XulListbox;
 import org.pentaho.ui.xul.containers.XulMenupopup;
+import org.pentaho.ui.xul.containers.XulRow;
+import org.pentaho.ui.xul.containers.XulRows;
 import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.containers.XulTreeCols;
 import org.pentaho.ui.xul.containers.XulTreeRow;
-import org.pentaho.ui.xul.containers.XulVbox;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
 
 public class DatasourceController extends AbstractXulEventHandler {
@@ -76,13 +77,17 @@ public class DatasourceController extends AbstractXulEventHandler {
   XulButton cancelButton = null;
   XulButton previewButton = null;
   XulDeck datasourceDeck = null;
-  XulHbox datatypeRow = null;
-  XulHbox columnHeaderRow = null;
-  XulVbox dataRow = null;
+  //XulHbox datatypeRow = null;
+  //XulHbox columnHeaderRow = null;
+  //XulVbox dataRow = null;
   private XulDialog errorDialog;
   private XulDialog successDialog;
   private XulLabel errorLabel = null;
   private XulLabel successLabel = null;
+  
+  private XulColumns columns = null;
+  private XulRows rows = null;
+  private XulGrid grid = null;
 
   XulMenuList<XulMenupopup> dataTypeMenuList = null; 
   public DatasourceController() {
@@ -90,15 +95,20 @@ public class DatasourceController extends AbstractXulEventHandler {
   }
 
   public void init() {
+
+    columns = (XulColumns) document.getElementById("columns"); //$NON-NLS-1$
+    rows = (XulRows) document.getElementById("rows");//$NON-NLS-1$
+    grid = (XulGrid) document.getElementById("grid");//$NON-NLS-1$
+    
     errorDialog = (XulDialog) document.getElementById("errorDialog"); //$NON-NLS-1$
     errorLabel = (XulLabel) document.getElementById("errorLabel");//$NON-NLS-1$
     successDialog = (XulDialog) document.getElementById("successDialog"); //$NON-NLS-1$
     successLabel = (XulLabel) document.getElementById("successLabel");//$NON-NLS-1$
 
     
-    datatypeRow = (XulHbox) document.getElementById("datatypeRow"); //$NON-NLS-1$
-    columnHeaderRow = (XulHbox) document.getElementById("columnHeaderRow"); //$NON-NLS-1$
-    dataRow = (XulVbox) document.getElementById("dataRow"); //$NON-NLS-1$
+    //datatypeRow = (XulHbox) document.getElementById("datatypeRow"); //$NON-NLS-1$
+    //columnHeaderRow = (XulHbox) document.getElementById("columnHeaderRow"); //$NON-NLS-1$
+    //dataRow = (XulVbox) document.getElementById("dataRow"); //$NON-NLS-1$
     dataTypeMenuList = (XulMenuList<XulMenupopup>) document.getElementById("dataTypeMenuList"); //$NON-NLS-1$
     
     datasourceDeck = (XulDeck) document.getElementById("datasourceDeck"); //$NON-NLS-1$
@@ -262,7 +272,101 @@ public class DatasourceController extends AbstractXulEventHandler {
     }
     return menuList;    
   }
+  
+  
   public void executeNext() {
+    if(allInputsSatisfiedForNext()) {
+        try {
+            
+          service.getBusinessData(datasourceModel.getSelectedConnection(), datasourceModel.getQuery(), datasourceModel.getPreviewLimit(), 
+              new XulServiceCallback<BusinessData>(){
+  
+                public void error(String message, Throwable error) {
+                  openErrorDialog("Error occurred", "Unable to retrieve business data. "+error.getLocalizedMessage());
+                }
+  
+                public void success(BusinessData businessData) {
+                      try {
+                        if(datasourceDeck.getSelectedIndex()== CONNECTION_DECK) {
+                          datasourceDeck.setSelectedIndex(MODELLING_DECK);
+                          finishButton.setDisabled(false);
+                          backButton.setDisabled(false);
+                          nextButton.setDisabled(true);
+                        }
+                        datasourceModel.setBusinessData(businessData);
+                        // Remove any existing children
+                        List<XulComponent> columnList = columns.getChildNodes();
+                        List<XulComponent> rowList = rows.getChildNodes();
+
+                        List<Column> businessColumns = businessData.getColumns();
+                        List<List<String>> data = businessData.getData();
+                        
+                        for(int i=0;i<columnList.size();i++) {
+                          columns.removeComponent(columnList.get(i));
+                        }
+
+                        for(int i=0;i<rowList.size();i++) {
+                          rows.removeComponent(rowList.get(i));
+                        }
+                        
+                        // We will build this ui column by column
+                        int columnCounter=1;
+                        XulRow xulRowForColumnHeader = (XulRow) document.createElement("row"); //$NON-NLS-1$
+                        XulRow xulRowForColumnDataType = (XulRow) document.createElement("row"); //$NON-NLS-1$
+                        for(Column column:businessColumns) {
+                          XulColumn xulCol = (XulColumn) document.createElement("column"); //$NON-NLS-1$
+                          xulCol.setFlex(1);
+                          columns.addChild(xulCol);
+                          // Add the row for column DataType.
+                          xulRowForColumnDataType.addChild(createMenuList(column.getDataType()));
+
+                          XulTextbox textBox = (XulTextbox) document.createElement("textbox"); //$NON-NLS-1$
+                          textBox.setId("columnHeader" + (columnCounter++));//$NON-NLS-1$
+                          textBox.setMultiline(false);
+                          textBox.setWidth(20);
+                          textBox.setValue(column.getName());
+                          // Add the row for column header.
+                          xulRowForColumnHeader.addChild(textBox);
+                        }
+                        
+                        rows.addChild(xulRowForColumnDataType);
+                        rows.addChild(xulRowForColumnHeader);
+                        
+                        columnCounter=1;
+                        for(int row=0;row <data.size();row++) {
+                          XulRow xulRow = (XulRow) document.createElement("row"); //$NON-NLS-1$
+                          xulRow.setId("dataRowHbox"+ (row+1));//$NON-NLS-1$
+                          xulRow.setFlex(1);
+                          List<String> currentRow = data.get(row);
+                          for(int col=0;col<currentRow.size();col++) {
+                            XulTextbox textBox = (XulTextbox) document.createElement("textbox"); //$NON-NLS-1$
+                            textBox.setMultiline(false);
+                            textBox.setId("dataRow" + (col+1) + "Label");//$NON-NLS-1$ //$NON-NLS-2$
+                            textBox.setWidth(20);
+                            textBox.setValue(currentRow.get(col));
+                            textBox.setDisabled(true);
+                            textBox.setAlign("center"); //$NON-NLS-1$
+                            xulRow.addChild(textBox);
+                          }
+                          // Add the row for data.
+                          rows.addChild(xulRow) ;                          
+                        }
+                        grid.update();
+                      } catch(XulException xe) {
+                        
+                      }
+                }
+            });
+          } catch (DatasourceServiceException e) {
+              openErrorDialog("Error occurred", "Unable to retrieve business data. "+e.getLocalizedMessage());
+          }
+    } else {
+      openErrorDialog("Missing Input", "Some of the required inputs are missing");
+    }
+  }
+  
+  
+ /* public void executeNext() {
     if(allInputsSatisfiedForNext()) {
         try {
             
@@ -344,7 +448,7 @@ public class DatasourceController extends AbstractXulEventHandler {
     } else {
       openErrorDialog("Missing Input", "Some of the required inputs are missing");
     }
-  }
+  }*/
 
   private boolean allInputsSatisfiedForNext() {
     return (datasourceModel.getSelectedConnection() != null 
@@ -361,9 +465,11 @@ public class DatasourceController extends AbstractXulEventHandler {
     // Get the columns from the business data
     List<Column> columns = businessData.getColumns();
 
-    List<XulComponent> dataTypeRowList = datatypeRow.getChildNodes();
-    List<XulComponent> comp = columnHeaderRow.getChildNodes();
 
+    XulComponent columnDataTypeComp = this.rows.getChildNodes().get(0);
+    XulComponent columnHeaderComp = this.rows.getChildNodes().get(1);
+    List<XulComponent> dataTypeRowList = columnDataTypeComp.getChildNodes();
+    List<XulComponent> columnHeaderRowList = columnHeaderComp.getChildNodes();
     for(int i=0;i<dataTypeRowList.size();i++) {
       Column column = columns.get(i);
       // Get the menu list from the data type row
@@ -371,7 +477,7 @@ public class DatasourceController extends AbstractXulEventHandler {
       // Get the selected item from the data type user selected
       DatabaseColumnType type = DatabaseColumnType.values()[component.getSelectedIndex()];
       // get the colum header user changed
-      XulTextbox textBox = (XulTextbox) comp.get(i);
+      XulTextbox textBox = (XulTextbox) columnHeaderRowList.get(i);
       // updated the data type and name of the column
       column.setDataType(type.toString());
       column.setName(textBox.getValue());

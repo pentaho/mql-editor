@@ -85,15 +85,10 @@
 	                        </hbox>
 	                  </vbox>
 	            </vbox>
-	            <vbox>
-		            <pen:scrollbox id ="scrollbox" scrollx="true" scrolly="true">
-		            	<vbox flex="1">
-						    <hbox id="datatypeRow"/>
-						    <hbox id="columnHeaderRow"/>
-						    <vbox id="dataRow"/>
-						</vbox>
-					</pen:scrollbox>
-				</vbox>
+				<grid id="grid" height="450" width="540">
+					<columns id="columns" />
+					<rows id="rows" />
+				</grid>
             </deck>
          </hbox>
       </vbox>
