@@ -35,7 +35,7 @@
     </groupbox>
   </dialog>
   <dialog id="datasourceDialog" buttonlabelaccept="${datasourceDialog.BACK}" buttonlabelcancel="${datasourceDialog.NEXT}" buttonlabelextra1="${datasourceDialog.FINISH}" buttonlabelextra2="${datasourceDialog.CANCEL}"
-    buttons="accept,cancel,extra1,extra2" ondialogaccept="datasourceController.executeBack()"   ondialogcancel="datasourceController.executeNext()" ondialogextra1="datasourceController.executeFinish()" ondialogextra2="datasourceController.executeCancel()" title="${datasourceDialog.Title}" width="640" height="595" buttonalign="right">
+    buttons="accept,cancel,extra1,extra2" ondialogaccept="datasourceController.executeBack()"   ondialogcancel="datasourceController.executeNext()" ondialogextra1="datasourceController.executeFinish()" ondialogextra2="datasourceController.executeCancel()" title="${datasourceDialog.Title}" width="640" height="595" pen:acceptbuttonalign="center" pen:cancelbuttonalign="center" pen:extra2buttonalign="right" pen:extra1buttonalign="right">
     <groupbox flex="1">
       <vbox>
         <label value="${datasourceDialog.DatasourceName}" tooltiptext="${datasourceDialog.DatasourceNameToolTip}"/>
