@@ -63,4 +63,7 @@
 	<delete dir="${stage.dir}"/>
   </target>
 
+  <target name="publish-pentaho-nojar" depends="install-antcontrib,create-pom,ivy.deliver" description="Publishes the jar file to a Maven2 repository">
+	<ant antfile="${common.build.file}" target="publish-pentaho-nojar"/>
+  </target>
 </project>
