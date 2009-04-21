@@ -34,7 +34,7 @@
   <dialog id="mqlEditorDialog" buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttonlabelextra1="preview"
     buttons="accept,cancel" ondialogaccept="mainController.saveQuery()"
     ondialogcancel="mainController.closeDialog()" buttonalign="right"
-    title="${window.title}" width="800" height="625">
+    title="${window.title}" width="700" height="625">
     <vbox padding="10" flex="1">
       <hbox flex="1">
         <vbox flex="1">
@@ -92,7 +92,7 @@
             <button id="colRemove" disabled="true" onclick="selectedColumns.remove()" image="images/delete.png" />
           </hbox>
           <tree flex="1" editable="false" seltype="single" enableColumnDrag="false" id="selectedColumnTree"
-            height="137">
+            height="137" width="575">
             <treecols>
               <treecol flex="5" label="${column}" pen:binding="name" />
             </treecols>
@@ -109,7 +109,7 @@
             <button id="conditionRemove" disabled="true" onclick="conditionsController.remove()"
               image="images/delete.png" />
           </hbox>
-          <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="conditionsTree" height="137">
+          <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="conditionsTree" height="137"  width="575">
             <treecols>
               <treecol label="${combine}" flex="1" pen:binding="combinationType" pen:combobinding="combinations"
                 type="combobox" editable="true" />
@@ -129,7 +129,7 @@
             <button id="orderUp" disabled="true" onclick="orderController.moveUp()" image="images/move_up.gif" />
             <button id="orderRemove" disabled="true" onclick="orderController.remove()" image="images/delete.png" />
           </hbox>
-          <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="orderTable" height="137">
+          <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="orderTable" height="137"  width="575">
             <treecols>
               <treecol label="${column}" pen:binding="columnName" flex="1" />
               <treecol label="${order}" pen:binding="orderType" pen:combobinding="orderTypes" type="combobox"
