@@ -634,7 +634,7 @@ body{
 }
 
 .combo-arrow{
-  padding: 5px;
+  padding: 4px;
   background: url("arrow_slice.png");
   background-repeat: repeat-x;
   border: 1px outset gray;
