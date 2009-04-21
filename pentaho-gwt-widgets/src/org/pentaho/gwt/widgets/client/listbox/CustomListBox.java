@@ -305,9 +305,14 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
           switch(DOM.eventGetType(event)){
             case Event.ONKEYUP:
               onChange(editableTextBox);
+ //             event.cancelBubble(true);
               break;
+            case Event.ONMOUSEUP:
+              super.onBrowserEvent(event);
+              event.cancelBubble(true);
+            default:
+              return;
           }
-          event.cancelBubble(true);
         }
       };
       
@@ -402,11 +407,11 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     // Set the size of the drop-down based on the largest list item
     if(width == null){
       //TODO: move "10" to a static member  
-      dropGrid.setWidth(maxWidth + (spacing*6) + maxHeight + 10 + "px"); //adding a little more room with the 10 
-      this.popupWidth = maxWidth + (spacing*6) + maxHeight + 10 + "px";
+      dropGrid.setWidth(maxWidth + (spacing*4) + maxHeight + "px"); //adding a little more room with the 10 
+      this.popupWidth = maxWidth + (spacing*4) + maxHeight + "px";
     } else if(width.equals("100%")){
       dropGrid.setWidth("100%");
-      this.popupWidth = maxWidth + (spacing*6) + maxHeight + 10 + "px";
+      this.popupWidth = maxWidth + (spacing*4) + maxHeight + "px";
     } else {
       dropGrid.setWidth("100%");
       int w = -1;

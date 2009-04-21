@@ -170,7 +170,10 @@ public class DefaultListItem  implements ListItem<Object> {
           case Event.ONMOUSEUP:
             listBox.setSelectedItem(DefaultListItem.this);
             this.removeStyleDependentName("hover"); //$NON-NLS-1$
+          default:
+            break;
         }
+        super.onBrowserEvent(event);
       }
     }
 
