@@ -11,37 +11,31 @@ import org.pentaho.ui.xul.XulEventSourceAdapter;
 
 public class UICondition extends XulEventSourceAdapter implements MqlCondition<UIColumn> {
   
-  private Condition bean;
   private String defaultValue;
-
+  private UIColumn column;
+  private Operator operator = Operator.EQUAL;
+  private String value;
+  private CombinationType combinationType = CombinationType.AND;
+  private boolean parameterized = false;
+  
   public UICondition(){
-    bean = new Condition();
   }
   
-  
-  //The supplied Beans are a Graph of objects. In order to maintain those relationships, we track
-  // previously created objects in order to serve the same objects when needed.
-  private static Map<Condition, UICondition> wrappedConditions = new HashMap<Condition, UICondition>();
-  
-  public static UICondition wrap(Condition condition){
-    if(wrappedConditions.containsKey(condition)){
-      return wrappedConditions.get(condition);
-    }
-    UICondition c = new UICondition(condition);
-    wrappedConditions.put(condition, c);
-    return c;
-  }
-
   public UICondition(UIColumn column, Operator operator, String value){
     this();
-    bean.setColumn(column.getBean());
-    bean.setOperator(operator);
-    bean.setValue(value);
+    this.column = column;
+    this.operator = operator;
+    this.value = value;
     
   }
   
-  private UICondition(Condition bean){
-    this.bean = bean;
+  public UICondition(Condition bean){
+    this.column = new UIColumn(bean.getColumn());
+    this.defaultValue = bean.getDefaultValue();
+    this.operator = bean.getOperator();
+    this.value = bean.getValue();
+    this.combinationType = bean.getCombinationType();
+    column = new UIColumn(bean.getColumn());
   }
   
   public boolean validate(){
@@ -51,47 +45,47 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
 
 
   public UIColumn getColumn() {
-    return UIColumn.wrap(bean.getColumn());
+    return column;
   }
 
   
 
   public void setColumn(UIColumn column) {
-    bean.setColumn(column.getBean());
+    this.column = column;
   }
 
 
   public Operator getOperator() {
-    return bean.getOperator();
+    return operator;
   }
 
 
   public void setOperator(Operator operator) {
-    bean.setOperator(operator);
+    this.operator = operator;
   }
 
   public void setOperator(Object operator) {
-    setOperator((Operator) operator);
+    this.operator = (Operator) operator;
   }
 
   public String getValue() {
-    return bean.getValue();
+    return value;
   }
 
 
   public void setValue(String value) {
-    bean.setValue(value);
+    this.value = value;
     this.setParameterized(value != null && value.contains("{") && value.contains("}"));
   }
 
 
   public CombinationType getCombinationType() {
-    return bean.getCombinationType();
+    return combinationType;
   }
 
 
   public void setCombinationType(CombinationType combinationType) {
-    bean.setCombinationType(combinationType);
+    this.combinationType = combinationType;
   }
   
   //Binding value comes in as Object unfortunately.
@@ -100,7 +94,7 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
   }
 
   public String getTableName(){
-    return bean.getColumn().getTable().getName();
+    return this.column.getTable().getName();
   }
 
   public void setTableName(String name){
@@ -108,7 +102,7 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
   }
   
   public String getColumnName(){
-    return bean.getColumn().getName();
+    return column.getName();
   }
 
   public void setColumnName(String name){
@@ -138,20 +132,17 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
 
 
   public String getCondition(String objName) {
-    return bean.getCondition(objName);
-  }
-  
-  public Condition getBean(){
-    return bean;
+    return this.operator.formatCondition(objName, this.value, (this.isParameterized()));
   }
 
   public boolean isParameterized() {
-    return bean.isParameterized();
+    return parameterized;
   }
 
   public void setParameterized(boolean parameterized) {
-    this.firePropertyChange("parameterized", bean.isParameterized(), parameterized);
-    bean.setParameterized(parameterized);
+    boolean prevVal = isParameterized();
+    this.firePropertyChange("parameterized", prevVal, parameterized);
+    this.parameterized = parameterized;
     this.firePropertyChange("defaultDisabled", null, isDefaultDisabled());
     if(!parameterized){
       setDefaultValue("");
@@ -159,16 +150,17 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
   }
 
   public boolean isDefaultDisabled(){
-    return ! bean.isParameterized();
+    return ! parameterized;
   }
 
   public void setDefaultValue(String val){
-    this.firePropertyChange("defaultValue", getDefaultValue(), val);
-    bean.setDefaultValue(val);
+    String prevVal = this.defaultValue;
+    this.defaultValue = val;
+    this.firePropertyChange("defaultValue", prevVal, val);
   }
   
   public String getDefaultValue(){
-    return bean.getDefaultValue();
+    return defaultValue;
   }
 
   private List<String> availableFilters = new ArrayList<String>();

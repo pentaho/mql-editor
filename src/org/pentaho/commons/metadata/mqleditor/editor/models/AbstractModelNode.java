@@ -10,15 +10,35 @@ import java.util.ListIterator;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
 /**
- * Base class for UI model objects that provides {@see java.util.List} implementations and XulEventSource support
- *
- * @param <T> type of children
+ * Base class for UI model objects that provides {@see java.util.List}
+ * implementations and XulEventSource support
+ * 
+ * @param <T>
+ *          type of children
  */
-public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<T>, Iterable<T> {
+public class AbstractModelNode<T> extends XulEventSourceAdapter implements
+    List<T>, Iterable<T> {
 
   protected List<T> children = new ArrayList<T>();
+  protected String id, name;
 
   public AbstractModelNode() {
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public AbstractModelNode(List<T> children) {
@@ -27,7 +47,7 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<
 
   public List<T> getChildren() {
     // return Collections.unmodifiableList(children);
-    
+
     return children;
   }
 
@@ -41,11 +61,12 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<
     return retVal;
   }
 
-  public T remove(int idx){
+  public T remove(int idx) {
     T t = children.remove(idx);
     fireCollectionChanged();
     return t;
   }
+
   public boolean remove(Object child) {
     if (!this.children.contains(child)) {
       throw new IllegalArgumentException("Child does not exist in collection");
@@ -57,7 +78,8 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<
 
   public T removeModel(int pos) {
     if (pos > this.children.size()) {
-      throw new IllegalArgumentException("Specified position (" + pos + ") is greater than collection length");
+      throw new IllegalArgumentException("Specified position (" + pos
+          + ") is greater than collection length");
     }
     T retVal = this.children.remove(pos);
     fireCollectionChanged();
@@ -83,16 +105,16 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<
   }
 
   public void moveChildUp(int position) {
-    if (position-1 < 0 ) {
+    if (position - 1 < 0) {
       throw new IllegalArgumentException("Specified position (" + position
           + ") is greater than child collection length");
     }
-    //If already at Beginning do nothing
+    // If already at Beginning do nothing
     if (position == 0) {
       return;
     }
     T child = this.children.remove(position);
-    this.children.add(position -1 , child);
+    this.children.add(position - 1, child);
     fireCollectionChanged();
   }
 
@@ -106,7 +128,7 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<
   }
 
   public void moveChildDown(int position) {
-    if (position < 0 || position+1 >= this.children.size()) {
+    if (position < 0 || position + 1 >= this.children.size()) {
       throw new IllegalArgumentException("Specified position (" + position
           + ") is greater than child collection length");
     }
@@ -116,11 +138,10 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<
     fireCollectionChanged();
   }
 
-
   public List<T> asList() {
-    //UnmodifiableList not serializable
-    //return Collections.unmodifiableList(this.children);
-    
+    // UnmodifiableList not serializable
+    // return Collections.unmodifiableList(this.children);
+
     return this.children;
   }
 
@@ -178,15 +199,15 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<
   }
 
   public boolean addAll(int index, Collection<? extends T> c) {
-    return children.addAll(index, c);  
+    return children.addAll(index, c);
   }
 
   public T get(int index) {
-    return children.get(index);  
+    return children.get(index);
   }
 
   public int indexOf(Object o) {
-    return children.indexOf(o);  
+    return children.indexOf(o);
   }
 
   public int lastIndexOf(Object o) {
@@ -194,7 +215,7 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<
   }
 
   public ListIterator<T> listIterator() {
-    return children.listIterator();  
+    return children.listIterator();
   }
 
   public ListIterator<T> listIterator(int index) {
@@ -208,7 +229,7 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements List<
   public List<T> subList(int fromIndex, int toIndex) {
     // children.subList() does not compile in GWT, re-implemented here
     List<T> newList = new ArrayList<T>();
-    for(int i=fromIndex; i<children.size() && i < toIndex; i++){
+    for (int i = fromIndex; i < children.size() && i < toIndex; i++) {
       newList.add(children.get(i));
     }
     return newList;

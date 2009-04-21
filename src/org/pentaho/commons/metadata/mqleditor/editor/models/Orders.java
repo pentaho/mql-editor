@@ -15,15 +15,6 @@ public class Orders extends AbstractModelNode<UIOrder>{
     super(orders);
   }
   
-  public List<Order> getBeanCollection(){
-    List<Order> orders = new ArrayList<Order>();
-    
-    for(UIOrder o : this.getChildren()){
-      orders.add(o.getBean());
-    }
-    return orders;
-  }
-  
 }
 
   

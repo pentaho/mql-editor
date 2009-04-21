@@ -15,26 +15,13 @@ public class UIOrder extends XulEventSourceAdapter implements MqlOrder {
   
   private UIColumn column;
   private Type orderType = Type.DESC;
-  
-  //The supplied Beans are a Graph of objects. In order to maintain those relationships, we track
-  // previously created objects in order to serve the same objects when needed.
-  private static Map<Order, UIOrder> wrappedOrders = new HashMap<Order, UIOrder>();
-  
 
-  public static UIOrder wrap(Order order){
-    if(wrappedOrders.containsKey(order)){
-      return wrappedOrders.get(order);
-    }
-    UIOrder c = new UIOrder(order);
-    wrappedOrders.put(order, c);
-    return c;
-  }
   
   public UIOrder(){
   }
   
-  private UIOrder(Order order){
-    this.column = UIColumn.wrap(order.getColumn());
+  public UIOrder(MqlOrder order){
+    this.column = new UIColumn(order.getColumn());
     this.orderType = order.getOrderType();
   }
 
@@ -74,11 +61,11 @@ public class UIOrder extends XulEventSourceAdapter implements MqlOrder {
   }
   
   public void setTableName(String str){
-    
+    // ignored
   }
   
   public void setColumnName(String str){
-    
+    // ignored
   }
   
   public String getColumnName(){
@@ -89,13 +76,6 @@ public class UIOrder extends XulEventSourceAdapter implements MqlOrder {
     Vector v = new Vector();
     v.addAll(Arrays.asList(MqlOrder.Type.values()));
     return v;
-  }
-  
-  public Order getBean() {
-    Order bean = new Order();
-    bean.setColumn(column.getBean());
-    bean.setOrderType(orderType);
-    return bean;
   }
   
   

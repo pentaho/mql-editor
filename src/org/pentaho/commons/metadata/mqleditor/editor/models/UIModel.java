@@ -13,53 +13,22 @@ public class UIModel extends AbstractModelNode<UICategory> implements MqlModel<U
   
   private List<UICategory> categories = new ArrayList<UICategory>();
 
-  private Model bean;
-
-  // The supplied Beans are a Graph of objects. In order to maintain those relationships, we track
-  // previously created objects in order to serve the same objects when needed.
-  private static Map<Model, UIModel> wrappedModels = new HashMap<Model, UIModel>();
   
-  public static UIModel wrap(Model model){
-    if(wrappedModels.containsKey(model)){
-      return wrappedModels.get(model);
-    }
-    UIModel m = new UIModel(model);
-    wrappedModels.put(model, m);
-    return m;
-  }
-  
-  private UIModel(Model model){
-    this.bean = model;
+  public UIModel(Model model){
+    this.id = model.getId();
+    this.name = model.getName();
     
     for(Category cat : model.getCategories()){
-      this.children.add(UICategory.wrap(cat));
+      this.children.add(new UICategory(cat));
     }
   }
   
   public UIModel(){
-    bean = new Model();
+    
   }
   
   public List<UICategory> getCategories() {
     return this.getChildren();  
-  }
-
-  public String getId() {
-    return bean.getId();
-  }
-
-  public String getName() {
-   return bean.getName();   
-  }
-  
-  /**
-   * Returns a simplified bean that only has a model id and model name.
-   */
-  public Model getBean() {
-    Model simpleModel = new Model();
-    simpleModel.setId(bean.getId());
-    simpleModel.setName(bean.getName());
-    return simpleModel;
   }
   
 }

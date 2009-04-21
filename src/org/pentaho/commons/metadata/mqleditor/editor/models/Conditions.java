@@ -15,15 +15,6 @@ public class Conditions extends AbstractModelNode<UICondition>{
     super(conditions);
   }
 
-  
-  public List<Condition> getBeanCollection(){
-    List<Condition> conditions = new ArrayList<Condition>();
-    
-    for(UICondition c : this.getChildren()){
-      conditions.add(c.getBean());
-    }
-    return conditions;
-  }
 }
 
   

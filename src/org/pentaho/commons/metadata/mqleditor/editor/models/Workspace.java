@@ -2,19 +2,17 @@ package org.pentaho.commons.metadata.mqleditor.editor.models;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.pentaho.commons.metadata.mqleditor.MqlColumn;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlModel;
+import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
-import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
-import org.pentaho.commons.metadata.mqleditor.beans.Domain;
-import org.pentaho.commons.metadata.mqleditor.beans.Model;
-import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
@@ -53,7 +51,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
     // TODO mlowery need to validate incoming (deserialized) model by making sure that objects still exist on the server
 
-    Domain domain = thinWorkspace.getDomain();
+    MqlDomain domain = thinWorkspace.getDomain();
     if (domain != null) {
       for (UIDomain uiDomain : domains) {
         if (uiDomain.getName().equals(domain.getName())) {
@@ -62,7 +60,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
       }
     }
     
-    Model model = thinWorkspace.getModel();
+    MqlModel model = thinWorkspace.getModel();
     if (model != null) {
       for (UIModel uiModel : getSelectedDomain().getModels()) {
         if (uiModel.getId().equals(model.getId())) {
@@ -73,18 +71,18 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
     
     if (thinWorkspace.getColumns() != null) {
-      for( Column col : thinWorkspace.getColumns()){
-        selectedColumns.add(UIColumn.wrap(col));
+      for( MqlColumn col : thinWorkspace.getColumns()){
+        selectedColumns.add(new UIColumn(col));
       }
     }
     if (thinWorkspace.getOrders() != null) {
-      for( Order order : thinWorkspace.getOrders()){
-        orders.add(UIOrder.wrap(order));
+      for( MqlOrder order : thinWorkspace.getOrders()){
+        orders.add(new UIOrder(order));
       }
     }
     if (thinWorkspace.getConditions() != null) {
       for( Condition condition : thinWorkspace.getConditions()){
-        conditions.add(UICondition.wrap(condition));
+        conditions.add(new UICondition(condition));
       }
     }
   }
@@ -280,14 +278,14 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
   
  
-  public Query getMqlQuery(){
-    Query query = new Query();
-    query.setColumns(this.selectedColumns.getBeanCollection());
-    query.setConditions(this.conditions.getBeanCollection());
-    query.setOrders(orders.getBeanCollection());
+  public MqlQuery getMqlQuery(){
+    UIQuery query = new UIQuery();
+    query.setColumns(this.selectedColumns);
+    query.setConditions(this.conditions);
+    query.setOrders(orders);
     query.setMqlStr(this.getMqlStr());
-    query.setDomain(this.selectedDomain.getBean());
-    query.setModel(this.model.getBean());
+    query.setDomain(this.selectedDomain);
+    query.setModel(this.model);
 
 
     Map<String, String> params = new HashMap<String, String>();

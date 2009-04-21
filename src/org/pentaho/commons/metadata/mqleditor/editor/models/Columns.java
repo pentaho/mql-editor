@@ -15,13 +15,5 @@ public class Columns extends AbstractModelNode<UIColumn>{
     super(conditions);
   }
   
-  public List<Column> getBeanCollection(){
-    List<Column> cols = new ArrayList<Column>();
-    
-    for(UIColumn c : this.getChildren()){
-      cols.add(c.getBean());
-    }
-    return cols;
-  }
 }
 

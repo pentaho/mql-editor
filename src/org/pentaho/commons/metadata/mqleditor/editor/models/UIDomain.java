@@ -8,16 +8,15 @@ import org.pentaho.commons.metadata.mqleditor.beans.Model;
 
 public class UIDomain extends AbstractModelNode<UIModel> implements MqlDomain<UIModel> {
   
-  private Domain bean;
-  
   public UIDomain(){
-    this.bean = new Domain();
   }
   
   public UIDomain(Domain domain){
-    this.bean = domain;
+    this.id = domain.getId();
+    this.name = domain.getName();
+    
     for(Model model : domain.getModels()){
-      this.children.add(UIModel.wrap(model));
+      this.children.add(new UIModel(model));
     }
   }
   
@@ -28,25 +27,6 @@ public class UIDomain extends AbstractModelNode<UIModel> implements MqlDomain<UI
   public void setModels(List<UIModel> models) {
     this.children = models;
   }
-
-  public String getId() {
-    return bean.getId();
-  }
-
-  public String getName() {
-   return bean.getName();
-  }
-
-  /**
-   * Returns a simplified bean that only has a domain id and domain name.
-   */
-  public Domain getBean() {
-    Domain simpleDomain = new Domain();
-    simpleDomain.setId(bean.getId());
-    simpleDomain.setName(bean.getName());
-    return simpleDomain;
-  }
-
   
 }
 

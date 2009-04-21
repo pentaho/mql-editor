@@ -4,15 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.pentaho.commons.metadata.mqleditor.MqlColumn;
+import org.pentaho.commons.metadata.mqleditor.MqlCondition;
+import org.pentaho.commons.metadata.mqleditor.MqlDomain;
+import org.pentaho.commons.metadata.mqleditor.MqlModel;
+import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 
 public class Query implements MqlQuery {
 
-  private List<Column> cols = new ArrayList<Column>();
+  private List<Column> cols;
 
-  private List<Condition> conditions = new ArrayList<Condition>();
+  private List<Condition> conditions;
 
-  private List<Order> orders = new ArrayList<Order>();
+  private List<Order> orders;
 
   private Domain domain;
 
@@ -27,9 +32,6 @@ public class Query implements MqlQuery {
   
   public Query() {
     super();
-    cols = new ArrayList<Column>();
-    conditions = new ArrayList<Condition>();
-    orders = new ArrayList<Order>();
   }
   
   public List<Column> getColumns() {

@@ -12,31 +12,16 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn<U
   private UIBusinessTable table;
 
   private ColumnType type;
-
-  private String name, id;
   
-  private Column bean;
-  
-  // The supplied Beans are a Graph of objects. In order to maintain those relationships, we track
-  // previously created objects in order to serve the same objects when needed.
-  private static Map<Column, UIColumn> wrappedCols = new HashMap<Column, UIColumn>();
-  
-  public static UIColumn wrap(Column col){
-    if(wrappedCols.containsKey(col)){
-      return wrappedCols.get(col);
-    }
-    UIColumn c = new UIColumn(col);
-    wrappedCols.put(col, c);
-    return c;
-  }
-
   public UIColumn() {
 
   }
 
-  private UIColumn(Column col) {
-    this.bean = col;
-    this.table = UIBusinessTable.wrap(col.getTable());
+  public UIColumn(MqlColumn col) {
+    this.type = col.getType();
+    this.id = col.getId();
+    this.name = col.getName();
+    this.table = new UIBusinessTable(col.getTable());
   }
   
   public String getTableName() {
@@ -48,37 +33,19 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn<U
   }
   
   public UIBusinessTable getTable() {
-
     return table;
   }
 
   public ColumnType getType() {
 
-    return bean.getType();
-  }
-
-  public String getId() {
-    return bean.getId();
-  }
-
-  public String getName() {
-   return bean.getName();   
-  }
-
-  public void setName(String name){
-    //TODO: Ignored! remove once Tree bindings respect one-way with editable="false"
+    return type;
   }
   
   public String toString(){
-    if(bean.getTable() != null){
-      return bean.getTable().getName() + "." + bean.getId(); //$NON-NLS-1$
+    if(getTable() != null){
+      return getTable().getName() + "." + getId(); //$NON-NLS-1$
     }
-    
     return id;
-  }
-  
-  public Column getBean(){
-    return bean;
   }
   
 }
