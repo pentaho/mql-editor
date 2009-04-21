@@ -159,6 +159,7 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
       wrapper.setHandler(selectedColumnController);      
       container.addEventHandler(wrapper);
 
+
       wrapper = GWT.create(OrderController.class);
       orderController.setBindingFactory(bf);
       wrapper.setHandler(orderController);      
@@ -237,8 +238,4 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
     return workspace;
   }
 
-  public void setAvailableFilters(List<String> filters){
-    this.workspace.setAvailableFilters(filters);
-  }
-    
 }

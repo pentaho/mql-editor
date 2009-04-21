@@ -163,16 +163,6 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
     return defaultValue;
   }
 
-  private List<String> availableFilters = new ArrayList<String>();
-  public Vector getAvailableFilters(){
-    return new Vector(availableFilters);
-  }
-
-  public void setAvailableFilters(List<String> filters){
-    this.firePropertyChange("availableFilters", this.availableFilters, filters);
-    this.availableFilters = filters;
-
-  }
 
 }
 

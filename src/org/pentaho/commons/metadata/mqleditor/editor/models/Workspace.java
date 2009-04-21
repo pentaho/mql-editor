@@ -36,8 +36,6 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   private Conditions conditions = new Conditions();
   private Orders orders = new Orders();
   private String queryStr;
-
-  private List<String> availableFilters = new ArrayList<String>();
   
   public Workspace(){
     setupListeners();
@@ -205,8 +203,6 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     
     UICondition condition = new UICondition();
     condition.setColumn(col);
-    // Give it a list of the fitlers the MQL Editor was told are available in the outside application
-    condition.setAvailableFilters(this.availableFilters);
 
     conditions.add(condition);
     
@@ -320,25 +316,6 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   public Map<String, String> getDefaultParameterMap() {
     // TODO mlowery not sure what goes here
     throw new UnsupportedOperationException();
-  }
-  
-
-  public void setAvailableFilters(List<String> availableFilters) {
-    // Must conform to \{\w*\}$
-
-    List<String> newParams = new ArrayList<String>();
-    for(String param : availableFilters){
-      if(param.matches("\\{[\\w*]$\\}")){
-        newParams.add(param);
-      } else {
-        newParams.add("{"+param+"}");
-      }
-    }
-    this.availableFilters = newParams;
-  }
-
-  public List<String> getAvailableFilters() {
-    return availableFilters;
   }
   
 }
