@@ -64,7 +64,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
 
   private List<ChangeListener> listeners = new ArrayList<ChangeListener>();
-  private final int spacing = 2;
+  private final int spacing = 1;
   private int maxHeight, maxWidth, averageHeight; //height and width of largest ListItem
   private String primaryStyleName;
   private String height, width;
@@ -76,7 +76,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     dropGrid.getColumnFormatter().setWidth(0, "100%");
     dropGrid.setWidget(0,1, arrow);
     dropGrid.setCellPadding(0);
-    dropGrid.setCellSpacing(spacing);
+    dropGrid.setCellSpacing(1);
     updateUI();
 
     // Add List Panel to it's scrollPanel
@@ -420,7 +420,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       } else if(width.indexOf("%") > 0) {
         w = Integer.parseInt(this.width.replace("%",""));
       }
-      selectedItemWrapper.setWidth( (w - (averageHeight + (this.spacing*2))) + "px" );
+      selectedItemWrapper.setWidth( (w - (averageHeight + (this.spacing*6))) + "px" );
     }
 
     // Store the the size of the popup to respect MaxDropVisible now that we know the item height
