@@ -528,7 +528,6 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     
     for(ChangeListener l : listeners){
       l.onChange(this);
-      System.out.println("firing onchange in customlistbox");
     }
   }
 
