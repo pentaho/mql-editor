@@ -13,6 +13,7 @@ public class UIModel extends AbstractModelNode<UICategory> implements MqlModel<U
   
   private List<UICategory> categories = new ArrayList<UICategory>();
 
+  private String id, name;
   
   public UIModel(Model model){
     this.id = model.getId();
@@ -27,8 +28,28 @@ public class UIModel extends AbstractModelNode<UICategory> implements MqlModel<U
     
   }
   
+  public String getId() {
+    return id;
+  }
+  
+  public void setId(String id){
+    this.id = id;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+  
+  public void setName(String name){
+    this.name = name;
+  }
+  
   public List<UICategory> getCategories() {
     return this.getChildren();  
+  }
+  
+  public void setCategories(List<UICategory> cats){
+    this.children = cats;
   }
   
 }

@@ -276,9 +276,27 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
  
   public MqlQuery getMqlQuery(){
     UIQuery query = new UIQuery();
-    query.setColumns(this.selectedColumns);
-    query.setConditions(this.conditions);
+    
+    List<UIColumn> cols = new ArrayList<UIColumn>();
+    List<UIOrder> orders = new ArrayList<UIOrder>();
+    List<UICondition> conditions = new ArrayList<UICondition>();
+    
+    for(UIColumn col : this.selectedColumns){
+      cols.add(col);
+    }
+
+    for(UIOrder order : this.orders){
+      orders.add(order);
+    }
+
+    for(UICondition condition : this.conditions){
+      conditions.add(condition);
+    }
+    
+    query.setColumns(cols);
     query.setOrders(orders);
+    query.setConditions(conditions);
+    
     query.setMqlStr(this.getMqlStr());
     query.setDomain(this.selectedDomain);
     query.setModel(this.model);

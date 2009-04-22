@@ -10,6 +10,8 @@ import org.pentaho.commons.metadata.mqleditor.beans.Category;
 
 public class UICategory extends AbstractModelNode<UIColumn> implements MqlCategory<UIColumn> {
   
+  private String id, name;
+  
   public UICategory(Category category){
     this.id = category.getId();
     this.name = category.getName();
@@ -19,6 +21,22 @@ public class UICategory extends AbstractModelNode<UIColumn> implements MqlCatego
       this.children.add(c);
     }
   }
+
+  public String getId() {
+    return id;
+  }
+  
+  public void setId(String id){
+    this.id = id;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+  
+  public void setName(String name){
+    this.name = name;
+  }
   
   public UICategory(){
     
@@ -26,6 +44,10 @@ public class UICategory extends AbstractModelNode<UIColumn> implements MqlCatego
 
   public List<UIColumn> getBusinessColumns() {
     return this.getChildren(); 
+  }
+  
+  public void setBusinessColumns(List<UIColumn> cols){
+    this.children = cols;
   }
   
 }

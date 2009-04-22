@@ -20,26 +20,10 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements
     List<T>, Iterable<T> {
 
   protected List<T> children = new ArrayList<T>();
-  protected String id, name;
 
   public AbstractModelNode() {
   }
 
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
 
   public AbstractModelNode(List<T> children) {
     Collections.copy(this.children, children);

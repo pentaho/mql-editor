@@ -35,7 +35,7 @@ public class UIOrder extends XulEventSourceAdapter implements MqlOrder {
     return column;
   }
 
-  public void setColumn(MqlColumn column) {
+  public void setColumn(UIColumn column) {
   
     this.column = (UIColumn) column;
   }

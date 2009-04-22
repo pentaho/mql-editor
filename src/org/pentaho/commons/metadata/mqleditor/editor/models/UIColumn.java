@@ -12,6 +12,7 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn<U
   private UIBusinessTable table;
 
   private ColumnType type;
+  private String id, name;
   
   public UIColumn() {
 
@@ -22,6 +23,21 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn<U
     this.id = col.getId();
     this.name = col.getName();
     this.table = new UIBusinessTable(col.getTable());
+  }
+  public String getId() {
+    return id;
+  }
+  
+  public void setId(String id){
+    this.id = id;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+  
+  public void setName(String name){
+    this.name = name;
   }
   
   public String getTableName() {
@@ -35,10 +51,18 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn<U
   public UIBusinessTable getTable() {
     return table;
   }
+  
+  public void setTable(UIBusinessTable table){
+    this.table = table;
+  }
 
   public ColumnType getType() {
 
     return type;
+  }
+  
+  public void setType(ColumnType type){
+    this.type = type;
   }
   
   public String toString(){

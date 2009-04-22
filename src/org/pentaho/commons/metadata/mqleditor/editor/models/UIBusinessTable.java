@@ -10,10 +10,28 @@ import org.pentaho.commons.metadata.mqleditor.beans.BusinessTable;
 
 public class UIBusinessTable extends AbstractModelNode<UIColumn> implements MqlBusinessTable<UIColumn> {
   
+  private String id, name;
+  
   public UIBusinessTable(){
     
   }
   
+  public String getId() {
+    return id;
+  }
+  
+  public void setId(String id){
+    this.id = id;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+  
+  public void setName(String name){
+    this.name = name;
+  }
+
   public UIBusinessTable(MqlBusinessTable<Column> table){
     this.id = table.getId();
     this.name = table.getName();
