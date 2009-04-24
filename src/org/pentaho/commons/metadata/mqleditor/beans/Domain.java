@@ -7,7 +7,8 @@ import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 
 public class Domain implements MqlDomain<Model> {
 
-  private String id, name;
+  private String id = "default";
+  private String name;
 
   private List<Model> models = new ArrayList<Model>();
 

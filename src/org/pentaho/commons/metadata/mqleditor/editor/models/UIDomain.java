@@ -8,13 +8,16 @@ import org.pentaho.commons.metadata.mqleditor.beans.Model;
 
 public class UIDomain extends AbstractModelNode<UIModel> implements MqlDomain<UIModel> {
   
-  private String id, name;
+  private String id = "default";
+  private String name;
   
   public UIDomain(){
   }
   
   public UIDomain(Domain domain){
-    this.id = domain.getId();
+    if(domain.getId() != null){
+      this.id = domain.getId();
+    }
     this.name = domain.getName();
     
     for(Model model : domain.getModels()){

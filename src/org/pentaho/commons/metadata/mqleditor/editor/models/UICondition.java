@@ -1,7 +1,10 @@
 package org.pentaho.commons.metadata.mqleditor.editor.models;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Vector;
 
+import org.pentaho.commons.metadata.mqleditor.AggType;
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.CombinationType;
 import org.pentaho.commons.metadata.mqleditor.MqlCondition;
@@ -17,6 +20,7 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
   private String value;
   private CombinationType combinationType = CombinationType.AND;
   private boolean parameterized = false;
+  private AggType selectedAggType;
   
   public UICondition(){
   }
@@ -30,7 +34,9 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
   }
   
   public UICondition(Condition bean){
-    this.column = new UIColumn(bean.getColumn());
+    if(bean.getColumn() != null){
+      this.column = new UIColumn(bean.getColumn());
+    }
     this.defaultValue = bean.getDefaultValue();
     this.operator = bean.getOperator();
     this.value = bean.getValue();
@@ -91,10 +97,6 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
   //Binding value comes in as Object unfortunately.
   public void setCombinationType(Object combinationType) {
     setCombinationType((CombinationType) combinationType);
-  }
-
-  public String getTableName(){
-    return this.column.getTable().getName();
   }
 
   public void setTableName(String name){
@@ -164,6 +166,28 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
   }
 
 
+  public void setSelectedAggType(AggType aggType){
+    this.selectedAggType = aggType;
+  }
+  
+  public AggType getSelectedAggType(){
+    return this.selectedAggType;
+  }
+
+  public void setSelectedAggType(Object o){
+    this.selectedAggType = AggType.valueOf(o.toString());
+  }
+
+  public List<AggType> getAggTypes() {
+    return this.column.getAggTypes();
+  }
+  public void setAggTypes(List<AggType> ignored){
+    
+  }
+
+  public Vector getBindingAggTypes(){
+    return column.getBindingAggTypes();
+  }
 }
 
   

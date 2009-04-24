@@ -7,9 +7,20 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.pentaho.commons.metadata.mqleditor.*;
-import org.pentaho.commons.metadata.mqleditor.beans.*;
-import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumn;
+import org.pentaho.commons.metadata.mqleditor.AggType;
+import org.pentaho.commons.metadata.mqleditor.ColumnType;
+import org.pentaho.commons.metadata.mqleditor.MqlColumn;
+import org.pentaho.commons.metadata.mqleditor.MqlCondition;
+import org.pentaho.commons.metadata.mqleditor.MqlDomain;
+import org.pentaho.commons.metadata.mqleditor.MqlOrder;
+import org.pentaho.commons.metadata.mqleditor.MqlQuery;
+import org.pentaho.commons.metadata.mqleditor.beans.Category;
+import org.pentaho.commons.metadata.mqleditor.beans.Column;
+import org.pentaho.commons.metadata.mqleditor.beans.Condition;
+import org.pentaho.commons.metadata.mqleditor.beans.Domain;
+import org.pentaho.commons.metadata.mqleditor.beans.Model;
+import org.pentaho.commons.metadata.mqleditor.beans.Order;
+import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
 import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.factory.CwmSchemaFactoryInterface;
@@ -19,9 +30,10 @@ import org.pentaho.pms.mql.OrderBy;
 import org.pentaho.pms.mql.Selection;
 import org.pentaho.pms.mql.WhereCondition;
 import org.pentaho.pms.schema.BusinessCategory;
+import org.pentaho.pms.schema.BusinessColumn;
 import org.pentaho.pms.schema.BusinessModel;
 import org.pentaho.pms.schema.SchemaMeta;
-import org.pentaho.pms.schema.BusinessColumn;
+import org.pentaho.pms.schema.concept.types.aggregation.AggregationSettings;
 import org.pentaho.pms.schema.concept.types.datatype.DataTypeSettings;
 import org.pentaho.pms.util.UniqueList;
 
@@ -77,29 +89,28 @@ public class MQLEditorServiceDeligate {
 
     UniqueList<BusinessCategory> cats = m.getRootCategory().getBusinessCategories();
     for (BusinessCategory cat : cats) {
-      model.getCategories().add(createCategory(cat));
+      model.getCategories().add(createCategory(m, cat));
     }
 
     return model;
   }
 
-  private Category createCategory(BusinessCategory c) {
+  private Category createCategory(BusinessModel m, BusinessCategory c) {
     Category cat = new Category();
     cat.setName(c.getName(locale));
     cat.setId(c.getId());
     UniqueList<org.pentaho.pms.schema.BusinessColumn> cols = c.getBusinessColumns();
     for (org.pentaho.pms.schema.BusinessColumn col : cols) {
-      cat.getBusinessColumns().add(createColumn(col));
+      cat.getBusinessColumns().add(createColumn(m, col));
     }
 
     return cat;
   }
 
-  private Column createColumn(org.pentaho.pms.schema.BusinessColumn c) {
+  private Column createColumn(BusinessModel m, org.pentaho.pms.schema.BusinessColumn c) {
     Column col = new Column();
     col.setName(c.getName(locale));
     col.setId(c.getId());
-    col.setTable(createTable(c.getBusinessTable()));
 
     int type = c.getPhysicalColumn().getDataType().getType();
     ColumnType ourType = null;
@@ -117,16 +128,55 @@ public class MQLEditorServiceDeligate {
         ourType = ColumnType.DATE;
         break;
     }
-
     col.setType(ourType);
+    List<AggregationSettings> possibleAggs = c.getAggregationList();
+    for(AggregationSettings agg : possibleAggs){
+      col.getAggTypes().add(getAggType(agg.getType()));
+    }
+    col.setDefaultAggType(getAggType(c.getAggregationType().getType()));
     return col;
   }
+  
+  private AggType getAggType(int type){
+    switch(type){
+      case AggregationSettings.TYPE_AGGREGATION_COUNT:
+        return AggType.COUNT;
+      case AggregationSettings.TYPE_AGGREGATION_COUNT_DISTINCT:
+        return AggType.COUNT_DISTINCT;
+      case AggregationSettings.TYPE_AGGREGATION_AVERAGE:
+        return AggType.AVERAGE;
+      case AggregationSettings.TYPE_AGGREGATION_MAXIMUM:
+        return AggType.MAX;
+      case AggregationSettings.TYPE_AGGREGATION_MINIMUM:
+        return AggType.MIN;
+      case AggregationSettings.TYPE_AGGREGATION_SUM:
+        return AggType.SUM;
+      default:
+        return AggType.NONE;
+    }
+  }
+  
 
-  private BusinessTable createTable(org.pentaho.pms.schema.BusinessTable t) {
-    BusinessTable table = new BusinessTable();
-    table.setName(t.getName(locale));
-    table.setId(t.getId());
-    return table;
+  private AggregationSettings getAggregationSettings(AggType type){
+    if(type == null){
+      return AggregationSettings.NONE;
+    }
+    switch(type){
+      case COUNT:
+        return AggregationSettings.COUNT;
+      case COUNT_DISTINCT:
+        return AggregationSettings.COUNT_DISTINCT;
+      case AVERAGE:
+        return AggregationSettings.AVERAGE;
+      case MAX:
+        return AggregationSettings.MAXIMUM;
+      case MIN:
+        return AggregationSettings.MINIMUM;
+      case SUM:
+        return AggregationSettings.SUM;
+      default:
+        return AggregationSettings.NONE;
+    }
   }
 
   public List<MqlDomain> getMetadataDomains() {
@@ -151,7 +201,9 @@ public class MQLEditorServiceDeligate {
       UniqueList list = model.getAllBusinessColumns();
       for (Object col : list.getList()) {
         if (((BusinessColumn) col).getId().equals(thincol.getId())) {
-          cols[i++] = (org.pentaho.pms.schema.BusinessColumn) col;
+          cols[i] = (org.pentaho.pms.schema.BusinessColumn) col;
+          //cols[i].setAggregationType(getAggregationSettings(thincol.getSelectedAggType()));
+          i++;
         }
       }
     }
@@ -264,10 +316,6 @@ public class MQLEditorServiceDeligate {
       col.setName(q.getName());
       col.setType(q.getType());
       
-      BusinessTable table = new BusinessTable();
-      table.setId(q.getTable().getId());
-      table.setName(q.getTable().getName());
-      col.setTable(table);
       cols.add(col);
     }
     query.setColumns(cols);

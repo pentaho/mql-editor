@@ -43,4 +43,6 @@ public interface MqlCondition<T extends MqlColumn> extends Serializable{
   public void setDefaultValue(String val);
   
   public String getDefaultValue();
+
+  public AggType getSelectedAggType();
 }

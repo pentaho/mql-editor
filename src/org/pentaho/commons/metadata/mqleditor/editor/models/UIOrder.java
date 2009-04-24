@@ -2,9 +2,11 @@ package org.pentaho.commons.metadata.mqleditor.editor.models;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.pentaho.commons.metadata.mqleditor.AggType;
 import org.pentaho.commons.metadata.mqleditor.MqlColumn;
 import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
@@ -15,13 +17,16 @@ public class UIOrder extends XulEventSourceAdapter implements MqlOrder {
   
   private UIColumn column;
   private Type orderType = Type.DESC;
+  private AggType selectedAggType;
 
   
   public UIOrder(){
   }
   
   public UIOrder(MqlOrder order){
-    this.column = new UIColumn(order.getColumn());
+    if(order.getColumn() != null){
+      this.column = new UIColumn(order.getColumn());
+    }
     this.orderType = order.getOrderType();
   }
 
@@ -55,11 +60,6 @@ public class UIOrder extends XulEventSourceAdapter implements MqlOrder {
     this.orderType = (Type) orderType;
   }
   
-
-  public String getTableName(){
-    return this.column.getTableName();
-  }
-  
   public void setTableName(String str){
     // ignored
   }
@@ -78,5 +78,25 @@ public class UIOrder extends XulEventSourceAdapter implements MqlOrder {
     return v;
   }
   
+
+
+  public void setSelectedAggType(AggType aggType){
+    this.selectedAggType = aggType;
+  }
   
+  public AggType getSelectedAggType(){
+    return this.selectedAggType;
+  }
+  
+
+  public List<AggType> getAggTypes() {
+    return this.column.getAggTypes();
+  }
+  public void setAggTypes(List<AggType> ignored){
+    
+  }
+
+  public Vector getBindingAggTypes(){
+    return column.getBindingAggTypes();
+  }
 }

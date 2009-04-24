@@ -1,18 +1,23 @@
 package org.pentaho.commons.metadata.mqleditor.editor.models;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
+import org.pentaho.commons.metadata.mqleditor.AggType;
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.MqlColumn;
-import org.pentaho.commons.metadata.mqleditor.beans.Column;
 
-public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn<UIBusinessTable> {
+public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
 
-  private UIBusinessTable table;
 
   private ColumnType type;
   private String id, name;
+
+  private List<AggType> aggTypes = new ArrayList<AggType>();
+  private AggType defaultAggType;
+
+  private AggType selectedAggType;
   
   public UIColumn() {
 
@@ -22,7 +27,6 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn<U
     this.type = col.getType();
     this.id = col.getId();
     this.name = col.getName();
-    this.table = new UIBusinessTable(col.getTable());
   }
   public String getId() {
     return id;
@@ -40,22 +44,10 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn<U
     this.name = name;
   }
   
-  public String getTableName() {
-    return table.getName();
-  }
-
   public void setTableName(String name){
     //TODO: Ignored! remove once Tree bindings respect one-way with editable="false"
   }
   
-  public UIBusinessTable getTable() {
-    return table;
-  }
-  
-  public void setTable(UIBusinessTable table){
-    this.table = table;
-  }
-
   public ColumnType getType() {
 
     return type;
@@ -66,10 +58,38 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn<U
   }
   
   public String toString(){
-    if(getTable() != null){
-      return getTable().getName() + "." + getId(); //$NON-NLS-1$
-    }
     return id;
   }
+
+  public AggType getDefaultAggType() {
+    return defaultAggType;
+  }
+
+  public List<AggType> getAggTypes() {
+    return aggTypes;
+  }
+
+  public void setAggTypes(List<AggType> aggTypes) {
+    this.aggTypes = aggTypes;
+  }
+
+  public void setDefaultAggType(AggType defaultAggType) {
+    this.defaultAggType = defaultAggType;
+  }
+
+  public void setSelectedAggType(AggType aggType){
+    this.selectedAggType = aggType;
+  }
   
+  public AggType getSelectedAggType(){
+    return this.selectedAggType;
+  }
+  
+  public Vector getBindingAggTypes(){
+    Vector v = new Vector();
+    for(AggType t : this.aggTypes){
+      v.add(t.toString());
+    }
+    return v;
+  }
 }

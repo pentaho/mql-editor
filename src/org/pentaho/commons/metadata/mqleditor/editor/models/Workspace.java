@@ -12,6 +12,7 @@ import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlModel;
 import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
+import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
@@ -52,7 +53,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     MqlDomain domain = thinWorkspace.getDomain();
     if (domain != null) {
       for (UIDomain uiDomain : domains) {
-        if (uiDomain.getName().equals(domain.getName())) {
+        if (uiDomain.getId().equals(domain.getId())) {
           setSelectedDomain(uiDomain);
         }
       }
@@ -60,27 +61,33 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     
     MqlModel model = thinWorkspace.getModel();
     if (model != null) {
-      for (UIModel uiModel : getSelectedDomain().getModels()) {
-        if (uiModel.getId().equals(model.getId())) {
-          setSelectedModel(uiModel);
+      for(UIDomain dom : this.domains){
+        for (UIModel uiModel : dom.getModels()) {
+          if (uiModel.getId().equals(model.getId())) {
+            setSelectedModel(uiModel);
+          }
         }
       }
     }
 
-    
     if (thinWorkspace.getColumns() != null) {
       for( MqlColumn col : thinWorkspace.getColumns()){
-        selectedColumns.add(new UIColumn(col));
+        selectedColumns.add(findColumn(col));
       }
     }
+    
     if (thinWorkspace.getOrders() != null) {
       for( MqlOrder order : thinWorkspace.getOrders()){
-        orders.add(new UIOrder(order));
+        UIOrder ord = new UIOrder(order);
+        ord.setColumn(findColumn(order.getColumn()));
+        orders.add(ord);
       }
     }
     if (thinWorkspace.getConditions() != null) {
       for( Condition condition : thinWorkspace.getConditions()){
-        conditions.add(new UICondition(condition));
+        UICondition cond = new UICondition(condition);
+        cond.setColumn(findColumn(condition.getColumn()));
+        conditions.add(cond);
       }
     }
   }
@@ -108,6 +115,17 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
         Workspace.this.firePropertyChange("orders", null, getOrders());
       }
     });
+  }
+  
+  private UIColumn findColumn(MqlColumn col){
+    for(UICategory cat : this.model.getCategories()){
+      for(UIColumn c : cat.getBusinessColumns()){
+        if(c.getId().equals(col.getId())){
+          return c;
+        }
+      }
+    }
+    return null;
   }
   
   public void setSelectedModel(UIModel m){

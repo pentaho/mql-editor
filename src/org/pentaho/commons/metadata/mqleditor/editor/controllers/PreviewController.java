@@ -84,6 +84,8 @@ public class PreviewController extends AbstractXulEventHandler {
       public void error(String message, Throwable error) {
         System.out.println(message);
         error.printStackTrace();
+        setPreviewData(new String[][]{});
+        openDialog();
       }
 
       public void success(String retVal) {

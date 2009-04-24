@@ -9,5 +9,7 @@ public interface MqlOrder extends Serializable{
   public MqlColumn getColumn();
   
   public Type getOrderType();
+  
+  public AggType getSelectedAggType();
 
 }

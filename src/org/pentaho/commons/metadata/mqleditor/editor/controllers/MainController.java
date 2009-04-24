@@ -246,6 +246,26 @@ public class MainController extends AbstractXulEventHandler {
       
       }
     );
+    
+
+    service.serializeModel(workspace.getMqlQuery(),
+      new XulServiceCallback<String>(){
+
+        public void error(String message, Throwable error) {
+          System.out.println(message);
+          error.printStackTrace();
+        }
+
+        public void success(String retVal) {
+          
+            System.out.println(retVal);
+          
+          dialog.hide();
+          
+        }
+      
+      }
+    );
   }
 
   public MQLEditorService getService() {

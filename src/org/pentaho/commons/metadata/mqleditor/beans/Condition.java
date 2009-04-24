@@ -1,5 +1,8 @@
 package org.pentaho.commons.metadata.mqleditor.beans;
 
+import java.util.List;
+
+import org.pentaho.commons.metadata.mqleditor.AggType;
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.CombinationType;
 import org.pentaho.commons.metadata.mqleditor.MqlCondition;
@@ -13,6 +16,7 @@ public class Condition implements MqlCondition<Column> {
   private CombinationType comboType = CombinationType.AND;
   private boolean parameterized;
   private String defaultValue;
+  private AggType selectedAggType;
 
   public Column getColumn() {
     return this.column;    
@@ -73,4 +77,13 @@ public class Condition implements MqlCondition<Column> {
   public String getDefaultValue(){
     return this.defaultValue;
   }
+
+  public void setSelectedAggType(AggType aggType){
+    this.selectedAggType = aggType;
+  }
+  
+  public AggType getSelectedAggType(){
+    return this.selectedAggType;
+  }
+
 }
