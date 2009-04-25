@@ -84,6 +84,9 @@
 
         <dependency org="pentaho" name="pentaho-xul-swing" rev="${dependency.pentaho-xul.revision}"
                     conf="default->default"/>
+                    
+        <dependency org="pentaho" name="pentaho-xul-swt" rev="${dependency.pentaho-xul.revision}"
+                    conf="default->default"/>
 
     </dependencies>
 </ivy-module>
