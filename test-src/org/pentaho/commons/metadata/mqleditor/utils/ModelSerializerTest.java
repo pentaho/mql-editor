@@ -15,7 +15,6 @@ import org.pentaho.commons.metadata.mqleditor.CombinationType;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.Operator;
 import org.pentaho.commons.metadata.mqleditor.MqlOrder.Type;
-import org.pentaho.commons.metadata.mqleditor.beans.BusinessTable;
 import org.pentaho.commons.metadata.mqleditor.beans.Category;
 import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
@@ -56,11 +55,6 @@ public class ModelSerializerTest {
     column.setId("mycolumn");
     column.setName("mycolumn");
     column.setType(ColumnType.TEXT);
-
-    BusinessTable table = new BusinessTable();
-    table.setId("mytable");
-    table.setName("mytable");
-    column.setTable(table);
 
     columns.add(column);
     cat.setBusinessColumns(columns);
@@ -124,6 +118,7 @@ public class ModelSerializerTest {
   @Test
   public void testSerializeAndDeSerialize() {
     String serialized = ModelSerializer.serialize(mqlQuery);
+    System.out.println(serialized);
     MqlQuery deserialized = ModelSerializer.deSerialize(serialized);
     // spot check fields since Query doesn't implement equals!!!
     assertEquals(mqlQuery.getDomain().getName(), deserialized.getDomain().getName());
