@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
-    <info organisation="pentaho" module="${ivy.artifact.id}" revision="${project.revision}" />
+    <info organisation="${ivy.artifact.group}" module="${ivy.artifact.id}" revision="${project.revision}" />
     
     <configurations>
     	<conf name="default"/>
-    	<conf name="source"/>
+    	<conf name="runtime"/>
+    	<conf name="source" />    	
     	<conf name="test" visibility="private"/>
+    	<conf name="codegen"       visibility="private"/>
+    	<conf name="codegen-mac"   visibility="private" extends="codegen"/>
+    	<conf name="codegen-win"   visibility="private" extends="codegen"/>
+    	<conf name="codegen-linux" visibility="private" extends="codegen"/>
     </configurations>
     
     <publications>
@@ -14,15 +19,17 @@
     </publications>
     
     <dependencies defaultconf="default->default">
-        <!--  Actual dependencies -->
-        <dependency org="org.zenica"     name="gwt-datepicker" rev="r18"   conf="default->default"/>
-        <dependency org="com.google.gwt" name="gwt-servlet" rev="1.5.2"       conf="default->default"/>
-        <dependency org="com.google.gwt" name="gwt-incubator" rev="1-5_Sept_04" 	conf="default->default"/>
-        <dependency org="com.allen_sauer" name="gwt-dnd" rev="2.5.6"       conf="default->default"/>
-        
+        <!--  Codegen dependencies -->
+        <dependency org="com.google.gwt" name="gwt-user" rev="1.6.4"                         conf="codegen->default"/>
+        <dependency org="com.google.gwt" name="gwt-dev"  rev="1.6.4" m:classifier="mac"      conf="codegen-mac->default"/>
+        <dependency org="com.google.gwt" name="gwt-dev"  rev="1.6.4" m:classifier="windows"  conf="codegen-win->default"/>
+        <dependency org="com.google.gwt" name="gwt-dev"  rev="1.6.4" m:classifier="linux"    conf="codegen-linux->default"/>
+        <dependency org="org.zenica"     name="gwt-datepicker" rev="r18"   conf="codegen->default"/>
+        <dependency org="com.google.gwt" name="gwt-incubator" rev="1-5_Sept_04" 	conf="codegen->default"/>
+        <dependency org="com.allen_sauer" name="gwt-dnd" rev="2.5.6"       conf="codegen->default"/>
+
         <!--  Testing dependencies -->
         <dependency org="junit"          name="junit"          rev="4.4"   conf="test->default"/>
-        <dependency org="com.google.gwt" name="gwt-user"       rev="1.5.2" conf="test->default"/>
-
+        <dependency org="com.google.gwt" name="gwt-user"       rev="1.6.4" conf="test->default"/>
     </dependencies>
 </ivy-module>
