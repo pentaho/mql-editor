@@ -40,7 +40,22 @@
             value="${basedir}/codegen-lib"
             description="Location of the libraries needed for code generation" />
   <property name="gwt-compile.maxmemory" value="512M" description="maxmemory argument for com.google.gwt.dev.GWTCompiler java task" />
+  <property name="gwt-compile.localWorkers" value="4" description="number of threads to use for running parallel compilation" />
+  <property name="gwt-compile.maxstack" value="1024k" description="vm stack size setting" />
 
+	<path id="classpath">
+    <fileset dir="${codegenlib.dir}">
+      <include name="*.jar" />
+    </fileset>
+    <fileset dir="${devlib.dir}">
+      <include name="*.jar" />
+    </fileset>
+    <fileset dir="${lib.dir}">
+      <include name="*.jar" />
+    </fileset>
+    <pathelement path="${src.dir}" />
+  </path>	
+	
   <!--=======================================================================
 	    init (override)
 	    
@@ -94,18 +109,14 @@
           depends="gwt-compile.check, init"
           unless="gwtBuild.notRequired"
           description="Perform GWT Compile">
-    <java classname="com.google.gwt.dev.GWTCompiler" fork="true" failonerror="true" maxmemory="${gwt-compile.maxmemory}">
-      <classpath>
-        <path refid="classpath" />
-        <fileset dir="${codegenlib.dir}">
-          <include name="*.jar" />
-        </fileset>
-        <pathelement path="${src.dir}" />
-      </classpath>
-      <arg value="-out" />
+    <java classname="com.google.gwt.dev.Compiler" fork="true" failonerror="true" maxmemory="${gwt-compile.maxmemory}">
+ 	  <classpath refid="classpath"/>
+      <jvmarg value="-Xss${gwt-compile.maxstack}"/>    	
+      <arg value="-war" />
       <arg value="${gwt.output.dir}" />
-      <arg value="%*" />
       <arg value="${gwt-module.path}" />
+      <arg value="-localWorkers" />
+      <arg value="${gwt-compile.localWorkers}" />
       <arg value="-logLevel" />
       <arg value="${gwt-log-level}" />
       <arg value="-style" />

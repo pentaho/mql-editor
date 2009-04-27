@@ -22,7 +22,7 @@
 
         <!--  internal dependencies -->
         <dependency org="org.safehaus.jug" name="jug-lgpl" rev="2.0.0"/>
-        <!--  will not properly pull from ibiblio maven2. needs classifier of 'lgpl' -->
+        <!--  will not properly pull from ibiblio maven2. needs classifier of 'lgpl'-->
         <dependency org="commons-httpclient" name="commons-httpclient" rev="3.0.1" transitive="false"/>
         <dependency org="commons-vfs" name="commons-vfs" rev="1.0" transitive="false"/>
         <dependency org="log4j" name="log4j" rev="1.2.14"/>
@@ -32,7 +32,7 @@
         <dependency org="pentaho" name="pentaho-metadata" rev="${dependency.pentaho-metadata.revision}" changing="true"
                     transitive="false"/>
         <dependency org="pentaho" name="pentaho-cwm" rev="${dependency.pentaho-cwm.revision}"/>
-        <!--  dependency org="pentaho.kettle" name="kettle-core"   rev="${dependency.kettle-engine.revision}" / -->
+        <!--  dependency org="pentaho.kettle" name="kettle-core"   rev="${dependency.kettle-engine.revision}" /-->
         <dependency org="pentaho.kettle" name="kettle-engine" rev="${dependency.kettle-engine.revision}"/>
         <dependency org="pentaho.kettle" name="kettle-core" rev="${dependency.kettle-engine.revision}"/>
         <dependency org="dom4j" name="dom4j" rev="1.6.1"/>
@@ -52,41 +52,39 @@
         <!--  Testing dependencies -->
         <dependency org="junit" name="junit" rev="4.3.1" transitive="false" conf="test->default"/>
 
+        <dependency org="com.google.gwt" name="gwt-servlet" rev="1.6.4" conf="default->default"/>
 
-        <dependency org="org.zenica" name="gwt-datepicker" rev="r17" conf="default->default"/>
-        <dependency org="com.google.gwt" name="gwt-servlet" rev="1.5.2" conf="default->default"/>
-        <dependency org="com.google.gwt" name="gwt-incubator" rev="1-5_Sept_04" conf="default->default"/>
-        <dependency org="com.allen_sauer" name="gwt-dnd" rev="2.5.6" conf="default->default"/>
-        <dependency org="com.google.gwt" name="gwt-user" rev="1.5.2" conf="default->default"/>
-        <dependency org="com.google.gwt" name="gwt-dev" rev="1.5.2" m:classifier="linux" conf="default->default"/>
+		<!-- codegen dependencies -->
+    	<dependency org="com.google.gwt"  name="gwt-dev" rev="1.6.4" m:classifier="mac" conf="codegen-mac->default" />
+    	<dependency org="com.google.gwt"  name="gwt-dev" rev="1.6.4" m:classifier="windows" conf="codegen-win->default" />
+    	<dependency org="com.google.gwt"  name="gwt-dev" rev="1.6.4" m:classifier="linux" conf="codegen-linux->default" />
+    	<dependency org="com.google.gwt"  name="gwt-user" rev="1.6.4" conf="codegen->default" />
+
+        <dependency org="org.zenica" name="gwt-datepicker" rev="r17" conf="codegen->default"/>
+        <dependency org="com.google.gwt" name="gwt-incubator" rev="1-5_Sept_04" conf="codegen->default"/>
+        <dependency org="com.allen_sauer" name="gwt-dnd" rev="2.5.6" conf="codegen->default"/>
         <dependency org="com.google.code.gwtx" name="gwtx" rev="1.5-20081002"/>
 
         <dependency org="pentaho" name="pentaho-gwt-widgets" rev="${dependency.pentaho-gwt-widgets.revision}"
-                    conf="default->default"
+                    conf="codegen->default"
                     changing="true">
             <artifact name="pentaho-gwt-widgets"/>
             <artifact name="pentaho-gwt-widgets" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
 
-        <dependency org="pentaho" name="pentaho-xul-core" rev="${dependency.pentaho-xul.revision}"
-                    conf="default->default"
-                    changing="true">
-            <artifact name="pentaho-xul-core"/>
-            <artifact name="pentaho-xul-core" type="source" ext="jar" m:classifier="sources"/>
-        </dependency>
-
         <dependency org="pentaho" name="pentaho-xul-gwt" rev="${dependency.pentaho-xul.revision}"
-                    conf="default->default"
+                    conf="codegen->default"
                     changing="true">
             <artifact name="pentaho-xul-gwt"/>
             <artifact name="pentaho-xul-gwt" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
 
-        <dependency org="pentaho" name="pentaho-xul-swing" rev="${dependency.pentaho-xul.revision}"
-                    conf="default->default"/>
-                    
-        <dependency org="pentaho" name="pentaho-xul-swt" rev="${dependency.pentaho-xul.revision}"
-                    conf="default->default"/>
+        <dependency org="pentaho" name="pentaho-xul-core" rev="${dependency.pentaho-xul.revision}" conf="default->default" changing="true">
+            <artifact name="pentaho-xul-core"/>
+            <artifact name="pentaho-xul-core" type="source" ext="jar" m:classifier="sources"/>
+        </dependency>
+        <dependency org="pentaho" name="pentaho-xul-swing" rev="${dependency.pentaho-xul.revision}" conf="default->default"/>
+        <dependency org="pentaho" name="pentaho-xul-swt" rev="${dependency.pentaho-xul.revision}" conf="default->default"/>
 
     </dependencies>
 </ivy-module>
