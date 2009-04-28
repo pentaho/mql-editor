@@ -78,7 +78,26 @@
     <delete file="${bin.dir}/.gwtBuild*" />
   </target>
 
-
+  <!--=======================================================================
+      clean-jars (override)
+      
+      Removes all the libraries that have been downloaded for this project
+      using the ivy dependencies.
+      ====================================================================-->
+  <target name="clean-jars" depends="clean-codegen" description="Cleans all the generated and dependency files">
+    <ant antfile="${common.build.file}" target="clean-jars" />
+  </target>
+  
+  <!--=======================================================================
+      clean-codegen
+      
+      Removes all the codegen libraries that have been downloaded for this project
+      using the ivy dependencies.
+      ====================================================================-->
+  <target name="clean-codegen" description="Cleans codegen">
+    <delete dir="${codegenlib.dir}" />
+  </target>
+  
   <!--=======================================================================
       resolve (override)
       
