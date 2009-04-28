@@ -63,7 +63,7 @@
         <dependency org="org.zenica" name="gwt-datepicker" rev="r18" conf="codegen->default"/>
         <dependency org="com.google.gwt" name="gwt-incubator" rev="1-5_Sept_04" conf="codegen->default"/>
         <dependency org="com.allen_sauer" name="gwt-dnd" rev="2.5.6" conf="codegen->default"/>
-        <dependency org="com.google.code.gwtx" name="gwtx" rev="1.5-20081002" transitive="false"/>
+        <dependency org="com.google.code.gwtx" name="gwtx" rev="1.5-20081002" transitive="false" conf="codegen->default"/>
 
         <dependency org="pentaho" name="pentaho-gwt-widgets" rev="${dependency.pentaho-gwt-widgets.revision}"
                     conf="codegen->default"
