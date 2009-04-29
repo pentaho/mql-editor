@@ -175,7 +175,7 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
   }
 
   public void setSelectedAggType(Object o){
-    this.selectedAggType = AggType.valueOf(o.toString());
+    setSelectedAggType((AggType)  o);
   }
 
   public List<AggType> getAggTypes() {

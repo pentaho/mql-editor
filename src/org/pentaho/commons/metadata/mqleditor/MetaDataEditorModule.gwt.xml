@@ -20,6 +20,9 @@
         <exclude name="**/MQLEditorServiceSyncImpl*"/>
         <exclude name="**/ModelSerializer*"/>
         <exclude name="**/CWMStartup*"/>
+        <exclude name="**/Swt*"/>
+        <exclude name="**/MQLEditorServiceDebugImpl*"/>
+        <exclude name="**/MQLEditorDebugGwtServlet*"/>
         
     </source>
     <public path="editor/public"/>

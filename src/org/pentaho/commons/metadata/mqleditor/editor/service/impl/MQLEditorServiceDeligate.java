@@ -130,9 +130,11 @@ public class MQLEditorServiceDeligate {
     }
     col.setType(ourType);
     List<AggregationSettings> possibleAggs = c.getAggregationList();
+    
     for(AggregationSettings agg : possibleAggs){
       col.getAggTypes().add(getAggType(agg.getType()));
     }
+    
     col.setDefaultAggType(getAggType(c.getAggregationType().getType()));
     return col;
   }
@@ -202,7 +204,7 @@ public class MQLEditorServiceDeligate {
       for (Object col : list.getList()) {
         if (((BusinessColumn) col).getId().equals(thincol.getId())) {
           cols[i] = (org.pentaho.pms.schema.BusinessColumn) col;
-          //cols[i].setAggregationType(getAggregationSettings(thincol.getSelectedAggType()));
+          cols[i].setAggregationType(getAggregationSettings(thincol.getSelectedAggType()));
           i++;
         }
       }
@@ -213,8 +215,10 @@ public class MQLEditorServiceDeligate {
   private org.pentaho.pms.schema.BusinessColumn getColumn(BusinessModel model, MqlColumn thinCol) {
     UniqueList list = model.getAllBusinessColumns();
     for (Object col : list.getList()) {
-      if (((org.pentaho.pms.schema.BusinessColumn) col).getName(locale).equals(thinCol.getName())) {
-        return (org.pentaho.pms.schema.BusinessColumn) col;
+      org.pentaho.pms.schema.BusinessColumn bCol = (org.pentaho.pms.schema.BusinessColumn) col;
+      if (bCol.getName(locale).equals(thinCol.getName())) {
+        bCol.setAggregationType(getAggregationSettings(thinCol.getSelectedAggType()));
+        return (org.pentaho.pms.schema.BusinessColumn) bCol;
       }
     }
     return null;
@@ -244,7 +248,16 @@ public class MQLEditorServiceDeligate {
 
   public String saveQuery(MqlQuery query) {
 
-
+    MQLQuery fatQ = convertModel(query);
+    if(fatQ != null){
+      return fatQ.getXML();
+    } else {
+      return "";
+    }
+    
+  }
+  
+  public MQLQuery convertModel(MqlQuery query){
     SchemaMeta meta = modelIdToSchemaMetaMap.get(query.getModel().getId());
 
     UniqueList<BusinessModel> models = meta.getBusinessModels();
@@ -266,7 +279,7 @@ public class MQLEditorServiceDeligate {
           mqlQuery = new MQLQueryImpl(meta, businessModel, null, meta.getActiveLocale());
           List<Selection> selections = new ArrayList<Selection>();
           for (int i = 0; i < businessColumns.length; i++) {
-            selections.add(new Selection(businessColumns[i]));
+            selections.add(new Selection(businessColumns[i], businessColumns[i].getAggregationType()));
           }
 
           mqlQuery.setSelections(selections);
@@ -283,7 +296,7 @@ public class MQLEditorServiceDeligate {
           mqlQuery.setConstraints(constraints);
           mqlQuery.setOrder(getOrders(realModel, query.getOrders()));
 
-          return mqlQuery.getXML();
+          return mqlQuery;
         }
       } catch (Throwable e) { // PMSFormulaException e) {
         e.printStackTrace();

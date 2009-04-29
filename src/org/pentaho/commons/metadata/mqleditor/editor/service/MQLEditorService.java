@@ -18,7 +18,7 @@ public interface MQLEditorService {
   void saveQuery(MqlQuery model, XulServiceCallback<String> callback);
   void serializeModel(MqlQuery query, XulServiceCallback<String> callback);
   void deserializeModel(String serializedQuery, XulServiceCallback<MqlQuery> callback);
-  void getPreviewData(String query, int page, int limit, XulServiceCallback<String[][]> callback);
+  void getPreviewData(MqlQuery query, int page, int limit, XulServiceCallback<String[][]> callback);
 }
 
   

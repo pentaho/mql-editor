@@ -13,7 +13,7 @@
   <dialog id="previewDialog" buttonlabelcancel="${close}" buttons="cancel"
     ondialogcancel="previewController.closeDialog()" buttonalign="right" title="${window.title}"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:pen="http://www.pentaho.org/2008/xul"
-    height="300" width="400">
+    height="300" width="400" >
 
     <vbox padding="10" flex="1">
       <tree editable="false" seltype="none" enableColumnDrag="false" id="previewTree" flex="1" height="210">
@@ -34,7 +34,7 @@
   <dialog id="mqlEditorDialog" buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttonlabelextra1="preview"
     buttons="accept,cancel" ondialogaccept="mainController.saveQuery()"
     ondialogcancel="mainController.closeDialog()" buttonalign="right"
-    title="${window.title}" width="700" height="625">
+    title="${window.title}" width="750" height="625">
     <vbox padding="10" flex="1">
       <hbox flex="1">
         <vbox flex="1">
@@ -47,7 +47,7 @@
             <menupopup />
           </menulist>
           <label value="${categories.columns}" />
-          <tree flex="1" id="categoryTree" height="400" width="170">
+          <tree flex="1" id="categoryTree" height="400" width="170" istree="true">
             <treecols>
               <treecol flex="1" label="" primary="true" pen:binding="name" pen:childrenbinding="children" />
             </treecols>

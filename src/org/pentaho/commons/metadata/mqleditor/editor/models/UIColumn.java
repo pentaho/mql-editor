@@ -27,6 +27,8 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
     this.type = col.getType();
     this.id = col.getId();
     this.name = col.getName();
+    this.aggTypes = col.getAggTypes();
+    this.defaultAggType = col.getDefaultAggType();
   }
   public String getId() {
     return id;
@@ -76,6 +78,10 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
   public void setDefaultAggType(AggType defaultAggType) {
     this.defaultAggType = defaultAggType;
   }
+  
+  public void setSelectedAggType(Object o){
+    setSelectedAggType((AggType)  o);
+  }
 
   public void setSelectedAggType(AggType aggType){
     this.selectedAggType = aggType;
@@ -88,7 +94,7 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
   public Vector getBindingAggTypes(){
     Vector v = new Vector();
     for(AggType t : this.aggTypes){
-      v.add(t.toString());
+      v.add(t);
     }
     return v;
   }

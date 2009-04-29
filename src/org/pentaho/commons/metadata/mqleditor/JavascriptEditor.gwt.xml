@@ -19,6 +19,9 @@ This module serves as the Debuging environment and default implementation for in
         <exclude name="**/MQLEditorServiceSyncImpl*"/>
         <exclude name="**/ModelSerializer*"/>
         <exclude name="**/CWMStartup*"/>
+        <exclude name="**/Swt*"/>
+        <exclude name="**/MQLEditorServiceDebugImpl*"/>
+        <exclude name="**/MQLEditorDebugGwtServlet*"/>
         
     </source>
     <public path="editor/public"/>

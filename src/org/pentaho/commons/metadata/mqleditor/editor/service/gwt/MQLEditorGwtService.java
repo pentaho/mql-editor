@@ -15,7 +15,7 @@ public interface MQLEditorGwtService extends RemoteService{
   String saveQuery(MqlQuery model);
   String serializeModel(MqlQuery query);
   MqlQuery deserializeModel(String serializedQuery);
-  String[][] getPreviewData(String query, int page, int limit);
+  String[][] getPreviewData(MqlQuery query, int page, int limit);
 
 }
 

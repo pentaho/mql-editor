@@ -79,28 +79,12 @@ public class PreviewController extends AbstractXulEventHandler {
   }
 
   public void showPreview() {
-    service.saveQuery(workspace.getMqlQuery(), new XulServiceCallback<String>() {
+    service.getPreviewData(workspace.getMqlQuery(), page, previewLimit, new XulServiceCallback<String[][]>() {
 
       public void error(String message, Throwable error) {
         System.out.println(message);
         error.printStackTrace();
         setPreviewData(new String[][]{});
-        openDialog();
-      }
-
-      public void success(String retVal) {
-        query = retVal;
-        fetchPreview();
-      }
-    });
-  }
-
-  private void fetchPreview() {
-    service.getPreviewData(query, page, previewLimit, new XulServiceCallback<String[][]>() {
-
-      public void error(String message, Throwable error) {
-        System.out.println(message);
-        error.printStackTrace();
         openDialog();
       }
 
@@ -121,12 +105,12 @@ public class PreviewController extends AbstractXulEventHandler {
   
   public void upateQuery(){
 
-    service.getPreviewData(query, page, previewLimit, new XulServiceCallback<String[][]>() {
+    service.getPreviewData(workspace.getMqlQuery(), page, previewLimit, new XulServiceCallback<String[][]>() {
 
       public void error(String message, Throwable error) {
         System.out.println(message);
         error.printStackTrace();
-        openDialog();
+        setPreviewData(new String[][]{});
       }
 
       public void success(String[][] retVal) {
@@ -140,7 +124,7 @@ public class PreviewController extends AbstractXulEventHandler {
     if(previewData.length == 0){
       previewTree.setElements(null);
       return;
-    } 
+    }
     
     
     // Adjust number of columns as needed.

@@ -1,5 +1,6 @@
 package org.pentaho.commons.metadata.mqleditor.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.AggType;
@@ -10,7 +11,7 @@ public class Column implements MqlColumn {
 
   private String id, name;
   private ColumnType type;
-  private List<AggType> aggTypes;
+  private List<AggType> aggTypes = new ArrayList<AggType>();
   private AggType defaultAggType;
   private AggType selectedAggType;
   

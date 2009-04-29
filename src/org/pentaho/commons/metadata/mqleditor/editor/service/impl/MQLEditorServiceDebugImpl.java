@@ -45,7 +45,7 @@ public class MQLEditorServiceDebugImpl implements MQLEditorService{
     callback.success(deligate.serializeModel(query));
   }
 
-  public void getPreviewData(String query, int page, int limit, XulServiceCallback<String[][]> callback) {
+  public void getPreviewData(MqlQuery query, int page, int limit, XulServiceCallback<String[][]> callback) {
     callback.error("Operation not supported", new NotImplementedException("Implement in a subclass of this service"));
   }
 

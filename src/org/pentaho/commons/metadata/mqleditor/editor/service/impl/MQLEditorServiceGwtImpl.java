@@ -88,7 +88,7 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
 
   }
 
-  public void getPreviewData(String query, int page, int limit, final XulServiceCallback<String[][]> callback) {
+  public void getPreviewData(MqlQuery query, int page, int limit, final XulServiceCallback<String[][]> callback) {
     SERVICE.getPreviewData(query, page, limit, new AsyncCallback<String[][]>() {
 
       public void onFailure(Throwable arg0) {

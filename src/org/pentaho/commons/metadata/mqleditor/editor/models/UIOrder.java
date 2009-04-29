@@ -79,6 +79,10 @@ public class UIOrder extends XulEventSourceAdapter implements MqlOrder {
   }
   
 
+  public void setSelectedAggType(Object aggType){
+    setSelectedAggType((AggType) aggType);
+  }
+  
 
   public void setSelectedAggType(AggType aggType){
     this.selectedAggType = aggType;
