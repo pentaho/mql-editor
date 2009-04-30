@@ -69,6 +69,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   private String primaryStyleName;
   private String height, width;
   private String popupHeight, popupWidth;
+  private boolean suppressLayout;
 
 
   public CustomListBox(){
@@ -151,7 +152,9 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     this.items.remove(listItem);
     setSelectedIndex(0);
 
-    updateUI();
+    if(suppressLayout == false){
+      updateUI();
+    }
   }
 
   /**
@@ -160,7 +163,9 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   public void removeAll(){
     this.items.clear();
     this.selectedIndex = -1;
-    updateUI();
+    if(suppressLayout == false){
+      updateUI();
+    }
   }
 
   /**
@@ -191,8 +196,22 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     if(items.size() == 1){
       setSelectedIndex(0);
     }
-    updateUI();
+    if(suppressLayout == false){
+      updateUI();
+    }
+    
 
+  }
+  
+  /**
+   * Call this method with true will suppress the re-laying out of the widget after every add/remove. 
+   * This is useful when adding a large batch of items to the listbox.
+   */
+  public void setSuppressLayout(boolean supress){
+    this.suppressLayout = supress;
+    if(! suppressLayout){
+      updateUI();
+    }
   }
 
   /**
@@ -209,7 +228,9 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     if(items.size() == 1){
       setSelectedIndex(0);
     }
-    updateUI();
+    if(suppressLayout == false){
+      updateUI();
+    }
     
   }
 
@@ -242,7 +263,9 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       fPanel.remove(listScrollPanel);
       fPanel.add(dropGrid);
     }
-    updateUI();
+    if(suppressLayout == false){
+      updateUI();
+    }
   }
 
   /**

@@ -79,6 +79,7 @@ public class BaseTable extends Composite {
   private String[] tableHeaderNames;
   private String scrollTableWidth;
   private String scrollTableHeight;
+  
   private int[] columnWidths;
   private int numberOfColumns;
   private SelectionPolicy selectionPolicy;
@@ -477,6 +478,10 @@ public class BaseTable extends Composite {
    */
   public void setTableHeight(String height){
     this.scrollTableHeight = height;
+  }
+  
+  public void setTableWidth(String width){
+    this.scrollTableWidth = width;
   }
   
   /**
