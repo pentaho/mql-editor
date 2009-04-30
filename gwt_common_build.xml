@@ -21,7 +21,7 @@
   <property name="gwt.output.dir"
             value="${bin.dir}/gwt/output"
             description="Base directory that holds all gwt generated files" />
-  <property name="gwt-dev.revision" value="1.5.2" description="The release of GWT-dev to download and install" />
+  <property name="gwt-dev.revision" value="1.6.4" description="The release of GWT-dev to download and install" />
   <property name="gwt-log-level" value="INFO" description="The log level for GWT Compile" />
   <property name="gwt-style" value="OBF" description="Style in which javascript should be generated, options include OBF[uscated], PRETTY, and DETAILED"/>
   <property name="gwt-dev.zipfile"
@@ -270,9 +270,9 @@
       <isset property="isMac" />
     </condition>
 
-    <get src="http://repo1.maven.org/maven2/com/google/gwt/gwt-dev/1.5.2/gwt-dev-${gwt-dev.revision}-${maven.classifier}-libs.zip"
+    <get src="http://repo1.maven.org/maven2/com/google/gwt/gwt-dev/${gwt-dev.revision}/gwt-dev-${gwt-dev.revision}-${maven.classifier}-libs.zip"
          dest="${gwt-dev.zipfile}" />
-    <get src="http://repo1.maven.org/maven2/com/google/gwt/gwt-dev/1.5.2/gwt-dev-${gwt-dev.revision}-${maven.classifier}.jar"
+    <get src="http://repo1.maven.org/maven2/com/google/gwt/gwt-dev/${gwt-dev.revision}/gwt-dev-${gwt-dev.revision}-${maven.classifier}.jar"
          dest="${gwt-dev.jarfile}" />
   </target>
 
