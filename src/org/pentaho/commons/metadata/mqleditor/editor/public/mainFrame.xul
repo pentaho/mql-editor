@@ -34,7 +34,7 @@
   <dialog id="mqlEditorDialog" buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttonlabelextra1="preview"
     buttons="accept,cancel" ondialogaccept="mainController.saveQuery()"
     ondialogcancel="mainController.closeDialog()" buttonalign="right"
-    title="${window.title}" width="750" height="625">
+    title="${window.title}" width="700" height="625">
     <vbox padding="10" flex="1">
       <hbox flex="1">
         <vbox flex="1">
