@@ -135,7 +135,13 @@ public class MQLEditorServiceDeligate {
       col.getAggTypes().add(getAggType(agg.getType()));
     }
     
-    col.setDefaultAggType(getAggType(c.getAggregationType().getType()));
+    // There might be a default agg, but no agg list. If so, add it to the list.
+    AggType defaultAggType = getAggType(c.getAggregationType().getType());
+    if(col.getAggTypes().contains(defaultAggType) == false){
+      col.getAggTypes().add(defaultAggType);
+    }
+    
+    col.setDefaultAggType(defaultAggType);
     return col;
   }
   
