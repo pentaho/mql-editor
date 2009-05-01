@@ -32,6 +32,7 @@ public class ElementUtils {
   private static AbsolutePanel sandbox = new AbsolutePanel(); //Used to find the size of elements
 
   static{
+    sandbox.getElement().getStyle().setProperty("position","absolute");
     sandbox.getElement().getStyle().setProperty("overflow","hidden");
     sandbox.getElement().getStyle().setProperty("width","0px");
     sandbox.getElement().getStyle().setProperty("height","0px");
