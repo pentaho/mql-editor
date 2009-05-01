@@ -180,17 +180,19 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
   public void setSelectedCategory(UICategory selectedCategory) {
   
+    List<UIColumn> prevColumns = getColumns();
+    UICategory oldCat = this.selectedCategory;
     this.selectedCategory = selectedCategory;
-    this.firePropertyChange("selectedCategory", null, this.selectedCategory);
-    this.firePropertyChange("columns", null, getColumns());
+    this.firePropertyChange("selectedCategory", oldCat, this.selectedCategory);
+    this.firePropertyChange("columns", prevColumns, getColumns());
     
   }
 
   public void setSelectedOrder(UIOrder selectedOrder) {
   
+    UIOrder prevOrder = this.selectedOrder;
     this.selectedOrder = selectedOrder;
-    this.firePropertyChange("selectedOrder", null, this.selectedOrder);
-    this.firePropertyChange("orders", null, getOrders());
+    this.firePropertyChange("selectedOrder", prevOrder, this.selectedOrder);
     
   }
   
@@ -205,8 +207,9 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
   public void setSelectedColumn(UIColumn selectedColumn) {
   
+    UIColumn prevColumn = this.selectedColumn;
     this.selectedColumn = selectedColumn;
-    this.firePropertyChange("selectedColumn", null, getSelectedColumn());
+    this.firePropertyChange("selectedColumn", prevColumn, getSelectedColumn());
   }
   
   public void addColumn(UIColumn col){
@@ -344,8 +347,11 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
 
   public void setDomains(List<UIDomain> domains) {
+    List<UIDomain> oldDomains = this.domains;
     this.domains = domains;
-    this.firePropertyChange("domains", null, domains); //$NON-NLS-1$
+    if(oldDomains != domains || oldDomains.size() != domains.size()){
+      this.firePropertyChange("domains", null, domains); //$NON-NLS-1$
+    }
   }
 
 
