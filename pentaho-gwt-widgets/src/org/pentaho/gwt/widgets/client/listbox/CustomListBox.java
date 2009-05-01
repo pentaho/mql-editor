@@ -210,6 +210,16 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   public void setSuppressLayout(boolean supress){
     this.suppressLayout = supress;
     if(! suppressLayout){
+  
+      if(selectedIndex < 0 && this.items.size() > 0){
+        this.setSelectedIndex(0); // notifies listeners 
+      } else {
+        // just notify listeners something has changed.
+        for(ChangeListener l : listeners){
+          l.onChange(this);
+        }
+      }
+
       updateUI();
     }
   }
@@ -304,7 +314,6 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
     // Update the popup to respect this value
     if(maxHeight > 0){ //Items already added
-      System.out.println("Max heihgt : "+this.maxDropVisible * maxHeight);
       this.popupHeight = this.maxDropVisible * maxHeight + "px";
     }
   }
@@ -549,8 +558,10 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       scrollSelectedItemIntoView();
     }
     
-    for(ChangeListener l : listeners){
-      l.onChange(this);
+    if(this.suppressLayout == false){
+      for(ChangeListener l : listeners){
+        l.onChange(this);
+      }
     }
   }
 
