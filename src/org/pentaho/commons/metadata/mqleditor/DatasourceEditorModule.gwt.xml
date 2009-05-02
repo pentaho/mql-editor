@@ -6,6 +6,7 @@
   <inherits name="org.pentaho.gwt.widgets.Widgets"/>
   <inherits name="org.pentaho.ui.xul.Gwt"/>
   <inherits name="org.pentaho.pms.schema.v3.Column"/>
+  <inherits name="org.pentaho.metadata.Model"/>
     <source path="">
         <exclude name="**/MQLEditorDebugGwtServlet*"/>
         <exclude name="**/SwingMqlEditor*"/>

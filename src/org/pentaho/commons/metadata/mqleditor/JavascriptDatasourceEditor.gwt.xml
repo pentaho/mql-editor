@@ -4,13 +4,13 @@ This module serves as the Debuging environment and default implementation for in
 -->
 
 <module>
-
   <inherits name='com.google.gwt.user.User'/>
   <inherits name='com.googlecode.gwtx.Java'/>
   <inherits name='com.google.gwt.xml.XML'/>
   <inherits name="org.pentaho.gwt.widgets.Widgets"/>
+  <inherits name="org.pentaho.ui.xul.Gwt"/>
   <inherits name="org.pentaho.pms.schema.v3.Column"/>
-    <inherits name="org.pentaho.ui.xul.Gwt"/>
+  <inherits name="org.pentaho.metadata.Model"/>
     <source path="">
         <exclude name="**/MQLEditorDebugGwtServlet*"/>
         <exclude name="**/SwingMqlEditor*"/>

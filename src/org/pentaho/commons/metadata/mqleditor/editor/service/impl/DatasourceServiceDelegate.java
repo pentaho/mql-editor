@@ -8,33 +8,39 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
+import org.pentaho.commons.metadata.mqleditor.editor.service.ConnectionServiceException;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
 import org.pentaho.commons.metadata.mqleditor.utils.ResultSetConverter;
-import org.pentaho.commons.metadata.mqleditor.utils.ResultSetObject;
+import org.pentaho.commons.metadata.mqleditor.utils.SerializedResultSet;
 import org.pentaho.di.core.database.DatabaseMeta;
-import org.pentaho.pms.schema.v3.model.Column;
+import org.pentaho.metadata.model.Domain;
+import org.pentaho.metadata.repository.DomainAlreadyExistsException;
+import org.pentaho.metadata.repository.DomainIdNullException;
+import org.pentaho.metadata.repository.DomainStorageException;
+import org.pentaho.metadata.repository.IMetadataDomainRepository;
+import org.pentaho.platform.engine.services.metadata.MetadataDomainRepository;
 import org.pentaho.pms.schema.v3.physical.IDataSource;
 import org.pentaho.pms.schema.v3.physical.SQLDataSource;
 import org.pentaho.pms.service.IModelManagementService;
 import org.pentaho.pms.service.IModelQueryService;
 import org.pentaho.pms.service.JDBCModelManagementService;
+import org.pentaho.pms.service.ModelManagementServiceException;
 
 public class DatasourceServiceDelegate {
 
-  private String locale = Locale.getDefault().toString();
-
-  private List<IDatasource> datasources = new ArrayList<IDatasource>();
+   private List<IDatasource> datasources = new ArrayList<IDatasource>();
   private IModelManagementService modelManagementService;
   private IModelQueryService modelQueryService;
+  private IMetadataDomainRepository metadataDomainRepository;
   
   public DatasourceServiceDelegate() {
     modelManagementService =  new JDBCModelManagementService();
+    metadataDomainRepository = new MetadataDomainRepository();
   }
   
   public List<IDatasource> getDatasources() {
@@ -73,13 +79,13 @@ public class DatasourceServiceDelegate {
     }
     return false;
   }
+
   
-  public ResultSetObject doPreview(IConnection connection, String query, String previewLimit) throws DatasourceServiceException{
+  public SerializedResultSet doPreview(IConnection connection, String query, String previewLimit) throws DatasourceServiceException{
     Connection conn = null;
     Statement stmt = null;
     ResultSet rs = null;
-    ResultSetConverter rsc  = null;
-    ResultSetObject rso = null;
+    SerializedResultSet serializedResultSet = null;
     int limit = (previewLimit != null && previewLimit.length() > 0) ? Integer.parseInt(previewLimit): -1;
     try {
       conn = getDataSourceConnection(connection);
@@ -89,9 +95,9 @@ public class DatasourceServiceDelegate {
         if(limit >=0) {
           stmt.setMaxRows(limit);
         }        
-        rs = stmt.executeQuery(query);
-        rsc =  new ResultSetConverter(rs);
-        rso = new ResultSetObject(rsc.getColumnTypeNames(), rsc.getMetaData(), rsc.getResultSet());
+        ResultSetConverter rsc = new ResultSetConverter(stmt.executeQuery(query));
+        serializedResultSet =  new SerializedResultSet(rsc.getColumnTypeNames(), rsc.getMetaData(), rsc.getResultSet());
+  
       } else {
         throw new DatasourceServiceException("Query not valid"); //$NON-NLS-1$
       }
@@ -113,24 +119,22 @@ public class DatasourceServiceDelegate {
         throw new DatasourceServiceException(e);
       }
     }
-    return rso;
+    return serializedResultSet;
 
   }
   
-  public ResultSetObject doPreview(IConnection connection, String query) throws DatasourceServiceException{
+  public SerializedResultSet doPreview(IConnection connection, String query) throws DatasourceServiceException{
     Connection conn = null;
     Statement stmt = null;
     ResultSet rs = null;
-    ResultSetConverter rsc  = null;
-    ResultSetObject rso = null;
+    SerializedResultSet serializedResultSet = null;
     try {
       conn = getDataSourceConnection(connection);
 
       if (!StringUtils.isEmpty(query)) {
         stmt = conn.createStatement();
-        rs = stmt.executeQuery(query);
-        rsc =  new ResultSetConverter(rs);
-        rso = new ResultSetObject(rsc.getColumnTypeNames(), rsc.getMetaData(), rsc.getResultSet());
+        ResultSetConverter rsc = new ResultSetConverter(stmt.executeQuery(query));
+        serializedResultSet =  new SerializedResultSet(rsc.getColumnTypeNames(), rsc.getMetaData(), rsc.getResultSet());
       } else {
         throw new DatasourceServiceException("Query is not valid"); //$NON-NLS-1$
       }
@@ -151,10 +155,10 @@ public class DatasourceServiceDelegate {
         throw new DatasourceServiceException(e);
       }
     }
-    return rso;
+    return serializedResultSet;
 
   }
-  public ResultSetObject doPreview(IDatasource datasource) throws DatasourceServiceException {
+  public SerializedResultSet doPreview(IDatasource datasource) throws DatasourceServiceException {
     String limit = datasource.getPreviewLimit();
     if(limit != null && limit.length() > 0) {
       return doPreview(datasource.getSelectedConnection(), datasource.getQuery(), limit);
@@ -224,6 +228,13 @@ public class DatasourceServiceDelegate {
     return true;
   }
 
+  /**
+   * Construct the IDataSource from IConnection and a SQL query
+   * This is a temporary fix. We need to figure out a better way of doing. Will be gone once we implement the thin version of common database dialog
+   * @param IConnection connection, String query
+   * @return IDataSource
+   * @throws DataSourceManagementException
+   */
   private IDataSource constructIDataSource(IConnection connection, String query) throws DatasourceServiceException{
     final String SLASH = "/"; //$NON-NLS-1$
     final String DOUBLE_SLASH = "//";//$NON-NLS-1$
@@ -257,23 +268,51 @@ public class DatasourceServiceDelegate {
       throw new DatasourceServiceException(e);
     }
   }
-  public BusinessData getBusinessData(IDatasource datasource) throws DatasourceServiceException {
-    return getBusinessData(datasource.getSelectedConnection(), datasource.getQuery(), datasource.getPreviewLimit());  }
- 
-  public BusinessData getBusinessData(IConnection connection, String query, String previewLimit) throws DatasourceServiceException {
+
+  /**
+   * This method gets the business data which are the business columns, columns types and sample preview data
+   * 
+   * @param modelName, connection, query, previewLimit
+   * @return BusinessData
+   * @throws DataSourceManagementException
+   */
+  
+  public BusinessData generateModel(String modelName, IConnection connection, String query, String previewLimit) throws DatasourceServiceException {
+    try {
       IDataSource dataSource = constructIDataSource(connection, query);
-      List<Column> columns = getModelManagementService().getColumns(dataSource);
+      //SQLConnection sqlConnection= (SQLConnection) PentahoConnectionFactory.getConnection(IPentahoConnection.SQL_DATASOURCE, connection.getDriverClass(),
+      //    connection.getUrl(), connection.getUsername(), connection.getPassword(), null, null);
+      
+      Domain domain = getModelManagementService().generateModel(modelName, /*sqlConnection.getNativeConnection()*/ getDataSourceConnection(connection), query);
       List<List<String>> data = getModelManagementService().getDataSample(dataSource, Integer.parseInt(previewLimit));
-      return new BusinessData(columns, data);
+      
+      return new BusinessData(domain, data);
+    } catch(ModelManagementServiceException mmse) {
+      throw new DatasourceServiceException(mmse.getLocalizedMessage(), mmse);
+    }
   }
 
-  
-  public Boolean createCategory(String categoryName, IConnection connection, String query, BusinessData businessData) throws DatasourceServiceException{
-    IDataSource dataSource = constructIDataSource(connection, query);
-    getModelManagementService().createCategory(dataSource, categoryName, businessData.getColumns());
-    return true;
+  /**
+   * This method save the model
+   * 
+   * @param businessData, overwrite
+   * @return Boolean
+   * @throws DataSourceManagementException
+   */  
+  public Boolean saveModel(BusinessData businessData, Boolean overwrite)throws DatasourceServiceException {
+    Boolean returnValue = false;
+    try {
+    getMetadataDomainRepository().storeDomain(businessData.getDomain(), overwrite);
+    returnValue = true;
+    } catch(DomainStorageException dse) {
+      throw new DatasourceServiceException("Unable to store domain" + businessData.getDomain().getName(), dse); //$NON-NLS-1$
+    } catch(DomainAlreadyExistsException dae) {
+      throw new DatasourceServiceException("Domain already exist" + businessData.getDomain().getName(), dae); //$NON-NLS-1$
+    } catch(DomainIdNullException dne) {
+      throw new DatasourceServiceException("Domain ID is null", dne); //$NON-NLS-1$
+    }
+    return returnValue;
   }
-  
   public void setModelManagementService(IModelManagementService modelManagementService) {
     this.modelManagementService = modelManagementService;
   }
@@ -289,6 +328,55 @@ public class DatasourceServiceDelegate {
   public IModelQueryService getModelQueryService() {
     return modelQueryService;
   }
+  
+  public IMetadataDomainRepository getMetadataDomainRepository() {
+    return metadataDomainRepository;
+  }
 
+  public void setMetadataDomainRepository(IMetadataDomainRepository metadataDomainRepository) {
+    this.metadataDomainRepository = metadataDomainRepository;
+  }
+
+  /**
+   * NOTE: caller is responsible for closing connection
+   * 
+   * @param ds
+   * @return
+   * @throws DataSourceManagementException
+   */
+  private static Connection getConnection(IConnection connection) throws ConnectionServiceException {
+    Connection conn = null;
+
+    String driverClass = connection.getDriverClass();
+    if (StringUtils.isEmpty(driverClass)) {
+      throw new ConnectionServiceException("Connection attempt failed"); //$NON-NLS-1$  
+    }
+    Class<?> driverC = null;
+
+    try {
+      driverC = Class.forName(driverClass);
+    } catch (ClassNotFoundException e) {
+      throw new ConnectionServiceException("Driver not found in the class path. Driver was " + driverClass, e); //$NON-NLS-1$
+    }
+    if (!Driver.class.isAssignableFrom(driverC)) {
+      throw new ConnectionServiceException("Driver not found in the class path. Driver was " + driverClass); //$NON-NLS-1$    }
+    }
+    Driver driver = null;
+    
+    try {
+      driver = driverC.asSubclass(Driver.class).newInstance();
+    } catch (InstantiationException e) {
+      throw new ConnectionServiceException("Unable to instance the driver", e); //$NON-NLS-1$
+    } catch (IllegalAccessException e) {
+      throw new ConnectionServiceException("Unable to instance the driver", e); //$NON-NLS-1$    }
+    }
+    try {
+      DriverManager.registerDriver(driver);
+      conn = DriverManager.getConnection(connection.getUrl(), connection.getUsername(), connection.getPassword());
+      return conn;
+    } catch (SQLException e) {
+      throw new ConnectionServiceException("Unable to connect", e); //$NON-NLS-1$
+    }
+  }
   
 }

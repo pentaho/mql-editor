@@ -41,4 +41,5 @@ public class ConnectionDebugGwtServlet extends RemoteServiceServlet implements C
   public Boolean testConnection(IConnection connection)  throws ConnectionServiceException{
     return SERVICE.testConnection(connection);
   }
+
 }

@@ -7,7 +7,7 @@ import org.pentaho.commons.metadata.mqleditor.IDatasource;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
-import org.pentaho.commons.metadata.mqleditor.utils.ResultSetObject;
+import org.pentaho.commons.metadata.mqleditor.utils.SerializedResultSet;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 public class DatasourceServiceDebugImpl implements DatasourceService{
@@ -37,31 +37,28 @@ public class DatasourceServiceDebugImpl implements DatasourceService{
     callback.success(SERVICE.deleteDatasource(name));
   }
 
-  public void doPreview(IConnection connection, String query, String previewLimit, XulServiceCallback<ResultSetObject> callback)
+  public void doPreview(IConnection connection, String query, String previewLimit, XulServiceCallback<SerializedResultSet> callback)
       throws DatasourceServiceException {
     callback.success(SERVICE.doPreview(connection, query, previewLimit));
   }
 
-  public void doPreview(IDatasource datasource, XulServiceCallback<ResultSetObject> callback)
+  public void doPreview(IDatasource datasource, XulServiceCallback<SerializedResultSet> callback)
       throws DatasourceServiceException {
     callback.success(SERVICE.doPreview(datasource));
   }
+
+
   
-  public void getBusinessData(IConnection connection, String query, String previewLimit, XulServiceCallback<BusinessData> callback)
-    throws DatasourceServiceException {
-    callback.success(SERVICE.getBusinessData(connection, query, previewLimit));
+  public void generateModel(String modelName, IConnection connection, String query, String previewLimit,
+      XulServiceCallback<BusinessData> callback) throws DatasourceServiceException {
+   callback.success(SERVICE.generateModel(modelName, connection, query, previewLimit));
   }
 
-  public void getBusinessData(IDatasource datasource, XulServiceCallback<BusinessData> callback)
-    throws DatasourceServiceException {
-    callback.success(SERVICE.getBusinessData(datasource));
+  public void saveModel(BusinessData businessData, Boolean overwrite, XulServiceCallback<Boolean> callback)
+      throws DatasourceServiceException {
+    callback.success(SERVICE.saveModel(businessData, overwrite));
   }
-  
-  public void createCategory(String categoryName, IConnection connection, String query, BusinessData businessData,XulServiceCallback<Boolean> callback) 
-  throws DatasourceServiceException {
-    callback.success(SERVICE.createCategory(categoryName, connection, query, businessData));
-    
-  }
+
 }
 
   

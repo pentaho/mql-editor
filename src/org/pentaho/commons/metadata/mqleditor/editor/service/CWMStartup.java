@@ -1,7 +1,5 @@
 package org.pentaho.commons.metadata.mqleditor.editor.service;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 

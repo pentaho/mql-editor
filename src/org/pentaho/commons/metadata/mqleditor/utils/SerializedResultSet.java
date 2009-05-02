@@ -1,19 +1,19 @@
 package org.pentaho.commons.metadata.mqleditor.utils;
 
-public class ResultSetObject implements java.io.Serializable{
+public class SerializedResultSet implements java.io.Serializable{
   private static final long serialVersionUID = 8275330793662889379L;
   private String[] columns;// contains column names
   private String[] columnTypes;// contains column types
   private String[][] data;// 2 dimensional array
 
-  public ResultSetObject(String[] columnTypes, String[] columns, String[][] data) {
+  public SerializedResultSet(String[] columnTypes, String[] columns, String[][] data) {
     super();
     this.columnTypes = columnTypes;
     this.columns = columns;
     this.data = data;
   }
   
-  public ResultSetObject()
+  public SerializedResultSet()
   {
     
   }

@@ -5,7 +5,7 @@ import java.util.List;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
-import org.pentaho.commons.metadata.mqleditor.utils.ResultSetObject;
+import org.pentaho.commons.metadata.mqleditor.utils.SerializedResultSet;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 public interface DatasourceService {
@@ -15,11 +15,10 @@ public interface DatasourceService {
   void deleteDatasource(IDatasource datasource, XulServiceCallback<Boolean> callback);
   void updateDatasource(IDatasource datasource, XulServiceCallback<Boolean> callback);
   void deleteDatasource(String name, XulServiceCallback<Boolean> callback);
-  void doPreview(IConnection connection, String query, String previewLimit, XulServiceCallback<ResultSetObject> callback) throws DatasourceServiceException;
-  void doPreview(IDatasource datasource, XulServiceCallback<ResultSetObject> callback) throws DatasourceServiceException;
-  void getBusinessData(IDatasource datasource, XulServiceCallback<BusinessData> callback) throws DatasourceServiceException;
-  void getBusinessData(IConnection connection, String query, String previewLimit, XulServiceCallback<BusinessData> callback) throws DatasourceServiceException;
-  void createCategory(String categoryName, IConnection connection, String query, BusinessData data,XulServiceCallback<Boolean> callback) throws DatasourceServiceException ;
+  void doPreview(IConnection connection, String query, String previewLimit, XulServiceCallback<SerializedResultSet> callback) throws DatasourceServiceException;
+  void doPreview(IDatasource datasource, XulServiceCallback<SerializedResultSet> callback) throws DatasourceServiceException;
+  void generateModel(String modelName, IConnection connection, String query, String previewLimit, XulServiceCallback<BusinessData> callback) throws DatasourceServiceException;
+  void saveModel(BusinessData businessData, Boolean overwrite, XulServiceCallback<Boolean> callback) throws DatasourceServiceException ;
 }
 
   

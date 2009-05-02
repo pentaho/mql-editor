@@ -54,36 +54,48 @@
                     changing="true"/>
         <dependency org="pentaho-library" name="libformula" rev="${dependency.pentaho-reporting-libformula.revision}"/>
         <dependency org="pentaho" name="pentaho-publisher" rev="${dependency.pentaho-pentaho-publisher.revision}"/>
+    	<dependency org="pentaho" name="pentaho-bi-platform-api" rev="${dependency.bi-platform.revision}" changing="true" transitive="false" conf="default->default"/>
+    	<dependency org="pentaho" name="pentaho-bi-platform-util" rev="${dependency.bi-platform.revision}" changing="true" transitive="false" conf="default->default"/>
+    	<dependency org="pentaho" name="pentaho-bi-platform-engine-core" rev="${dependency.bi-platform.revision}" changing="true" transitive="false" conf="default->default"/>
+    	<dependency org="pentaho" name="pentaho-bi-platform-engine-services" rev="${dependency.bi-platform.revision}" changing="true" transitive="false" conf="default->default"/>
+    	<dependency org="pentaho" name="pentaho-bi-platform-repository" rev="${dependency.bi-platform.revision}" changing="true" transitive="false" conf="default->default"/>
 
 
         <!--  Testing dependencies -->
         <dependency org="junit" name="junit" rev="4.3.1" transitive="false" conf="test->default"/>
 
 
-        <dependency org="org.zenica" name="gwt-datepicker" rev="r17" conf="default->default"/>
-        <dependency org="com.google.gwt" name="gwt-servlet" rev="1.5.2" conf="default->default"/>
-        <dependency org="com.google.gwt" name="gwt-incubator" rev="1-5_Sept_04" conf="default->default"/>
-        <dependency org="com.allen_sauer" name="gwt-dnd" rev="2.5.6" conf="default->default"/>
-        <dependency org="com.google.gwt" name="gwt-user" rev="1.5.2" conf="default->default"/>
-        <dependency org="com.google.gwt" name="gwt-dev" rev="1.5.2" m:classifier="linux" conf="default->default"/>
-        <dependency org="com.google.code.gwtx" name="gwtx" rev="1.5-20081002"/>
+        
+        <dependency org="com.google.gwt" name="gwt-servlet" rev="1.6.4" conf="default->default"/>
+		<!-- codegen dependencies -->
+		<dependency org="org.zenica" name="gwt-datepicker" rev="r18" conf="codegen->default"/>
+    	<dependency org="com.google.gwt"  name="gwt-dev" rev="1.6.4" m:classifier="mac" conf="codegen-mac->default" />
+    	<dependency org="com.google.gwt"  name="gwt-dev" rev="1.6.4" m:classifier="windows" conf="codegen-win->default" />
+    	<dependency org="com.google.gwt"  name="gwt-dev" rev="1.6.4" m:classifier="linux" conf="codegen-linux->default" />
+    	<dependency org="com.google.gwt"  name="gwt-user" rev="1.6.4" conf="codegen->default" />
+
+        <dependency org="com.google.gwt" name="gwt-incubator" rev="1-5_Sept_04" conf="codegen->default"/>
+        <dependency org="com.allen_sauer" name="gwt-dnd" rev="2.5.6" conf="codegen->default"/>
+        <dependency org="com.google.code.gwtx" name="gwtx" rev="1.5-20081002" conf="codegen->default"/>
+        
+        
 
         <dependency org="pentaho" name="pentaho-gwt-widgets" rev="${dependency.pentaho-gwt-widgets.revision}"
-                    conf="default->default"
+                    conf="codegen->default"
                     changing="true">
             <artifact name="pentaho-gwt-widgets"/>
             <artifact name="pentaho-gwt-widgets" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
 
         <dependency org="pentaho" name="pentaho-xul-core" rev="${dependency.pentaho-xul.revision}"
-                    conf="default->default"
+                    conf="codegen->default"
                     changing="true">
             <artifact name="pentaho-xul-core"/>
             <artifact name="pentaho-xul-core" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
 
         <dependency org="pentaho" name="pentaho-xul-gwt" rev="${dependency.pentaho-xul.revision}"
-                    conf="default->default"
+                    conf="codegen->default"
                     changing="true">
             <artifact name="pentaho-xul-gwt"/>
             <artifact name="pentaho-xul-gwt" type="source" ext="jar" m:classifier="sources"/>

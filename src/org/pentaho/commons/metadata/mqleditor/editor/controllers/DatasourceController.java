@@ -3,7 +3,6 @@ package org.pentaho.commons.metadata.mqleditor.editor.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.DatabaseColumnType;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource.EditType;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
@@ -12,8 +11,13 @@ import org.pentaho.commons.metadata.mqleditor.editor.models.ConnectionModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.DatasourceModel;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
-import org.pentaho.commons.metadata.mqleditor.utils.ResultSetObject;
-import org.pentaho.pms.schema.v3.model.Column;
+import org.pentaho.commons.metadata.mqleditor.utils.SerializedResultSet;
+import org.pentaho.metadata.model.Category;
+import org.pentaho.metadata.model.Domain;
+import org.pentaho.metadata.model.IPhysicalColumn;
+import org.pentaho.metadata.model.LogicalColumn;
+import org.pentaho.metadata.model.LogicalModel;
+import org.pentaho.metadata.model.concept.types.DataType;
 import org.pentaho.ui.xul.XulComponent;
 import org.pentaho.ui.xul.XulException;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -115,10 +119,10 @@ public class DatasourceController extends AbstractXulEventHandler {
     datasourceName = (XulTextbox) document.getElementById("datasourcename"); //$NON-NLS-1$
     connections = (XulListbox) document.getElementById("connectionList"); //$NON-NLS-1$
     query = (XulTextbox) document.getElementById("query"); //$NON-NLS-1$
-    connectionDialog = (XulDialog) document.getElementById("connectionDialog");
-    datasourceDialog = (XulDialog) document.getElementById("datasourceDialog");
-    previewResultsDialog = (XulDialog) document.getElementById("previewResultsDialog");
-    removeConfirmationDialog = (XulDialog) document.getElementById("removeConfirmationDialog");
+    connectionDialog = (XulDialog) document.getElementById("connectionDialog");//$NON-NLS-1$
+    datasourceDialog = (XulDialog) document.getElementById("datasourceDialog");//$NON-NLS-1$
+    previewResultsDialog = (XulDialog) document.getElementById("previewResultsDialog");//$NON-NLS-1$
+    removeConfirmationDialog = (XulDialog) document.getElementById("removeConfirmationDialog");//$NON-NLS-1$
     previewResultsTable = (XulTree) document.getElementById("previewResultsTable"); //$NON-NLS-1$
     previewResultsTreeCols = (XulTreeCols) document.getElementById("previewResultsTreeCols"); //$NON-NLS-1$
     previewLimit = (XulTextbox) document.getElementById("previewLimit"); //$NON-NLS-1$
@@ -135,8 +139,8 @@ public class DatasourceController extends AbstractXulEventHandler {
     previewButton = (XulButton) document.getElementById("preview"); //$NON-NLS-1$
     
     bf.setBindingType(Binding.Type.ONE_WAY);
-    bf.createBinding(datasourceModel, "validated", previewButton, "!disabled");
-    bf.createBinding(datasourceModel, "validated", nextButton, "!disabled");
+    bf.createBinding(datasourceModel, "validated", previewButton, "!disabled");//$NON-NLS-1$ //$NON-NLS-2$
+    bf.createBinding(datasourceModel, "validated", nextButton, "!disabled");//$NON-NLS-1$ //$NON-NLS-2$
     BindingConvertor<IConnection, Boolean> buttonConvertor = new BindingConvertor<IConnection, Boolean>(){
 
       @Override
@@ -152,11 +156,11 @@ public class DatasourceController extends AbstractXulEventHandler {
     };
     
     bf.setBindingType(Binding.Type.ONE_WAY);
-    final Binding domainBinding = bf.createBinding(datasourceModel, "connections", connections, "elements");
+    final Binding domainBinding = bf.createBinding(datasourceModel, "connections", connections, "elements"); //$NON-NLS-1$ //$NON-NLS-2$
     bf.createBinding(datasourceModel, "selectedConnection", editConnectionButton, "!disabled", buttonConvertor); //$NON-NLS-1$ //$NON-NLS-2$ 
     bf.createBinding(datasourceModel, "selectedConnection", removeConnectionButton, "!disabled", buttonConvertor); //$NON-NLS-1$ //$NON-NLS-2$
     bf.setBindingType(Binding.Type.BI_DIRECTIONAL);
-    bf.createBinding(datasourceModel, "selectedConnection", connections, "selectedIndex", new BindingConvertor<IConnection, Integer>() {
+    bf.createBinding(datasourceModel, "selectedConnection", connections, "selectedIndex", new BindingConvertor<IConnection, Integer>() { //$NON-NLS-1$ //$NON-NLS-2$
 
       @Override
       public Integer sourceToTarget(IConnection connection) {
@@ -182,13 +186,13 @@ public class DatasourceController extends AbstractXulEventHandler {
     
     
     bf.setBindingType(Binding.Type.BI_DIRECTIONAL);
-    bf.createBinding(datasourceModel, "previewLimit", previewLimit, "value");
+    bf.createBinding(datasourceModel, "previewLimit", previewLimit, "value"); //$NON-NLS-1$ //$NON-NLS-2$
     // Not sure if editQuery button is doing much
     //bf.createBinding(editQueryButton, "!disabled", "removeConnectionButton", "!disabled", buttonConvertor); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     
     bf.setBindingType(Binding.Type.BI_DIRECTIONAL);
-    bf.createBinding(datasourceModel, "query", query, "value");
-    bf.createBinding(datasourceModel, "datasourceName", datasourceName, "value");
+    bf.createBinding(datasourceModel, "query", query, "value"); //$NON-NLS-1$ //$NON-NLS-2$
+    bf.createBinding(datasourceModel, "datasourceName", datasourceName, "value"); //$NON-NLS-1$ //$NON-NLS-2$
     datasourceDeck.setSelectedIndex(CONNECTION_DECK);
     
     backButton.setDisabled(true);
@@ -251,18 +255,18 @@ public class DatasourceController extends AbstractXulEventHandler {
     }
   }
 
-  private XulMenuList<XulMenupopup> createMenuList(Object columnType) {
+  private XulMenuList<XulMenupopup> createMenuList(String columnType) {
     XulMenuList<XulMenupopup> menuList = null;
     try {
       menuList = (XulMenuList<XulMenupopup>) document.createElement("menulist"); //$NON-NLS-1$
       menuList.setFlex(1);
       XulMenupopup menuPopup = (XulMenupopup) document.createElement("menupopup");//$NON-NLS-1$
-      DatabaseColumnType[] type = DatabaseColumnType.values();
+      DataType[] type = DataType.values();
       for(int i=0;i<type.length;i++) {
         XulMenuitem menuItem = (XulMenuitem) document.createElement("menuitem");//$NON-NLS-1$
         String typeString = type[i].toString();
         menuItem.setLabel(typeString);
-        menuItem.setSelected((columnType != null && columnType.toString().equalsIgnoreCase(type[i].toString())) ? true:false);
+        menuItem.setSelected((columnType != null && typeString.equalsIgnoreCase(columnType.toString())) ? true:false);
         menuPopup.addComponent(menuItem);
       }
       menuList.addComponent(menuPopup);
@@ -278,7 +282,7 @@ public class DatasourceController extends AbstractXulEventHandler {
     if(allInputsSatisfiedForNext()) {
         try {
             
-          service.getBusinessData(datasourceModel.getSelectedConnection(), datasourceModel.getQuery(), datasourceModel.getPreviewLimit(), 
+          service.generateModel(datasourceModel.getDatasourceName(), datasourceModel.getSelectedConnection(), datasourceModel.getQuery(), datasourceModel.getPreviewLimit(), 
               new XulServiceCallback<BusinessData>(){
   
                 public void error(String message, Throwable error) {
@@ -298,7 +302,19 @@ public class DatasourceController extends AbstractXulEventHandler {
                         List<XulComponent> columnList = columns.getChildNodes();
                         List<XulComponent> rowList = rows.getChildNodes();
 
-                        List<Column> businessColumns = businessData.getColumns();
+                        Domain domain = businessData.getDomain();
+
+                        List<IPhysicalColumn> physicalColumns = new ArrayList<IPhysicalColumn>();
+                        List<LogicalModel> logicalModels = domain.getLogicalModels();
+                        for(LogicalModel logicalModel:logicalModels) {
+                          List<Category> categories = logicalModel.getCategories();
+                          for(Category category:categories) {
+                            List<LogicalColumn> logicalColumns = category.getLogicalColumns();
+                            for(LogicalColumn logicalColumn: logicalColumns) {
+                              physicalColumns.add(logicalColumn.getPhysicalColumn());
+                            }
+                          }
+                        }
                         List<List<String>> data = businessData.getData();
                         
                         for(int i=0;i<columnList.size();i++) {
@@ -313,7 +329,7 @@ public class DatasourceController extends AbstractXulEventHandler {
                         int columnCounter=1;
                         XulRow xulRowForColumnHeader = (XulRow) document.createElement("row"); //$NON-NLS-1$
                         XulRow xulRowForColumnDataType = (XulRow) document.createElement("row"); //$NON-NLS-1$
-                        for(Column column:businessColumns) {
+                        for(IPhysicalColumn column:physicalColumns) {
                           XulColumn xulCol = (XulColumn) document.createElement("column"); //$NON-NLS-1$
                           xulCol.setFlex(1);
                           columns.addChild(xulCol);
@@ -324,7 +340,13 @@ public class DatasourceController extends AbstractXulEventHandler {
                           textBox.setId("columnHeader" + (columnCounter++));//$NON-NLS-1$
                           textBox.setMultiline(false);
                           textBox.setWidth(20);
-                          textBox.setValue(column.getName());
+                          //LocalizedString columnName = column.getName();
+                          String columnName = column.getName();
+                          if(columnName != null) {
+                            //textBox.setValue(column.getName().toString());
+                            textBox.setValue(columnName);
+                         
+                          }
                           // Add the row for column header.
                           xulRowForColumnHeader.addChild(textBox);
                         }
@@ -462,28 +484,38 @@ public class DatasourceController extends AbstractXulEventHandler {
   public void executeFinish() {
     // Get the business data from the model
     BusinessData businessData = datasourceModel.getBusinessData();
-    // Get the columns from the business data
-    List<Column> columns = businessData.getColumns();
-
+    // Get the domain from the business data
+    Domain domain = businessData.getDomain();
 
     XulComponent columnDataTypeComp = this.rows.getChildNodes().get(0);
     XulComponent columnHeaderComp = this.rows.getChildNodes().get(1);
     List<XulComponent> dataTypeRowList = columnDataTypeComp.getChildNodes();
     List<XulComponent> columnHeaderRowList = columnHeaderComp.getChildNodes();
-    for(int i=0;i<dataTypeRowList.size();i++) {
-      Column column = columns.get(i);
-      // Get the menu list from the data type row
-      XulMenuList<XulMenupopup> component = (XulMenuList<XulMenupopup>) dataTypeRowList.get(i);
-      // Get the selected item from the data type user selected
-      DatabaseColumnType type = DatabaseColumnType.values()[component.getSelectedIndex()];
-      // get the colum header user changed
-      XulTextbox textBox = (XulTextbox) columnHeaderRowList.get(i);
-      // updated the data type and name of the column
-      column.setDataType(type.toString());
-      column.setName(textBox.getValue());
+
+    List<LogicalModel> logicalModels = domain.getLogicalModels();
+    for(LogicalModel logicalModel:logicalModels) {
+      List<Category> categories = logicalModel.getCategories();
+      for(Category category:categories) {
+        List<LogicalColumn> logicalColumns = category.getLogicalColumns();
+        int i=0;
+        for(LogicalColumn logicalColumn: logicalColumns) {
+          // Get the menu list from the data type row
+          XulMenuList<XulMenupopup> component = (XulMenuList<XulMenupopup>) dataTypeRowList.get(i);
+          // Get the selected item from the data type user selected
+          DataType type = DataType.values()[component.getSelectedIndex()];
+          // get the colum header user changed
+          XulTextbox textBox = (XulTextbox) columnHeaderRowList.get(i);
+          // updated the data type and name of the column
+          logicalColumn.setDataType(type.name());
+          //logicalColumn.setName(new LocalizedString(textBox.getValue()));
+          logicalColumn.setName(textBox.getValue());
+        }
+      }
     }
+
     try {
-    service.createCategory(datasourceModel.getDatasourceName(), datasourceModel.getSelectedConnection(), datasourceModel.getQuery(), businessData, new XulServiceCallback<Boolean>() {
+    // TODO setting value to false to always create a new one. Save as is not yet implemented
+    service.saveModel(businessData, false, new XulServiceCallback<Boolean>() {
       public void error(String message, Throwable error) {
         openErrorDialog("Error occurred", "Unable to create category. "+error.getLocalizedMessage());
       }
@@ -502,7 +534,7 @@ public class DatasourceController extends AbstractXulEventHandler {
   }
   public void addConnection() {
     datasourceModel.setEditType(EditType.ADD);
-    connectionModel.setConnection(null);
+    connectionModel.clear();
     showConnectionDialog();
   }
   
@@ -545,17 +577,17 @@ public class DatasourceController extends AbstractXulEventHandler {
   public void displayPreview() {
 
     if(!allInputsSatisfiedForNext()) {
-      openErrorDialog("Missing Input", "Some of the required inputs are missing");
+      openErrorDialog("Missing Input", "Some of the required inputs are missing"); //$NON-NLS-2$
     } else {
           try {
             service.doPreview(datasourceModel.getSelectedConnection(), datasourceModel.getQuery(), datasourceModel.getPreviewLimit(), 
-                  new XulServiceCallback<ResultSetObject>(){
+                  new XulServiceCallback<SerializedResultSet>(){
   
                     public void error(String message, Throwable error) {
-                      openErrorDialog("Preview Failed","Unable to preview data: "+ error.getLocalizedMessage());
+                      openErrorDialog("Preview Failed","Unable to preview data: "+ error.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ 
                     }
   
-                    public void success(ResultSetObject rs) {
+                    public void success(SerializedResultSet rs) {
                           String[][] data =  rs.getData();
                           String[] columns = rs.getColumns();
                           int columnCount = columns.length;
@@ -640,13 +672,13 @@ public class DatasourceController extends AbstractXulEventHandler {
           }
           try {
             service.doPreview(datasourceModel.getSelectedConnection(), datasourceModel.getQuery(), datasourceModel.getPreviewLimit(), 
-                  new XulServiceCallback<ResultSetObject>(){
+                  new XulServiceCallback<SerializedResultSet>(){
   
                     public void error(String message, Throwable error) {
                       openErrorDialog("Preview Failed","Unable to preview data: "+ error.getLocalizedMessage());
                     }
   
-                    public void success(ResultSetObject rs) {
+                    public void success(SerializedResultSet rs) {
                           String[][] data =  rs.getData();
                           String[] columns = rs.getColumns();
                           System.out.println("columns");

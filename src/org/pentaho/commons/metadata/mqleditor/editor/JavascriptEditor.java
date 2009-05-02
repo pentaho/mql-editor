@@ -1,13 +1,14 @@
 package org.pentaho.commons.metadata.mqleditor.editor;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.JavaScriptObject;
-import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
+import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
 import org.pentaho.ui.xul.XulServiceCallback;
 
-import java.util.List;
-import java.util.ArrayList;
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.JavaScriptObject;
 
 /**
  * Created by IntelliJ IDEA.

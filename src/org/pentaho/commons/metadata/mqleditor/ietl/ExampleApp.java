@@ -11,7 +11,6 @@ import org.pentaho.commons.metadata.mqleditor.beans.Model;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.di.core.util.EnvUtil;
-import org.pentaho.di.job.JobEntryLoader;
 import org.pentaho.di.trans.StepLoader;
 import org.pentaho.di.trans.steps.groupby.GroupByMeta;
 

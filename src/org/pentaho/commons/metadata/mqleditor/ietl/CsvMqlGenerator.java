@@ -3,7 +3,6 @@ package org.pentaho.commons.metadata.mqleditor.ietl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.widgets.TableItem;
 import org.pentaho.commons.connection.IPentahoResultSet;
 import org.pentaho.commons.connection.memory.MemoryMetaData;
 import org.pentaho.commons.connection.memory.MemoryResultSet;

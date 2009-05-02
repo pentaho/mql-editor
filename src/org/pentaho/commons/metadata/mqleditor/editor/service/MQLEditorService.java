@@ -2,8 +2,8 @@ package org.pentaho.commons.metadata.mqleditor.editor.service;
 
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.MqlCondition;
-import org.pentaho.commons.metadata.mqleditor.*;
+import org.pentaho.commons.metadata.mqleditor.MqlDomain;
+import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 

@@ -8,7 +8,7 @@ import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
 import org.pentaho.commons.metadata.mqleditor.editor.service.gwt.DatasourceGwtServiceAsync;
-import org.pentaho.commons.metadata.mqleditor.utils.ResultSetObject;
+import org.pentaho.commons.metadata.mqleditor.utils.SerializedResultSet;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 import com.google.gwt.core.client.GWT;
@@ -37,7 +37,7 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
     SERVICE.getDatasources(new AsyncCallback<List<IDatasource>>() {
 
       public void onFailure(Throwable arg0) {
-        callback.error("error getting connections: ", arg0);
+        callback.error("error getting connections: ", arg0);//$NON-NLS-1$
       }
 
       public void onSuccess(List<IDatasource> arg0) {
@@ -50,7 +50,7 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
     SERVICE.getDatasourceByName(name, new AsyncCallback<IDatasource>() {
 
       public void onFailure(Throwable arg0) {
-        callback.error("error getting connections: ", arg0);
+        callback.error("error getting connections: ", arg0);//$NON-NLS-1$
       }
 
       public void onSuccess(IDatasource arg0) {
@@ -63,7 +63,7 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
     SERVICE.addDatasource(datasource, new AsyncCallback<Boolean>() {
 
       public void onFailure(Throwable arg0) {
-        callback.error("error adding connection: ", arg0);
+        callback.error("error adding connection: ", arg0);//$NON-NLS-1$
       }
 
       public void onSuccess(Boolean arg0) {
@@ -77,7 +77,7 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
     SERVICE.updateDatasource(datasource, new AsyncCallback<Boolean>() {
 
       public void onFailure(Throwable arg0) {
-        callback.error("error updating connection: ", arg0);
+        callback.error("error updating connection: ", arg0);//$NON-NLS-1$
       }
 
       public void onSuccess(Boolean arg0) {
@@ -90,7 +90,7 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
     SERVICE.deleteDatasource(datasource, new AsyncCallback<Boolean>() {
 
       public void onFailure(Throwable arg0) {
-        callback.error("error deleting connection: ", arg0);
+        callback.error("error deleting connection: ", arg0);//$NON-NLS-1$
       }
 
       public void onSuccess(Boolean arg0) {
@@ -103,7 +103,7 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
     SERVICE.deleteDatasource(name, new AsyncCallback<Boolean>() {
 
       public void onFailure(Throwable arg0) {
-        callback.error("error deleting connection: ", arg0);
+        callback.error("error deleting connection: ", arg0);//$NON-NLS-1$
       }
 
       public void onSuccess(Boolean arg0) {
@@ -114,15 +114,15 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
   }
 
 
-  public void doPreview(IConnection connection, String query, String previewLimit, final XulServiceCallback<ResultSetObject> callback)
+  public void doPreview(IConnection connection, String query, String previewLimit, final XulServiceCallback<SerializedResultSet> callback)
       throws DatasourceServiceException {
-    SERVICE.doPreview(connection, query, previewLimit, new AsyncCallback<ResultSetObject>() {
+    SERVICE.doPreview(connection, query, previewLimit, new AsyncCallback<SerializedResultSet>() {
 
       public void onFailure(Throwable arg0) {
-        callback.error("error doing preview: ", arg0);
+        callback.error("error doing preview: ", arg0);//$NON-NLS-1$
       }
 
-      public void onSuccess(ResultSetObject arg0) {
+      public void onSuccess(SerializedResultSet arg0) {
         callback.success(arg0);
       }
 
@@ -130,15 +130,15 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
    
   }
 
-  public void doPreview(IDatasource datasource, final XulServiceCallback<ResultSetObject> callback)
+  public void doPreview(IDatasource datasource, final XulServiceCallback<SerializedResultSet> callback)
       throws DatasourceServiceException {
-    SERVICE.doPreview(datasource, new AsyncCallback<ResultSetObject>() {
+    SERVICE.doPreview(datasource, new AsyncCallback<SerializedResultSet>() {
 
       public void onFailure(Throwable arg0) {
-        callback.error("error doing preview: ", arg0);
+        callback.error("error doing preview: ", arg0);//$NON-NLS-1$
       }
 
-      public void onSuccess(ResultSetObject arg0) {
+      public void onSuccess(SerializedResultSet arg0) {
         callback.success(arg0);
       }
 
@@ -146,29 +146,13 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
     
   }
   
-
-  public void getBusinessData(IConnection connection, String query, String previewLimit, final XulServiceCallback<BusinessData> callback)
-      throws DatasourceServiceException {
-    SERVICE.getBusinessData(connection, query, previewLimit, new AsyncCallback<BusinessData>() {
-
-      public void onFailure(Throwable arg0) {
-        callback.error("error doing preview: ", arg0);
-      }
-
-      public void onSuccess(BusinessData arg0) {
-        callback.success(arg0);
-      }
-
-    }); 
-   
-  }
-
-  public void getBusinessData(IDatasource datasource, final XulServiceCallback<BusinessData> callback)
-      throws DatasourceServiceException {
-    SERVICE.getBusinessData(datasource, new AsyncCallback<BusinessData>() {
+  public void generateModel(String modelName, IConnection connection, String query, String previewLimit,
+      final XulServiceCallback<BusinessData> callback) throws DatasourceServiceException {
+    SERVICE.generateModel(modelName, connection, query, previewLimit,  new AsyncCallback<BusinessData>() {
 
       public void onFailure(Throwable arg0) {
-        callback.error("error doing preview: ", arg0);
+        arg0.printStackTrace();
+        callback.error("error generating the mode: ", arg0);//$NON-NLS-1$
       }
 
       public void onSuccess(BusinessData arg0) {
@@ -176,24 +160,23 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
       }
 
     });
-    
   }
 
-  public void createCategory(String categoryName, IConnection connection, String query, BusinessData businessData,
-      final XulServiceCallback<Boolean> callback) {
-    SERVICE.createCategory(categoryName, connection, query, businessData, new AsyncCallback<Boolean>() {
+  public void saveModel(BusinessData businessData, Boolean overwrite, final XulServiceCallback<Boolean> callback)
+      throws DatasourceServiceException {
+    SERVICE.saveModel(businessData, overwrite, new AsyncCallback<Boolean>() {
 
       public void onFailure(Throwable arg0) {
-        callback.error("error doing preview: ", arg0);
+        callback.error("error saving the mode: ", arg0); //$NON-NLS-1$
       }
 
       public void onSuccess(Boolean arg0) {
         callback.success(arg0);
       }
 
-    });
-    
+    });    
   }
+
 
   
 }

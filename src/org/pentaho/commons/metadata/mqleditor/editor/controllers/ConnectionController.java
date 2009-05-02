@@ -18,7 +18,22 @@ import org.pentaho.ui.xul.components.XulTextbox;
 import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.containers.XulListbox;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
-
+/*import org.pentaho.ui.xul.dom.Attribute;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONNumber;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.XMLParser;
+*/
 public class ConnectionController extends AbstractXulEventHandler {
   private XulDialog dialog;
 
@@ -245,6 +260,54 @@ public class ConnectionController extends AbstractXulEventHandler {
       saveConnectionConfirmationDialog.hide();
     }
     if (EditType.ADD.equals(datasourceModel.getEditType())) {
+ /*     try  {
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode("../../../ws-run/DatasourceService")); //$NON-NLS-1$
+        try {
+          builder.setHeader("Content-Type", "application/json");
+          IConnection connection = connectionModel.getConnection();
+          
+          JSONArray elements = new JSONArray();
+          for (int i = 0; i < 10; i++) {
+            JSONObject el1 = new JSONObject();
+            el1.put("name", new JSONString(connection.getName()));
+            el1.put("driverClass", new JSONString(connection.getDriverClass()));
+            el1.put("url", new JSONString(connection.getUrl()));
+            el1.put("username", new JSONString(connection.getUsername()));
+            el1.put("password", new JSONString(connection.getPassword()));
+            elements.set(i, el1);
+          } 
+          JSONObject jsonRPC = new JSONObject();
+          jsonRPC.put("method", new JSONString("createDataSource"));
+          jsonRPC.put("params", elements);
+          jsonRPC.put("id", new JSONNumber(9D));
+
+          Request request = builder.sendRequest(URL.encodeComponent(jsonRPC.toString()), new RequestCallback() {
+            public void onError(Request request, Throwable exception) {
+              openErrorDialog("Connection Not saved","Unable to save the connection "+exception.getLocalizedMessage());
+            }
+  
+            public void onResponseReceived(Request request, Response response) {
+              try  {
+                if (200 == response.getStatusCode()) {
+                    Document messageDom = XMLParser.parse(response.getText());
+                }
+              } catch (Exception ignored) {
+                // bury exception
+                ignored.printStackTrace();
+              }
+            }       
+          });
+        } catch (RequestException ignored) {
+          // Couldn't connect to server     
+          ignored.printStackTrace();
+        }
+    } catch (Exception ignored) {
+      // bury exception
+      ignored.printStackTrace();
+    }
+*/
+      
+      
       service.addConnection(connectionModel.getConnection(), new XulServiceCallback<Boolean>() {
 
         public void error(String message, Throwable error) {

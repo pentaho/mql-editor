@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.pentaho.commons.metadata.mqleditor.MqlColumn;
-import org.pentaho.commons.metadata.mqleditor.*;
+import org.pentaho.commons.metadata.mqleditor.MqlDomain;
+import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.editor.service.CWMStartup;
 import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
 import org.pentaho.pms.core.CWM;

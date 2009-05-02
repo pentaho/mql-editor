@@ -7,7 +7,7 @@ import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
-import org.pentaho.commons.metadata.mqleditor.utils.ResultSetObject;
+import org.pentaho.commons.metadata.mqleditor.utils.SerializedResultSet;
 
 import com.google.gwt.user.client.rpc.RemoteService;
      
@@ -18,11 +18,10 @@ public interface DatasourceGwtService extends RemoteService{
   public Boolean deleteDatasource(IDatasource datasource);
   public Boolean updateDatasource(IDatasource datasource);
   public Boolean deleteDatasource(String name);
-  public ResultSetObject doPreview(IConnection connection, String query, String previewLimit) throws DatasourceServiceException;
-  public ResultSetObject doPreview(IDatasource datasource) throws DatasourceServiceException;
-  public BusinessData getBusinessData(IConnection connection, String query, String previewLimit)throws DatasourceServiceException;
-  public BusinessData getBusinessData(IDatasource datasource)throws DatasourceServiceException;
-  public Boolean createCategory(String categoryName, IConnection connection, String query, BusinessData businessData)throws DatasourceServiceException;
-}
+  public SerializedResultSet doPreview(IConnection connection, String query, String previewLimit) throws DatasourceServiceException;
+  public SerializedResultSet doPreview(IDatasource datasource) throws DatasourceServiceException;
+  public BusinessData generateModel(String modelName, IConnection connection, String query, String previewLimit) throws DatasourceServiceException;
+  public Boolean saveModel(BusinessData businessData, Boolean overwrite)throws DatasourceServiceException;
+  }
 
   
