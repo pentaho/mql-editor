@@ -22,6 +22,8 @@ import org.pentaho.commons.metadata.mqleditor.beans.Model;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
+import org.pentaho.metadata.repository.IMetadataDomainRepository;
+import org.pentaho.metadata.util.ThinModelConverter;
 import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.factory.CwmSchemaFactoryInterface;
 import org.pentaho.pms.mql.MQLQuery;
@@ -76,7 +78,27 @@ public class MQLEditorServiceDeligate {
       domains.add(domain);
     }
   }
-
+  
+  public void initializeThinMetadataDomains(IMetadataDomainRepository repo) {
+    for (String id : repo.getDomainIds()) {
+      org.pentaho.metadata.model.Domain thinDomain = repo.getDomain(id);
+      try {
+        SchemaMeta meta = ThinModelConverter.convertToLegacy(thinDomain); 
+        Domain domain = new Domain();
+        domain.setName(meta.getDomainName());
+        UniqueList<BusinessModel> models = meta.getBusinessModels();
+        for (BusinessModel model : models) {
+          Model myModel = createModel(model);
+          domain.getModels().add(myModel);
+          modelIdToSchemaMetaMap.put(myModel.getId(), meta);
+        }
+        domains.add(domain);
+      } catch (Exception e) {
+        e.printStackTrace();
+        // log error
+      }
+    }
+  }
 
   public String[][] getPreviewData(String query, int page, int limit) {
     throw new NotImplementedException("Implement in your class");
