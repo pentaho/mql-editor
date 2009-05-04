@@ -58,6 +58,7 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
 
   public void setColumn(UIColumn column) {
     this.column = column;
+    this.setOperator( (column.getType() == ColumnType.TEXT) ?  Operator.EXACTLY_MATCHES :Operator.EQUAL );
   }
 
 
