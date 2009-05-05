@@ -384,6 +384,7 @@ public class MQLEditorServiceDeligate {
       con.setColumn(col);
 
       con.setCombinationType(condition.getCombinationType());
+      con.setParameterized(condition.isParameterized());
       con.setDefaultValue(condition.getDefaultValue());
       con.setOperator(condition.getOperator());
       con.setValue(condition.getValue());
