@@ -1,0 +1,42 @@
+<!--
+This module serves as the Debuging environment and default implementation for integration with Javascript applications
+
+-->
+
+<module>
+  <inherits name='com.google.gwt.user.User'/>
+  <inherits name='com.googlecode.gwtx.Java'/>
+  <inherits name='com.google.gwt.xml.XML'/>
+  <inherits name="org.pentaho.gwt.widgets.Widgets"/>
+  <inherits name="org.pentaho.ui.xul.Gwt"/>
+  <inherits name="org.pentaho.pms.schema.v3.Column"/>
+  <inherits name="org.pentaho.metadata.Model"/>
+    <source path="">
+        <exclude name="**/MQLEditorDebugGwtServlet*"/>
+        <exclude name="**/SwingMqlEditor*"/>
+        <exclude name="**/MQLEditorServiceDeligate*"/>
+        <exclude name="**/MQLEditorGwtServlet*"/>
+        <exclude name="**/MQLEditorServiceDebugImpl*"/>
+        <exclude name="**/ModelSerializer*"/>
+        <exclude name="**/CWMStartup*"/>
+        <exclude name="**/ConnectionDebugGwtServlet*"/>
+        <exclude name="**/DatasourceDebugGwtServlet*"/>
+        <exclude name="**/SwingDatasourceEditor*"/>
+        <exclude name="**/ConnectionServiceDelegate*"/>
+        <exclude name="**/DatasourceServiceDelegate*"/>        
+        <exclude name="**/ConnectionGwtServlet*"/>
+        <exclude name="**/DatasourceGwtServlet*"/>
+        <exclude name="**/ConnectionServiceDebugImpl*"/>
+        <exclude name="**/DatasourceServiceDebugImpl*"/>
+        <exclude name="**/ArrayHeaderLocator*"/>
+        <exclude name="**/ResultSetConverter*"/>
+        <exclude name="**/ResultSetHelper*"/>   
+        <exclude name="**/BusinessModelGenerator*"/>
+        <exclude name="**/ExampleApp*"/>
+        <exclude name="**/CsvMqlGenerator*"/>             
+    </source>
+    <public path="editor/public"/>
+    <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.SampleApp"/>
+    
+  <servlet path="/samplesvc" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.SampleAppGwtServlet" />
+ </module>

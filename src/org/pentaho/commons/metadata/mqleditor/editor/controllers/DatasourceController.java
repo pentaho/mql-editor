@@ -7,6 +7,7 @@ import org.pentaho.commons.metadata.mqleditor.DataFormatType;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource.EditType;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
+import org.pentaho.commons.metadata.mqleditor.beans.ModelDataRow;
 import org.pentaho.commons.metadata.mqleditor.editor.DatasourceDialogListener;
 import org.pentaho.commons.metadata.mqleditor.editor.models.ConnectionModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.DatasourceModel;
@@ -120,6 +121,8 @@ public class DatasourceController extends AbstractXulEventHandler {
 
   private XulGrid grid = null;
 
+  private XulTree modelDataTable = null;
+
   XulMenuList<XulMenupopup> dataTypeMenuList = null;
 
   public DatasourceController() {
@@ -127,6 +130,8 @@ public class DatasourceController extends AbstractXulEventHandler {
   }
 
   public void init() {
+    datasourceModel = new DatasourceModel ();
+    modelDataTable = (XulTree) document.getElementById("modelDataTable");
 
     rows = (XulRows) document.getElementById("rows");//$NON-NLS-1$
     columns = (XulColumns) document.getElementById("columns");//$NON-NLS-1$
@@ -167,6 +172,7 @@ public class DatasourceController extends AbstractXulEventHandler {
     bf.setBindingType(Binding.Type.ONE_WAY);
     bf.createBinding(datasourceModel, "validated", previewButton, "!disabled");//$NON-NLS-1$ //$NON-NLS-2$
     bf.createBinding(datasourceModel, "validated", mqlModelCheckBox, "!disabled");//$NON-NLS-1$ //$NON-NLS-2$
+    bf.createBinding(datasourceModel, "validated", okButton, "!disabled");//$NON-NLS-1$ //$NON-NLS-2$
     BindingConvertor<IConnection, Boolean> buttonConvertor = new BindingConvertor<IConnection, Boolean>() {
 
       @Override
@@ -210,7 +216,7 @@ public class DatasourceController extends AbstractXulEventHandler {
           }
 
         });
-
+    bf.createBinding(datasourceModel, "dataRows", modelDataTable, "elements");
     bf.setBindingType(Binding.Type.BI_DIRECTIONAL);
     bf.createBinding(datasourceModel, "previewLimit", previewLimit, "value"); //$NON-NLS-1$ //$NON-NLS-2$
     // Not sure if editQuery button is doing much
@@ -221,8 +227,6 @@ public class DatasourceController extends AbstractXulEventHandler {
     bf.createBinding(datasourceModel, "datasourceName", datasourceName, "value"); //$NON-NLS-1$ //$NON-NLS-2$
 
     okButton.setDisabled(true);
-    //this is for checkbox
-    //nextButton.setDisabled(true);
 
     try {
       // Fires the population of the model listbox. This cascades down to the categories and columns. In essence, this
@@ -271,51 +275,7 @@ public class DatasourceController extends AbstractXulEventHandler {
     }
   }
 
-  private XulMenuList<XulMenupopup> createMenuList(String columnType) {
-    XulMenuList<XulMenupopup> menuList = null;
-    try {
-      menuList = (XulMenuList<XulMenupopup>) document.createElement("menulist"); //$NON-NLS-1$
-      menuList.setFlex(1);
-      XulMenupopup menuPopup = (XulMenupopup) document.createElement("menupopup");//$NON-NLS-1$
-      DataType[] type = DataType.values();
-      for (int i = 0; i < type.length; i++) {
-        XulMenuitem menuItem = (XulMenuitem) document.createElement("menuitem");//$NON-NLS-1$
-        String typeString = type[i].toString();
-        menuItem.setLabel(typeString);
-        menuItem.setSelected((columnType != null && typeString.equalsIgnoreCase(columnType.toString())) ? true : false);
-        menuPopup.addComponent(menuItem);
-      }
-      menuList.addComponent(menuPopup);
-      menuList.setWidth(20);
-    } catch (XulException xe) {
-
-    }
-    return menuList;
-  }
-
-  private XulMenuList<XulMenupopup> createColumnFormatMenuList(String formatType) {
-    XulMenuList<XulMenupopup> menuList = null;
-    try {
-      menuList = (XulMenuList<XulMenupopup>) document.createElement("menulist"); //$NON-NLS-1$
-      menuList.setFlex(1);
-      XulMenupopup menuPopup = (XulMenupopup) document.createElement("menupopup");//$NON-NLS-1$
-      DataFormatType[] type = DataFormatType.values();
-      for (int i = 0; i < type.length; i++) {
-        XulMenuitem menuItem = (XulMenuitem) document.createElement("menuitem");//$NON-NLS-1$
-        String typeString = type[i].toString();
-        menuItem.setLabel(typeString);
-        menuItem.setSelected((formatType != null && typeString.equalsIgnoreCase(formatType)) ? true : false);
-        menuPopup.addComponent(menuItem);
-      }
-      menuList.addComponent(menuPopup);
-      menuList.setWidth(20);
-    } catch (XulException xe) {
-
-    }
-    return menuList;
-  }
-
-  public void executeNext() {
+  /*public void executeNext() {
     if (allInputsSatisfiedForNext()) {
       try {
 
@@ -437,6 +397,39 @@ public class DatasourceController extends AbstractXulEventHandler {
     } else {
       openErrorDialog("Missing Input", "Some of the required inputs are missing");
     }
+  }*/
+
+  public void generateModel() {
+    if (mqlModelCheckBox.isChecked()) {
+      if (allInputsSatisfiedForNext()) {
+        try {
+
+          service.generateModel(datasourceModel.getDatasourceName(), datasourceModel.getSelectedConnection(),
+              datasourceModel.getQuery(), datasourceModel.getPreviewLimit(), new XulServiceCallback<BusinessData>() {
+
+                public void error(String message, Throwable error) {
+                  openErrorDialog("Error occurred", "Unable to retrieve business data. " + error.getLocalizedMessage());
+                }
+
+                public void success(BusinessData businessData) {
+                  try {
+                    datasourceModel.setBusinessData(businessData);
+                    modelDataTable.setVisible(true);                    
+                  } catch (Exception xe) {
+                    xe.printStackTrace();
+                  }
+                }
+              });
+        } catch (DatasourceServiceException e) {
+          openErrorDialog("Error occurred", "Unable to retrieve business data. " + e.getLocalizedMessage());
+        }
+      } else {
+        openErrorDialog("Missing Input", "Some of the required inputs are missing");
+      }
+    } else {
+      modelDataTable.setVisible(false);      
+      datasourceModel.setBusinessData(null);
+    }
   }
 
   private boolean allInputsSatisfiedForNext() {
@@ -445,62 +438,99 @@ public class DatasourceController extends AbstractXulEventHandler {
         .getDatasourceName() != null && datasourceModel.getDatasourceName().length() > 0));
   }
 
-  public void executeCancel() {
+  public void exitDatasourceDialog() {
     this.datasourceDialog.hide();
   }
 
-  public void executeFinish() {
-    // Get the business data from the model
-    BusinessData businessData = datasourceModel.getBusinessData();
-    // Get the domain from the business data
-    Domain domain = businessData.getDomain();
-
-    List<XulComponent> dataTypeRowList = new ArrayList<XulComponent>();
-    List<XulComponent> columnHeaderRowList = new ArrayList<XulComponent>();
-
-    List<XulComponent> components = rows.getChildNodes();
-    for (int i = 0; i < components.size(); i++) {
-      XulComponent component = components.get(i);
-      ;
-      List<XulComponent> subComponents = component.getChildNodes();
-      columnHeaderRowList.add(subComponents.get(0));
-      dataTypeRowList.add(subComponents.get(1));
-    }
-    List<LogicalModel> logicalModels = domain.getLogicalModels();
-    for (LogicalModel logicalModel : logicalModels) {
-      List<Category> categories = logicalModel.getCategories();
-      for (Category category : categories) {
-        List<LogicalColumn> logicalColumns = category.getLogicalColumns();
-        int i = 0;
-        for (LogicalColumn logicalColumn : logicalColumns) {
-          // Get the menu list from the data type row
-          XulMenuList<XulMenupopup> component = (XulMenuList<XulMenupopup>) dataTypeRowList.get(i);
-          // Get the selected item from the data type user selected
-          DataType type = DataType.values()[component.getSelectedIndex()];
-          // get the colum header user changed
-          XulTextbox textBox = (XulTextbox) columnHeaderRowList.get(i);
-          // updated the data type and name of the column
-          logicalColumn.setDataType(type.name());
-          //logicalColumn.setName(new LocalizedString(textBox.getValue()));
-          logicalColumn.setName(textBox.getValue());
+  public void saveModel() {
+    List<ModelDataRow> dataRows = datasourceModel.getDataRows();
+    if (dataRows != null && dataRows.size() > 0) {
+      // Get the domain from the business data
+      try {
+      BusinessData businessData = datasourceModel.getBusinessData();
+      Domain domain = businessData.getDomain();
+      List<LogicalModel> logicalModels = domain.getLogicalModels();
+      for (LogicalModel logicalModel : logicalModels) {
+        List<Category> categories = logicalModel.getCategories();
+        for (Category category : categories) {
+          List<LogicalColumn> logicalColumns = category.getLogicalColumns();
+          int i = 0;
+          for (LogicalColumn logicalColumn : logicalColumns) {
+            ModelDataRow row = dataRows.get(i++);
+            logicalColumn.setDataType(row.getSelectedDataType().name());
+            //logicalColumn.setName(new LocalizedString(physicalColumn.getName());
+            logicalColumn.setName(row.getColumnName());
+          }
         }
       }
-    }
+      saveModel(businessData, false);
+      } catch (Exception xe) {
+        openErrorDialog("Error occurred", "Unable to save model. " + datasourceModel.getDatasourceName()
+            + xe.getLocalizedMessage());
+      }
+    } else {
+      if (allInputsSatisfiedForNext()) {
+        try {
 
+          service.generateModel(datasourceModel.getDatasourceName(), datasourceModel.getSelectedConnection(),
+              datasourceModel.getQuery(), datasourceModel.getPreviewLimit(), new XulServiceCallback<BusinessData>() {
+
+                public void error(String message, Throwable error) {
+                  openErrorDialog("Error occurred", "Unable to save model. " + datasourceModel.getDatasourceName()
+                      + error.getLocalizedMessage());
+                }
+
+                public void success(BusinessData businessData) {
+                  try {
+                    // Get the domain from the business data
+                    Domain domain = businessData.getDomain();
+                    List<LogicalModel> logicalModels = domain.getLogicalModels();
+                    for (LogicalModel logicalModel : logicalModels) {
+                      List<Category> categories = logicalModel.getCategories();
+                      for (Category category : categories) {
+                        List<LogicalColumn> logicalColumns = category.getLogicalColumns();
+                        for (LogicalColumn logicalColumn : logicalColumns) {
+                          IPhysicalColumn physicalColumn = logicalColumn.getPhysicalColumn();
+                          logicalColumn.setDataType(physicalColumn.getDataType());
+                          //logicalColumn.setName(new LocalizedString(physicalColumn.getName());
+                          logicalColumn.setName(physicalColumn.getName());
+                        }
+                      }
+                    }
+                    saveModel(businessData, false);
+                  } catch (Exception xe) {
+                    openErrorDialog("Error occurred", "Unable to save model. " + datasourceModel.getDatasourceName()
+                        + xe.getLocalizedMessage());
+                  }
+                }
+              });
+        } catch (DatasourceServiceException e) {
+          openErrorDialog("Error occurred", "Unable to save model. " + datasourceModel.getDatasourceName()
+              + e.getLocalizedMessage());
+        }
+      } else {
+        openErrorDialog("Missing Input", "Some of the required inputs are missing");
+      }
+    }
+  }
+
+  private void saveModel(BusinessData businessData, boolean overwrite) {
     try {
       // TODO setting value to false to always create a new one. Save as is not yet implemented
-      service.saveModel(businessData, false, new XulServiceCallback<Boolean>() {
+      service.saveModel(businessData, overwrite, new XulServiceCallback<Boolean>() {
         public void error(String message, Throwable error) {
-          openErrorDialog("Error occurred", "Unable to create category. " + error.getLocalizedMessage());
+          openErrorDialog("Error occurred", "Unable to save model: " + datasourceModel.getDatasourceName()
+              + error.getLocalizedMessage());
         }
 
         public void success(Boolean value) {
-          openSuccesDialog("Success", "Successfully created category.");
+          openSuccesDialog("Success", "Successfully saved model: " + datasourceModel.getDatasourceName());
           datasourceDialog.hide();
         }
       });
     } catch (DatasourceServiceException e) {
-      openErrorDialog("Error occurred", "Unable to create category. " + e.getLocalizedMessage());
+      openErrorDialog("Error occurred", "Unable to save model: " + datasourceModel.getDatasourceName()
+          + e.getLocalizedMessage());
     }
   }
 

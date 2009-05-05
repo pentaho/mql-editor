@@ -35,7 +35,7 @@
     </groupbox>
   </dialog>
   <dialog id="datasourceDialog" buttonlabelaccept="${datasourceDialog.OK}" buttonlabelcancel="${datasourceDialog.CANCEL}"
-    buttons="accept,cancel" ondialogaccept="datasourceController.executeFinish()"   ondialogcancel="datasourceController.closeDatasourceDialog()" title="${datasourceDialog.Title}" width="640" height="595" buttonalign="right">
+    buttons="accept,cancel" ondialogaccept="datasourceController.saveModel()"   ondialogcancel="datasourceController.exitDatasourceDialog()" title="${datasourceDialog.Title}" width="640" height="595" buttonalign="right">
     <groupbox flex="1">
       <hbox>
           <button flex="1" id="sqlButton" image="images/sql_selected.png"  tooltiptext="${datasourceDialog.SqlImageToolTip}" onclick="datasourceController.selectSql()"  disabled="false" align="top"/>
@@ -83,17 +83,17 @@
         </vbox>
       </hbox>
       <hbox>
-      	<checkbox  id="metadataModelCheckbox" flex="1" label="${datasourceDialog.convertToMetadataModel}" disabled="true"  command="datasourceController.executeNext()" />      
+      	<checkbox  id="metadataModelCheckbox" flex="1" label="${datasourceDialog.convertToMetadataModel}" disabled="true"  command="datasourceController.generateModel()" />      
       </hbox>
-      <grid id="grid" flex="1">
-		<columns id="columns">
-			<column flex="1" />
-			<column flex="1" />
-			<column flex="1" />
-			<column flex="1" />
-		</columns>
-		<rows id="rows"/>
-	  </grid>
+	  <tree flex="1" id="modelDataTable" seltype="single">
+          <treecols id="modelDataTableCols">
+	   			<treecol label="${datasourceDialog.displayName}" flex="1" pen:binding="columnName" editable="true" type="text"/>
+	   			<treecol label="${datasourceDialog.type}" flex="1" type="combobox" editable="true" pen:combobinding="bindingDataTypes" pen:binding="selectedDataType"/>
+	   			<treecol label="${datasourceDialog.format}" flex="1" type="combobox" editable="true" pen:combobinding="bindingDataFormatTypes" pen:binding="selectedDataFormatType"/>
+	   			<treecol label="${datasourceDialog.sample}" flex="1" pen:binding="sampleData" editable="false" type="text"/>
+          </treecols>
+          <treechildren />
+      </tree>
    </groupbox>
   </dialog>
   

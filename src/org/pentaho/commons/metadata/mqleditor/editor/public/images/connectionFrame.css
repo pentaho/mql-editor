@@ -1,0 +1,19 @@
+.cellFormat {
+    font-family:arial, helvetica; font-size:10px;
+    border-left:1px solid #000000;
+    border-right:1px solid #000000;
+    border-top:1px solid #000000;
+    border-bottom:1px solid #000000;
+    background-color:#CCCCCC;
+    color:#FFFFFF;
+ }
+ 
+ .rowHeaderFormat {
+    font-family:arial, helvetica; font-size:12px; font-weight:bold;
+    border-left:1px solid #000000;
+    border-right:1px solid #000000;
+    border-top:1px solid #000000;
+    border-bottom:1px solid #000000;
+    background-color:#CCCCCC;
+    color:#000FFF;
+ }
