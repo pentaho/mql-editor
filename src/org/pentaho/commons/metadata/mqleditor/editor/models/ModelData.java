@@ -1,8 +1,9 @@
-package org.pentaho.commons.metadata.mqleditor.beans;
+package org.pentaho.commons.metadata.mqleditor.editor.models;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.metadata.model.Category;
 import org.pentaho.metadata.model.Domain;
 import org.pentaho.metadata.model.IPhysicalColumn;

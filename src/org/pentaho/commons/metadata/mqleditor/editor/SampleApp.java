@@ -4,6 +4,7 @@ import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceEx
 import org.pentaho.commons.metadata.mqleditor.editor.service.gwt.SampleAppGwtService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.gwt.SampleAppGwtServiceAsync;
 import org.pentaho.metadata.model.Domain;
+import org.pentaho.metadata.model.SqlPhysicalTable;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -36,7 +37,7 @@ public class SampleApp implements EntryPoint{
               }
 
               public void onSuccess(Domain arg0) {
-                Window.alert("Domain ID" + arg0.getId()); //$NON-NLS-1$
+                Window.alert("My Target Table Type" + ((SqlPhysicalTable)arg0.getLogicalModels().get(0).getLogicalTables().get(0).getPhysicalTable()).getTargetTableType().name()); //$NON-NLS-1$
               }
               
             });

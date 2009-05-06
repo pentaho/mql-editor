@@ -24,6 +24,7 @@ import org.pentaho.commons.metadata.mqleditor.MqlModel;
 import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.Operator;
+import org.pentaho.commons.metadata.mqleditor.beans.BogoPojo;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.beans.Connection;
 import org.pentaho.commons.metadata.mqleditor.beans.Datasource;
@@ -41,6 +42,9 @@ import org.pentaho.metadata.model.SqlPhysicalTable;
 import org.pentaho.metadata.model.concept.Concept;
 import org.pentaho.metadata.model.concept.types.AggregationType;
 import org.pentaho.metadata.model.concept.types.DataType;
+import org.pentaho.metadata.model.concept.types.LocalizedString;
+import org.pentaho.metadata.model.concept.types.TargetColumnType;
+import org.pentaho.metadata.model.concept.types.TargetTableType;
 import org.pentaho.pms.schema.v3.envelope.Envelope;
 import org.pentaho.pms.schema.v3.model.Attribute;
 import org.pentaho.pms.schema.v3.model.Column;
@@ -147,7 +151,10 @@ public class DatasourceGwtServlet extends RemoteServiceServlet implements Dataso
         classes.add(SqlPhysicalTable.class);
         classes.add(Concept.class);
         classes.add(AggregationType.class);
-
+        classes.add(DataType.class);
+        classes.add(TargetColumnType.class);
+        classes.add(TargetTableType.class);
+        classes.add(LocalizedString.class);
       }
       @Override
       public boolean shouldDeserializeFields(Class<?> clazz) {
@@ -175,4 +182,8 @@ public class DatasourceGwtServlet extends RemoteServiceServlet implements Dataso
       
     };
 }
+  
+  public BogoPojo gwtWorkaround(BogoPojo pojo) {
+    return pojo;
+  }
 }

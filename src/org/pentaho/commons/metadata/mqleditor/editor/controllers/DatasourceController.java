@@ -7,10 +7,10 @@ import org.pentaho.commons.metadata.mqleditor.DataFormatType;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource.EditType;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
-import org.pentaho.commons.metadata.mqleditor.beans.ModelDataRow;
 import org.pentaho.commons.metadata.mqleditor.editor.DatasourceDialogListener;
 import org.pentaho.commons.metadata.mqleditor.editor.models.ConnectionModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.DatasourceModel;
+import org.pentaho.commons.metadata.mqleditor.editor.models.ModelDataRow;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
 import org.pentaho.commons.metadata.mqleditor.utils.SerializedResultSet;
@@ -20,6 +20,7 @@ import org.pentaho.metadata.model.IPhysicalColumn;
 import org.pentaho.metadata.model.LogicalColumn;
 import org.pentaho.metadata.model.LogicalModel;
 import org.pentaho.metadata.model.concept.types.DataType;
+import org.pentaho.metadata.model.concept.types.LocalizedString;
 import org.pentaho.ui.xul.XulComponent;
 import org.pentaho.ui.xul.XulException;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -227,7 +228,7 @@ public class DatasourceController extends AbstractXulEventHandler {
     bf.createBinding(datasourceModel, "datasourceName", datasourceName, "value"); //$NON-NLS-1$ //$NON-NLS-2$
 
     okButton.setDisabled(true);
-
+    modelDataTable.setVisible(false);
     try {
       // Fires the population of the model listbox. This cascades down to the categories and columns. In essence, this
       // call initializes the entire UI.
@@ -457,9 +458,9 @@ public class DatasourceController extends AbstractXulEventHandler {
           int i = 0;
           for (LogicalColumn logicalColumn : logicalColumns) {
             ModelDataRow row = dataRows.get(i++);
-            logicalColumn.setDataType(row.getSelectedDataType().name());
-            //logicalColumn.setName(new LocalizedString(physicalColumn.getName());
-            logicalColumn.setName(row.getColumnName());
+            logicalColumn.setDataType(row.getSelectedDataType());
+            logicalColumn.setName(new LocalizedString(row.getColumnName()));
+            //logicalColumn.setName(row.getColumnName());
           }
         }
       }

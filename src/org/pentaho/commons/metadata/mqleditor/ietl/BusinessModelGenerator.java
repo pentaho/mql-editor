@@ -20,21 +20,22 @@ public class BusinessModelGenerator {
   
   // eventually use V3 model
   public Model generateModel(CsvPhysicalModel model) throws Exception {
+    
     // use code within Kettle to gen CSV model
     
     InputStream inputStream = KettleVFS.getInputStream(model.getCsvLocation());
     
     InputStreamReader reader = new InputStreamReader(inputStream);
-    
+    return null;
     // Read a line of data to determine the number of rows...
     //
-    String line = TextFileInput.getLine(null, reader, TextFileInputMeta.FILE_FORMAT_MIXED, new StringBuilder(1000));
+    //String line = TextFileInput.getLine(null, reader, TextFileInputMeta.FILE_FORMAT_MIXED, new StringBuilder(1000));
     
     // Split the string, header or data into parts...
     //
-    String[] fieldNames = Const.splitString(line, model.getDelimiter()); 
+   // String[] fieldNames = Const.splitString(line, model.getDelimiter()); 
     
-    if (!model.isHeaderPresent()) {
+ /*   if (!model.isHeaderPresent()) {
       // Don't use field names from the header...
       // Generate field names F1 ... F10
       //
@@ -79,7 +80,7 @@ public class BusinessModelGenerator {
     
     cat.setBusinessColumns(cols);
     bizModel.setCategories(categories);
-    return bizModel;
+    return bizModel;*/
   }
   
 }

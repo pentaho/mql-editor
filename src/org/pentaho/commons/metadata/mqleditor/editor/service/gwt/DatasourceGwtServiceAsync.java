@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
+import org.pentaho.commons.metadata.mqleditor.beans.BogoPojo;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
 import org.pentaho.commons.metadata.mqleditor.utils.SerializedResultSet;
@@ -21,6 +22,7 @@ public interface DatasourceGwtServiceAsync {
   void doPreview(IDatasource datasource, AsyncCallback<SerializedResultSet> callback);
   void generateModel(String modelName, IConnection connection, String query, String previewLimit, AsyncCallback<BusinessData> callback) throws DatasourceServiceException;
   void saveModel(BusinessData businessData, Boolean overwrite, AsyncCallback<Boolean> callback) throws DatasourceServiceException ;
+  void gwtWorkaround (BogoPojo pojo, AsyncCallback<BogoPojo> callback);
 }
 
   

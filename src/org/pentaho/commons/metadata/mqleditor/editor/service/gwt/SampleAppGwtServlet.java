@@ -6,12 +6,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.apache.commons.lang.StringUtils;
-import org.pentaho.commons.metadata.mqleditor.IConnection;
-import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
+import org.pentaho.commons.metadata.mqleditor.beans.BogoPojo;
+import org.pentaho.commons.metadata.mqleditor.beans.ITestObject;
+import org.pentaho.commons.metadata.mqleditor.beans.TestObject;
+import org.pentaho.commons.metadata.mqleditor.beans.TestObject.MyDataType;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
+import org.pentaho.di.core.Props;
 import org.pentaho.metadata.model.Domain;
+import org.pentaho.metadata.model.SqlPhysicalModel;
+import org.pentaho.metadata.model.SqlPhysicalTable;
+import org.pentaho.metadata.model.concept.types.LocalizedString;
+import org.pentaho.metadata.model.concept.types.TargetTableType;
 import org.pentaho.metadata.util.SQLModelGenerator;
-import org.pentaho.pms.service.ModelManagementServiceException;
+import org.pentaho.pms.util.Settings;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -76,5 +83,55 @@ public class SampleAppGwtServlet extends RemoteServiceServlet implements SampleA
     }
   }
 
+  public ITestObject enumTest() throws DatasourceServiceException{
+    ITestObject object = new TestObject();
+    object.setDesc("MyDesc");
+    object.setName("MyName");
+    object.setType(MyDataType.one);
+    object.setDataType(org.pentaho.metadata.model.concept.types.DataType.NUMERIC);
+    return object;
+  }
   
+  public SqlPhysicalModel generatePhysicalModel()  throws DatasourceServiceException{
+    if(!Props.isInitialized()) {
+      Props.init(Props.TYPE_PROPERTIES_EMPTY);
+    }
+    String modelName = "NewDatasource";
+    String query = "select * from customers;";
+    SqlPhysicalModel model = new SqlPhysicalModel();
+    String modelID = Settings.getBusinessModelIDPrefix()+ modelName;
+    model.setId(modelID);
+    model.setName(new LocalizedString(modelName));
+    model.setDescription(new LocalizedString("A Description of the Model"));
+    model.setDatasource(modelName);
+    SqlPhysicalTable table = new SqlPhysicalTable(model);
+    model.getPhysicalTables().add(table);
+    table.setTargetTableType(TargetTableType.INLINE_SQL);
+    table.setTargetTable(query);
+    return model;
+  }
+  
+  
+  public SqlPhysicalTable generatePhysicalTable()  throws DatasourceServiceException{
+    String query = "select * from customers;";
+    if(!Props.isInitialized()) {
+      Props.init(Props.TYPE_PROPERTIES_EMPTY);
+    }
+    String modelName = "NewDatasource";
+    SqlPhysicalModel model = new SqlPhysicalModel();
+    String modelID = Settings.getBusinessModelIDPrefix()+ modelName;
+    model.setId(modelID);
+    model.setName(new LocalizedString(modelName));
+    model.setDescription(new LocalizedString("A Description of the Model"));
+    model.setDatasource(modelName);
+
+    SqlPhysicalTable table = new SqlPhysicalTable(model);
+    table.setTargetTableType(TargetTableType.INLINE_SQL);
+    table.setTargetTable(query);
+    return table;
+  }
+  public BogoPojo gwtWorkaround(BogoPojo pojo) {
+    return pojo;
+  }
+
 }

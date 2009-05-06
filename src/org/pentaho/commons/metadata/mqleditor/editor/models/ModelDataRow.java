@@ -1,4 +1,4 @@
-package org.pentaho.commons.metadata.mqleditor.beans;
+package org.pentaho.commons.metadata.mqleditor.editor.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.Vector;
 import org.pentaho.commons.metadata.mqleditor.DataFormatType;
 import org.pentaho.metadata.model.IPhysicalColumn;
 import org.pentaho.metadata.model.concept.types.DataType;
+import org.pentaho.metadata.model.concept.types.LocalizedString;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
 
@@ -22,9 +23,9 @@ public class ModelDataRow extends XulEventSourceAdapter{
   
   
   public ModelDataRow(IPhysicalColumn col, List<String> sampleDataArray) {
-    this.selectedDataType = DataType.valueOf(col.getDataType());
+    this.selectedDataType = col.getDataType();
     this.selectedDataFormatType = DataFormatType.CURRENCY;
-    this.columnName = col.getName();
+    this.columnName = col.getName().getString(LocalizedString.DEFAULT_LOCALE);
     if(sampleDataArray.size() > 0) {
       this.sampleData = sampleDataArray.get(0);
       this.sampleDataList = sampleDataArray;

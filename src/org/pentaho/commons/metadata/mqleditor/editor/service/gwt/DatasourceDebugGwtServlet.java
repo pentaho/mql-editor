@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
+import org.pentaho.commons.metadata.mqleditor.beans.BogoPojo;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
 import org.pentaho.commons.metadata.mqleditor.editor.service.impl.DatasourceServiceDelegate;
@@ -56,5 +57,7 @@ public class DatasourceDebugGwtServlet extends RemoteServiceServlet implements D
   public Boolean saveModel(BusinessData businessData, Boolean overwrite) throws DatasourceServiceException {
     return SERVICE.saveModel(businessData, overwrite);
   }
-  
+  public BogoPojo gwtWorkaround(BogoPojo pojo) {
+    return pojo;
+  }
 }
