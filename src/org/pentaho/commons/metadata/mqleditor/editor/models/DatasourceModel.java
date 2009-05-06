@@ -6,7 +6,6 @@ import java.util.List;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
-import org.pentaho.commons.metadata.mqleditor.beans.Connection;
 import org.pentaho.metadata.model.Category;
 import org.pentaho.metadata.model.Domain;
 import org.pentaho.metadata.model.IPhysicalColumn;
@@ -29,59 +28,7 @@ public class DatasourceModel extends XulEventSourceAdapter implements IDatasourc
   
   public DatasourceModel() {
     previewLimit="10";
-    IConnection connection = new Connection();
-    connection.setDriverClass("org.hsqldb.jdbcDriver");
-    connection.setName("SampleData");
-    connection.setPassword("password");
-    connection.setUrl("jdbc:hsqldb:hsql://localhost:9001/sampledata");
-    connection.setUsername("pentaho_user");
-    connections.add(connection);
-    setConnections(connections);
-    setQuery("select customername, customernumber, city, contactlastname, contactfirstname from customers where customernumber < 191");
   }
-
-
-  
-  
-  public void setModelData(BusinessData businessData) {
-    if(businessData != null) {
-      Domain domain = businessData.getDomain();
-      List<List<String>> data = businessData.getData();
-      List<IPhysicalColumn> physicalColumns = new ArrayList<IPhysicalColumn>();
-      List<LogicalModel> logicalModels = domain.getLogicalModels();
-      int i=0;
-      for (LogicalModel logicalModel : logicalModels) {
-        List<Category> categories = logicalModel.getCategories();
-        for (Category category : categories) {
-          List<LogicalColumn> logicalColumns = category.getLogicalColumns();
-          for (LogicalColumn logicalColumn : logicalColumns) {
-            addModelDataRow(logicalColumn.getPhysicalColumn(), data.get(i++));
-          }
-        }
-      }
-      firePropertyChange("dataRows", null, dataRows);
-    } else {
-      this.dataRows.removeAll(dataRows);
-      List<ModelDataRow> previousValue = this.dataRows;
-      firePropertyChange("dataRows", previousValue, null);
-    }
-  }
-
-  public void addModelDataRow(IPhysicalColumn column, List<String> data) {
-    this.dataRows.add(new ModelDataRow(column, data));
-  }
-
-  public List<ModelDataRow> getDataRows() {
-    return dataRows;
-  }
-
-
-  public void setDataRows(List<ModelDataRow> modelData) {
-    this.dataRows = dataRows;
-    firePropertyChange("dataRows", null, dataRows);
-  }
-
-
   
   public EditType getEditType() {
     return editType;
@@ -231,4 +178,43 @@ public class DatasourceModel extends XulEventSourceAdapter implements IDatasourc
     this.object = object;
     setModelData(object);
   }
+  
+    public void setModelData(BusinessData businessData) {
+    if(businessData != null) {
+      Domain domain = businessData.getDomain();
+      List<List<String>> data = businessData.getData();
+      List<IPhysicalColumn> physicalColumns = new ArrayList<IPhysicalColumn>();
+      List<LogicalModel> logicalModels = domain.getLogicalModels();
+      int i=0;
+      for (LogicalModel logicalModel : logicalModels) {
+        List<Category> categories = logicalModel.getCategories();
+        for (Category category : categories) {
+          List<LogicalColumn> logicalColumns = category.getLogicalColumns();
+          for (LogicalColumn logicalColumn : logicalColumns) {
+            addModelDataRow(logicalColumn.getPhysicalColumn(), data.get(i++));
+          }
+        }
+      }
+      firePropertyChange("dataRows", null, dataRows);
+    } else {
+      this.dataRows.removeAll(dataRows);
+      List<ModelDataRow> previousValue = this.dataRows;
+      firePropertyChange("dataRows", previousValue, null);
+    }
+  }
+
+  public void addModelDataRow(IPhysicalColumn column, List<String> data) {
+    this.dataRows.add(new ModelDataRow(column, data));
+  }
+
+  public List<ModelDataRow> getDataRows() {
+    return dataRows;
+  }
+
+
+  public void setDataRows(List<ModelDataRow> modelData) {
+    this.dataRows = dataRows;
+    firePropertyChange("dataRows", null, dataRows);
+  }
+  
 }

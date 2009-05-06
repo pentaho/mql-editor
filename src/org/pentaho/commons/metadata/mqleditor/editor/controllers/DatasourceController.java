@@ -3,7 +3,6 @@ package org.pentaho.commons.metadata.mqleditor.editor.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.DataFormatType;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource.EditType;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
@@ -19,7 +18,6 @@ import org.pentaho.metadata.model.Domain;
 import org.pentaho.metadata.model.IPhysicalColumn;
 import org.pentaho.metadata.model.LogicalColumn;
 import org.pentaho.metadata.model.LogicalModel;
-import org.pentaho.metadata.model.concept.types.DataType;
 import org.pentaho.metadata.model.concept.types.LocalizedString;
 import org.pentaho.ui.xul.XulComponent;
 import org.pentaho.ui.xul.XulException;
@@ -31,7 +29,6 @@ import org.pentaho.ui.xul.components.XulButton;
 import org.pentaho.ui.xul.components.XulCheckbox;
 import org.pentaho.ui.xul.components.XulLabel;
 import org.pentaho.ui.xul.components.XulMenuList;
-import org.pentaho.ui.xul.components.XulMenuitem;
 import org.pentaho.ui.xul.components.XulTextbox;
 import org.pentaho.ui.xul.components.XulTreeCell;
 import org.pentaho.ui.xul.components.XulTreeCol;
@@ -40,7 +37,6 @@ import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.containers.XulGrid;
 import org.pentaho.ui.xul.containers.XulListbox;
 import org.pentaho.ui.xul.containers.XulMenupopup;
-import org.pentaho.ui.xul.containers.XulRow;
 import org.pentaho.ui.xul.containers.XulRows;
 import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.containers.XulTreeCols;
@@ -131,7 +127,6 @@ public class DatasourceController extends AbstractXulEventHandler {
   }
 
   public void init() {
-    datasourceModel = new DatasourceModel ();
     modelDataTable = (XulTree) document.getElementById("modelDataTable");
 
     rows = (XulRows) document.getElementById("rows");//$NON-NLS-1$
