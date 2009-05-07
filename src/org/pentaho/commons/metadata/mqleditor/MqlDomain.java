@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface MqlDomain<T extends MqlModel> extends Serializable{
 
+  // this should be deleted, it causes confusion and is not used.
+  @Deprecated
   public String getId();
 
   public String getName();

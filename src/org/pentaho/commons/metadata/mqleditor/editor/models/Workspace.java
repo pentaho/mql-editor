@@ -46,7 +46,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   /*
    * Adopt all values of bean version of Query as UI-enabled "Workspace". 
    */
-  public void wrap(Query thinWorkspace){
+  public void wrap(Query thinWorkspace) {
 
     // TODO mlowery need to validate incoming (deserialized) model by making sure that objects still exist on the server
 
@@ -56,8 +56,9 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     }
     
     for (UIDomain uiDomain : domains) {
-      if (uiDomain.getId().equals(domain.getId())) {
+      if (uiDomain.getName().equals(domain.getName())) {
         setSelectedDomain(uiDomain);
+        break;
       }
     }
     
@@ -73,6 +74,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     for (UIModel uiModel : selectedDomain.getModels()) {
       if (uiModel.getId().equals(model.getId())) {
         setSelectedModel(uiModel);
+        break;
       }
     }
     
@@ -146,7 +148,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   public void setSelectedModel(UIModel m){
     UIModel prevVal = this.selectedModel;
     this.selectedModel = m;
-
+    this.clear();
     this.firePropertyChange("selectedModel", prevVal, this.selectedModel);
     this.firePropertyChange("categories", null, getCategories());
   }
@@ -301,7 +303,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   public void setSelectedDomain(UIDomain selectedDomain){
     UIDomain prevDomain = this.selectedDomain;
     this.selectedDomain = selectedDomain;
-
+    this.clear();
     this.firePropertyChange("selectedDomain", prevDomain, selectedDomain);
   }
 
