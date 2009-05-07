@@ -23,6 +23,7 @@ import org.pentaho.metadata.repository.DomainAlreadyExistsException;
 import org.pentaho.metadata.repository.DomainIdNullException;
 import org.pentaho.metadata.repository.DomainStorageException;
 import org.pentaho.metadata.repository.IMetadataDomainRepository;
+import org.pentaho.platform.engine.services.metadata.MetadataDomainRepository;
 import org.pentaho.pms.schema.v3.physical.IDataSource;
 import org.pentaho.pms.schema.v3.physical.SQLDataSource;
 import org.pentaho.pms.service.IModelManagementService;
@@ -39,7 +40,7 @@ public class DatasourceServiceDelegate {
   
   public DatasourceServiceDelegate() {
     modelManagementService =  new JDBCModelManagementService();
-    //metadataDomainRepository = new MetadataDomainRepository();
+    metadataDomainRepository = new MetadataDomainRepository();
   }
   
   public List<IDatasource> getDatasources() {

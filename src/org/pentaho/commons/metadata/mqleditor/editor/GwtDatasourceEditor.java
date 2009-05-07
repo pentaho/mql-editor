@@ -12,6 +12,7 @@ import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceService;
 import org.pentaho.gwt.widgets.client.utils.IMessageBundleLoadCallback;
 import org.pentaho.gwt.widgets.client.utils.MessageBundle;
 import org.pentaho.ui.xul.XulServiceCallback;
+import org.pentaho.ui.xul.components.XulLabel;
 import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.gwt.GwtXulDomContainer;
 import org.pentaho.ui.xul.gwt.GwtXulLoader;
@@ -33,6 +34,8 @@ public class GwtDatasourceEditor implements IMessageBundleLoadCallback {
   private MessageBundle bundle;
   private DatasourceController datasourceController = new DatasourceController();
   private ConnectionController connectionController = new ConnectionController();
+  private ConnectionService connectionService;
+  private DatasourceService datasourceService;
   private DatasourceModel datasourceModel = new DatasourceModel();
   private ConnectionModel connectionModel = new ConnectionModel();
   private GwtXulDomContainer container;
@@ -49,13 +52,36 @@ public class GwtDatasourceEditor implements IMessageBundleLoadCallback {
         e.printStackTrace();
       }
     } else {
-      XulDialog dialog = (XulDialog) container.getDocumentRoot().getElementById("newdatasourceDialog");
-      dialog.show();
+      XulDialog dialog = (XulDialog) container.getDocumentRoot().getElementById("datasourceDialog");
+      datasourceModel.clearModel();
+      connectionModel.clearModel();
+      if(connectionService != null) {
+        connectionService.getConnections(new XulServiceCallback<List<IConnection>>(){
+  
+          public void error(String message, Throwable error) {
+            showErrorDialog("Error Occurred","Unable to show the dialog." +error.getLocalizedMessage());
+          }
+  
+          public void success(List<IConnection> connections) {
+            datasourceModel.setConnections(connections);
+          }
+          
+        });
+        dialog.show();
+      } else {
+        showErrorDialog("Error Occurred","Unable to show the dialog. Connection Service is null");
+      }
     }
   }
 
+  private void showErrorDialog(String title, String message) {
+    XulDialog errorDialog = (XulDialog) container.getDocumentRoot().getElementById("errorDialog");
+    XulLabel errorLabel = (XulLabel) container.getDocumentRoot().getElementById("errorLabel");        
+    errorDialog.setTitle(title);
+    errorLabel.setValue(message);
+  }
   public void hide(){
-    XulDialog dialog = (XulDialog) container.getDocumentRoot().getElementById("newdatasourceDialog");
+    XulDialog dialog = (XulDialog) container.getDocumentRoot().getElementById("datasourceDialog");
     dialog.hide();
   }
   
@@ -161,21 +187,12 @@ public class GwtDatasourceEditor implements IMessageBundleLoadCallback {
   }
   
   public void setConnectionService(ConnectionService service){
+    this.connectionService = service;
     connectionController.setService(service);
-    service.getConnections(new XulServiceCallback<List<IConnection>>(){
-
-      public void error(String message, Throwable error) {
-        
-      }
-
-      public void success(List<IConnection> connections) {
-        datasourceModel.setConnections(connections);
-      }
-      
-    });
   }
 
   public void setDatasourceService(DatasourceService service){
+    this.datasourceService = service;
     datasourceController.setService(service);
   }
 

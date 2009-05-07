@@ -129,19 +129,10 @@ public class DatasourceController extends AbstractXulEventHandler {
   public void init() {
     modelDataTable = (XulTree) document.getElementById("modelDataTable");
 
-    rows = (XulRows) document.getElementById("rows");//$NON-NLS-1$
-    columns = (XulColumns) document.getElementById("columns");//$NON-NLS-1$
-    grid = (XulGrid) document.getElementById("grid");//$NON-NLS-1$
-
     errorDialog = (XulDialog) document.getElementById("errorDialog"); //$NON-NLS-1$
     errorLabel = (XulLabel) document.getElementById("errorLabel");//$NON-NLS-1$
     successDialog = (XulDialog) document.getElementById("successDialog"); //$NON-NLS-1$
     successLabel = (XulLabel) document.getElementById("successLabel");//$NON-NLS-1$
-
-    //datatypeRow = (XulHbox) document.getElementById("datatypeRow"); //$NON-NLS-1$
-    //columnHeaderRow = (XulHbox) document.getElementById("columnHeaderRow"); //$NON-NLS-1$
-    //dataRow = (XulVbox) document.getElementById("dataRow"); //$NON-NLS-1$
-    dataTypeMenuList = (XulMenuList<XulMenupopup>) document.getElementById("dataTypeMenuList"); //$NON-NLS-1$
 
     datasourceName = (XulTextbox) document.getElementById("datasourcename"); //$NON-NLS-1$
     connections = (XulListbox) document.getElementById("connectionList"); //$NON-NLS-1$
@@ -214,6 +205,10 @@ public class DatasourceController extends AbstractXulEventHandler {
         });
     bf.createBinding(datasourceModel, "dataRows", modelDataTable, "elements");
     bf.setBindingType(Binding.Type.BI_DIRECTIONAL);
+    bf.createBinding(datasourceModel, "generateModelChecked", mqlModelCheckBox, "checked");//$NON-NLS-1$ //$NON-NLS-2$
+    bf.createBinding(datasourceModel, "generateModelChecked", mqlModelCheckBox, "selected");//$NON-NLS-1$ //$NON-NLS-2$
+    bf.createBinding(datasourceModel, "modelTableVisible", modelDataTable, "visible");//$NON-NLS-1$ //$NON-NLS-2$
+    
     bf.createBinding(datasourceModel, "previewLimit", previewLimit, "value"); //$NON-NLS-1$ //$NON-NLS-2$
     // Not sure if editQuery button is doing much
     //bf.createBinding(editQueryButton, "!disabled", "removeConnectionButton", "!disabled", buttonConvertor); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -221,7 +216,7 @@ public class DatasourceController extends AbstractXulEventHandler {
     bf.setBindingType(Binding.Type.BI_DIRECTIONAL);
     bf.createBinding(datasourceModel, "query", query, "value"); //$NON-NLS-1$ //$NON-NLS-2$
     bf.createBinding(datasourceModel, "datasourceName", datasourceName, "value"); //$NON-NLS-1$ //$NON-NLS-2$
-
+    
     okButton.setDisabled(true);
     modelDataTable.setVisible(false);
     try {
@@ -271,139 +266,16 @@ public class DatasourceController extends AbstractXulEventHandler {
     }
   }
 
-  /*public void executeNext() {
-    if (allInputsSatisfiedForNext()) {
-      try {
-
-        service.generateModel(datasourceModel.getDatasourceName(), datasourceModel.getSelectedConnection(),
-            datasourceModel.getQuery(), datasourceModel.getPreviewLimit(), new XulServiceCallback<BusinessData>() {
-
-              public void error(String message, Throwable error) {
-                openErrorDialog("Error occurred", "Unable to retrieve business data. " + error.getLocalizedMessage());
-              }
-
-              public void success(BusinessData businessData) {
-                try {
-                  datasourceModel.setBusinessData(businessData);
-                  // Remove any existing children
-                  List<XulComponent> rowList = rows.getChildNodes();
-
-                  Domain domain = businessData.getDomain();
-
-                  List<IPhysicalColumn> physicalColumns = new ArrayList<IPhysicalColumn>();
-                  List<LogicalModel> logicalModels = domain.getLogicalModels();
-                  for (LogicalModel logicalModel : logicalModels) {
-                    List<Category> categories = logicalModel.getCategories();
-                    for (Category category : categories) {
-                      List<LogicalColumn> logicalColumns = category.getLogicalColumns();
-                      for (LogicalColumn logicalColumn : logicalColumns) {
-                        physicalColumns.add(logicalColumn.getPhysicalColumn());
-                      }
-                    }
-                  }
-                  List<List<String>> data = businessData.getData();
-
-                  // We will remove all rows but the row header
-                  for (int i = 0; i < rowList.size(); i++) {
-                    XulComponent component = rowList.get(i);
-                    if (component != null && component.getId() != null
-                        && !(component.getId().equalsIgnoreCase("headerRow")) && rows != null) { //$NON-NLS-1$
-                      rows.removeComponent(component);
-                    }
-                  }
-                  // Checking the first row. If the row header is not created and we will create one
-                  boolean doesHeaderRowExists = false;
-                  if(rowList != null && rowList.size() > 0) {
-                  XulComponent component = rowList.get(0);
-                    if (component != null && component.getId() != null
-                        && (component.getId().equalsIgnoreCase("headerRow"))) { //$NON-NLS-1$
-                      doesHeaderRowExists = true;
-                    }
-                  }
-                  if(!doesHeaderRowExists) {
-                      XulRow xulRow = (XulRow) document.createElement("row"); //$NON-NLS-1$
-                      XulLabel displayNameLabel = (XulLabel) document.createElement("label"); //$NON-NLS-1$
-                      displayNameLabel.setValue("Display Name");
-                      XulLabel typeLabel = (XulLabel) document.createElement("label"); //$NON-NLS-1$
-                      typeLabel.setValue("Type");
-                      XulLabel formatLabel = (XulLabel) document.createElement("label"); //$NON-NLS-1$
-                      formatLabel.setValue("Format");
-                      XulLabel sampleDataLabel = (XulLabel) document.createElement("label"); //$NON-NLS-1$
-                      sampleDataLabel.setValue("Sample Data");
-                      xulRow.addChild(displayNameLabel);
-                      xulRow.addChild(typeLabel);
-                      xulRow.addChild(formatLabel);
-                      xulRow.addChild(sampleDataLabel);
-                      rows.addChild(xulRow);
-                  }
-
-                  // We will build this ui column by column
-                  int columnCounter = 0;
-                  for (IPhysicalColumn column : physicalColumns) {
-                    List<String> firstDataRow = data.get(0);
-                    XulRow xulRow = (XulRow) document.createElement("row"); //$NON-NLS-1$
-                    xulRow.setFlex(1);
-                    // Adding column name.
-                    XulTextbox columnNameTextBox = (XulTextbox) document.createElement("textbox"); //$NON-NLS-1$
-                    columnNameTextBox.setId("columnName" + (columnCounter));//$NON-NLS-1$
-                    columnNameTextBox.setMultiline(false);
-                    columnNameTextBox.setWidth(20);
-                    //LocalizedString columnName = column.getName();
-                    String columnName = column.getName();
-                    if (columnName != null) {
-                      //textBox.setValue(column.getName().toString());
-                      columnNameTextBox.setValue(columnName);
-                    }
-                    xulRow.addChild(columnNameTextBox);
-
-                    // Adding data type column.
-                    XulMenuList<XulMenupopup> columnTypeMenuList = createMenuList(column.getDataType());
-                    columnTypeMenuList.setId("columnType" + (columnCounter));//$NON-NLS-1$
-                    xulRow.addChild(columnTypeMenuList);
-
-                    //Adding format of column
-                    XulMenuList<XulMenupopup> columnFormatMenuList = createColumnFormatMenuList(column.getDataType());
-                    columnFormatMenuList.setId("columnFormat" + (columnCounter));//$NON-NLS-1$
-                    xulRow.addChild(columnFormatMenuList);
-
-                    //Adding sample data
-                    XulTextbox sampleDataTextBox = (XulTextbox) document.createElement("textbox"); //$NON-NLS-1$
-                    sampleDataTextBox.setMultiline(false);
-                    sampleDataTextBox.setId("columSampleData" + columnCounter);//$NON-NLS-1$
-
-                    sampleDataTextBox.setWidth(20);
-                    sampleDataTextBox.setValue(firstDataRow.get(columnCounter));
-                    sampleDataTextBox.setDisabled(true);
-                    sampleDataTextBox.setAlign("center"); //$NON-NLS-1$
-                    xulRow.addChild(sampleDataTextBox);
-
-                    //Add to the parent rows
-                    rows.addChild(xulRow);
-                    columnCounter++;
-                  }
-                  grid.update();
-                } catch (Exception xe) {
-                  xe.printStackTrace();
-                }
-              }
-            });
-      } catch (DatasourceServiceException e) {
-        openErrorDialog("Error occurred", "Unable to retrieve business data. " + e.getLocalizedMessage());
-      }
-    } else {
-      openErrorDialog("Missing Input", "Some of the required inputs are missing");
-    }
-  }*/
-
   public void generateModel() {
     if (mqlModelCheckBox.isChecked()) {
-      if (allInputsSatisfiedForNext()) {
+      if (validateInputs()) {
         try {
 
           service.generateModel(datasourceModel.getDatasourceName(), datasourceModel.getSelectedConnection(),
               datasourceModel.getQuery(), datasourceModel.getPreviewLimit(), new XulServiceCallback<BusinessData>() {
 
                 public void error(String message, Throwable error) {
+                  mqlModelCheckBox.setChecked(false);
                   openErrorDialog("Error occurred", "Unable to retrieve business data. " + error.getLocalizedMessage());
                 }
 
@@ -417,9 +289,11 @@ public class DatasourceController extends AbstractXulEventHandler {
                 }
               });
         } catch (DatasourceServiceException e) {
+          mqlModelCheckBox.setChecked(false);
           openErrorDialog("Error occurred", "Unable to retrieve business data. " + e.getLocalizedMessage());
         }
       } else {
+        mqlModelCheckBox.setChecked(false);
         openErrorDialog("Missing Input", "Some of the required inputs are missing");
       }
     } else {
@@ -428,7 +302,7 @@ public class DatasourceController extends AbstractXulEventHandler {
     }
   }
 
-  private boolean allInputsSatisfiedForNext() {
+  private boolean validateInputs() {
     return (datasourceModel.getSelectedConnection() != null
         && (datasourceModel.getQuery() != null && datasourceModel.getQuery().length() > 0) && (datasourceModel
         .getDatasourceName() != null && datasourceModel.getDatasourceName().length() > 0));
@@ -465,7 +339,7 @@ public class DatasourceController extends AbstractXulEventHandler {
             + xe.getLocalizedMessage());
       }
     } else {
-      if (allInputsSatisfiedForNext()) {
+      if (validateInputs()) {
         try {
 
           service.generateModel(datasourceModel.getDatasourceName(), datasourceModel.getSelectedConnection(),
@@ -536,7 +410,7 @@ public class DatasourceController extends AbstractXulEventHandler {
 
   public void addConnection() {
     datasourceModel.setEditType(EditType.ADD);
-    connectionModel.clear();
+    connectionModel.clearModel();
     showConnectionDialog();
   }
 
@@ -586,7 +460,7 @@ public class DatasourceController extends AbstractXulEventHandler {
 
   public void displayPreview() {
 
-    if (!allInputsSatisfiedForNext()) {
+    if (!validateInputs()) {
       openErrorDialog("Missing Input", "Some of the required inputs are missing"); //$NON-NLS-2$
     } else {
       try {

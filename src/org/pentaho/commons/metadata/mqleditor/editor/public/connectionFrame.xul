@@ -35,19 +35,21 @@
     </groupbox>
   </dialog>
   <dialog id="datasourceDialog" buttonlabelaccept="${datasourceDialog.OK}" buttonlabelcancel="${datasourceDialog.CANCEL}"
-    buttons="accept,cancel" ondialogaccept="datasourceController.saveModel()"   ondialogcancel="datasourceController.exitDatasourceDialog()" title="${datasourceDialog.Title}" width="640" height="595" buttonalign="right">
+    buttons="accept,cancel" ondialogaccept="datasourceController.saveModel()"   ondialogcancel="datasourceController.exitDatasourceDialog()" title="${datasourceDialog.Title}" width="640" height="660" buttonalign="right">
     <groupbox flex="1">
-      <hbox>
-          <button flex="1" id="sqlButton" image="images/sql_selected.png"  tooltiptext="${datasourceDialog.SqlImageToolTip}" onclick="datasourceController.selectSql()"  disabled="false" align="top"/>
-          <spacer width="50"/>
-          <button flex="1" id="olap" image="images/olap.png" tooltiptext="${datasourceDialog.OlapImageToolTip}" onclick="datasourceController.selectOlap()"  disabled="false" align="top"/>
-          <spacer width="50"/>
-          <button flex="1" id="mql" image="images/mql.png" tooltiptext="${datasourceDialog.mqlImageToolTip}" onclick="datasourceController.selectMql()"  disabled="false" align="top"/>
-          <spacer width="50"/>          
-          <button flex="1" id="csv" image="images/csv.png" tooltiptext="${datasourceDialog.CsvImageToolTip}" onclick="datasourceController.selectCsv()"  disabled="false" align="bottom"/>
-          <spacer width="50"/>
-          <button flex="1" id="xml" image="images/xml.png"  tooltiptext="${datasourceDialog.XmlImageToolTip}" onclick="datasourceController.selectXml()"  disabled="false" align="bottom"/>
-      </hbox>
+      <groupbox flex="1">
+	      <hbox>
+	          <button flex="1" id="sqlButton" image="images/sql_selected.png"  tooltiptext="${datasourceDialog.SqlImageToolTip}" onclick="datasourceController.selectSql()"  disabled="false" align="left"/>
+	          <spacer width="50"/>
+	          <button flex="1" id="olap" image="images/olap.png" tooltiptext="${datasourceDialog.OlapImageToolTip}" onclick="datasourceController.selectOlap()"  disabled="true" align="left"/>
+	          <spacer width="50"/>
+	          <button flex="1" id="mql" image="images/mql.png" tooltiptext="${datasourceDialog.mqlImageToolTip}" onclick="datasourceController.selectMql()"  disabled="true" align="center"/>
+	          <spacer width="50"/>          
+	          <button flex="1" id="csv" image="images/csv.png" tooltiptext="${datasourceDialog.CsvImageToolTip}" onclick="datasourceController.selectCsv()"  disabled="true" align="right"/>
+	          <spacer width="50"/>
+	          <button flex="1" id="xml" image="images/xml.png"  tooltiptext="${datasourceDialog.XmlImageToolTip}" onclick="datasourceController.selectXml()"  disabled="true" align="right"/>
+	      </hbox>
+      </groupbox>
       <vbox>
         <label value="${datasourceDialog.DatasourceName}" tooltiptext="${datasourceDialog.DatasourceNameToolTip}"/>
         <hbox>
@@ -76,9 +78,9 @@
             <textbox flex="1" id="query" multiline="true" rows="6" cols="80" width="400"/>
             <hbox flex="1">
                 <spacer flex="1"/>
-                <label value="Limit:"/>
-		        <textbox id="previewLimit" value="10" width="30"/>
-                <button id="preview"  label="${datasourceDialog.PREVIEW}" tooltiptext="${datasourceDialog.previewToolTip}" onclick="datasourceController.displayPreview()"  disabled="false"/>
+                <label value="Limit:" height="16"/>
+		        <textbox id="previewLimit" value="10" height="16" width="15"/>
+                <button id="preview"  label="${datasourceDialog.PREVIEW}" tooltiptext="${datasourceDialog.previewToolTip}" onclick="datasourceController.displayPreview()"  disabled="false" height="16"/>
             </hbox>
         </vbox>
       </hbox>

@@ -151,7 +151,6 @@ public class DatasourceServiceGwtImpl implements DatasourceService {
     SERVICE.generateModel(modelName, connection, query, previewLimit,  new AsyncCallback<BusinessData>() {
 
       public void onFailure(Throwable arg0) {
-        arg0.printStackTrace();
         callback.error("error generating the mode: ", arg0);//$NON-NLS-1$
       }
 

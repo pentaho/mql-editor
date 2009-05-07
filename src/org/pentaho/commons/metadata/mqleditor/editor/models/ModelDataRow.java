@@ -22,13 +22,13 @@ public class ModelDataRow extends XulEventSourceAdapter{
   private DataFormatType selectedDataFormatType;
   
   
-  public ModelDataRow(IPhysicalColumn col, List<String> sampleDataArray) {
+  public ModelDataRow(IPhysicalColumn col, List<String> columnData) {
     this.selectedDataType = col.getDataType();
     this.selectedDataFormatType = DataFormatType.CURRENCY;
     this.columnName = col.getName().getString(LocalizedString.DEFAULT_LOCALE);
-    if(sampleDataArray.size() > 0) {
-      this.sampleData = sampleDataArray.get(0);
-      this.sampleDataList = sampleDataArray;
+    if(columnData.size() > 0) {
+      this.sampleData = columnData.get(0);
+      this.sampleDataList = columnData;
     }
   }
 
