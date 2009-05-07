@@ -1,6 +1,8 @@
 package org.pentaho.commons.metadata.mqleditor.utils;
 
+import org.pentaho.commons.metadata.mqleditor.CombinationType;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
+import org.pentaho.commons.metadata.mqleditor.Operator;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
@@ -14,6 +16,10 @@ public class ModelSerializer {
     xstreamWriter.setMode(XStream.NO_REFERENCES);
 
     xstreamWriter.alias("MQLQuery", Query.class); //$NON-NLS-1$
+    xstreamWriter.useAttributeFor(CombinationType.class);
+    //xstreamWriter.useAttributeFor(Operator.class);
+    
+    
     
   }
   public static String serialize(MqlQuery model){

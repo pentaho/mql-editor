@@ -65,8 +65,7 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
         e.printStackTrace();
       }
     } else {
-      XulDialog dialog = (XulDialog) container.getDocumentRoot().getElementById("mqlEditorDialog");
-      dialog.show();
+      mainController.showDialog();
     }
   }
 

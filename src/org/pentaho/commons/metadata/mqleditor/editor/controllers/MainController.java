@@ -53,6 +53,11 @@ public class MainController extends AbstractXulEventHandler {
 
   public void setSavedQuery(Query savedQuery) {
     this.savedQuery = savedQuery;  
+    if (savedQuery != null) {
+      workspace.wrap(savedQuery);
+    } else {
+      this.clearWorkspace();
+    }
   }
   
   public void init() {
@@ -62,11 +67,11 @@ public class MainController extends AbstractXulEventHandler {
     if (savedQuery != null) {
       workspace.wrap(savedQuery);
     }
+    
   }
   
   public void showDialog(){
 
-    dialog = (XulDialog) document.getElementById("mqlEditorDialog");
     dialog.show();
     
   }
@@ -81,6 +86,7 @@ public class MainController extends AbstractXulEventHandler {
     conditionsTable = (XulTree) document.getElementById("conditionsTree");
     ordersTable = (XulTree) document.getElementById("orderTable");
     fieldTable = (XulTree) document.getElementById("selectedColumnTree");
+    dialog = (XulDialog) document.getElementById("mqlEditorDialog");
 
     // Bind the domain list to the domain menulist drop-down.
     bf.setBindingType(Binding.Type.ONE_WAY);
@@ -126,6 +132,9 @@ public class MainController extends AbstractXulEventHandler {
 
       @Override
       public UIModel targetToSource(Integer value) {
+        if(value < 0){
+          return null;
+        }
         return workspace.getSelectedDomain().getModels().get(value);
       }
 
@@ -247,25 +256,25 @@ public class MainController extends AbstractXulEventHandler {
       }
     );
     
-
-    service.serializeModel(workspace.getMqlQuery(),
-      new XulServiceCallback<String>(){
-
-        public void error(String message, Throwable error) {
-          System.out.println(message);
-          error.printStackTrace();
-        }
-
-        public void success(String retVal) {
-          
-            System.out.println(retVal);
-          
-          dialog.hide();
-          
-        }
-      
-      }
-    );
+//
+//    service.serializeModel(workspace.getMqlQuery(),
+//      new XulServiceCallback<String>(){
+//
+//        public void error(String message, Throwable error) {
+//          System.out.println(message);
+//          error.printStackTrace();
+//        }
+//
+//        public void success(String retVal) {
+//          
+//            System.out.println(retVal);
+//          
+//          dialog.hide();
+//          
+//        }
+//      
+//      }
+//    );
   }
 
   public MQLEditorService getService() {

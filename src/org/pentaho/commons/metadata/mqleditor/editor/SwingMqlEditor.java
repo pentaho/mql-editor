@@ -24,6 +24,7 @@ import org.pentaho.ui.xul.XulRunner;
 import org.pentaho.ui.xul.XulServiceCallback;
 import org.pentaho.ui.xul.binding.BindingFactory;
 import org.pentaho.ui.xul.binding.DefaultBindingFactory;
+import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.swing.SwingXulLoader;
 import org.pentaho.ui.xul.swing.SwingXulRunner;
 
@@ -38,7 +39,7 @@ public class SwingMqlEditor {
 
   public SwingMqlEditor(MQLEditorService service){
     try{
-      XulDomContainer container = new SwingXulLoader().loadXul("org/pentaho/commons/metadata/mqleditor/editor/public/mainFrame.xul");
+      final XulDomContainer container = new SwingXulLoader().loadXul("org/pentaho/commons/metadata/mqleditor/editor/public/mainFrame.xul");
     
       final XulRunner runner = new SwingXulRunner();
       runner.addContainer(container);
@@ -98,6 +99,9 @@ public class SwingMqlEditor {
             //Query mqlQuery = (Query) ModelSerializer.deSerialize("{\"MQLQuery\":{\"cols\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]}]},\"conditions\":{\"org.pentaho.commons.metadata.mqleditor.beans.Condition\":[{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]},\"operator\":\"EQUAL\",\"value\":\"myvalue1\",\"comboType\":\"OR\",\"parameterized\":false},{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]},\"operator\":\"EQUAL\",\"value\":\"myvalue2\",\"comboType\":\"OR\",\"parameterized\":false},{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]},\"operator\":\"EQUAL\",\"value\":\"myparameter\",\"comboType\":\"OR\",\"parameterized\":true}]},\"orders\":{\"org.pentaho.commons.metadata.mqleditor.beans.Order\":[{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]},\"orderType\":\"ASC\"}]},\"domain\":{\"id\":\"mydomain\",\"name\":\"mydomain\",\"models\":{\"org.pentaho.commons.metadata.mqleditor.beans.Model\":[{\"categories\":{\"org.pentaho.commons.metadata.mqleditor.beans.Category\":[{\"id\":\"mycategory\",\"name\":\"mycategory\",\"columns\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]}]}}]},\"id\":\"mymodel\",\"name\":\"mymodel\"}]}},\"model\":{\"categories\":{\"org.pentaho.commons.metadata.mqleditor.beans.Category\":[{\"id\":\"mycategory\",\"name\":\"mycategory\",\"columns\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]}]}}]},\"id\":\"mymodel\",\"name\":\"mymodel\"},\"defaultParameterMap\":{\"entry\":[{\"string\":[\"myparameter\",\"myvalue3\"]}]}}}");
             
             //mainController.setSavedQuery(mqlQuery);
+
+            XulDialog dialog = (XulDialog) container.getDocumentRoot().getElementById("mqlEditorDialog");
+            dialog.show();
             
           } catch(XulException e){
             log.error("error starting Xul application", e);

@@ -39,6 +39,21 @@ public enum Operator implements Serializable{
     return strVal;
   }
   
+  public static Operator parse(String val){
+    if(val.equals(">")){
+      return Operator.GREATER_THAN;
+    } else if(val.equals(">=")){
+      return Operator.GREATOR_OR_EQUAL;
+    } else if(val.equals("=")){
+      return Operator.EQUAL;
+    } else if(val.equals("<")){
+      return Operator.LESS_THAN;
+    } else if(val.equals("<=")){
+      return Operator.LESS_OR_EQUAL;
+    } 
+    return Operator.EQUAL;
+  }
+  
   public boolean requiresValue(){
     return requiresValue;
   }

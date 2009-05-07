@@ -7,6 +7,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.pentaho.commons.metadata.mqleditor.AggType;
@@ -14,8 +16,10 @@ import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.MqlColumn;
 import org.pentaho.commons.metadata.mqleditor.MqlCondition;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
+import org.pentaho.commons.metadata.mqleditor.MqlModel;
 import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
+import org.pentaho.commons.metadata.mqleditor.Operator;
 import org.pentaho.commons.metadata.mqleditor.beans.Category;
 import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
@@ -84,6 +88,18 @@ public class MQLEditorServiceDeligate {
     }
   }
   
+  public MQLEditorServiceDeligate(SchemaMeta meta){
+    Domain domain = new Domain();
+    domain.setName(meta.getDomainName());
+    UniqueList<BusinessModel> models = meta.getBusinessModels();
+    for (BusinessModel model : models) {
+      Model myModel = createModel(model);
+      domain.getModels().add(myModel);
+      modelIdToSchemaMetaMap.put(myModel.getId(), meta);
+    }
+    domains.add(domain);
+  }
+  
   public List<MqlDomain> refreshMetadataDomains() {
     for (String id : domainRepository.getDomainIds()) {
       if (!domainIds.contains(id)) {
@@ -122,7 +138,7 @@ public class MQLEditorServiceDeligate {
       addThinDomain(id);
     }
   }
-
+  
   public String[][] getPreviewData(String query, int page, int limit) {
     throw new NotImplementedException("Implement in your class");
   }
@@ -306,6 +322,81 @@ public class MQLEditorServiceDeligate {
       return "";
     }
     
+  }
+  
+  public MqlQuery convertModelToThin(MQLQuery fatQ){
+    Query query = new Query();
+    
+    // currently only called by the PME-editor in which case there's only one domain.
+    BusinessModel model = null;
+    for(BusinessModel m : modelIdToSchemaMetaMap.get(fatQ.getModel().getId()).getBusinessModels()){
+      if(m.getId() == fatQ.getModel().getId()){
+        model = m;
+      }
+    }
+    
+    for(MqlModel m : ((MqlDomain<MqlModel>) domains.get(0)).getModels()){
+      if(m.getId().equals(fatQ.getModel().getId())){
+        query.setModel((Model) m);
+        query.setDomain((Domain) domains.get(0));
+      }
+    }
+    
+    List<Column> cols = new ArrayList<Column>();
+    for(Selection sel : fatQ.getSelections()){
+      Column col = createColumn(model, sel.getBusinessColumn());
+      cols.add(col);
+    }
+    query.setColumns(cols);
+    
+    List<Condition> conditions = new ArrayList<Condition>();
+    for(WhereCondition w : fatQ.getConstraints()){
+      Pattern p = Pattern.compile("\\[([^\\]]*)\\.([^\\]]*)\\] (.*)"); //$NON-NLS-1$
+      Matcher m = p.matcher(w.getCondition());
+      if (m.find()) {
+        String cat = m.group(1);
+        String col = m.group(2);
+        
+
+        UniqueList list = model.getAllBusinessColumns();
+        BusinessColumn fatcol = null;
+        for (Object c : list.getList()) {
+          if (((BusinessColumn) c).getId().equals(col)) {
+            fatcol = (org.pentaho.pms.schema.BusinessColumn) c;
+            
+          }
+        }
+        Column c = createColumn(model, fatcol);
+        String condition = m.group(3);
+        String operator = w.getOperator();
+        
+        Condition cond = new Condition();
+        cond.setColumn(c);
+        cond.setValue(condition);
+        cond.setOperator(Operator.parse(operator));
+        conditions.add(cond);
+      } else {
+        // log error?
+      }
+    }
+    
+    query.setConditions(conditions);
+    
+    List<Order> orders = new ArrayList<Order>();
+    for(OrderBy ord : fatQ.getOrder()){
+      Column col = createColumn(model, ord.getSelection().getBusinessColumn());
+      if(ord.getSelection().getAggregationType() != null){
+        col.setDefaultAggType(this.getAggType(ord.getSelection().getAggregationType().getType()));
+      }
+      Order o = new Order();
+      o.setColumn(col);
+      o.setOrderType(ord.isAscending() ? MqlOrder.Type.ASC : MqlOrder.Type.DESC);
+      orders.add(o);
+    }
+    
+    query.setOrders(orders);
+    
+    return query;
   }
   
   public MQLQuery convertModel(MqlQuery query){

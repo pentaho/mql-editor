@@ -133,7 +133,9 @@ public class PreviewController extends AbstractXulEventHandler {
     try{
       if(colCount > curTreeColCount){ // Add new Columns
         for(int i = (colCount - curTreeColCount); i > 0; i--){
-          previewTree.getColumns().addColumn( (XulTreeCol) document.createElement("treecol"));
+          XulTreeCol col = (XulTreeCol) document.createElement("treecol");
+          col.setFlex(1);
+          previewTree.getColumns().addColumn( col);
         }
       } else if (colCount < curTreeColCount){ // Remove un-needed exiting columns
         List<XulComponent> cols = previewTree.getColumns().getChildNodes();

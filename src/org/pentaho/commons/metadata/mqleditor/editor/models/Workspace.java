@@ -72,7 +72,12 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
     if (thinWorkspace.getColumns() != null) {
       for( MqlColumn col : thinWorkspace.getColumns()){
-        selectedColumns.add(findColumn(col));
+        UIColumn c = findColumn(col);
+        if(c != null){
+          selectedColumns.add(c);
+        } else {
+          System.out.println("could not find column");
+        }
       }
     }
     

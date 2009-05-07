@@ -3,7 +3,7 @@
 <window id="label-test" title="MQL Query Builder" orient="vertical"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:pen="http://www.pentaho.org/2008/xul"
   height="600" width="800"
-  onload="mainController.init(), selectedColumns.init(), conditionsController.init(), orderController.init(), previewController.init(), mainController.showDialog()">
+  onload="mainController.init(), selectedColumns.init(), conditionsController.init(), orderController.init(), previewController.init()">
 
 <!-- <hbox>
     <button label="Open Editor" onclick="mainController.showDialog()" />
@@ -34,8 +34,8 @@
   <dialog id="mqlEditorDialog" buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttonlabelextra1="preview"
     buttons="accept,cancel" ondialogaccept="mainController.saveQuery()"
     ondialogcancel="mainController.closeDialog()" buttonalign="right"
-    title="${window.title}" width="700" height="625">
-    <vbox padding="10" flex="1">
+    title="${window.title}" width="800" height="645">
+    <vbox padding="10" flex="1" >
       <hbox flex="1">
         <vbox flex="1">
           <label value="${business.domains}" />
@@ -52,7 +52,6 @@
               <treecol flex="1" label="" primary="true" pen:binding="name" pen:childrenbinding="children" />
             </treecols>
             <treechildren>
-
               <treeitem container="true" open="true">
                 <treerow>
                   <treecell label="" />
@@ -93,7 +92,7 @@
           </hbox>
           <tree flex="1" editable="false" seltype="single" enableColumnDrag="false" id="selectedColumnTree" width="575">
             <treecols>
-              <treecol flex="5" label="${column}" pen:binding="name" />
+              <treecol flex="2" label="${column}" pen:binding="name" />
               <treecol flex="1" label="${aggtype}" type="combobox" editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType"/>
             </treecols>
             <treechildren />
@@ -145,7 +144,7 @@
     </vbox>
     <hbox>
       <spacer flex="1"/>
-      <button label="Preview" onclick="previewController.showPreview()"/>
+      <button label="Preview" id="previewBtn"  onclick="previewController.showPreview()"/>
       <spacer flex="1"/>
     </hbox>
   </dialog>

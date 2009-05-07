@@ -85,14 +85,14 @@ public class WorkspaceTest {
     Condition cond = new Condition();
     cond.setColumn(column);
     cond.setCombinationType(CombinationType.OR);
-    cond.setOperator(Operator.EQUAL);
+    cond.setOperator(Operator.BEGINS_WITH);
     cond.setValue("myvalue1");
     conditions.add(cond);
 
     Condition cond2 = new Condition();
     cond2.setColumn(column);
     cond2.setCombinationType(CombinationType.OR);
-    cond2.setOperator(Operator.EQUAL);
+    cond2.setOperator(Operator.CONTAINS);
     cond2.setValue("myvalue2");
     conditions.add(cond2);
 
@@ -100,7 +100,8 @@ public class WorkspaceTest {
     cond3.setParameterized(true);
     cond3.setColumn(column);
     cond3.setCombinationType(CombinationType.OR);
-    cond3.setOperator(Operator.EQUAL);
+    cond3.setOperator(Operator.EXACTLY_MATCHES);
+    
     cond3.setValue("myparameter");
     conditions.add(cond3);
 
@@ -115,11 +116,7 @@ public class WorkspaceTest {
     mqlQuery.setOrders(orders);
 
     Map<String, String> defaultParameterMap = new HashMap<String, String>();
-
-    defaultParameterMap.put("myparameter", "myvalue3");
-    mqlQuery.setDefaultParameterMap(defaultParameterMap);
     
-
     CWMStartup.loadCWMInstance("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/repository.properties", "/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/PentahoCWM.xml"); //$NON-NLS-1$ //$NON-NLS-2$
     CWM cwm = CWMStartup.loadMetadata("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata_steelwheels.xmi", "/org/pentaho/commons/metadata/mqleditor/sampleMql"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -132,16 +129,11 @@ public class WorkspaceTest {
 
     workspace = new Workspace();
     
-    List<MqlDomain> thinDomains = service.getMetadataDomains();
-    
     List<UIDomain> uiDomains = new ArrayList<UIDomain>();
-    for(MqlDomain d : thinDomains){
-      uiDomains.add(new UIDomain((Domain) d));
-    }
-
+    uiDomains.add(new UIDomain(domain));
+    
     workspace.setDomains(uiDomains);
-
-    mqlQuery = (Query) ModelSerializer.deSerialize("{\"MQLQuery\":{\"cols\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"BC_OFFICES_ADDRESSLINE1\",\"name\":\"Address Line 1\",\"type\":\"TEXT\"},{\"id\":\"BC_OFFICES_ADDRESSLINE2\",\"name\":\"Address Line 2\",\"type\":\"TEXT\"}]},\"conditions\":{\"org.pentaho.commons.metadata.mqleditor.beans.Condition\":[{\"column\":{\"id\":\"BC_OFFICES_OFFICECODE\",\"name\":\"Office Code\",\"type\":\"TEXT\"},\"operator\":\"EQUAL\",\"value\":1234,\"comboType\":\"AND\",\"parameterized\":false,\"defaultValue\":\"\"}]},\"orders\":{\"org.pentaho.commons.metadata.mqleditor.beans.Order\":[{\"column\":{\"id\":\"BC_EMPLOYEES_EMPLOYEENUMBER\",\"name\":\"Employee ID\",\"type\":\"FLOAT\"},\"orderType\":\"DESC\"}]},\"domain\":{\"id\":\"default\",\"name\":\"\\/org\\/pentaho\\/commons\\/metadata\\/mqleditor\\/sampleMql\",\"models\":\"\"},\"model\":[{\"categories\":\"\",\"id\":[\"BV_HUMAN_RESOURCES\"],\"name\":\"Human Resources\"}]}}");
+    
     
     workspace.wrap(mqlQuery);
     
