@@ -60,7 +60,7 @@ public class MQLEditorServiceDeligate {
   private String locale = Locale.getDefault().toString();
 
   private List<MqlDomain> domains = new ArrayList<MqlDomain>();
-  private Set<String> domainIds = new TreeSet<String>();
+  private Set<String> domainNames = new TreeSet<String>();
 
   private CwmSchemaFactoryInterface factory;
   
@@ -73,22 +73,27 @@ public class MQLEditorServiceDeligate {
 
   public MQLEditorServiceDeligate(List<CWM> cwms, CwmSchemaFactoryInterface factory) {
     this.factory = factory;
-
     for (CWM cwm : cwms) {
       SchemaMeta meta = factory.getSchemaMeta(cwm);
-      Domain domain = new Domain();
-      domain.setName(meta.getDomainName());
-      UniqueList<BusinessModel> models = meta.getBusinessModels();
-      for (BusinessModel model : models) {
-        Model myModel = createModel(model);
-        domain.getModels().add(myModel);
-        modelIdToSchemaMetaMap.put(myModel.getId(), meta);
-      }
-      domains.add(domain);
+      addLegacyDomain(meta);
     }
   }
   
   public MQLEditorServiceDeligate(SchemaMeta meta){
+    addLegacyDomain(meta);
+  }
+  
+  public List<MqlDomain> refreshMetadataDomains() {
+    for (String id : domainRepository.getDomainIds()) {
+      if (!domainNames.contains(id)) {
+        // add the domain
+        addThinDomain(id);
+      }
+    }
+    return domains;
+  }
+  
+  public void addLegacyDomain(SchemaMeta meta) {
     Domain domain = new Domain();
     domain.setName(meta.getDomainName());
     UniqueList<BusinessModel> models = meta.getBusinessModels();
@@ -98,16 +103,7 @@ public class MQLEditorServiceDeligate {
       modelIdToSchemaMetaMap.put(myModel.getId(), meta);
     }
     domains.add(domain);
-  }
-  
-  public List<MqlDomain> refreshMetadataDomains() {
-    for (String id : domainRepository.getDomainIds()) {
-      if (!domainIds.contains(id)) {
-        // add the domain
-        addThinDomain(id);
-      }
-    }
-    return domains;
+    domainNames.add(domain.getName());
   }
   
   public void addThinDomain(String id) {
@@ -123,6 +119,7 @@ public class MQLEditorServiceDeligate {
         modelIdToSchemaMetaMap.put(myModel.getId(), meta);
       }
       domains.add(domain);
+      domainNames.add(domain.getName());
     } catch (Exception e) {
       e.printStackTrace();
       // log error
