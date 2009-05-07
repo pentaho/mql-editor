@@ -24,7 +24,7 @@ import org.pentaho.ui.xul.XulEventSourceAdapter;
  */
 public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
-  private UIModel model;
+  private UIModel selectedModel;
   private UIDomain selectedDomain;
   private List<UIDomain> domains;
   private List<UICategory> categories;
@@ -51,25 +51,35 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     // TODO mlowery need to validate incoming (deserialized) model by making sure that objects still exist on the server
 
     MqlDomain domain = thinWorkspace.getDomain();
-    if (domain != null) {
-      for (UIDomain uiDomain : domains) {
-        if (uiDomain.getId().equals(domain.getId())) {
-          setSelectedDomain(uiDomain);
-        }
+    if (domain == null) {
+      return;
+    }
+    
+    for (UIDomain uiDomain : domains) {
+      if (uiDomain.getId().equals(domain.getId())) {
+        setSelectedDomain(uiDomain);
       }
     }
     
+    if (selectedDomain == null) {
+      return;
+    }
+    
     MqlModel model = thinWorkspace.getModel();
-    if (model != null) {
-      for(UIDomain dom : this.domains){
-        for (UIModel uiModel : dom.getModels()) {
-          if (uiModel.getId().equals(model.getId())) {
-            setSelectedModel(uiModel);
-          }
-        }
+    if (model == null) {
+      return;
+    }
+    
+    for (UIModel uiModel : selectedDomain.getModels()) {
+      if (uiModel.getId().equals(model.getId())) {
+        setSelectedModel(uiModel);
       }
     }
-
+    
+    if (selectedModel == null) {
+      return;
+    }
+    
     if (thinWorkspace.getColumns() != null) {
       for( MqlColumn col : thinWorkspace.getColumns()){
         UIColumn c = findColumn(col);
@@ -123,7 +133,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
   
   private UIColumn findColumn(MqlColumn col){
-    for(UICategory cat : this.model.getCategories()){
+    for(UICategory cat : this.selectedModel.getCategories()){
       for(UIColumn c : cat.getBusinessColumns()){
         if(c.getId().equals(col.getId())){
           return c;
@@ -134,15 +144,15 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
   
   public void setSelectedModel(UIModel m){
-    UIModel prevVal = this.model;
-    this.model = m;
+    UIModel prevVal = this.selectedModel;
+    this.selectedModel = m;
 
-    this.firePropertyChange("selectedModel", prevVal, this.model);
+    this.firePropertyChange("selectedModel", prevVal, this.selectedModel);
     this.firePropertyChange("categories", null, getCategories());
   }
   
   public UIModel getSelectedModel(){
-    return model;
+    return selectedModel;
   }
   
   public UIColumn getColumnByPos(int pos){
@@ -170,7 +180,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   
   public List<UICategory> getCategories() {
     
-    return (this.model != null) ? this.model.getChildren() : null;
+    return (this.selectedModel != null) ? this.selectedModel.getChildren() : null;
   }
 
   public void setCategories(List<UICategory> categories) {
@@ -277,11 +287,11 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
 
   public MqlModel getModel() {
-    return this.model;   
+    return this.selectedModel;   
   }
   
   protected void setModel(UIModel model){
-    this.model = model;
+    this.selectedModel = model;
   }
 
   public UIDomain getSelectedDomain() {
@@ -325,7 +335,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     
     query.setMqlStr(this.getMqlStr());
     query.setDomain(this.selectedDomain);
-    query.setModel(this.model);
+    query.setModel(this.selectedModel);
 
 
     Map<String, String> params = new HashMap<String, String>();

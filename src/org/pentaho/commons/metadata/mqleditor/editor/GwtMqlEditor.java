@@ -46,7 +46,11 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
   PreviewController previewController = new PreviewController();
   
   public GwtMqlEditor(){
-    
+    mainController.setWorkspace(workspace);
+    selectedColumnController.setWorkspace(workspace);
+    constraintController.setWorkspace(workspace);
+    orderController.setWorkspace(workspace);
+    previewController.setWorkspace(workspace);
   }
   
   public void setSavedQuery(Query savedQuery) {
@@ -171,12 +175,6 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
       
       
       runner.addContainer(container);
-      mainController.setWorkspace(workspace);
-      selectedColumnController.setWorkspace(workspace);
-      constraintController.setWorkspace(workspace);
-      orderController.setWorkspace(workspace);
-      previewController.setWorkspace(workspace);
-      
       
       runner.initialize();
       runner.start();

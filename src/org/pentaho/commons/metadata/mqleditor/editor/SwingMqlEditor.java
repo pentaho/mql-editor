@@ -6,7 +6,9 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
+import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Domain;
+import org.pentaho.commons.metadata.mqleditor.beans.Model;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.ConditionsController;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.MainController;
@@ -96,9 +98,16 @@ public class SwingMqlEditor {
             runner.start();
             
 
-            //Query mqlQuery = (Query) ModelSerializer.deSerialize("{\"MQLQuery\":{\"cols\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]}]},\"conditions\":{\"org.pentaho.commons.metadata.mqleditor.beans.Condition\":[{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]},\"operator\":\"EQUAL\",\"value\":\"myvalue1\",\"comboType\":\"OR\",\"parameterized\":false},{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]},\"operator\":\"EQUAL\",\"value\":\"myvalue2\",\"comboType\":\"OR\",\"parameterized\":false},{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]},\"operator\":\"EQUAL\",\"value\":\"myparameter\",\"comboType\":\"OR\",\"parameterized\":true}]},\"orders\":{\"org.pentaho.commons.metadata.mqleditor.beans.Order\":[{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]},\"orderType\":\"ASC\"}]},\"domain\":{\"id\":\"mydomain\",\"name\":\"mydomain\",\"models\":{\"org.pentaho.commons.metadata.mqleditor.beans.Model\":[{\"categories\":{\"org.pentaho.commons.metadata.mqleditor.beans.Category\":[{\"id\":\"mycategory\",\"name\":\"mycategory\",\"columns\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]}]}}]},\"id\":\"mymodel\",\"name\":\"mymodel\"}]}},\"model\":{\"categories\":{\"org.pentaho.commons.metadata.mqleditor.beans.Category\":[{\"id\":\"mycategory\",\"name\":\"mycategory\",\"columns\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]}]}}]},\"id\":\"mymodel\",\"name\":\"mymodel\"},\"defaultParameterMap\":{\"entry\":[{\"string\":[\"myparameter\",\"myvalue3\"]}]}}}");
-            
-            //mainController.setSavedQuery(mqlQuery);
+//            Query mqlQuery = (Query) ModelSerializer.deSerialize("{\"MQLQuery\":{\"cols\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]}]},\"conditions\":{\"org.pentaho.commons.metadata.mqleditor.beans.Condition\":[{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]},\"operator\":\"EQUAL\",\"value\":\"myvalue1\",\"comboType\":\"OR\",\"parameterized\":false},{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]},\"operator\":\"EQUAL\",\"value\":\"myvalue2\",\"comboType\":\"OR\",\"parameterized\":false},{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]},\"operator\":\"EQUAL\",\"value\":\"myparameter\",\"comboType\":\"OR\",\"parameterized\":true}]},\"orders\":{\"org.pentaho.commons.metadata.mqleditor.beans.Order\":[{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]},\"orderType\":\"ASC\"}]},\"domain\":{\"id\":\"mydomain\",\"name\":\"mydomain\",\"models\":{\"org.pentaho.commons.metadata.mqleditor.beans.Model\":[{\"categories\":{\"org.pentaho.commons.metadata.mqleditor.beans.Category\":[{\"id\":\"mycategory\",\"name\":\"mycategory\",\"columns\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]}]}}]},\"id\":\"mymodel\",\"name\":\"mymodel\"}]}},\"model\":{\"categories\":{\"org.pentaho.commons.metadata.mqleditor.beans.Category\":[{\"id\":\"mycategory\",\"name\":\"mycategory\",\"columns\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"table\":{\"id\":\"mytable\",\"name\":\"mytable\",\"columns\":\"\"},\"type\":[\"TEXT\"]}]}}]},\"id\":\"mymodel\",\"name\":\"mymodel\"},\"defaultParameterMap\":{\"entry\":[{\"string\":[\"myparameter\",\"myvalue3\"]}]}}}");
+
+            Query query = new Query();
+            query.setDomain((Domain)retVal.get(1));
+            Model model = ((Domain)retVal.get(1)).getModels().get(0);
+            query.setModel(model);
+            List<Column> cols = new ArrayList<Column>();
+            cols.add(model.getCategories().get(0).getBusinessColumns().get(0));
+            query.setColumns(cols);
+            mainController.setSavedQuery(query);
 
             XulDialog dialog = (XulDialog) container.getDocumentRoot().getElementById("mqlEditorDialog");
             dialog.show();
