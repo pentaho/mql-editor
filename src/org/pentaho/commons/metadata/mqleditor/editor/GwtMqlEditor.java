@@ -198,14 +198,19 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
       }
 
       public void success(List<MqlDomain> domains) {
-        List<UIDomain> uiDomains = new ArrayList<UIDomain>();
-        for (MqlDomain domain : domains) {
-          uiDomains.add(new UIDomain((Domain) domain));
-        }
-        workspace.setDomains(uiDomains);
+        updateDomains(domains);
       }
       
     });
+    
+  }
+  
+  public void updateDomains(List<MqlDomain> domains) {
+    List<UIDomain> uiDomains = new ArrayList<UIDomain>();
+    for (MqlDomain domain : domains) {
+      uiDomains.add(new UIDomain((Domain) domain));
+    }
+    workspace.setDomains(uiDomains);
     
   }
   

@@ -353,7 +353,11 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
       this.firePropertyChange("domains", null, domains); //$NON-NLS-1$
     }
   }
-
+  
+  public void addDomain(UIDomain domain) {
+    this.domains.add(domain);
+    this.firePropertyChange("domains", null, domains);
+  }
 
   public Map<String, String> getDefaultParameterMap() {
     // TODO mlowery not sure what goes here

@@ -37,6 +37,10 @@ public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQ
     return deligate.getDomainByName(name);
   }
 
+  public List<MqlDomain> refreshMetadataDomains() {
+    return deligate.refreshMetadataDomains();
+  }
+  
   public List<MqlDomain> getMetadataDomains() {
     return deligate.getMetadataDomains();
   }

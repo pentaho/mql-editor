@@ -13,6 +13,7 @@ import org.pentaho.ui.xul.XulServiceCallback;
  *
  */
 public interface MQLEditorService {
+  void refreshMetadataDomains(XulServiceCallback<List<MqlDomain>> callback);
   void getMetadataDomains(XulServiceCallback<List<MqlDomain>> callback);
   void getDomainByName(String name, XulServiceCallback<MqlDomain> callback);
   void saveQuery(MqlQuery model, XulServiceCallback<String> callback);

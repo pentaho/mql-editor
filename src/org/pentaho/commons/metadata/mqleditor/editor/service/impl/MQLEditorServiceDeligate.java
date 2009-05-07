@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.pentaho.commons.metadata.mqleditor.AggType;
@@ -54,8 +56,11 @@ public class MQLEditorServiceDeligate {
   private String locale = Locale.getDefault().toString();
 
   private List<MqlDomain> domains = new ArrayList<MqlDomain>();
+  private Set<String> domainIds = new TreeSet<String>();
 
   private CwmSchemaFactoryInterface factory;
+  
+  private IMetadataDomainRepository domainRepository;
 
   /**
    * Keeps track of where a particular model came from.
@@ -79,24 +84,42 @@ public class MQLEditorServiceDeligate {
     }
   }
   
-  public void initializeThinMetadataDomains(IMetadataDomainRepository repo) {
-    for (String id : repo.getDomainIds()) {
-      org.pentaho.metadata.model.Domain thinDomain = repo.getDomain(id);
-      try {
-        SchemaMeta meta = ThinModelConverter.convertToLegacy(thinDomain); 
-        Domain domain = new Domain();
-        domain.setName(meta.getDomainName());
-        UniqueList<BusinessModel> models = meta.getBusinessModels();
-        for (BusinessModel model : models) {
-          Model myModel = createModel(model);
-          domain.getModels().add(myModel);
-          modelIdToSchemaMetaMap.put(myModel.getId(), meta);
-        }
-        domains.add(domain);
-      } catch (Exception e) {
-        e.printStackTrace();
-        // log error
+  public List<MqlDomain> refreshMetadataDomains() {
+    for (String id : domainRepository.getDomainIds()) {
+      if (!domainIds.contains(id)) {
+        // add the domain
+        addThinDomain(id);
       }
+    }
+    return domains;
+  }
+  
+  public void addThinDomain(String id) {
+    org.pentaho.metadata.model.Domain thinDomain = domainRepository.getDomain(id);
+    try {
+      SchemaMeta meta = ThinModelConverter.convertToLegacy(thinDomain); 
+      Domain domain = new Domain();
+      domain.setName(meta.getDomainName());
+      UniqueList<BusinessModel> models = meta.getBusinessModels();
+      for (BusinessModel model : models) {
+        Model myModel = createModel(model);
+        domain.getModels().add(myModel);
+        modelIdToSchemaMetaMap.put(myModel.getId(), meta);
+      }
+      domains.add(domain);
+    } catch (Exception e) {
+      e.printStackTrace();
+      // log error
+    }
+    
+  }
+  
+  public void initializeThinMetadataDomains(IMetadataDomainRepository repo) {
+    
+    this.domainRepository = repo;
+    
+    for (String id : repo.getDomainIds()) {
+      addThinDomain(id);
     }
   }
 

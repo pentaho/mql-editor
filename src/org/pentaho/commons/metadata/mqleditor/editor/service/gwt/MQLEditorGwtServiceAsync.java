@@ -10,6 +10,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface MQLEditorGwtServiceAsync {
 
   void getMetadataDomains(AsyncCallback<List<MqlDomain>> callback);
+  void refreshMetadataDomains(AsyncCallback<List<MqlDomain>> callback);
   void getDomainByName(String name, AsyncCallback<MqlDomain> callback);
   void saveQuery(MqlQuery model, AsyncCallback<String> callback);
   void serializeModel(MqlQuery query, AsyncCallback<String> callback);

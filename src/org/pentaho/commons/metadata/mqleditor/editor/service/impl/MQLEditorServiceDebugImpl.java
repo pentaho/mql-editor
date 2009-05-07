@@ -39,6 +39,10 @@ public class MQLEditorServiceDebugImpl implements MQLEditorService{
     callback.success(deligate.getDomainByName(name));
   }
 
+  public void refreshMetadataDomains(XulServiceCallback<List<MqlDomain>> callback) {
+    callback.success(deligate.refreshMetadataDomains());
+  }
+  
   public void getMetadataDomains(XulServiceCallback<List<MqlDomain>> callback) {
     callback.success(deligate.getMetadataDomains());
   }
