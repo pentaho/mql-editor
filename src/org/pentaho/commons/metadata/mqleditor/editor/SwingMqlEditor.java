@@ -1,11 +1,16 @@
 package org.pentaho.commons.metadata.mqleditor.editor;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.jmi.xmi.MalformedXMIException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
+import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.beans.Model;
@@ -17,9 +22,16 @@ import org.pentaho.commons.metadata.mqleditor.editor.controllers.PreviewControll
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.SelectedColumnController;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
+import org.pentaho.commons.metadata.mqleditor.editor.service.CWMStartup;
 import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDebugImpl;
+import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDeligate;
+import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceImpl;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
+import org.pentaho.pms.core.CWM;
+import org.pentaho.pms.factory.CwmSchemaFactory;
+import org.pentaho.pms.mql.MQLQuery;
+import org.pentaho.pms.schema.SchemaMeta;
 import org.pentaho.ui.xul.XulDomContainer;
 import org.pentaho.ui.xul.XulException;
 import org.pentaho.ui.xul.XulRunner;
@@ -38,10 +50,48 @@ public class SwingMqlEditor {
   private static Log log = LogFactory.getLog(SwingMqlEditor.class);
   private MainController mainController = new MainController();
   private Workspace workspace = new Workspace();
+  private XulDomContainer container;
+  private MQLEditorService service;
+  private MQLEditorServiceDeligate deligate;
+  
+  public SwingMqlEditor(String xmiFile){
+    CWM cwm = CWM.getInstance("");
 
-  public SwingMqlEditor(MQLEditorService service){
+    SchemaMeta meta = null;
+    InputStream xmiInputStream = CWMStartup.class.getResourceAsStream(xmiFile);
+    if (xmiInputStream != null) {
+      try {
+        cwm.importFromXMI(xmiInputStream);
+
+        CwmSchemaFactory factory = new CwmSchemaFactory();
+        meta = factory.getSchemaMeta(cwm);
+
+        this.deligate = new MQLEditorServiceDeligate(meta);
+        this.service = new MQLEditorServiceImpl(meta);
+      } catch (IOException e) {
+        log.error(e);
+      } catch (MalformedXMIException e) {
+        log.error(e);
+      }
+    }
+
+    init();
+    
+  }
+  
+  public SwingMqlEditor(MQLEditorService service, SchemaMeta meta){
+
+    this.service = service;
+    if(meta != null){
+      this.deligate = new MQLEditorServiceDeligate(meta);
+    }
+    
+    init();
+  }
+  private void init(){
     try{
-      final XulDomContainer container = new SwingXulLoader().loadXul("org/pentaho/commons/metadata/mqleditor/editor/public/mainFrame.xul");
+      
+      container = new SwingXulLoader().loadXul("org/pentaho/commons/metadata/mqleditor/editor/public/mainFrame.xul");
     
       final XulRunner runner = new SwingXulRunner();
       runner.addContainer(container);
@@ -109,9 +159,6 @@ public class SwingMqlEditor {
             query.setColumns(cols);
             mainController.setSavedQuery(query);
 
-            XulDialog dialog = (XulDialog) container.getDocumentRoot().getElementById("mqlEditorDialog");
-            dialog.show();
-            
           } catch(XulException e){
             log.error("error starting Xul application", e);
           }
@@ -124,9 +171,38 @@ public class SwingMqlEditor {
       log.error("error loading Xul application", e);
     }
   }
+  
+  public void show(){
+
+    XulDialog dialog = (XulDialog) container.getDocumentRoot().getElementById("mqlEditorDialog");
+    dialog.show();
+    
+  }
+  
+  public void setSavedQuery(MQLQuery query){
+    if(query == null){
+      mainController.clearWorkspace();
+    } else {
+      mainController.setSavedQuery((Query) this.deligate.convertModelToThin(query));
+    }
+  }
+  
+  public MQLQuery getMQLQuery(){
+    MqlQuery query = workspace.getMqlQuery();
+    
+    return deligate.convertModel(query);
+  }
 
   public static void main(String[] args){
-    SwingMqlEditor editor = new SwingMqlEditor(new MQLEditorServiceDebugImpl());
+
+    CWMStartup.loadCWMInstance("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/repository.properties", "/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/PentahoCWM.xml"); //$NON-NLS-1$ //$NON-NLS-2$
+    CWM cwm = CWMStartup.loadMetadata("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata_steelwheels.xmi", "/org/pentaho/commons/metadata/mqleditor/sampleMql"); //$NON-NLS-1$ //$NON-NLS-2$
+
+    CwmSchemaFactory factory = new CwmSchemaFactory();
+    SchemaMeta meta = factory.getSchemaMeta(cwm);
+    
+    SwingMqlEditor editor = new SwingMqlEditor(new MQLEditorServiceDebugImpl(meta), meta);
+    editor.show();
   }
 
 }

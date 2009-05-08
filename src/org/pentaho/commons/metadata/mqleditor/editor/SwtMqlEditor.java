@@ -19,9 +19,13 @@ import org.pentaho.commons.metadata.mqleditor.editor.controllers.PreviewControll
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.SelectedColumnController;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
+import org.pentaho.commons.metadata.mqleditor.editor.service.CWMStartup;
 import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDebugImpl;
 import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDeligate;
+import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceImpl;
+import org.pentaho.pms.core.CWM;
+import org.pentaho.pms.factory.CwmSchemaFactory;
 import org.pentaho.pms.mql.MQLQuery;
 import org.pentaho.pms.schema.SchemaMeta;
 import org.pentaho.ui.xul.XulDomContainer;
@@ -48,6 +52,7 @@ public class SwtMqlEditor {
   private XulDomContainer container;
   private MQLEditorService service;
   private MQLEditorServiceDeligate deligate;
+  private static Log logger = LogFactory.getLog(SwtMqlEditor.class);
 
   public SwtMqlEditor(MQLEditorService service, SchemaMeta meta) {
     try {
@@ -134,7 +139,15 @@ public class SwtMqlEditor {
   }
   
   public static void main(String[] args) {
-    SwtMqlEditor editor = new SwtMqlEditor(new MQLEditorServiceDebugImpl(), null);
+    
+
+    CWMStartup.loadCWMInstance("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/repository.properties", "/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/PentahoCWM.xml"); //$NON-NLS-1$ //$NON-NLS-2$
+    CWM cwm = CWMStartup.loadMetadata("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata_steelwheels.xmi", "/org/pentaho/commons/metadata/mqleditor/sampleMql"); //$NON-NLS-1$ //$NON-NLS-2$
+
+    CwmSchemaFactory factory = new CwmSchemaFactory();
+    SchemaMeta meta = factory.getSchemaMeta(cwm);
+
+    SwtMqlEditor editor = new SwtMqlEditor(new MQLEditorServiceDebugImpl(meta), null);
     editor.show();
   }
   

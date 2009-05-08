@@ -15,23 +15,16 @@ import org.pentaho.metadata.repository.IMetadataDomainRepository;
 import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.factory.CwmSchemaFactory;
 import org.pentaho.pms.mql.MQLQuery;
+import org.pentaho.pms.schema.SchemaMeta;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 public class MQLEditorServiceDebugImpl implements MQLEditorService{
 
   MQLEditorServiceDeligate deligate;
 
-  public MQLEditorServiceDebugImpl(){
+  public MQLEditorServiceDebugImpl(SchemaMeta meta){
 
-    CWMStartup.loadCWMInstance("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/repository.properties", "/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/PentahoCWM.xml"); //$NON-NLS-1$ //$NON-NLS-2$
-    CWM cwm = CWMStartup.loadMetadata("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata_steelwheels.xmi", "/org/pentaho/commons/metadata/mqleditor/sampleMql"); //$NON-NLS-1$ //$NON-NLS-2$
-
-    CwmSchemaFactory factory = new CwmSchemaFactory();
-    
-    List<CWM> cwms = new ArrayList<CWM>();
-    cwms.add(cwm);
-    
-    deligate = new MQLEditorServiceDeligate(cwms, factory);
+    deligate = new MQLEditorServiceDeligate(meta);
 
     // this is normally provided by PentahoSystem or the metadata editor.
     FileBasedMetadataDomainRepository repo = new FileBasedMetadataDomainRepository();
