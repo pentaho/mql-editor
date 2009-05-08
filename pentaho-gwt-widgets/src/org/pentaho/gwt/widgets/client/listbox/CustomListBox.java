@@ -163,6 +163,12 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   public void removeAll(){
     this.items.clear();
     this.selectedIndex = -1;
+
+    if(this.suppressLayout == false){
+      for(ChangeListener l : listeners){
+        l.onChange(this);
+      }
+    }
     if(suppressLayout == false){
       updateUI();
     }
@@ -541,7 +547,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
    * @param idx index of ListItem to select
    */
   public void setSelectedIndex(int idx){
-    if(idx < 0 || idx > items.size()){
+    if(idx > items.size()){
       throw new RuntimeException("Index out of bounds: "+ idx);
     }
     // De-Select the current
@@ -550,14 +556,15 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     }
 
 
-    selectedIndex = idx;
-    items.get(idx).onSelect();
-
-    if(visible == 1){
-      updateSelectedDropWidget();
-      scrollSelectedItemIntoView();
+    if(idx >= 0){
+      selectedIndex = idx;
+      items.get(idx).onSelect();
+      
+      if(visible == 1){
+        updateSelectedDropWidget();
+        scrollSelectedItemIntoView();
+      }
     }
-    
     if(this.suppressLayout == false){
       for(ChangeListener l : listeners){
         l.onChange(this);
