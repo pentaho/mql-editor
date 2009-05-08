@@ -178,6 +178,9 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
       
       runner.initialize();
       runner.start();
+
+      mainController.showDialog();
+      
       RootPanel.get().add(runner.getRootPanel());
       
     } catch (Exception e) {
