@@ -35,18 +35,18 @@
         <!--  dependency org="pentaho.kettle" name="kettle-core"   rev="${dependency.kettle-engine.revision}" /-->
         <dependency org="pentaho.kettle" name="kettle-engine" rev="${dependency.kettle-engine.revision}"/>
         <dependency org="pentaho.kettle" name="kettle-core" rev="${dependency.kettle-engine.revision}"/>
-        <dependency org="dom4j" name="dom4j" rev="1.6.1"/>
+        <dependency org="dom4j" name="dom4j" rev="1.6.1" conf="default->default"/>
         <dependency org="com.thoughtworks.xstream" name="xstream" rev="1.3.1"  conf="default->default"/>
         <dependency org="stax" name="stax" rev="1.2.0"  conf="default->default"/>
-        <dependency org="org.codehaus.jettison" name="jettison" rev="1.0.1"/>
+        <dependency org="org.codehaus.jettison" name="jettison" rev="1.0.1" conf="default->default"/>
         <dependency org="jaxen" name="jaxen" rev="1.1" transitive="false" conf="default->default"/>
 
 
         <!--  internal dependencies -->
-        <dependency org="pentaho" name="pentaho-connections" rev="${dependency.pentaho-connections.revision}"
+        <dependency org="pentaho" name="pentaho-connections" rev="${dependency.pentaho-connections.revision}" conf="default->default"
                     changing="true"/>
-        <dependency org="pentaho-library" name="libformula" rev="${dependency.pentaho-reporting-libformula.revision}"/>
-        <dependency org="pentaho" name="pentaho-publisher" rev="${dependency.pentaho-pentaho-publisher.revision}"/>
+        <dependency org="pentaho-library" name="libformula" rev="${dependency.pentaho-reporting-libformula.revision}" conf="default->default"/>
+        <dependency org="pentaho" name="pentaho-publisher" rev="${dependency.pentaho-pentaho-publisher.revision}" conf="default->default"/>
 
 
         <!--  Testing dependencies -->
