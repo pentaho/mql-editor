@@ -460,7 +460,8 @@ public class MQLEditorServiceDeligate {
     model.setName(uiQuery.getModel().getName());
     model.setId(uiQuery.getModel().getId());
     query.setModel(model);
-    
+
+    // must have columns selected
     List<Column> cols = new ArrayList<Column>();
     for(MqlColumn q : uiQuery.getColumns()){
       Column col = new Column();
@@ -473,34 +474,40 @@ public class MQLEditorServiceDeligate {
     query.setColumns(cols);
     
     List<Order> orders = new ArrayList<Order>();
-    for(MqlOrder order : uiQuery.getOrders()){
-      Order ord = new Order();
-      Column col = new Column();
-      col.setId(order.getColumn().getId());
-      col.setName(order.getColumn().getName());
-      col.setType(order.getColumn().getType());
-      ord.setColumn(col);
-      ord.setOrderType(order.getOrderType());
-      orders.add(ord);
+    // orders are optional
+    if (uiQuery.getOrders() != null) {
+      for(MqlOrder order : uiQuery.getOrders()){
+        Order ord = new Order();
+        Column col = new Column();
+        col.setId(order.getColumn().getId());
+        col.setName(order.getColumn().getName());
+        col.setType(order.getColumn().getType());
+        ord.setColumn(col);
+        ord.setOrderType(order.getOrderType());
+        orders.add(ord);
+      }
     }
     query.setOrders(orders);
     
     List<Condition> conditions = new ArrayList<Condition>();
-    for(MqlCondition condition: uiQuery.getConditions()){
-      Condition con = new Condition();
-      Column col = new Column();
-      col.setId(condition.getColumn().getId());
-      col.setName(condition.getColumn().getName());
-      col.setType(condition.getColumn().getType());
-      con.setColumn(col);
-
-      con.setCombinationType(condition.getCombinationType());
-      con.setParameterized(condition.isParameterized());
-      con.setDefaultValue(condition.getDefaultValue());
-      con.setOperator(condition.getOperator());
-      con.setValue(condition.getValue());
-      
-      conditions.add(con);
+    // conditions are optional
+    if (uiQuery.getConditions() != null) {
+      for(MqlCondition condition: uiQuery.getConditions()){
+        Condition con = new Condition();
+        Column col = new Column();
+        col.setId(condition.getColumn().getId());
+        col.setName(condition.getColumn().getName());
+        col.setType(condition.getColumn().getType());
+        con.setColumn(col);
+  
+        con.setCombinationType(condition.getCombinationType());
+        con.setParameterized(condition.isParameterized());
+        con.setDefaultValue(condition.getDefaultValue());
+        con.setOperator(condition.getOperator());
+        con.setValue(condition.getValue());
+        
+        conditions.add(con);
+      }
     }
     query.setConditions(conditions);
     
