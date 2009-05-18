@@ -29,6 +29,7 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
     this.name = col.getName();
     this.aggTypes = col.getAggTypes();
     this.defaultAggType = col.getDefaultAggType();
+    this.selectedAggType = col.getSelectedAggType();
   }
   public String getId() {
     return id;
