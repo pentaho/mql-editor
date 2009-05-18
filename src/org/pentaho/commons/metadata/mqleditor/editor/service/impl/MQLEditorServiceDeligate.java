@@ -200,6 +200,8 @@ public class MQLEditorServiceDeligate {
     }
     
     col.setDefaultAggType(defaultAggType);
+    col.setSelectedAggType(defaultAggType);
+    
     return col;
   }
   

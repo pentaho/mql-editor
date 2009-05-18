@@ -8,6 +8,7 @@ import org.pentaho.commons.metadata.mqleditor.*;
 import org.pentaho.commons.metadata.mqleditor.editor.service.CWMStartup;
 import org.pentaho.di.core.database.Database;
 import org.pentaho.di.core.database.DatabaseMeta;
+import org.pentaho.metadata.repository.FileBasedMetadataDomainRepository;
 import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.factory.CwmSchemaFactory;
 import org.pentaho.pms.mql.MQLQuery;
@@ -31,6 +32,14 @@ public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQ
     CwmSchemaFactory factory = new CwmSchemaFactory();
     meta = factory.getSchemaMeta(cwm);
     deligate = new org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDeligate(cwms, factory);
+
+    // this is normally provided by PentahoSystem or the metadata editor.
+    // Un-comment out the next 3 lines to test thin models
+    
+//    FileBasedMetadataDomainRepository repo = new FileBasedMetadataDomainRepository();
+//    repo.setDomainFolder("src/org/pentaho/commons/metadata/mqleditor/sampleMql/thinmodels");
+//    deligate.initializeThinMetadataDomains(repo);
+
   }
 
   public MqlDomain getDomainByName(String name) {
