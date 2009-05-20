@@ -29,6 +29,9 @@ public class ModelUtil {
     Model model = new Model();
     model.setName(uiQuery.getModel().getName());
     model.setId(uiQuery.getModel().getId());
+    
+    query.setMqlStr(uiQuery.getMqlStr());
+    
     query.setModel(model);
 
     // must have columns selected
@@ -38,6 +41,9 @@ public class ModelUtil {
       col.setId(q.getId());
       col.setName(q.getName());
       col.setType(q.getType());
+      col.setAggTypes(q.getAggTypes());
+      col.setDefaultAggType(q.getDefaultAggType());
+      col.setSelectedAggType(q.getSelectedAggType());
       
       cols.add(col);
     }
@@ -52,6 +58,10 @@ public class ModelUtil {
         col.setId(order.getColumn().getId());
         col.setName(order.getColumn().getName());
         col.setType(order.getColumn().getType());
+        col.setAggTypes(order.getColumn().getAggTypes());
+        col.setDefaultAggType(order.getColumn().getDefaultAggType());
+        col.setSelectedAggType(order.getColumn().getSelectedAggType());
+        
         ord.setColumn(col);
         ord.setOrderType(order.getOrderType());
         orders.add(ord);
@@ -68,6 +78,9 @@ public class ModelUtil {
         col.setId(condition.getColumn().getId());
         col.setName(condition.getColumn().getName());
         col.setType(condition.getColumn().getType());
+        col.setAggTypes(condition.getColumn().getAggTypes());
+        col.setDefaultAggType(condition.getColumn().getDefaultAggType());
+        col.setSelectedAggType(condition.getColumn().getSelectedAggType());
         con.setColumn(col);
   
         con.setCombinationType(condition.getCombinationType());
