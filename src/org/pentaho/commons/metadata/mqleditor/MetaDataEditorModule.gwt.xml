@@ -23,7 +23,6 @@
         <exclude name="**/Swt*"/>
         <exclude name="**/MQLEditorServiceDebugImpl*"/>
         <exclude name="**/MQLEditorDebugGwtServlet*"/>
-        <exclude name="**/ModelUtil*"/>
         
     </source>
     <public path="editor/public"/>
