@@ -18,6 +18,10 @@ public class Condition implements MqlCondition<Column> {
   private String defaultValue;
   private AggType selectedAggType;
 
+  public Condition(){
+    
+  }
+  
   public Column getColumn() {
     return this.column;    
   }

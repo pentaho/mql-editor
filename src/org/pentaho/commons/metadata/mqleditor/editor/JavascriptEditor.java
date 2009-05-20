@@ -2,6 +2,9 @@ package org.pentaho.commons.metadata.mqleditor.editor;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.Window;
+
+import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -74,7 +77,22 @@ public class JavascriptEditor implements EntryPoint{
       }
     };
     editor.addMqlDialogListener(listener);
-    editor.show();
+    this.service.deserializeModel("{\"MQLQuery\":{\"cols\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"BC_CUSTOMER_W_TER_CUSTOMERNUMBER\",\"name\":\"Customernumber\",\"type\":\"FLOAT\",\"aggTypes\":\"\"},{\"id\":\"BC_ORDERDETAILS_TOTAL\",\"name\":\"Total\",\"type\":\"FLOAT\",\"aggTypes\":\"\"},{\"id\":\"BC_ORDERS_STATUS\",\"name\":\"Status\",\"type\":\"TEXT\",\"aggTypes\":\"\"}]},\"conditions\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Condition\":[{\"@combinationType\":\"AND\",\"@defaultValue\":\"\",\"@operator\":\"=\",\"@selectedAggType\":\"\",\"@value\":\"131\",\"column\":{\"id\":\"BC_CUSTOMER_W_TER_CUSTOMERNUMBER\",\"name\":\"Customernumber\",\"type\":\"FLOAT\",\"aggTypes\":\"\"}},{\"@combinationType\":\"OR\",\"@defaultValue\":\"\",\"@operator\":\"=\",\"@selectedAggType\":\"\",\"@value\":\"145\",\"column\":{\"id\":\"BC_CUSTOMER_W_TER_CUSTOMERNUMBER\",\"name\":\"Customernumber\",\"type\":\"FLOAT\",\"aggTypes\":\"\"}}]}],\"orders\":[\"\"]},\"domain\":{\"@id\":\"default\",\"@name\":\"\\/org\\/pentaho\\/commons\\/metadata\\/mqleditor\\/sampleMql\"},\"model\":{\"@id\":\"BV_ORDERS\",\"@name\":\"Orders\"}}"
+    
+       ,new XulServiceCallback<MqlQuery>(){
+
+          public void error(String arg0, Throwable arg1) {
+            Window.alert("error deserializing model");
+            editor.show();
+          }
+
+          public void success(MqlQuery savedQuery) {
+
+            editor.setSavedQuery((Query) savedQuery);
+            editor.show();
+          }
+      
+    });
   }
 
   private native void notifyCallbackSuccess(JavaScriptObject callback, String mqlJSON, String query)/*-{

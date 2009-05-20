@@ -8,13 +8,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.pentaho.commons.metadata.mqleditor.MqlColumn;
+import org.pentaho.commons.metadata.mqleditor.MqlCondition;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlModel;
 import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
+import org.pentaho.commons.metadata.mqleditor.beans.Domain;
+import org.pentaho.commons.metadata.mqleditor.beans.Model;
+import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
+import org.pentaho.commons.metadata.mqleditor.utils.ModelUtil;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
 /**
@@ -348,9 +353,11 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     }
     query.setDefaultParameterMap(params);
 
-    return query;
+    return ModelUtil.convertUIModelToBean(query);
   }
+  
 
+  
   public String getMqlStr() {
     return queryStr;
   }

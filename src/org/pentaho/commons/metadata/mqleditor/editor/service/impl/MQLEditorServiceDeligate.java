@@ -28,6 +28,7 @@ import org.pentaho.commons.metadata.mqleditor.beans.Model;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
+import org.pentaho.commons.metadata.mqleditor.utils.ModelUtil;
 import org.pentaho.metadata.repository.IMetadataDomainRepository;
 import org.pentaho.metadata.util.ThinModelConverter;
 import org.pentaho.pms.core.CWM;
@@ -451,67 +452,7 @@ public class MQLEditorServiceDeligate {
 
   public String serializeModel(MqlQuery uiQuery) {
     
-    Query query = new Query();
-    
-    Domain domain = new Domain();
-    domain.setName(uiQuery.getDomain().getName());
-    domain.setId(uiQuery.getDomain().getId());
-    query.setDomain(domain);
-    
-    Model model = new Model();
-    model.setName(uiQuery.getModel().getName());
-    model.setId(uiQuery.getModel().getId());
-    query.setModel(model);
-
-    // must have columns selected
-    List<Column> cols = new ArrayList<Column>();
-    for(MqlColumn q : uiQuery.getColumns()){
-      Column col = new Column();
-      col.setId(q.getId());
-      col.setName(q.getName());
-      col.setType(q.getType());
-      
-      cols.add(col);
-    }
-    query.setColumns(cols);
-    
-    List<Order> orders = new ArrayList<Order>();
-    // orders are optional
-    if (uiQuery.getOrders() != null) {
-      for(MqlOrder order : uiQuery.getOrders()){
-        Order ord = new Order();
-        Column col = new Column();
-        col.setId(order.getColumn().getId());
-        col.setName(order.getColumn().getName());
-        col.setType(order.getColumn().getType());
-        ord.setColumn(col);
-        ord.setOrderType(order.getOrderType());
-        orders.add(ord);
-      }
-    }
-    query.setOrders(orders);
-    
-    List<Condition> conditions = new ArrayList<Condition>();
-    // conditions are optional
-    if (uiQuery.getConditions() != null) {
-      for(MqlCondition condition: uiQuery.getConditions()){
-        Condition con = new Condition();
-        Column col = new Column();
-        col.setId(condition.getColumn().getId());
-        col.setName(condition.getColumn().getName());
-        col.setType(condition.getColumn().getType());
-        con.setColumn(col);
-  
-        con.setCombinationType(condition.getCombinationType());
-        con.setParameterized(condition.isParameterized());
-        con.setDefaultValue(condition.getDefaultValue());
-        con.setOperator(condition.getOperator());
-        con.setValue(condition.getValue());
-        
-        conditions.add(con);
-      }
-    }
-    query.setConditions(conditions);
+    Query query = ModelUtil.convertUIModelToBean(uiQuery);
     
     return ModelSerializer.serialize(query);
   }

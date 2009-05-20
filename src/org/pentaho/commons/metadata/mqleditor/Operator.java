@@ -50,7 +50,23 @@ public enum Operator implements Serializable{
       return Operator.LESS_THAN;
     } else if(val.equals("<=")){
       return Operator.LESS_OR_EQUAL;
+    } else if(val.equals("exactly matches")){
+      return Operator.EXACTLY_MATCHES;
+    } else if(val.equals("contains")){
+      return Operator.CONTAINS;
+    } else if(val.equals("does not contain")){
+      return Operator.DOES_NOT_CONTAIN;
+    } else if(val.equals("begins with")){
+      return Operator.BEGINS_WITH;
+    } else if(val.equals("ends with")){
+      return Operator.ENDS_WITH;
+    } else if(val.equals("is null")){
+      return Operator.IS_NULL;
+    }  else if(val.equals("is not null")){
+      return Operator.IS_NOT_NULL;
     } 
+    
+    
     return Operator.EQUAL;
   }
   
