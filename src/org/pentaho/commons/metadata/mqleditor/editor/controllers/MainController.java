@@ -53,9 +53,7 @@ public class MainController extends AbstractXulEventHandler {
 
   public void setSavedQuery(Query savedQuery) {
     this.savedQuery = savedQuery;  
-    if (savedQuery != null) {
-      workspace.wrap(savedQuery);
-    } else {
+    if (savedQuery == null) {
       this.clearWorkspace();
     }
   }
