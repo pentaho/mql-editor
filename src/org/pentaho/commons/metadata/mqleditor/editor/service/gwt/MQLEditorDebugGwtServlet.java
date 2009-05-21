@@ -3,6 +3,7 @@ package org.pentaho.commons.metadata.mqleditor.editor.service.gwt;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.pentaho.commons.metadata.mqleditor.*;
 import org.pentaho.commons.metadata.mqleditor.editor.service.CWMStartup;
@@ -69,7 +70,15 @@ public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQ
       DatabaseMeta databaseMeta = mqlQuery.getSelections().get(0).getBusinessColumn().getPhysicalColumn().getTable()
           .getDatabaseMeta();
       Database database = new Database(databaseMeta);
-      String[][] results = executeSQL(database, mqlQuery.getQuery().getQuery(), limit);
+      
+      String sqlQuery = mqlQuery.getQuery().getQuery();
+      
+      Map<String, String> params = query.getDefaultParameterMap();
+      for(Map.Entry<String, String> entry : params.entrySet()){
+        sqlQuery = sqlQuery.replaceAll("\\{"+entry.getKey()+"\\}", entry.getValue());
+      }
+      
+      String[][] results = executeSQL(database, sqlQuery, limit);
       return results;
     } catch(Exception e){
       // TODO: add logging

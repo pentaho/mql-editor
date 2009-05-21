@@ -3,6 +3,7 @@ package org.pentaho.commons.metadata.mqleditor.editor.service.impl;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.pentaho.commons.metadata.mqleditor.*;
@@ -59,7 +60,15 @@ public class MQLEditorServiceDebugImpl implements MQLEditorService{
         DatabaseMeta databaseMeta = mqlQuery.getSelections().get(0).getBusinessColumn().getPhysicalColumn().getTable()
             .getDatabaseMeta();
         Database database = new Database(databaseMeta);
-        String[][] results = executeSQL(database, mqlQuery.getQuery().getQuery(), limit);
+        
+        String sqlQuery = mqlQuery.getQuery().getQuery();
+        
+        Map<String, String> params = query.getDefaultParameterMap();
+        for(Map.Entry<String, String> entry : params.entrySet()){
+          sqlQuery = sqlQuery.replaceAll("\\{"+entry.getKey()+"\\}", entry.getValue());
+        }
+        
+        String[][] results = executeSQL(database, sqlQuery, limit);
         callback.success(results);
         return;
       } catch(Exception e){

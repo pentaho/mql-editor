@@ -284,7 +284,11 @@ public class MQLEditorServiceDeligate {
     for (Object col : list.getList()) {
       org.pentaho.pms.schema.BusinessColumn bCol = (org.pentaho.pms.schema.BusinessColumn) col;
       if (bCol.getName(locale).equals(thinCol.getName())) {
-        bCol.setAggregationType(getAggregationSettings(thinCol.getSelectedAggType()));
+        AggType aggType = thinCol.getSelectedAggType();
+        if(aggType == null && thinCol.getDefaultAggType() != null){
+          aggType = thinCol.getDefaultAggType();
+        }
+        bCol.setAggregationType(getAggregationSettings(aggType));
         return (org.pentaho.pms.schema.BusinessColumn) bCol;
       }
     }
