@@ -315,8 +315,9 @@ public class DatasourceController extends AbstractXulEventHandler {
   public void saveModel() {
     List<ModelDataRow> dataRows = datasourceModel.getDataRows();
     if (dataRows != null && dataRows.size() > 0) {
-      // Get the domain from the business data
+      // User has decided to choose data modeling process and have customized the mode. So we will save the customized model
       try {
+      // Get the domain from the business data
       BusinessData businessData = datasourceModel.getBusinessData();
       Domain domain = businessData.getDomain();
       List<LogicalModel> logicalModels = domain.getLogicalModels();
@@ -328,8 +329,7 @@ public class DatasourceController extends AbstractXulEventHandler {
           for (LogicalColumn logicalColumn : logicalColumns) {
             ModelDataRow row = dataRows.get(i++);
             logicalColumn.setDataType(row.getSelectedDataType());
-            logicalColumn.setName(new LocalizedString(row.getColumnName()));
-            //logicalColumn.setName(row.getColumnName());
+            logicalColumn.setName(new LocalizedString(domain.getLocales().get(0).getCode(), row.getColumnName()));
           }
         }
       }
@@ -339,38 +339,24 @@ public class DatasourceController extends AbstractXulEventHandler {
             + xe.getLocalizedMessage());
       }
     } else {
+      // User has decided to skip the data modeling process. So we will generate the default model and save it
       if (validateInputs()) {
         try {
 
-          service.generateModel(datasourceModel.getDatasourceName(), datasourceModel.getSelectedConnection(),
-              datasourceModel.getQuery(), datasourceModel.getPreviewLimit(), new XulServiceCallback<BusinessData>() {
+          service.saveModel(datasourceModel.getDatasourceName(), datasourceModel.getSelectedConnection(),
+              datasourceModel.getQuery(), false, new XulServiceCallback<Boolean>() {
 
                 public void error(String message, Throwable error) {
                   openErrorDialog("Error occurred", "Unable to save model. " + datasourceModel.getDatasourceName()
                       + error.getLocalizedMessage());
                 }
 
-                public void success(BusinessData businessData) {
-                  try {
-                    // Get the domain from the business data
-                    Domain domain = businessData.getDomain();
-                    List<LogicalModel> logicalModels = domain.getLogicalModels();
-                    for (LogicalModel logicalModel : logicalModels) {
-                      List<Category> categories = logicalModel.getCategories();
-                      for (Category category : categories) {
-                        List<LogicalColumn> logicalColumns = category.getLogicalColumns();
-                        for (LogicalColumn logicalColumn : logicalColumns) {
-                          IPhysicalColumn physicalColumn = logicalColumn.getPhysicalColumn();
-                          logicalColumn.setDataType(physicalColumn.getDataType());
-                          //logicalColumn.setName(new LocalizedString(physicalColumn.getName());
-                          logicalColumn.setName(physicalColumn.getName());
-                        }
-                      }
-                    }
-                    saveModel(businessData, false);
-                  } catch (Exception xe) {
-                    openErrorDialog("Error occurred", "Unable to save model. " + datasourceModel.getDatasourceName()
-                        + xe.getLocalizedMessage());
+                public void success(Boolean value) {
+                  if(value) {
+                    openSuccesDialog("Success", "Successfully saved model: " + datasourceModel.getDatasourceName());
+                    datasourceDialog.hide();
+                  } else {
+                    openErrorDialog("Error occurred", "Unable to save model. ");
                   }
                 }
               });
@@ -396,6 +382,9 @@ public class DatasourceController extends AbstractXulEventHandler {
         public void success(Boolean value) {
           openSuccesDialog("Success", "Successfully saved model: " + datasourceModel.getDatasourceName());
           datasourceDialog.hide();
+          for (DatasourceDialogListener listener : listeners) {
+            listener.onDialogFinish(datasourceModel.getDatasource());
+          }
         }
       });
     } catch (DatasourceServiceException e) {

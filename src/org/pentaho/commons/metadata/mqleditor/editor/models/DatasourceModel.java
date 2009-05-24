@@ -11,6 +11,7 @@ import org.pentaho.metadata.model.Domain;
 import org.pentaho.metadata.model.IPhysicalColumn;
 import org.pentaho.metadata.model.LogicalColumn;
 import org.pentaho.metadata.model.LogicalModel;
+import org.pentaho.commons.metadata.mqleditor.beans.Datasource;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 import org.pentaho.commons.metadata.mqleditor.beans.Connection;
 
@@ -192,41 +193,56 @@ public class DatasourceModel extends XulEventSourceAdapter implements IDatasourc
     setModelData(object);
   }
   
-    public void setModelData(BusinessData businessData) {
+  public IDatasource getDatasource() {
+    IDatasource datasource = new Datasource();
+    datasource.setBusinessData(getBusinessData());
+    datasource.setConnections(getConnections());
+    datasource.setDatasourceName(getDatasourceName());
+    datasource.setDatasourceType(getDatasourceType());
+    datasource.setQuery(getQuery());
+    datasource.setSelectedConnection(getSelectedConnection());
+    return datasource;
+  }
+  
+   public void setModelData(BusinessData businessData) {
     if(businessData != null) {
       Domain domain = businessData.getDomain();
       List<List<String>> data = businessData.getData();
-      List<IPhysicalColumn> physicalColumns = new ArrayList<IPhysicalColumn>();
       List<LogicalModel> logicalModels = domain.getLogicalModels();
       int columnNumber=0;
-      List<String> firstRowData = data.get(0);
       for (LogicalModel logicalModel : logicalModels) {
         List<Category> categories = logicalModel.getCategories();
         for (Category category : categories) {
           List<LogicalColumn> logicalColumns = category.getLogicalColumns();
           for (LogicalColumn logicalColumn : logicalColumns) {
-            addModelDataRow(logicalColumn.getPhysicalColumn(), getColumnData(columnNumber++, data));
+            addModelDataRow(logicalColumn, getColumnData(columnNumber++, data), domain.getLocales().get(0).getCode());
           }
         }
       }
       firePropertyChange("dataRows", null, dataRows);
     } else {
-      this.dataRows.removeAll(dataRows);
-      List<ModelDataRow> previousValue = this.dataRows;
-      firePropertyChange("dataRows", previousValue, null);
+      if(this.dataRows != null) {
+        this.dataRows.removeAll(dataRows);
+        List<ModelDataRow> previousValue = this.dataRows;
+        firePropertyChange("dataRows", previousValue, null);
+      }
     }
   }
 
-  public void addModelDataRow(IPhysicalColumn column, List<String> columnData) {
-    this.dataRows.add(new ModelDataRow(column, columnData));
+  public void addModelDataRow(LogicalColumn column, List<String> columnData, String locale) {
+    if(dataRows == null) {
+      dataRows = new ArrayList<ModelDataRow>();
+    } 
+    this.dataRows.add(new ModelDataRow(column, columnData, locale));
   }
+
 
   public List<ModelDataRow> getDataRows() {
     return dataRows;
   }
 
 
-  public void setDataRows(List<ModelDataRow> modelData) {
+  public void setDataRows(List<ModelDataRow> dataRows) {
     this.dataRows = dataRows;
     firePropertyChange("dataRows", null, dataRows);
   }

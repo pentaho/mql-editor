@@ -22,6 +22,7 @@ public interface DatasourceGwtService extends RemoteService{
   public SerializedResultSet doPreview(IConnection connection, String query, String previewLimit) throws DatasourceServiceException;
   public SerializedResultSet doPreview(IDatasource datasource) throws DatasourceServiceException;
   public BusinessData generateModel(String modelName, IConnection connection, String query, String previewLimit) throws DatasourceServiceException;
+  public Boolean saveModel(String modelName, IConnection connection, String query, Boolean overwrite) throws DatasourceServiceException;
   public Boolean saveModel(BusinessData businessData, Boolean overwrite)throws DatasourceServiceException;
   public BogoPojo gwtWorkaround(BogoPojo pojo);
   }

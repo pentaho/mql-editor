@@ -91,7 +91,7 @@
           <treecols id="modelDataTableCols">
 	   			<treecol label="${datasourceDialog.displayName}" flex="1" pen:binding="columnName" editable="true" type="text"/>
 	   			<treecol label="${datasourceDialog.type}" flex="1" type="combobox" editable="true" pen:combobinding="bindingDataTypes" pen:binding="selectedDataType"/>
-	   			<treecol label="${datasourceDialog.format}" flex="1" type="combobox" editable="true" pen:combobinding="bindingDataFormatTypes" pen:binding="selectedDataFormatType"/>
+	   			<!--<treecol label="${datasourceDialog.format}" flex="1" type="combobox" editable="true" pen:combobinding="bindingDataFormatTypes" pen:binding="selectedDataFormatType"/>-->
 	   			<treecol label="${datasourceDialog.sample}" flex="1" pen:binding="sampleData"/>
           </treecols>
           <treechildren />

@@ -42,7 +42,7 @@ public class SampleAppGwtServlet extends RemoteServiceServlet implements SampleA
           
         }
         SQLModelGenerator generator = new SQLModelGenerator();
-        Domain domain = generator.generate("newdatasource", connection, query);
+        Domain domain = generator.generate("newdatasource", "SampleData", connection, query);
         return domain;
       } catch(Exception mmse) {
         throw new DatasourceServiceException(mmse.getLocalizedMessage(), mmse);
@@ -101,8 +101,8 @@ public class SampleAppGwtServlet extends RemoteServiceServlet implements SampleA
     SqlPhysicalModel model = new SqlPhysicalModel();
     String modelID = Settings.getBusinessModelIDPrefix()+ modelName;
     model.setId(modelID);
-    model.setName(new LocalizedString(modelName));
-    model.setDescription(new LocalizedString("A Description of the Model"));
+  //  model.setName(new LocalizedString(modelName));
+   // model.setDescription(new LocalizedString("A Description of the Model"));
     model.setDatasource(modelName);
     SqlPhysicalTable table = new SqlPhysicalTable(model);
     model.getPhysicalTables().add(table);
@@ -121,8 +121,8 @@ public class SampleAppGwtServlet extends RemoteServiceServlet implements SampleA
     SqlPhysicalModel model = new SqlPhysicalModel();
     String modelID = Settings.getBusinessModelIDPrefix()+ modelName;
     model.setId(modelID);
-    model.setName(new LocalizedString(modelName));
-    model.setDescription(new LocalizedString("A Description of the Model"));
+  //  model.setName(new LocalizedString(modelName));
+  //  model.setDescription(new LocalizedString("A Description of the Model"));
     model.setDatasource(modelName);
 
     SqlPhysicalTable table = new SqlPhysicalTable(model);

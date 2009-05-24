@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import org.pentaho.commons.metadata.mqleditor.DataFormatType;
 import org.pentaho.metadata.model.IPhysicalColumn;
+import org.pentaho.metadata.model.LogicalColumn;
 import org.pentaho.metadata.model.concept.types.DataType;
 import org.pentaho.metadata.model.concept.types.LocalizedString;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
@@ -18,14 +19,15 @@ public class ModelDataRow extends XulEventSourceAdapter{
   private List<DataType> dataTypes = new ArrayList<DataType>();
   private List<String> sampleDataList;
   private DataType selectedDataType;
-  private List<DataFormatType> dataFormatTypes = new ArrayList<DataFormatType>();
-  private DataFormatType selectedDataFormatType;
+  private String locale;
+  //private List<DataFormatType> dataFormatTypes = new ArrayList<DataFormatType>();
+  //private DataFormatType selectedDataFormatType;
   
-  
-  public ModelDataRow(IPhysicalColumn col, List<String> columnData) {
+  // Commenting out data format for now
+ public ModelDataRow(LogicalColumn col, List<String> columnData, String locale) {
     this.selectedDataType = col.getDataType();
-    this.selectedDataFormatType = DataFormatType.CURRENCY;
-    this.columnName = col.getName().getString(LocalizedString.DEFAULT_LOCALE);
+    //this.selectedDataFormatType = DataFormatType.CURRENCY;
+    this.columnName = col.getName().getString(locale);
     if(columnData.size() > 0) {
       this.sampleData = columnData.get(0);
       this.sampleDataList = columnData;
@@ -97,36 +99,36 @@ public class ModelDataRow extends XulEventSourceAdapter{
   }
 
   
-  public List<DataFormatType> getDataFormatTypes() {
-    return dataFormatTypes;
-  }
+  //public List<DataFormatType> getDataFormatTypes() {
+  //  return dataFormatTypes;
+  //}
 
 
-  public void setDataFormatTypes(List<DataFormatType> dataFormatTypes) {
-    this.dataFormatTypes = dataFormatTypes;
-  }
+  //public void setDataFormatTypes(List<DataFormatType> dataFormatTypes) {
+  //  this.dataFormatTypes = dataFormatTypes;
+  //}
 
 
-  public DataFormatType getSelectedDataFormatType() {
-    return selectedDataFormatType;
-  }
+  //public DataFormatType getSelectedDataFormatType() {
+   // return selectedDataFormatType;
+  //}
 
 
-  public void setSelectedDataFormatType(DataFormatType selectedDataFormatType) {
-    this.selectedDataFormatType = selectedDataFormatType;
-  }
+  //public void setSelectedDataFormatType(DataFormatType selectedDataFormatType) {
+  //  this.selectedDataFormatType = selectedDataFormatType;
+ // }
   
-  public void setSelectedDataFormatType(Object o){
-    setSelectedDataFormatType((DataFormatType)  o);
-  }
+  //public void setSelectedDataFormatType(Object o){
+  //  setSelectedDataFormatType((DataFormatType)  o);
+  //}
   
-  public Vector getBindingDataFormatTypes(){
-    Vector v = new Vector();
+  //public Vector getBindingDataFormatTypes(){
+  //  Vector v = new Vector();
     //for(DataFormatType t : this.dataFormatTypes){
-    for(DataFormatType t : DataFormatType.values()){
-      v.add(t);
-    }
-    return v;
-  }
+   // for(DataFormatType t : DataFormatType.values()){
+   //   v.add(t);
+   // }
+   // return v;
+ // }
 
 }

@@ -21,6 +21,7 @@ public interface DatasourceGwtServiceAsync {
   void doPreview(IConnection connection, String query, String previewLimit, AsyncCallback<SerializedResultSet> callback);
   void doPreview(IDatasource datasource, AsyncCallback<SerializedResultSet> callback);
   void generateModel(String modelName, IConnection connection, String query, String previewLimit, AsyncCallback<BusinessData> callback) throws DatasourceServiceException;
+  void saveModel(String modelName, IConnection connection, String query, Boolean overwrite, AsyncCallback<Boolean> callback) throws DatasourceServiceException;
   void saveModel(BusinessData businessData, Boolean overwrite, AsyncCallback<Boolean> callback) throws DatasourceServiceException ;
   void gwtWorkaround (BogoPojo pojo, AsyncCallback<BogoPojo> callback);
 }

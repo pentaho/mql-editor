@@ -6,7 +6,6 @@ import java.util.List;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.metadata.model.Category;
 import org.pentaho.metadata.model.Domain;
-import org.pentaho.metadata.model.IPhysicalColumn;
 import org.pentaho.metadata.model.LogicalColumn;
 import org.pentaho.metadata.model.LogicalModel;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
@@ -21,7 +20,6 @@ public class ModelData extends XulEventSourceAdapter{
   public ModelData(BusinessData businessData) {
     Domain domain = businessData.getDomain();
     List<List<String>> data = businessData.getData();
-    List<IPhysicalColumn> physicalColumns = new ArrayList<IPhysicalColumn>();
     List<LogicalModel> logicalModels = domain.getLogicalModels();
     int i=0;
     for (LogicalModel logicalModel : logicalModels) {
@@ -29,14 +27,14 @@ public class ModelData extends XulEventSourceAdapter{
       for (Category category : categories) {
         List<LogicalColumn> logicalColumns = category.getLogicalColumns();
         for (LogicalColumn logicalColumn : logicalColumns) {
-          addModelDataRow(logicalColumn.getPhysicalColumn(), data.get(i++));
+          addModelDataRow(logicalColumn, data.get(i++));
         }
       }
     }
   }
 
-  public void addModelDataRow(IPhysicalColumn column, List<String> data) {
-    this.dataRows.add(new ModelDataRow(column, data));
+  public void addModelDataRow(LogicalColumn column, List<String> data) {
+  /*  this.dataRows.add(new ModelDataRow(column, data));*/
     firePropertyChange("dataRows", null, dataRows);
   }
 
@@ -45,7 +43,7 @@ public class ModelData extends XulEventSourceAdapter{
   }
 
 
-  public void setModelData(List<ModelDataRow> modelData) {
+  public void setModelData(List<ModelDataRow> dataRows) {
     this.dataRows = dataRows;
     firePropertyChange("dataRows", null, dataRows);
   }
