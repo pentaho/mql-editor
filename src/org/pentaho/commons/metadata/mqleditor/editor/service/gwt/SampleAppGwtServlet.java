@@ -15,7 +15,6 @@ import org.pentaho.di.core.Props;
 import org.pentaho.metadata.model.Domain;
 import org.pentaho.metadata.model.SqlPhysicalModel;
 import org.pentaho.metadata.model.SqlPhysicalTable;
-import org.pentaho.metadata.model.concept.types.LocalizedString;
 import org.pentaho.metadata.model.concept.types.TargetTableType;
 import org.pentaho.metadata.util.SQLModelGenerator;
 import org.pentaho.pms.util.Settings;

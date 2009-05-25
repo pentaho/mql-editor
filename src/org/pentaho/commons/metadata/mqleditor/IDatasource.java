@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 
-public interface IDatasource {
-  public enum DatasourceType {SQL, OLAP, CSV, XML}; 
-  public enum EditType {ADD, EDIT};
+public interface IDatasource { 
   public String getDatasourceName();
   public void setDatasourceName(String name);
   public DatasourceType getDatasourceType();
@@ -21,4 +19,6 @@ public interface IDatasource {
   public void setPreviewLimit(String limit);
   public BusinessData getBusinessData();
   public void setBusinessData(BusinessData object);
+  public void setSelectedFile(String selectedFile);
+  public void setHeadersPresent(boolean headersPresent);
 }

@@ -19,7 +19,9 @@
         <exclude name="**/DatasourceDebugGwtServlet*"/>
         <exclude name="**/SwingDatasourceEditor*"/>
         <exclude name="**/ConnectionServiceDelegate*"/>
-        <exclude name="**/DatasourceServiceDelegate*"/>        
+        <exclude name="**/DatasourceServiceDelegate*"/>
+        <exclude name="**/ConnectionServiceInMemoryDelegate*"/>
+        <exclude name="**/DatasourceServiceInMemoryDelegate*"/>        
         <exclude name="**/ConnectionGwtServlet*"/>
         <exclude name="**/DatasourceGwtServlet*"/>
         <exclude name="**/ConnectionServiceDebugImpl*"/>
@@ -30,9 +32,14 @@
         <exclude name="**/BusinessModelGenerator*"/>
         <exclude name="**/ExampleApp*"/>
         <exclude name="**/CsvMqlGenerator*"/>
+        <exclude name="**/UploadFileServlet*"/>
+        <exclude name="**/UploadFileDebugServlet*"/>        
+        <exclude name="**/IDataAccessPermissionHandler*"/>
+        <exclude name="**/SimpleDataAccessPermissionHandler*"/>        
         
     </source>
     <public path="editor/public"/>
   <servlet path="/DatasourceService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.DatasourceGwtServlet" />
   <servlet path="/ConnectionService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.ConnectionGwtServlet" />
+  <servlet path="/UploadService" class="org.pentaho.commons.metadata.mqleditor.editor.service.impl.UploadFileServlet" />
  </module>

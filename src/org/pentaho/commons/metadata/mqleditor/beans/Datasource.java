@@ -3,11 +3,17 @@ package org.pentaho.commons.metadata.mqleditor.beans;
 import java.io.Serializable;
 import java.util.List;
 
+import org.pentaho.commons.metadata.mqleditor.DatasourceType;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.IDatasource;
 
 public class Datasource implements IDatasource, Serializable{
-
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+  private String selectedFile;
+  private boolean headersPresent;
   private String datasourceName;
   private String query;
   private List<IConnection> connections;
@@ -74,10 +80,6 @@ public class Datasource implements IDatasource, Serializable{
   public DatasourceType getDatasourceType() {
     return type;
   }
-  public void setDatasourceType(DatasourceType type) {
-    this.type = type; 
-  }
-
   public IConnection getSelectedConnection() {
     return selectedConnection;
   }
@@ -93,5 +95,34 @@ public class Datasource implements IDatasource, Serializable{
   public void setBusinessData(BusinessData businessData) {
     this.businessData = businessData;
   }
+
+  public void setDatasourceType(DatasourceType type) {
+    this.type = type; 
+  }
+
+  public void setHeadersPresent(boolean headersPresent) {
+    this.headersPresent = headersPresent;
+  }
+
+  public void setSelectedFile(String selectedFile) {
+    this.selectedFile = selectedFile; 
+  }
+
+  public String getSelectedFile() {
+    return selectedFile;
+  }
+
+  public boolean isHeadersPresent() {
+    return headersPresent;
+  }
+
+  public DatasourceType getType() {
+    return type;
+  }
+
+  public void setType(DatasourceType type) {
+    this.type = type;
+  }
+
 
 }

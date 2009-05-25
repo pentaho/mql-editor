@@ -6,7 +6,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.commons.metadata.mqleditor.IConnection;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.ConnectionController;
+import org.pentaho.commons.metadata.mqleditor.editor.controllers.CsvDatasourceController;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.DatasourceController;
+import org.pentaho.commons.metadata.mqleditor.editor.controllers.RelationalDatasourceController;
 import org.pentaho.commons.metadata.mqleditor.editor.models.ConnectionModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.DatasourceModel;
 import org.pentaho.commons.metadata.mqleditor.editor.service.ConnectionService;
@@ -41,7 +43,15 @@ public class SwingDatasourceEditor {
       final DatasourceController datasourceController = new DatasourceController();
       datasourceController.setBindingFactory(bf);
       container.addEventHandler(datasourceController);
-      
+
+      final CsvDatasourceController csvDatasourceController = new CsvDatasourceController();
+      csvDatasourceController.setBindingFactory(bf);
+      container.addEventHandler(csvDatasourceController);
+
+      final RelationalDatasourceController relationalDatasourceController = new RelationalDatasourceController();
+      relationalDatasourceController.setBindingFactory(bf);
+      container.addEventHandler(relationalDatasourceController);
+
       final ConnectionController connectionController = new ConnectionController();
       connectionController.setBindingFactory(bf);
       container.addEventHandler(connectionController);
@@ -61,7 +71,7 @@ public class SwingDatasourceEditor {
         public void success(List<IConnection> connections) {
           DatasourceModel datasourceModel = new DatasourceModel();
           ConnectionModel connectionModel = new ConnectionModel();
-          datasourceModel.setConnections(connections);
+          datasourceModel.getRelationalModel().setConnections(connections);
           datasourceController.setDatasourceModel(datasourceModel);
           datasourceController.setConnectionModel(connectionModel);
           connectionController.setDatasourceModel(datasourceModel);

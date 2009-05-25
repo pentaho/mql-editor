@@ -33,12 +33,17 @@ This module serves as the Debuging environment and default implementation for in
         <exclude name="**/ResultSetHelper*"/>   
         <exclude name="**/BusinessModelGenerator*"/>
         <exclude name="**/ExampleApp*"/>
-        <exclude name="**/CsvMqlGenerator*"/>             
+        <exclude name="**/CsvMqlGenerator*"/>     
+        <exclude name="**/UploadFileServlet*"/>
+        <exclude name="**/UploadFileDebugServlet*"/>
+        <exclude name="**/IDataAccessPermissionHandler*"/>
+        <exclude name="**/SimpleDataAccessPermissionHandler*"/>                
     </source>
     <public path="editor/public"/>
     <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.JavascriptDatasourceEditor"/>
     
   <servlet path="/ConnectionService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.ConnectionDebugGwtServlet" />
   <servlet path="/DatasourceService" class="org.pentaho.commons.metadata.mqleditor.editor.service.gwt.DatasourceDebugGwtServlet" />
+  <servlet path="/UploadService" class="org.pentaho.commons.metadata.mqleditor.editor.service.impl.UploadFileDebugServlet" />
   
  </module>

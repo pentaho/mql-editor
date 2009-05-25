@@ -8,6 +8,7 @@ import org.pentaho.commons.metadata.mqleditor.beans.BogoPojo;
 import org.pentaho.commons.metadata.mqleditor.beans.BusinessData;
 import org.pentaho.commons.metadata.mqleditor.editor.service.DatasourceServiceException;
 import org.pentaho.commons.metadata.mqleditor.utils.SerializedResultSet;
+import org.pentaho.metadata.model.Domain;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -21,9 +22,13 @@ public interface DatasourceGwtServiceAsync {
   void doPreview(IConnection connection, String query, String previewLimit, AsyncCallback<SerializedResultSet> callback);
   void doPreview(IDatasource datasource, AsyncCallback<SerializedResultSet> callback);
   void generateModel(String modelName, IConnection connection, String query, String previewLimit, AsyncCallback<BusinessData> callback) throws DatasourceServiceException;
-  void saveModel(String modelName, IConnection connection, String query, Boolean overwrite, AsyncCallback<Boolean> callback) throws DatasourceServiceException;
+  void saveModel(String modelName, IConnection connection, String query, Boolean overwrite, String previewLimit, AsyncCallback<BusinessData> callback) throws DatasourceServiceException;
   void saveModel(BusinessData businessData, Boolean overwrite, AsyncCallback<Boolean> callback) throws DatasourceServiceException ;
+  void isAdministrator(AsyncCallback<Boolean> callback);
+  void generateInlineEtlModel(String modelName, String relativeFilePath, boolean headersPresent, String delimeter, String enclosure, AsyncCallback<Domain> callback) throws DatasourceServiceException ;
+  void saveInlineEtlModel(Domain modelName, Boolean overwrite,AsyncCallback<Boolean> callback) throws DatasourceServiceException ;    
   void gwtWorkaround (BogoPojo pojo, AsyncCallback<BogoPojo> callback);
+
 }
 
   

@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
-import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,9 +43,14 @@ import org.pentaho.metadata.model.concept.types.DataType;
 import org.pentaho.metadata.model.concept.types.LocalizedString;
 import org.pentaho.metadata.model.concept.types.TargetColumnType;
 import org.pentaho.metadata.model.concept.types.TargetTableType;
+import org.pentaho.platform.api.engine.IPentahoSession;
+import org.pentaho.platform.web.http.PentahoHttpSessionHelper;
 import org.pentaho.pms.schema.v3.envelope.Envelope;
 import org.pentaho.pms.schema.v3.model.Attribute;
 import org.pentaho.pms.schema.v3.model.Column;
+
+import antlr.collections.Stack;
+import antlr.collections.impl.Vector;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -58,8 +61,10 @@ public class DatasourceGwtServlet extends RemoteServiceServlet implements Dataso
   DatasourceServiceDelegate SERVICE;
 
   public DatasourceGwtServlet() {
-    SERVICE = new DatasourceServiceDelegate();
+    IPentahoSession session = PentahoHttpSessionHelper.getPentahoSession(this.getThreadLocalRequest());
+    SERVICE = new DatasourceServiceDelegate(session);
   }
+
   public Boolean addDatasource(IDatasource datasource) {
     return SERVICE.addDatasource(datasource);
   }
@@ -71,7 +76,6 @@ public class DatasourceGwtServlet extends RemoteServiceServlet implements Dataso
   public Boolean deleteDatasource(String name) {
     return SERVICE.deleteDatasource(name);
   }
-
 
   public SerializedResultSet doPreview(IConnection connection, String query, String previewLimit)
       throws DatasourceServiceException {
@@ -98,16 +102,22 @@ public class DatasourceGwtServlet extends RemoteServiceServlet implements Dataso
       throws DatasourceServiceException {
     return SERVICE.generateModel(modelName, connection, query, previewLimit);
   }
-
-  public Boolean saveModel(String modelName, IConnection connection, String query, Boolean overwrite)
+  public BusinessData saveModel(String modelName, IConnection connection, String query, Boolean overwrite, String previewLimit)
   throws DatasourceServiceException {
-      return SERVICE.saveModel(modelName, connection, query, overwrite);
+      return SERVICE.saveModel(modelName, connection, query, overwrite, previewLimit);
   }
+
   public Boolean saveModel(BusinessData businessData, Boolean overwrite) throws DatasourceServiceException {
     return SERVICE.saveModel(businessData, overwrite);
   }
+
+  public Boolean isAdministrator() {
+    return SERVICE.isAdministrator();
+  }
+
+  @Override
   protected SerializationPolicy doGetSerializationPolicy(HttpServletRequest arg0, String arg1, String arg2) {
-    return new SerializationPolicy(){
+    return new SerializationPolicy() {
 
       List<Class<?>> classes = new ArrayList<Class<?>>();
       {
@@ -160,6 +170,7 @@ public class DatasourceGwtServlet extends RemoteServiceServlet implements Dataso
         classes.add(TargetTableType.class);
         classes.add(LocalizedString.class);
       }
+
       @Override
       public boolean shouldDeserializeFields(Class<?> clazz) {
         return classes.contains(clazz);
@@ -169,25 +180,34 @@ public class DatasourceGwtServlet extends RemoteServiceServlet implements Dataso
       public boolean shouldSerializeFields(Class<?> clazz) {
 
         return classes.contains(clazz);
-          
+
       }
 
       @Override
       public void validateDeserialize(Class<?> arg0) throws SerializationException {
-        
-          
+
       }
 
       @Override
       public void validateSerialize(Class<?> arg0) throws SerializationException {
-        
-          
+
       }
-      
+
     };
-}
-  
+  }
+
   public BogoPojo gwtWorkaround(BogoPojo pojo) {
     return pojo;
   }
+
+  public Domain generateInlineEtlModel(String modelName, String relativeFilePath, boolean headersPresent,
+      String delimeter, String enclosure) throws DatasourceServiceException {
+    return SERVICE.generateInlineEtlModel(modelName, relativeFilePath, headersPresent, delimeter, enclosure);
+   }
+
+  public Boolean saveInlineEtlModel(Domain modelName, Boolean overwrite) throws DatasourceServiceException {
+    return SERVICE.saveInlineEtlModel(modelName, overwrite);
+  }
+  
+  
 }

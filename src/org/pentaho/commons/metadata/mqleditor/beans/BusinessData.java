@@ -3,7 +3,6 @@ package org.pentaho.commons.metadata.mqleditor.beans;
 import java.util.List;
 
 import org.pentaho.metadata.model.Domain;
-import org.pentaho.pms.schema.v3.model.Column;
 
 public class BusinessData implements java.io.Serializable{
   private static final long serialVersionUID = 8275330793662889379L;

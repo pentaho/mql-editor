@@ -2,19 +2,9 @@ package org.pentaho.commons.metadata.mqleditor.ietl;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.ColumnType;
-import org.pentaho.commons.metadata.mqleditor.beans.BusinessTable;
-import org.pentaho.commons.metadata.mqleditor.beans.Category;
-import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Model;
-import org.pentaho.di.core.Const;
 import org.pentaho.di.core.vfs.KettleVFS;
-import org.pentaho.di.trans.steps.textfileinput.TextFileInput;
-import org.pentaho.di.trans.steps.textfileinput.TextFileInputMeta;
 
 public class BusinessModelGenerator {
   
