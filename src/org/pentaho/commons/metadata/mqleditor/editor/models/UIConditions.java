@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
 
-public class Conditions extends AbstractModelNode<UICondition>{
+public class UIConditions extends AbstractModelNode<UICondition>{
 
     
-  public Conditions(){
+  public UIConditions(){
   }
   
-  public Conditions(List<UICondition> conditions){
+  public UIConditions(List<UICondition> conditions){
     super(conditions);
   }
 

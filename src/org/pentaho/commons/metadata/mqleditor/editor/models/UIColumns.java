@@ -5,13 +5,12 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.beans.Column;
 
-public class Columns extends AbstractModelNode<UIColumn>{
+public class UIColumns extends AbstractModelNode<UIColumn>{
 
-    
-  public Columns(){
+  public UIColumns(){
   }
   
-  public Columns(List<UIColumn> conditions){
+  public UIColumns(List<UIColumn> conditions){
     super(conditions);
   }
   

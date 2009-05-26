@@ -38,9 +38,9 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   
   private UIColumn selectedColumn;
   
-  private Columns selectedColumns = new Columns();
-  private Conditions conditions = new Conditions();
-  private Orders orders = new Orders();
+  private UIColumns selectedColumns = new UIColumns();
+  private UIConditions conditions = new UIConditions();
+  private UIOrders orders = new UIOrders();
   private String queryStr;
   
   public Workspace(){
@@ -115,9 +115,9 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
   
   public void clear(){
-    this.setOrders(new Orders());
-    this.setSelectedColumns(new Columns());
-    this.setConditions(new Conditions());
+    this.setOrders(new UIOrders());
+    this.setSelectedColumns(new UIColumns());
+    this.setConditions(new UIConditions());
     setupListeners();
   }
   
@@ -260,35 +260,35 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
   
   
-  public Columns getSelectedColumns() {
+  public UIColumns getSelectedColumns() {
   
     return selectedColumns;
   }
 
-  public void setSelectedColumns(Columns columns) {
+  public void setSelectedColumns(UIColumns columns) {
     this.selectedColumns = columns;
     this.firePropertyChange("selectedColumns", null, getSelectedColumns());
   }
 
   public void setSelectedColumns(List<UIColumn> selectedColumns) {
-    this.selectedColumns = new Columns(selectedColumns);
+    this.selectedColumns = new UIColumns(selectedColumns);
     this.firePropertyChange("selectedColumns", null, getSelectedColumns());
   }
 
-  public Conditions getConditions() {
+  public UIConditions getConditions() {
     return conditions;
   }
 
-  public void setConditions(Conditions conditions) {
+  public void setConditions(UIConditions conditions) {
     this.conditions = conditions;
     this.firePropertyChange("conditions", null, getConditions());
   }
 
-  public Orders getOrders() {
+  public UIOrders getOrders() {
     return orders;
   }
 
-  public void setOrders(Orders orders) {
+  public void setOrders(UIOrders orders) {
     this.orders = orders;
     this.firePropertyChange("orders", null, getOrders());
   }

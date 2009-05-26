@@ -6,12 +6,12 @@ import java.util.List;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 
 
-public class Orders extends AbstractModelNode<UIOrder>{
+public class UIOrders extends AbstractModelNode<UIOrder>{
   
-  public Orders(){
+  public UIOrders(){
   }
   
-  public Orders(List<UIOrder> orders){
+  public UIOrders(List<UIOrder> orders){
     super(orders);
   }
   
