@@ -21,9 +21,9 @@ import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.beans.Model;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
-import org.pentaho.commons.metadata.mqleditor.editor.models.Columns;
-import org.pentaho.commons.metadata.mqleditor.editor.models.Conditions;
-import org.pentaho.commons.metadata.mqleditor.editor.models.Orders;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumns;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIOrders;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumn;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UICondition;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
@@ -158,7 +158,7 @@ public class WorkspaceTest {
   public void testSelections() {
     
     // Test Conditions
-    Columns outColumns = workspace.getSelectedColumns();
+    UIColumns outColumns = workspace.getSelectedColumns();
     
     assertEquals(outColumns.size(), mqlQuery.getColumns().size());
     
@@ -177,7 +177,7 @@ public class WorkspaceTest {
   
   @Test
   public void testWorkspaceConditions() {
-    Conditions outConditions = workspace.getConditions();
+    UIConditions outConditions = workspace.getConditions();
     
     assertEquals(outConditions.size(), mqlQuery.getConditions().size());
     
@@ -197,7 +197,7 @@ public class WorkspaceTest {
   @Test
   public void testWorkspaceOrders() {
     
-    Orders outOrders = workspace.getOrders();
+    UIOrders outOrders = workspace.getOrders();
     
     assertEquals(outOrders.size(), mqlQuery.getOrders().size());
     
