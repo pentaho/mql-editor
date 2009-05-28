@@ -300,8 +300,8 @@ public class MQLEditorServiceDeligate {
     int i = 0;
     for (MqlCondition thinCondition : thinConditions) {
       org.pentaho.pms.schema.BusinessColumn col = getColumn(model, thinCondition.getColumn());
-      MQLWhereConditionModel where = new MQLWhereConditionModel(thinCondition.getCombinationType().toString(), col,
-          thinCondition.getCondition("[" + col.toString() + "]"));
+      MQLWhereConditionModel where = new MQLWhereConditionModel(thinCondition.getCombinationType() == null ? "" : thinCondition.getCombinationType().toString() , //$NON-NLS-1$
+          col, thinCondition.getCondition("[" + col.toString() + "]"));
       conditions[i++] = where;
     }
     return conditions;

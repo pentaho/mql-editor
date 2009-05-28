@@ -48,6 +48,7 @@ public class ConditionsController extends AbstractXulEventHandler{
     try{
       int prevIndex = getSelectedIndex();
       workspace.getConditions().moveChildUp(getSelectedIndex());
+      
       conditionTree.clearSelection();
       conditionTree.setSelectedRows(new int[]{prevIndex -1});
     } catch(IllegalArgumentException e){
@@ -59,6 +60,7 @@ public class ConditionsController extends AbstractXulEventHandler{
     int prevIndex = getSelectedIndex();
     try{
       workspace.getConditions().moveChildDown(getSelectedIndex());
+      
       conditionTree.clearSelection();
       conditionTree.setSelectedRows(new int[]{prevIndex+1});
     } catch(IllegalArgumentException e){

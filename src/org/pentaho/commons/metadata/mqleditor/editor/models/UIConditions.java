@@ -15,6 +15,22 @@ public class UIConditions extends AbstractModelNode<UICondition>{
     super(conditions);
   }
 
+  @Override
+  protected void fireCollectionChanged() {
+    markTopMostCondition();
+    this.changeSupport.firePropertyChange("children", null, this.getChildren());
+  }
+  
+  private void markTopMostCondition(){
+    for(int index = 0; index < children.size(); index++){
+      if(index == 0){
+        children.get(index).setTopMost(true);
+      } else {
+        children.get(index).setTopMost(false);
+      }
+    }
+  }
+
 }
 
   

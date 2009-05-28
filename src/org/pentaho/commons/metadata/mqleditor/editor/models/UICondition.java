@@ -22,6 +22,8 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
   private boolean parameterized = false;
   private AggType selectedAggType;
   
+  private boolean topMost = false;
+  
   public UICondition(){
   }
   
@@ -91,6 +93,9 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
 
 
   public CombinationType getCombinationType() {
+    if(isTopMost()){
+      return null;
+    }
     return combinationType;
   }
 
@@ -101,7 +106,9 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
   
   //Binding value comes in as Object unfortunately.
   public void setCombinationType(Object combinationType) {
-    setCombinationType((CombinationType) combinationType);
+    if(combinationType != null){
+      setCombinationType((CombinationType) combinationType);
+    }
   }
 
   public void setTableName(String name){
@@ -136,6 +143,13 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
   }
   
   public void setCombinations(String str){}
+  
+  public String getCellType(){
+    if(isTopMost()){
+      return "LABEL"; //$NON-NLS-1$
+    }
+    return "COMBOBOX"; //$NON-NLS-1$
+  }
 
 
   public String getCondition(String objName) {
@@ -192,6 +206,14 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition<U
 
   public Vector getBindingAggTypes(){
     return column.getBindingAggTypes();
+  }
+
+  public void setTopMost(boolean topMost) {
+    this.topMost = topMost;
+  }
+
+  public boolean isTopMost() {
+    return topMost;
   }
 }
 

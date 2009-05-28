@@ -111,7 +111,16 @@
           <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="conditionsTree"  width="575">
             <treecols>
               <treecol label="${combine}" flex="1" pen:binding="combinationType" pen:combobinding="combinations"
+                type="dynamic" pen:columntypebinding="cellType" editable="true" />            
+            
+              <!--
+              <treecol label="${combine}" flex="1" pen:binding="combinationType" pen:combobinding="combinations"
                 type="combobox" editable="true" />
+              -->
+              <!--
+              <treecol label="${combine}" flex="1" pen:binding="combinationType" pen:combobinding="combinations"
+                type="dynamic" pen:columntypebinding="cellType" editable="true" />
+              -->
               <treecol label="${column}" flex="1" pen:binding="columnName" />
               <treecol flex="1" label="${aggtype}" type="combobox" editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType"/>
               <treecol label="${comparison}" flex="1" pen:binding="operator" type="combobox"
