@@ -150,6 +150,10 @@ public class PreviewController extends AbstractXulEventHandler {
       e.printStackTrace();
     }
     
+    for(int i = 0; i < previewTree.getColumns().getColumnCount(); i++){
+      previewTree.getColumns().getColumn(i).setLabel(workspace.getMqlQuery().getColumns().get(i).getName());
+    }
+    
     previewTree.getRootChildren().removeAll();
     try{
       for(int i=0; i < previewData.length; i++){
