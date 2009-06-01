@@ -107,7 +107,7 @@ public class DefaultListItem  implements ListItem<Object> {
 
 
     panel.add(sp);
-    panel.setCellWidth(label, "100%"); //$NON-NLS-1$
+    panel.setCellWidth(sp, "100%"); //$NON-NLS-1$
     panel.setCellVerticalAlignment(label, HasVerticalAlignment.ALIGN_MIDDLE);
 
     ElementUtils.preventTextSelection(panel.getElement());
