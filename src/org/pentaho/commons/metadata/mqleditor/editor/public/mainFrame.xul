@@ -90,8 +90,8 @@
           </hbox>
           <tree flex="1" editable="false" seltype="single" enableColumnDrag="false" id="selectedColumnTree" width="575">
             <treecols>
-              <treecol flex="2" label="${column}" pen:binding="name" />
               <treecol flex="1" label="${aggtype}" type="combobox" editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType"/>
+              <treecol flex="3" label="${column}" pen:binding="name" />
             </treecols>
             <treechildren />
           </tree>
@@ -108,23 +108,14 @@
           </hbox>
           <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="conditionsTree"  width="575">
             <treecols>
-              <treecol label="${combine}" flex="1" pen:binding="combinationType" pen:combobinding="combinations"
-                type="dynamic" pen:columntypebinding="cellType" editable="true" />            
-            
-              <!--
-              <treecol label="${combine}" flex="1" pen:binding="combinationType" pen:combobinding="combinations"
-                type="combobox" editable="true" />
-              -->
-              <!--
-              <treecol label="${combine}" flex="1" pen:binding="combinationType" pen:combobinding="combinations"
+              <treecol label="${combine}" flex="2" pen:binding="combinationType" pen:combobinding="combinations"
                 type="dynamic" pen:columntypebinding="cellType" editable="true" />
-              -->
-              <treecol label="${column}" flex="1" pen:binding="columnName" />
-              <treecol flex="1" label="${aggtype}" type="combobox" editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType"/>
-              <treecol label="${comparison}" flex="1" pen:binding="operator" type="combobox"
+                <treecol flex="2" label="${aggtype}" type="combobox" editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType"/>            
+              <treecol label="${column}" flex="3" pen:binding="columnName" />
+              <treecol label="${comparison}" flex="2" pen:binding="operator" type="combobox"
                 pen:combobinding="comparisons" editable="true" />
-              <treecol label="${value}" flex="1" pen:binding="value" editable="true" type="text"/>
-              <treecol label="${default}" flex="1" pen:binding="defaultValue" editable="true" type="text" pen:disabledbinding="defaultDisabled" />
+              <treecol label="${value}" flex="2" pen:binding="value" editable="true" type="text"/>
+              <treecol label="${default}" flex="2" pen:binding="defaultValue" editable="true" type="text" pen:disabledbinding="defaultDisabled" />
             </treecols>
             <treechildren />
           </tree>
@@ -138,10 +129,10 @@
           </hbox>
           <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="orderTable" width="575">
             <treecols>
-              <treecol label="${column}" pen:binding="columnName" flex="1" />
               <treecol flex="1" label="${aggtype}" type="combobox" editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType"/>
+              <treecol label="${column}" pen:binding="columnName" flex="2" />
               <treecol label="${order}" pen:binding="orderType" pen:combobinding="orderTypes" type="combobox"
-                editable="true" flex="1" />
+                editable="true" flex="2" />
             </treecols>
             <treechildren />
           </tree>
