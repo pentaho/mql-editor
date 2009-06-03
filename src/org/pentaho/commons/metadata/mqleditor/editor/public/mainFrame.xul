@@ -32,37 +32,42 @@
   <dialog id="mqlEditorDialog" buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttonlabelextra1="preview"
     buttons="accept,cancel" ondialogaccept="mainController.saveQuery()"
     ondialogcancel="mainController.closeDialog()" buttonalign="right"
-    title="${window.title}" width="800" height="645">
+    title="${window.title}" width="860" height="530">
     <vbox padding="10" flex="1" >
       <hbox flex="1">
         <vbox flex="1">
-          <label value="${business.domains}" />
-          <menulist label="Domain" id="domainList" pen:binding="name" width="170">
-            <menupopup />
-          </menulist>
-          <label value="${business.models}" />
-          <menulist label="Model" id="modelList" width="170" pen:binding="name">
-            <menupopup />
-          </menulist>
-          <label value="${categories.columns}" />
-          <tree flex="1" id="categoryTree" height="400" width="170" istree="true">
-            <treecols>
-              <treecol flex="1" label="" primary="true" pen:binding="name" pen:childrenbinding="children" />
-            </treecols>
-            <treechildren>
-              <treeitem container="true" open="true">
-                <treerow>
-                  <treecell label="" />
-                </treerow>
-                <treechildren></treechildren>
-              </treeitem>
-
-            </treechildren>
-          </tree>
+          <spacer id="leftColumnVerticalAlignment" height="5" />
+          <vbox id="dataModelContainer" width="170">
+            <label value="${business.domains}"/>
+            <menulist label="Domain" id="domainList" pen:binding="name" width="170">
+              <menupopup />
+            </menulist>
+            <label value="${business.models}" />
+            <menulist label="Model" id="modelList" width="170" pen:binding="name">
+              <menupopup />
+            </menulist>
+          </vbox>
+          
+          <vbox id="categoryTreeContainer" flex="1">
+            <label value="${categories.columns}" />
+            <tree flex="1" id="categoryTree" width="170" istree="true">
+              <treecols>
+                <treecol flex="1" label="" primary="true" pen:binding="name" pen:childrenbinding="children" />
+              </treecols>
+              <treechildren>
+                <treeitem container="true" open="true">
+                  <treerow>
+                    <treecell label="" />
+                  </treerow>
+                  <treechildren></treechildren>
+                </treeitem>
+              </treechildren>
+            </tree>
+          </vbox>          
         </vbox>
         
-        <vbox>
-          <spacer height="33" />
+        <vbox id="buttonContainer">
+          <spacer id="buttonContainerVerticalSpacer" height="33" />
           <vbox id="buttonVbox1" flex="1">
             <spacer flex="1" />
             <button image="images/e_forward.gif" onclick="mainController.moveSelectionToFields()" />
@@ -79,8 +84,9 @@
             <spacer flex="1" />
           </vbox>
         </vbox>
-        <vbox flex="5">
-          <spacer height="22" />
+        
+        <vbox id="tableContainer" flex="5">
+          <spacer id="rightColumnVerticalAlignment" height="5" />
           <hbox>
             <label value="${select.columns}" />
             <spacer flex="1" />
@@ -108,8 +114,8 @@
           </hbox>
           <tree flex="1" editable="true" seltype="single" enableColumnDrag="false" id="conditionsTree"  width="575">
             <treecols>
-              <treecol label="${combine}" flex="2" pen:binding="combinationType" pen:combobinding="combinations"
-                type="dynamic" pen:columntypebinding="cellType" editable="true" />
+              <treecol id="combineColumn" label="${combine}" flex="2" pen:binding="combinationType" pen:combobinding="combinations"
+                type="combobox" pen:columntypebinding="cellType" editable="true" />
                 <treecol flex="2" label="${aggtype}" type="combobox" editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType"/>            
               <treecol label="${column}" flex="3" pen:binding="columnName" />
               <treecol label="${comparison}" flex="2" pen:binding="operator" type="combobox"
