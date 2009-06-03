@@ -181,7 +181,7 @@ public class MainController extends AbstractXulEventHandler {
   
   public void moveSelectionToFields(){
     UIColumn col = workspace.getSelectedColumn();
-    if(col != null && workspace.getSelectedColumns().contains(col) == false){
+    if(col != null){
       workspace.addColumn(col);
     }
   }
