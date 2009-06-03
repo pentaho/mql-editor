@@ -115,29 +115,43 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
   
   public void clear(){
+    removeListeners();
     this.setOrders(new UIOrders());
     this.setSelectedColumns(new UIColumns());
     this.setConditions(new UIConditions());
     setupListeners();
   }
   
+  private PropertyChangeListener columnListener = new PropertyChangeListener(){
+    public void propertyChange(PropertyChangeEvent evt) {
+      Workspace.this.firePropertyChange("selectedColumns", null, getSelectedColumns());
+    }
+  };
+    
+  private PropertyChangeListener conditionListener =  new PropertyChangeListener(){
+    public void propertyChange(PropertyChangeEvent evt) {
+      Workspace.this.firePropertyChange("conditions", null, getConditions());
+    }
+  };
+  
+  private PropertyChangeListener orderListener = new PropertyChangeListener(){
+    public void propertyChange(PropertyChangeEvent evt) {
+      Workspace.this.firePropertyChange("orders", null, getOrders());
+    }
+  };
+  
   public void setupListeners(){
-    selectedColumns.addPropertyChangeListener("children", new PropertyChangeListener(){
-      public void propertyChange(PropertyChangeEvent evt) {
-        Workspace.this.firePropertyChange("selectedColumns", null, getSelectedColumns());
-      }
-    });
-    conditions.addPropertyChangeListener("children", new PropertyChangeListener(){
-      public void propertyChange(PropertyChangeEvent evt) {
-        Workspace.this.firePropertyChange("conditions", null, getConditions());
-      }
-    });
-    orders.addPropertyChangeListener("children", new PropertyChangeListener(){
-      public void propertyChange(PropertyChangeEvent evt) {
-        Workspace.this.firePropertyChange("orders", null, getOrders());
-      }
-    });
+    selectedColumns.addPropertyChangeListener("children", columnListener);
+    conditions.addPropertyChangeListener("children", conditionListener);
+    orders.addPropertyChangeListener("children", orderListener);
   }
+
+  public void removeListeners(){
+    selectedColumns.removePropertyChangeListener(columnListener);
+    conditions.removePropertyChangeListener(conditionListener);
+    orders.removePropertyChangeListener(orderListener);
+  }
+  
   
   private UIColumn findColumn(MqlColumn col){
     for(UICategory cat : this.selectedModel.getCategories()){
@@ -235,9 +249,6 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
   
   public void addColumn(UIColumn col){
-    if(selectedColumns.contains(col)){
-      return;
-    }
     selectedColumns.add(col);
     
   }
