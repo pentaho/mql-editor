@@ -20,7 +20,7 @@ public class DefaultListItem  implements ListItem<Object> {
   private Widget dropWidget;
   private Image img;
   private Widget extraWidget;
-  private String baseStyleName = "default-list"; //$NON-NLS-1$
+  private String baseStyleName = "custom-list"; //$NON-NLS-1$
   private Object value;
 
   public DefaultListItem(){
@@ -112,7 +112,7 @@ public class DefaultListItem  implements ListItem<Object> {
 
     ElementUtils.preventTextSelection(panel.getElement());
 
-    label.setStylePrimaryName("custom-list-item"); //$NON-NLS-1$
+//    label.setStylePrimaryName("custom-list-item"); //$NON-NLS-1$
     panel.setWidth("100%"); //$NON-NLS-1$
   }
 
@@ -140,11 +140,19 @@ public class DefaultListItem  implements ListItem<Object> {
   }
 
   public void onSelect() {
+    try{
     widget.addStyleDependentName("selected"); //$NON-NLS-1$
+    } catch(Exception e){
+      
+    }
   }
 
   public void onDeselect() {
-    widget.removeStyleDependentName("selected"); //$NON-NLS-1$
+    try{
+      widget.removeStyleDependentName("selected"); //$NON-NLS-1$
+    } catch(Exception e){
+      
+    }
   }
 
   private class WrapperPanel extends HorizontalPanel {
@@ -152,7 +160,7 @@ public class DefaultListItem  implements ListItem<Object> {
     public WrapperPanel(String styleName){
       this.sinkEvents(Event.MOUSEEVENTS);
       if(styleName == null){
-        styleName = "default-list-item"; //$NON-NLS-1$
+        styleName = "custom-list-item"; //$NON-NLS-1$
       }
       this.setStylePrimaryName(styleName);
     }

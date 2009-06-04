@@ -648,21 +648,34 @@ body{
   background-color: white;
 }
 
+
+.custom-list-disabled{
+ padding: 0px;
+  margin: 0px;
+  border: 1px solid gray;
+  background-color: #ddd;
+}
+
+
 .drop-popup{
   background: white;
   border: 1px solid gray;
   z-index: 1350;
 }
 
-.default-list-item{
+.custom-list-item{
   background-color: white;
 }
 
-.default-list-item-hover{
+.custom-list-disabled-item{
+  background-color: #ddd;
+}
+
+.custom-list-item-hover{
   background-color: #DDD;
 }
 
-.default-list-item-selected{
+.custom-list-item-selected{
   background-color: #BEBEBE;
 }
 

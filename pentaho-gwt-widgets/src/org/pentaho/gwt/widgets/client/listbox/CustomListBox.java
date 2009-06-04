@@ -70,6 +70,8 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   private String height, width;
   private String popupHeight, popupWidth;
   private boolean suppressLayout;
+  
+  private boolean enabled = true;
 
 
   public CustomListBox(){
@@ -105,7 +107,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     fPanel.addFocusListener(this);
     fPanel.addKeyboardListener(this);
 
-    setStyleName("custom-list");
+    this.setStylePrimaryName("custom-list");
 
 
     setTdStyles(this.getElement());
@@ -293,6 +295,9 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   }
 
   private void updateUI(){
+    if(! this.isAttached()){
+      return;
+    }
     if(visible > 1){
       updateList();
     } else {
@@ -423,14 +428,16 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     maxWidth = 0;
     averageHeight = 0; // Actually used to set the width of the arrow
     popupHeight = null;
+    
+    int totalHeight = 0;
     for(ListItem li : this.items){
       Widget w = li.getWidget();
 
       Rectangle rect = ElementUtils.getSize(w.getElement());
       maxWidth = Math.max(maxWidth,rect.width);
       maxHeight = Math.max(maxHeight,rect.height);
-      averageHeight += rect.height;
-
+      totalHeight += rect.height;
+      
       // Add it to the dropdown
       popupVbox.add(w);
       popupVbox.setCellWidth(w, "100%");
@@ -438,7 +445,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
     // Average the height of the items
     if(items.size() > 0){
-      averageHeight = Math.round(averageHeight / items.size());
+      averageHeight = Math.round(totalHeight / items.size());
     }
 
 
@@ -467,6 +474,8 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     if(maxDropVisible > 0){
       // (Lesser of maxDropVisible or items size) * (Average item height + spacing value) 
       this.popupHeight = (Math.min(this.maxDropVisible, this.items.size()) * (averageHeight + (this.spacing * 2) )) + "px";
+    } else {
+      this.popupHeight = totalHeight + "px";
     }
   }
 
@@ -551,21 +560,25 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       throw new RuntimeException("Index out of bounds: "+ idx);
     }
     // De-Select the current
-    if(selectedIndex > -1){
+    if(selectedIndex > -1 && this.isAttached()){
       items.get(selectedIndex).onDeselect();
     }
 
 
+    int prevIdx = selectedIndex;
     if(idx >= 0){
       selectedIndex = idx;
-      items.get(idx).onSelect();
+      if(this.isAttached()){
+        items.get(idx).onSelect();
+      }
       
-      if(visible == 1){
+      if(visible == 1 && this.isAttached()){
         updateSelectedDropWidget();
         scrollSelectedItemIntoView();
       }
     }
-    if(this.suppressLayout == false){
+    
+    if(this.suppressLayout == false && prevIdx != idx){
       for(ChangeListener l : listeners){
         l.onChange(this);
       }
@@ -667,12 +680,18 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   public void onMouseMove(Widget widget, int i, int i1) {}
 
   public void onMouseUp(Widget widget, int i, int i1) {
+    if(isEnabled() == false){
+      return;
+    }
     if(visible == 1){ //drop-down mode
       this.togglePopup();
     }
   }
 
   public void onFocus(Widget widget) {
+    if(isEnabled() == false){
+      return;
+    }
      fPanel.setFocus(true);
   }
 
@@ -683,6 +702,9 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   public void onKeyPress(Widget widget, char c, int i) {}
 
   public void onKeyUp(Widget widget, char c, int i) {
+    if(isEnabled() == false){
+      return;
+    }
     switch(c){
       case 38: // UP
 
@@ -788,4 +810,15 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       l.onChange(this);
     }
   }
+  
+  public void setEnabled(boolean enabled){
+    this.enabled = enabled;
+
+    this.setStylePrimaryName((this.enabled) ? "custom-list" : "custom-list-disabled");
+  }
+  
+  public boolean isEnabled(){
+    return this.enabled;
+  }
+  
 }

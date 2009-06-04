@@ -30,5 +30,6 @@ public interface ListItem<T> {
   void onDeselect();
   void setListBox(CustomListBox listbox);
   void setStylePrimaryName(String style);
+  String getText();
   
 }
