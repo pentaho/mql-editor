@@ -397,6 +397,24 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     // TODO mlowery not sure what goes here
     throw new UnsupportedOperationException();
   }
+
+  public void setSelectedModelId(String modelId) {
+    for (UIModel uiModel : selectedDomain.getModels()) {
+      if (uiModel.getId().equals(modelId)) {
+        setSelectedModel(uiModel);
+        break;
+      }
+    }
+  }
+
+  public void setSelectedDomainId(String domainId) {
+    for (UIDomain uiDomain : domains) {
+      if (uiDomain.getName().equals(domainId)) {
+        setSelectedDomain(uiDomain);
+        break;
+      }
+    }
+  }
   
 }
 

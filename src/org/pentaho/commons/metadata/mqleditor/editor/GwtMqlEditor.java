@@ -53,6 +53,17 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
     previewController.setWorkspace(workspace);
   }
   
+  /**
+   * Set the selected domain using the domain ID.
+   */
+  public void setSelectedDomainId(String domainId) {
+    workspace.setSelectedDomainId(domainId);
+  }
+  
+  public void setSelectedModelId(String modelId) {
+    workspace.setSelectedModelId(modelId);
+  }
+  
   public void setSavedQuery(Query savedQuery) {
     mainController.setSavedQuery(savedQuery);  
   }
