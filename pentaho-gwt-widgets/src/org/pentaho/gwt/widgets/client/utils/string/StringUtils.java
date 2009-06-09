@@ -14,16 +14,10 @@
  *
  * Copyright 2008 Pentaho Corporation.  All rights reserved.
  */
-package org.pentaho.gwt.widgets.client.utils;
+package org.pentaho.gwt.widgets.client.utils.string;
 
 // see: http://commons.apache.org/lang/apidocs/org/apache/commons/lang/StringUtils.html
 
-/**
- * @deprecated
- * Please use org.pentaho.gwt.widgets.client.utils.string.StringUtils instead.  
- * We are gradually moving to a more logical breakdown of GWT modules for more succinct reuse.
- */
-@Deprecated  
 public class StringUtils {
 
   public static boolean isEmpty( String str ) {

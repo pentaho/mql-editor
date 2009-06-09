@@ -14,17 +14,11 @@
  *
  * Copyright 2008 Pentaho Corporation.  All rights reserved.
  */
-package org.pentaho.gwt.widgets.client.utils;
+package org.pentaho.gwt.widgets.client.utils.string;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @deprecated
- * Please use org.pentaho.gwt.widgets.client.utils.string.StringUtils instead.  
- * We are gradually moving to a more logical breakdown of GWT modules for more succinct reuse.
- */
-@Deprecated
 public class StringTokenizer {
   ArrayList<String> tokens = new ArrayList<String>();
 

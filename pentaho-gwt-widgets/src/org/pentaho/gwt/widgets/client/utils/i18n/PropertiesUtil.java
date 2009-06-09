@@ -14,18 +14,22 @@
  *
  * Copyright 2008 Pentaho Corporation.  All rights reserved.
  */
-package org.pentaho.gwt.widgets.client.utils;
+package org.pentaho.gwt.widgets.client.utils.i18n;
 
 import java.util.HashMap;
 
-/**
- * @deprecated
- * Please use org.pentaho.gwt.widgets.client.utils.localization.PropertiesUtil instead.  
- * We are gradually moving to a more logical breakdown of GWT modules for more succinct reuse.
- */
-@Deprecated  
+import org.pentaho.gwt.widgets.client.utils.string.StringTokenizer;
+import org.pentaho.gwt.widgets.client.utils.string.StringUtils;
+
 public class PropertiesUtil {
 
+  public static HashMap<String, String> mergeProperties(final HashMap<String, String> defaultProperties, final HashMap<String, String> overrideProperties) {
+    HashMap<String, String> mergeProperties = new HashMap<String, String>();
+    mergeProperties.putAll(defaultProperties);
+    mergeProperties.putAll(overrideProperties);
+    return mergeProperties;
+  }
+  
   /**
    * This method builds a HashMap out of a given input String (which is typically read from a standard
    * java .properties file).  The caller may provide a default properties map which will be 'merged' with the
