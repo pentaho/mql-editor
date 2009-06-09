@@ -22,6 +22,7 @@ import org.pentaho.ui.xul.gwt.GwtXulDomContainer;
 import org.pentaho.ui.xul.gwt.GwtXulLoader;
 import org.pentaho.ui.xul.gwt.GwtXulRunner;
 import org.pentaho.ui.xul.gwt.binding.GwtBindingFactory;
+import org.pentaho.ui.xul.gwt.util.AsyncConstructorListener;
 import org.pentaho.ui.xul.gwt.util.EventHandlerWrapper;
 
 import com.google.gwt.core.client.GWT;
@@ -44,13 +45,16 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
   ConditionsController constraintController = new ConditionsController();
   OrderController orderController = new OrderController();
   PreviewController previewController = new PreviewController();
+  private AsyncConstructorListener constructorListener;
   
-  public GwtMqlEditor(){
+  public GwtMqlEditor(final MQLEditorService service, final AsyncConstructorListener constructorListener){
     mainController.setWorkspace(workspace);
     selectedColumnController.setWorkspace(workspace);
     constraintController.setWorkspace(workspace);
     orderController.setWorkspace(workspace);
     previewController.setWorkspace(workspace);
+    this.constructorListener = constructorListener;
+    setService(service);
   }
   
   /**
@@ -73,15 +77,7 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
   }
   
   public void show(){
-    if(container == null){
-      try {
-        bundle = new MessageBundle(GWT.getModuleBaseURL(),"mainFrame", this );
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    } else {
-      mainController.showDialog();
-    }
+    mainController.showDialog();
   }
 
   public void hide(){
@@ -151,6 +147,7 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
     }
     displayXulDialog();
   }
+  
   private void displayXulDialog() {
 
     try{
@@ -190,16 +187,18 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
       runner.initialize();
       runner.start();
 
-      mainController.showDialog();
       
       RootPanel.get().add(runner.getRootPanel());
-      
+      if (constructorListener != null) {
+        constructorListener.asyncConstructorDone();
+      }
+
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
   
-  public void setService(MQLEditorService service){
+  private void setService(MQLEditorService service){
     previewController.setService(service);
     mainController.setService(service);
     service.getMetadataDomains(new XulServiceCallback<List<MqlDomain>>() {
@@ -210,6 +209,11 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
 
       public void success(List<MqlDomain> domains) {
         updateDomains(domains);
+        try {
+          bundle = new MessageBundle(GWT.getModuleBaseURL(),"mainFrame", GwtMqlEditor.this );
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
       
     });
