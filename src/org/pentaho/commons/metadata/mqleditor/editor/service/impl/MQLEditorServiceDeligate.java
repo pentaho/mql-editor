@@ -84,6 +84,9 @@ public class MQLEditorServiceDeligate {
     addLegacyDomain(meta);
   }
   
+  public MQLEditorServiceDeligate() {
+  }
+  
   public List<MqlDomain> refreshMetadataDomains() {
     for (String id : domainRepository.getDomainIds()) {
       if (!domainNames.contains(id)) {
