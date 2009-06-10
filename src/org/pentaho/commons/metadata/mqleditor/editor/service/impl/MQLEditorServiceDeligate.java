@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.NotImplementedException;
 import org.pentaho.commons.metadata.mqleditor.AggType;
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
+import org.pentaho.commons.metadata.mqleditor.CombinationType;
 import org.pentaho.commons.metadata.mqleditor.MqlColumn;
 import org.pentaho.commons.metadata.mqleditor.MqlCondition;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
@@ -29,6 +30,11 @@ import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelUtil;
+import org.pentaho.metadata.model.LogicalColumn;
+import org.pentaho.metadata.model.LogicalModel;
+import org.pentaho.metadata.model.concept.types.AggregationType;
+import org.pentaho.metadata.query.model.Constraint;
+import org.pentaho.metadata.query.model.util.QueryXmlHelper;
 import org.pentaho.metadata.repository.IMetadataDomainRepository;
 import org.pentaho.metadata.util.ThinModelConverter;
 import org.pentaho.pms.core.CWM;
@@ -38,6 +44,7 @@ import org.pentaho.pms.mql.MQLQueryImpl;
 import org.pentaho.pms.mql.OrderBy;
 import org.pentaho.pms.mql.Selection;
 import org.pentaho.pms.mql.WhereCondition;
+import org.pentaho.pms.mql.dialect.SQLQueryModel.OrderType;
 import org.pentaho.pms.schema.BusinessCategory;
 import org.pentaho.pms.schema.BusinessColumn;
 import org.pentaho.pms.schema.BusinessModel;
@@ -64,7 +71,7 @@ public class MQLEditorServiceDeligate {
   private Set<String> domainNames = new TreeSet<String>();
 
   private CwmSchemaFactoryInterface factory;
-  
+
   private IMetadataDomainRepository domainRepository;
 
   /**
@@ -79,14 +86,14 @@ public class MQLEditorServiceDeligate {
       addLegacyDomain(meta);
     }
   }
-  
-  public MQLEditorServiceDeligate(SchemaMeta meta){
+
+  public MQLEditorServiceDeligate(SchemaMeta meta) {
     addLegacyDomain(meta);
   }
-  
+
   public MQLEditorServiceDeligate() {
   }
-  
+
   public List<MqlDomain> refreshMetadataDomains() {
     for (String id : domainRepository.getDomainIds()) {
       if (!domainNames.contains(id)) {
@@ -96,7 +103,7 @@ public class MQLEditorServiceDeligate {
     }
     return domains;
   }
-  
+
   public void addLegacyDomain(SchemaMeta meta) {
     Domain domain = new Domain();
     domain.setName(meta.getDomainName());
@@ -109,18 +116,15 @@ public class MQLEditorServiceDeligate {
     domains.add(domain);
     domainNames.add(domain.getName());
   }
-  
+
   public void addThinDomain(String id) {
     org.pentaho.metadata.model.Domain thinDomain = domainRepository.getDomain(id);
     try {
-      SchemaMeta meta = ThinModelConverter.convertToLegacy(thinDomain); 
       Domain domain = new Domain();
-      domain.setName(meta.getDomainName());
-      UniqueList<BusinessModel> models = meta.getBusinessModels();
-      for (BusinessModel model : models) {
+      domain.setName(thinDomain.getId());
+      for (LogicalModel model : thinDomain.getLogicalModels()) {
         Model myModel = createModel(model);
         domain.getModels().add(myModel);
-        modelIdToSchemaMetaMap.put(myModel.getId(), meta);
       }
       domains.add(domain);
       domainNames.add(domain.getName());
@@ -128,18 +132,18 @@ public class MQLEditorServiceDeligate {
       e.printStackTrace();
       // log error
     }
-    
+
   }
-  
+
   public void initializeThinMetadataDomains(IMetadataDomainRepository repo) {
-    
+
     this.domainRepository = repo;
-    
+
     for (String id : repo.getDomainIds()) {
       addThinDomain(id);
     }
   }
-  
+
   public String[][] getPreviewData(String query, int page, int limit) {
     throw new NotImplementedException("Implement in your class");
   }
@@ -157,12 +161,35 @@ public class MQLEditorServiceDeligate {
     return model;
   }
 
+  private Model createModel(LogicalModel m) {
+    Model model = new Model();
+    model.setName(m.getName(locale));
+    model.setId(m.getId());
+    for (org.pentaho.metadata.model.Category cat : m.getCategories()) {
+      model.getCategories().add(createCategory(m, cat));
+    }
+
+    return model;
+
+  }
+
   private Category createCategory(BusinessModel m, BusinessCategory c) {
     Category cat = new Category();
     cat.setName(c.getName(locale));
     cat.setId(c.getId());
     UniqueList<org.pentaho.pms.schema.BusinessColumn> cols = c.getBusinessColumns();
     for (org.pentaho.pms.schema.BusinessColumn col : cols) {
+      cat.getBusinessColumns().add(createColumn(m, col));
+    }
+
+    return cat;
+  }
+
+  private Category createCategory(LogicalModel m, org.pentaho.metadata.model.Category c) {
+    Category cat = new Category();
+    cat.setName(c.getName(locale));
+    cat.setId(c.getId());
+    for (LogicalColumn col : c.getLogicalColumns()) {
       cat.getBusinessColumns().add(createColumn(m, col));
     }
 
@@ -192,25 +219,69 @@ public class MQLEditorServiceDeligate {
     }
     col.setType(ourType);
     List<AggregationSettings> possibleAggs = c.getAggregationList();
-    
-    for(AggregationSettings agg : possibleAggs){
+
+    for (AggregationSettings agg : possibleAggs) {
       col.getAggTypes().add(getAggType(agg.getType()));
     }
-    
+
     // There might be a default agg, but no agg list. If so, add it to the list.
     AggType defaultAggType = getAggType(c.getAggregationType().getType());
-    if(col.getAggTypes().contains(defaultAggType) == false){
+    if (col.getAggTypes().contains(defaultAggType) == false) {
       col.getAggTypes().add(defaultAggType);
     }
-    
+
     col.setDefaultAggType(defaultAggType);
     col.setSelectedAggType(defaultAggType);
-    
+
     return col;
   }
-  
-  private AggType getAggType(int type){
-    switch(type){
+
+  private Column createColumn(LogicalModel m, LogicalColumn c) {
+    Column col = new Column();
+    col.setName(c.getName(locale));
+    col.setId(c.getId());
+
+    ColumnType ourType = null;
+    if (c.getDataType() != null) {
+      int type = c.getDataType().getType();
+      switch (type) {
+        case DataTypeSettings.DATA_TYPE_BOOLEAN:
+          ourType = ColumnType.BOOLEAN;
+          break;
+        case DataTypeSettings.DATA_TYPE_STRING:
+          ourType = ColumnType.TEXT;
+          break;
+        case DataTypeSettings.DATA_TYPE_NUMERIC:
+          ourType = ColumnType.FLOAT;
+          break;
+        case DataTypeSettings.DATA_TYPE_DATE:
+          ourType = ColumnType.DATE;
+          break;
+      }
+    }
+    col.setType(ourType);
+    List<AggregationType> possibleAggs = c.getAggregationList();
+    if (possibleAggs != null) {
+      for (AggregationType agg : possibleAggs) {
+        col.getAggTypes().add(getAggType(agg.ordinal()));
+      }
+    }
+
+    // There might be a default agg, but no agg list. If so, add it to the list.
+
+    AggType defaultAggType = getAggType(c.getAggregationType().ordinal());
+    if (col.getAggTypes().contains(defaultAggType) == false) {
+      col.getAggTypes().add(defaultAggType);
+    }
+
+    col.setDefaultAggType(defaultAggType);
+    col.setSelectedAggType(defaultAggType);
+
+    return col;
+  }
+
+  private AggType getAggType(int type) {
+    switch (type) {
       case AggregationSettings.TYPE_AGGREGATION_COUNT:
         return AggType.COUNT;
       case AggregationSettings.TYPE_AGGREGATION_COUNT_DISTINCT:
@@ -227,13 +298,34 @@ public class MQLEditorServiceDeligate {
         return AggType.NONE;
     }
   }
-  
 
-  private AggregationSettings getAggregationSettings(AggType type){
-    if(type == null){
+  private AggregationType getAggregationType(AggType type) {
+    if (type == null) {
+      return null;
+    }
+    switch (type) {
+      case COUNT:
+        return AggregationType.COUNT;
+      case COUNT_DISTINCT:
+        return AggregationType.DISTINCT_COUNT;
+      case AVERAGE:
+        return AggregationType.AVG;
+      case MAX:
+        return AggregationType.MAX;
+      case MIN:
+        return AggregationType.MIN;
+      case SUM:
+        return AggregationType.SUM;
+      default:
+        return AggregationType.NONE;
+    }
+  }
+
+  private AggregationSettings getAggregationSettings(AggType type) {
+    if (type == null) {
       return AggregationSettings.NONE;
     }
-    switch(type){
+    switch (type) {
       case COUNT:
         return AggregationSettings.COUNT;
       case COUNT_DISTINCT:
@@ -264,8 +356,7 @@ public class MQLEditorServiceDeligate {
     return null;
   }
 
-  private org.pentaho.pms.schema.BusinessColumn[] getColumns(BusinessModel model,
-      List<? extends MqlColumn> thincols) {
+  private org.pentaho.pms.schema.BusinessColumn[] getColumns(BusinessModel model, List<? extends MqlColumn> thincols) {
     org.pentaho.pms.schema.BusinessColumn[] cols = new org.pentaho.pms.schema.BusinessColumn[thincols.size()];
 
     int i = 0;
@@ -288,7 +379,7 @@ public class MQLEditorServiceDeligate {
       org.pentaho.pms.schema.BusinessColumn bCol = (org.pentaho.pms.schema.BusinessColumn) col;
       if (bCol.getName(locale).equals(thinCol.getName())) {
         AggType aggType = thinCol.getSelectedAggType();
-        if(aggType == null && thinCol.getDefaultAggType() != null){
+        if (aggType == null && thinCol.getDefaultAggType() != null) {
           aggType = thinCol.getDefaultAggType();
         }
         bCol.setAggregationType(getAggregationSettings(aggType));
@@ -303,7 +394,8 @@ public class MQLEditorServiceDeligate {
     int i = 0;
     for (MqlCondition thinCondition : thinConditions) {
       org.pentaho.pms.schema.BusinessColumn col = getColumn(model, thinCondition.getColumn());
-      MQLWhereConditionModel where = new MQLWhereConditionModel(thinCondition.getCombinationType() == null ? "" : thinCondition.getCombinationType().toString() , //$NON-NLS-1$
+      MQLWhereConditionModel where = new MQLWhereConditionModel(
+          thinCondition.getCombinationType() == null ? "" : thinCondition.getCombinationType().toString(), //$NON-NLS-1$
           col, thinCondition.getCondition("[" + col.toString() + "]"));
       conditions[i++] = where;
     }
@@ -321,62 +413,157 @@ public class MQLEditorServiceDeligate {
   }
 
   public String saveQuery(MqlQuery query) {
+    if (domainRepository != null) {
+      org.pentaho.metadata.model.Domain thinDomain = domainRepository.getDomain(query.getDomain().getName());
+      if (thinDomain != null) {
+        org.pentaho.metadata.query.model.Query queryModel = convertQueryModel(thinDomain, query);
+        return new QueryXmlHelper().toXML(queryModel);
+      }
+    }
 
     MQLQuery fatQ = convertModel(query);
-    if(fatQ != null){
+    if (fatQ != null) {
       return fatQ.getXML();
     } else {
       return "";
     }
-    
+
+  }
+
+  private org.pentaho.metadata.model.Category findCategory(LogicalModel model, MqlColumn col) {
+    for (org.pentaho.metadata.model.Category category : model.getCategories()) {
+      for (LogicalColumn lcol : category.getLogicalColumns()) {
+        if (lcol.getId().equals(col.getId())) {
+          return category;
+        }
+      }
+    }
+    return null;
   }
   
-  public MqlQuery convertModelToThin(MQLQuery fatQ){
+  /*
+   * a call to this method assumes that we are using the new thin metadata model.
+   * 
+   */
+  public org.pentaho.metadata.query.model.Query convertQueryModel(MqlQuery query) {
+    org.pentaho.metadata.model.Domain thinDomain = domainRepository.getDomain(query.getDomain().getName());
+    return convertQueryModel(thinDomain, query);
+  }
+  
+  private org.pentaho.metadata.query.model.Query convertQueryModel(org.pentaho.metadata.model.Domain thinDomain, MqlQuery query) {
+    LogicalModel model = thinDomain.findLogicalModel(query.getModel().getId());
+    if (model != null) {
+      org.pentaho.metadata.query.model.Query queryObject = new org.pentaho.metadata.query.model.Query(thinDomain, model);
+      try {
+        if (query.getColumns().size() > 0) {
+          for (MqlColumn col : query.getColumns()) {
+            
+            org.pentaho.metadata.model.Category view = findCategory(model, col);
+            LogicalColumn column = view.findLogicalColumn(col.getId());
+
+            if (view == null || column == null) {
+              // log an error
+              return null;
+            }
+            queryObject.getSelections().add(
+                new org.pentaho.metadata.query.model.Selection(view, column, getAggregationType(col.getSelectedAggType()))
+              );
+          }
+
+          for (MqlCondition condition : query.getConditions()) {
+            org.pentaho.metadata.model.Category view = findCategory(model, condition.getColumn());
+            AggregationType type = getAggregationType(condition.getSelectedAggType());
+            String field = "[";
+            field += view +"." + condition.getColumn().getId();
+            if (type != null) {
+              field += "." + type.toString();
+            }
+            field += "]";
+            queryObject.getConstraints().add(
+                new Constraint(getComboType(condition.getCombinationType()), condition.getCondition(field))
+              );
+          }
+
+          for (MqlOrder order : query.getOrders()) {
+            org.pentaho.metadata.model.Category view = findCategory(model, order.getColumn());
+            LogicalColumn column = view.findLogicalColumn(order.getColumn().getId());
+            if (view == null || column == null) {
+              // log an error
+              return null;
+            }
+            queryObject.getOrders().add(new org.pentaho.metadata.query.model.Order(
+                new org.pentaho.metadata.query.model.Selection(view, column, getAggregationType(order.getSelectedAggType())), 
+                getOrderType(order.getOrderType()))
+              );
+          }
+          return queryObject;
+        }
+      } catch (Throwable e) { // PMSFormulaException e) {
+        e.printStackTrace();
+      }
+
+    } else {
+      //throw error
+    }
+    return null;
+  }
+  
+  private org.pentaho.metadata.query.model.Order.Type getOrderType(MqlOrder.Type type) {
+    return org.pentaho.metadata.query.model.Order.Type.values()[type.ordinal()];
+  }
+
+  private org.pentaho.metadata.query.model.CombinationType getComboType(CombinationType type) {
+    if (type == null) {
+      return null;
+    }
+    return org.pentaho.metadata.query.model.CombinationType.values()[type.ordinal()];
+  }
+
+  public MqlQuery convertModelToThin(MQLQuery fatQ) {
     Query query = new Query();
-    
+
     // currently only called by the PME-editor in which case there's only one domain.
     BusinessModel model = null;
-    for(BusinessModel m : modelIdToSchemaMetaMap.get(fatQ.getModel().getId()).getBusinessModels()){
-      if(m.getId() == fatQ.getModel().getId()){
+    for (BusinessModel m : modelIdToSchemaMetaMap.get(fatQ.getModel().getId()).getBusinessModels()) {
+      if (m.getId() == fatQ.getModel().getId()) {
         model = m;
       }
     }
-    
-    for(MqlModel m : ((MqlDomain<MqlModel>) domains.get(0)).getModels()){
-      if(m.getId().equals(fatQ.getModel().getId())){
+
+    for (MqlModel m : ((MqlDomain<MqlModel>) domains.get(0)).getModels()) {
+      if (m.getId().equals(fatQ.getModel().getId())) {
         query.setModel((Model) m);
         query.setDomain((Domain) domains.get(0));
       }
     }
-    
+
     List<Column> cols = new ArrayList<Column>();
-    for(Selection sel : fatQ.getSelections()){
+    for (Selection sel : fatQ.getSelections()) {
       Column col = createColumn(model, sel.getBusinessColumn());
       cols.add(col);
     }
     query.setColumns(cols);
-    
+
     List<Condition> conditions = new ArrayList<Condition>();
-    for(WhereCondition w : fatQ.getConstraints()){
+    for (WhereCondition w : fatQ.getConstraints()) {
       Pattern p = Pattern.compile("\\[([^\\]]*)\\.([^\\]]*)\\] (.*)"); //$NON-NLS-1$
       Matcher m = p.matcher(w.getCondition());
       if (m.find()) {
         String cat = m.group(1);
         String col = m.group(2);
-        
 
         UniqueList list = model.getAllBusinessColumns();
         BusinessColumn fatcol = null;
         for (Object c : list.getList()) {
           if (((BusinessColumn) c).getId().equals(col)) {
             fatcol = (org.pentaho.pms.schema.BusinessColumn) c;
-            
+
           }
         }
         Column c = createColumn(model, fatcol);
         String condition = m.group(3);
         String operator = w.getOperator();
-        
+
         Condition cond = new Condition();
         cond.setColumn(c);
         cond.setValue(condition);
@@ -386,13 +573,13 @@ public class MQLEditorServiceDeligate {
         // log error?
       }
     }
-    
+
     query.setConditions(conditions);
-    
+
     List<Order> orders = new ArrayList<Order>();
-    for(OrderBy ord : fatQ.getOrder()){
+    for (OrderBy ord : fatQ.getOrder()) {
       Column col = createColumn(model, ord.getSelection().getBusinessColumn());
-      if(ord.getSelection().getAggregationType() != null){
+      if (ord.getSelection().getAggregationType() != null) {
         col.setDefaultAggType(this.getAggType(ord.getSelection().getAggregationType().getType()));
       }
       Order o = new Order();
@@ -400,15 +587,16 @@ public class MQLEditorServiceDeligate {
       o.setOrderType(ord.isAscending() ? MqlOrder.Type.ASC : MqlOrder.Type.DESC);
       orders.add(o);
     }
-    
+
     query.setOrders(orders);
-    
+
     return query;
   }
-  
-  public MQLQuery convertModel(MqlQuery query){
+
+  public MQLQuery convertModel(MqlQuery query) {
     SchemaMeta meta = modelIdToSchemaMetaMap.get(query.getModel().getId());
 
+    // TODO: Name isn't guaranteed to be unique, ID is... This should use ID.
     UniqueList<BusinessModel> models = meta.getBusinessModels();
     BusinessModel realModel = null;
     for (BusinessModel m : models) {
@@ -458,48 +646,50 @@ public class MQLEditorServiceDeligate {
   }
 
   public String serializeModel(MqlQuery uiQuery) {
-    
+
     Query query = ModelUtil.convertUIModelToBean(uiQuery);
-    
+
     return ModelSerializer.serialize(query);
   }
-  
+
   public MqlQuery deserializeModel(String serializedQuery) {
     return ModelSerializer.deSerialize(serializedQuery);
   }
-  
+
   private class MQLWhereConditionModel {
-    
-    private String operator;       // AND
-    private org.pentaho.pms.schema.BusinessColumn field;  // customer_name
-    private String condition;      // = 'Casters'
-    
-    public MQLWhereConditionModel(String operator, org.pentaho.pms.schema.BusinessColumn field,  String condition) {
-      this.operator  = operator;
-      this.field     = field;
+
+    private String operator; // AND
+
+    private org.pentaho.pms.schema.BusinessColumn field; // customer_name
+
+    private String condition; // = 'Casters'
+
+    public MQLWhereConditionModel(String operator, org.pentaho.pms.schema.BusinessColumn field, String condition) {
+      this.operator = operator;
+      this.field = field;
       this.condition = condition;
     }
-    
+
     public String getOperator() {
       return operator;
     }
-    
+
     public org.pentaho.pms.schema.BusinessColumn getField() {
       return field;
     }
-      
+
     public String getCondition() {
       return condition;
     }
-    
+
     public void setCondition(String condition) {
-        this.condition = condition;
+      this.condition = condition;
     }
-    
+
     public void setOperator(String operator) {
       this.operator = operator;
     }
-    
+
   }
 
 }
