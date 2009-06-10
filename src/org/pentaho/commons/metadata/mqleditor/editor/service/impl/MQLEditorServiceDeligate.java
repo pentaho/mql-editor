@@ -269,11 +269,15 @@ public class MQLEditorServiceDeligate {
 
     // There might be a default agg, but no agg list. If so, add it to the list.
 
-    AggType defaultAggType = getAggType(c.getAggregationType().ordinal());
+    AggType defaultAggType = null;
+    if (c.getAggregationType() != null) {
+      defaultAggType = getAggType(c.getAggregationType().ordinal());
+    } else {
+      defaultAggType = AggType.NONE;
+    }
     if (col.getAggTypes().contains(defaultAggType) == false) {
       col.getAggTypes().add(defaultAggType);
     }
-
     col.setDefaultAggType(defaultAggType);
     col.setSelectedAggType(defaultAggType);
 
@@ -459,10 +463,15 @@ public class MQLEditorServiceDeligate {
           for (MqlColumn col : query.getColumns()) {
             
             org.pentaho.metadata.model.Category view = findCategory(model, col);
-            LogicalColumn column = view.findLogicalColumn(col.getId());
 
-            if (view == null || column == null) {
+            if (view == null) {
               // log an error
+              System.err.println("could not find category for column " + col.getId());
+              return null;
+            }
+            LogicalColumn column = view.findLogicalColumn(col.getId());
+            if (column == null) {
+              System.err.println("could not find column : " + col.getId());
               return null;
             }
             queryObject.getSelections().add(
