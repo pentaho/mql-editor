@@ -113,7 +113,7 @@ public class ResourceBundle {
     loadBundle(path, bundleName, attemptLocalizedFetches, bundleLoadCallback);
   }
 
-  public void loadBundle(String path, String bundleName, boolean attemptLocalizedFetches, IResourceBundleLoadCallback bundleLoadCallback) {
+  public void loadBundle(String path, final String bundleName, boolean attemptLocalizedFetches, IResourceBundleLoadCallback bundleLoadCallback) {
     this.bundleName = bundleName;
     this.bundleLoadCallback = bundleLoadCallback;
     this.attemptLocalizedFetches = attemptLocalizedFetches;
@@ -134,7 +134,7 @@ public class ResourceBundle {
     final ResourceBundle supportedLanguagesBundle = new ResourceBundle();
     // callback for when supported_locales has been fetched (if desired)
     IResourceBundleLoadCallback supportedLangCallback = new IResourceBundleLoadCallback() {
-      public void bundleLoaded(String bundleName) {
+      public void bundleLoaded(String ignore) {
         // supportedLanguages will be null if the user did not set them prior to loadBundle
         // if the user already set them, keep 'em, it's an override
         if (ResourceBundle.this.supportedLanguages == null) {
