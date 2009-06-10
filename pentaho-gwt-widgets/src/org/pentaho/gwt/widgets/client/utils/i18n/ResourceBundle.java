@@ -329,12 +329,21 @@ public class ResourceBundle {
   }
 
   /**
-   * This method return the set of keys for the MessageBundle
+   * This method returns the set of keys for the MessageBundle
    * 
    * @return The key set for the message bundle
    */
   public Set<String> getKeys() {
     return bundle.keySet();
+  }
+
+  /**
+   * This method returns the internal Map of key/value pairs for the bundle
+   * 
+   * @return The key set for the message bundle
+   */
+  public Map<String, String> getMap() {
+    return bundle;
   }
 
   public static void clearCache() {
