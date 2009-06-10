@@ -20,7 +20,9 @@ package org.pentaho.gwt.widgets.client.utils;
  * This class is a simple callback for ResourceBundle
  * 
  * @author Michael D'Amour
+ * @deprecated use org.pentaho.gwt.widgets.client.utils.i18n.IMessageBundleLoadCallback instead
  */
+@Deprecated
 public interface IMessageBundleLoadCallback {
 
   /**
@@ -30,5 +32,6 @@ public interface IMessageBundleLoadCallback {
    *          The name of the bundle which has loaded. This is provided in case the caller is loading multiple bundles and wants to be notified specifically for
    *          each loaded bundle.
    */
+  @Deprecated
   public void bundleLoaded(String bundleName);
 }
