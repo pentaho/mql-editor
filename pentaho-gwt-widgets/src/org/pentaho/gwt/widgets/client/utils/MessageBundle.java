@@ -112,9 +112,6 @@ public class MessageBundle {
    */
   @Deprecated
   public MessageBundle(String path, String bundleName, IMessageBundleLoadCallback bundleLoadCallback) {
-
-    Window.alert("creating MessageBundle: " + bundleName);
-    
     this.path = path;
     this.bundleName = bundleName;
     this.bundleLoadCallback = bundleLoadCallback;
