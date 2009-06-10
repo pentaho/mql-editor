@@ -122,9 +122,16 @@ public class ResourceBundle {
       path = path + "/";
     }
     this.path = path;
+
+    // get the locale meta property if the url parameter is missing
+    initCallbacks();
+    // decompose locale
+    // _en_US
+    // 1. bundleName.properties
+    // 2. bundleName_en.properties
+    // 3. bundleName_en_US.properties
     
     final ResourceBundle supportedLanguagesBundle = new ResourceBundle();
-
     // callback for when supported_locales has been fetched (if desired)
     IResourceBundleLoadCallback supportedLangCallback = new IResourceBundleLoadCallback() {
       public void bundleLoaded(String bundleName) {
@@ -159,13 +166,6 @@ public class ResourceBundle {
       supportedLangCallback.bundleLoaded("supported_languages");
     }
     
-    // get the locale meta property if the url parameter is missing
-    initCallbacks();
-    // decompose locale
-    // _en_US
-    // 1. bundleName.properties
-    // 2. bundleName_en.properties
-    // 3. bundleName_en_US.properties
   }
 
   private void initCallbacks() {
