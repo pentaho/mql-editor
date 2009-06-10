@@ -110,7 +110,11 @@ public class MessageBundle {
    * @param bundleLoadCallback
    *          The callback to invoke when the bundle has finished loading
    */
+  @Deprecated
   public MessageBundle(String path, String bundleName, IMessageBundleLoadCallback bundleLoadCallback) {
+
+    Window.alert("creating MessageBundle: " + bundleName);
+    
     this.path = path;
     this.bundleName = bundleName;
     this.bundleLoadCallback = bundleLoadCallback;
@@ -138,10 +142,12 @@ public class MessageBundle {
     }
   }
 
+  @Deprecated
   private native String getUrlExtras()/*-{
     return (document.all) ? "?rand="+(Math.random()*10000) : "";
   }-*/;
 
+  @Deprecated
   private void initCallbacks() {
     baseCallback = new RequestCallback() {
       public void onError(Request request, Throwable exception) {
@@ -271,6 +277,7 @@ public class MessageBundle {
     };
   }
 
+  @Deprecated
   private void fireBundleLoadCallback() {
     if (bundleLoadCallback != null) {
       bundleLoadCallback.bundleLoaded(bundleName);
@@ -285,6 +292,7 @@ public class MessageBundle {
    *          The name of the resource being requested
    * @return The UTF-8 friendly value found for the given key
    */
+  @Deprecated
   public String getString(String key) {
     String resource = bundle.get(key);
     if (resource == null) {
@@ -300,6 +308,7 @@ public class MessageBundle {
    * @param parameters The values to replace occurrences of {n} in the found resource
    * @return The UTF-8 friendly value found for the given key
    */
+  @Deprecated
   public String getString(String key, String...parameters) {
     String resource = bundle.get(key);
     if (resource == null) {
@@ -316,10 +325,12 @@ public class MessageBundle {
    * 
    * @return The key set for the message bundle
    */
+  @Deprecated
   public Set<String> getKeys() {
     return bundle.keySet();
   }
   
+  @Deprecated
   private String decodeUTF8(String str) {
     if (str == null) {
       return str;
@@ -332,6 +343,7 @@ public class MessageBundle {
     return str;
   }
 
+  @Deprecated
   private static native String getLanguagePreference()
   /*-{
     var m = $doc.getElementsByTagName('meta'); 

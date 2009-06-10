@@ -26,39 +26,47 @@ package org.pentaho.gwt.widgets.client.utils;
 @Deprecated  
 public class StringUtils {
 
+  @Deprecated
   public static boolean isEmpty( String str ) {
     return null == str || "".equals( str.trim() ); //$NON-NLS-1$
   }
   
+  @Deprecated
   public static String defaultString( String str, String xdefault )
   {
     return StringUtils.isEmpty( str ) ? xdefault : str;
   }
   
+  @Deprecated
   public static String defaultString( String str )
   {
     return StringUtils.isEmpty( str ) ? "" : str; //$NON-NLS-1$
   }
   
+  @Deprecated
   public static String defaultIfEmpty( String str, String xdefault )
   {
     return StringUtils.isEmpty( str ) ? xdefault : str;
   }
   
+  @Deprecated
   public static String addStringToInt( String strAddend, int addend ) {
     return Integer.toString( Integer.parseInt( strAddend ) + addend );
   }
   
+  @Deprecated
   public static String multiplyStringWithInt( String strMultiplicand, int multiplier ) {
     return Integer.toString( Integer.parseInt( strMultiplicand ) * multiplier );
   }
   
+  @Deprecated
   public static String divideStringWithInt( String strDividend, int divisor ) {
     return Integer.toString( Integer.parseInt( strDividend ) / divisor );
   }
 
   // MAX_INT = 2147483647
   private static final String MATCH_POSITIVE_INTEGER_RE = "^\\s*[0-9]{1,10}\\s*$"; //$NON-NLS-1$
+  @Deprecated
   public static boolean isPositiveInteger( String strInt ) {
     int length = strInt.length();
     if ( length > 10 ) {

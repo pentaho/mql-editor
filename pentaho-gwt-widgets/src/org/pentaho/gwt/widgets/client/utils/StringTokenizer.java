@@ -28,6 +28,7 @@ import java.util.List;
 public class StringTokenizer {
   ArrayList<String> tokens = new ArrayList<String>();
 
+  @Deprecated
   public StringTokenizer(String text, String delimiters) {
     if (text == null || "".equals(text)) { //$NON-NLS-1$
       return;
@@ -53,14 +54,17 @@ public class StringTokenizer {
     }
   }
 
+  @Deprecated
   public StringTokenizer(String text, char delimiter) {
     this(text, new String(new char[] { delimiter }));
   }
 
+  @Deprecated
   public int countTokens() {
     return tokens.size();
   }
 
+  @Deprecated
   public String tokenAt(int index) {
     return (String) tokens.get(index);
   }

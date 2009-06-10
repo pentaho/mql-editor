@@ -37,6 +37,7 @@ public class PropertiesUtil {
    *          A map of default settings which will be overridden if they exist in the provided input
    * @return name/value pairs for each name=value in the .properties file
    */
+  @Deprecated
   public static HashMap<String, String> buildProperties(String text, HashMap<String, String> defaultProperties) {
     // we're going to override existing settings, in this way we can override default values with locale
     // specific variants for example, we do not want to modify the user provided list
@@ -68,6 +69,7 @@ public class PropertiesUtil {
    *          This is typically the contents of a .properties file in String form
    * @return name/value pairs for each name=value in the .properties file
    */
+  @Deprecated
   public static HashMap<String, String> buildProperties(String text) {
     return buildProperties(text, null);
   }
