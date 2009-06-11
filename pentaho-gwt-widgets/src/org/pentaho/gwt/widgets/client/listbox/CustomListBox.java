@@ -368,6 +368,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       editableTextBox.sinkEvents(Event.KEYEVENTS);
       editableTextBox.sinkEvents(Event.MOUSEEVENTS);
       selectedWidget = editableTextBox;
+      onChange(editableTextBox);
 
     }
     this.setTdStyles(selectedWidget.getElement());
@@ -618,7 +619,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
    * @return currently selected Item
    */
   public ListItem getSelectedItem(){
-    if(selectedIndex < 0){
+    if(selectedIndex < 0 || selectedIndex > items.size()){
       return null;
     }
 
