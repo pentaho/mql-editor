@@ -16,6 +16,8 @@ import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
 import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
 import org.pentaho.gwt.widgets.client.utils.IMessageBundleLoadCallback;
 import org.pentaho.gwt.widgets.client.utils.MessageBundle;
+import org.pentaho.gwt.widgets.client.utils.i18n.IResourceBundleLoadCallback;
+import org.pentaho.gwt.widgets.client.utils.i18n.ResourceBundle;
 import org.pentaho.ui.xul.XulServiceCallback;
 import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.gwt.GwtXulDomContainer;
@@ -35,9 +37,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.xml.client.XMLParser;
 
-public class GwtMqlEditor implements IMessageBundleLoadCallback {
+public class GwtMqlEditor implements IResourceBundleLoadCallback {
 
-  private MessageBundle bundle;
+  private ResourceBundle bundle;
   private MainController mainController = new MainController();
   private Workspace workspace = new Workspace();
   private GwtXulDomContainer container;
@@ -236,7 +238,6 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
       }
 
       public void success(List<MqlDomain> domains) {
-        Window.alert("got metadata domains");
         updateDomains(domains);
         
         for(MqlDialogListener listener : listeners){
@@ -244,7 +245,7 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
         }
         
         try {
-          bundle = new MessageBundle(GWT.getModuleBaseURL(),"mainFrame", GwtMqlEditor.this );
+          bundle = new ResourceBundle(GWT.getModuleBaseURL(),"mainFrame", true, GwtMqlEditor.this );
         } catch (Exception e) {
           e.printStackTrace();
         }

@@ -77,6 +77,7 @@ public class JavascriptEditor implements EntryPoint {
       }
     };
     editor.addMqlDialogListener(listener);
+    editor.show();
 
   }
   
