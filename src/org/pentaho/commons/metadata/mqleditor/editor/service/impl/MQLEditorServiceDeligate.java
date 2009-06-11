@@ -107,9 +107,11 @@ public class MQLEditorServiceDeligate {
         }
       }
     }
-    for (CWM cwm : cwms) {
-      SchemaMeta meta = factory.getSchemaMeta(cwm);
-      addLegacyDomain(meta);
+    if (cwms != null) {
+      for (CWM cwm : cwms) {
+        SchemaMeta meta = factory.getSchemaMeta(cwm);
+        addLegacyDomain(meta);
+      }
     }
     return domains;
   }
