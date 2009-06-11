@@ -78,9 +78,12 @@ public class MQLEditorServiceDeligate {
    * Keeps track of where a particular model came from.
    */
   private Map<String, SchemaMeta> modelIdToSchemaMetaMap = new HashMap<String, SchemaMeta>();
+  
+  private List<CWM> cwms;
 
   public MQLEditorServiceDeligate(List<CWM> cwms, CwmSchemaFactoryInterface factory) {
     this.factory = factory;
+    this.cwms = cwms;
     for (CWM cwm : cwms) {
       SchemaMeta meta = factory.getSchemaMeta(cwm);
       addLegacyDomain(meta);
@@ -95,11 +98,18 @@ public class MQLEditorServiceDeligate {
   }
 
   public List<MqlDomain> refreshMetadataDomains() {
-    for (String id : domainRepository.getDomainIds()) {
-      if (!domainNames.contains(id)) {
-        // add the domain
-        addThinDomain(id);
+    domains.clear();
+    if(domainRepository != null){
+      for (String id : domainRepository.getDomainIds()) {
+        if (!domainNames.contains(id)) {
+          // add the domain
+          addThinDomain(id);
+        }
       }
+    }
+    for (CWM cwm : cwms) {
+      SchemaMeta meta = factory.getSchemaMeta(cwm);
+      addLegacyDomain(meta);
     }
     return domains;
   }
@@ -381,7 +391,8 @@ public class MQLEditorServiceDeligate {
     UniqueList list = model.getAllBusinessColumns();
     for (Object col : list.getList()) {
       org.pentaho.pms.schema.BusinessColumn bCol = (org.pentaho.pms.schema.BusinessColumn) col;
-      if (bCol.getName(locale).equals(thinCol.getName())) {
+      if (bCol.getId().equals(thinCol.getId())) {
+        
         AggType aggType = thinCol.getSelectedAggType();
         if (aggType == null && thinCol.getDefaultAggType() != null) {
           aggType = thinCol.getDefaultAggType();
@@ -609,7 +620,7 @@ public class MQLEditorServiceDeligate {
     UniqueList<BusinessModel> models = meta.getBusinessModels();
     BusinessModel realModel = null;
     for (BusinessModel m : models) {
-      if (m.getName(locale).equals(query.getModel().getName())) {
+      if (m.getId().equals(query.getModel().getId())) {
         realModel = m;
         break;
       }
