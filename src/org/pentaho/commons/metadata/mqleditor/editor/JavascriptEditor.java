@@ -25,12 +25,23 @@ public class JavascriptEditor implements EntryPoint {
     service = new MQLEditorServiceGwtImpl();
 
     setupNativeHooks(this);
+    
+    editor = new GwtMqlEditor(service, new AsyncConstructorListener() {
 
+      public void asyncConstructorDone() {
+      }
+    });
+    
   }
 
   private native void setupNativeHooks(JavascriptEditor editor)/*-{
             $wnd.openMqlEditor= function(callback) {
               editor.@org.pentaho.commons.metadata.mqleditor.editor.JavascriptEditor::show(Lcom/google/gwt/core/client/JavaScriptObject;)(callback);
+            }
+            
+            $wnd.openMqlEditorWithIDs= function(domain_id, model_id, callback) {
+            
+              editor.@org.pentaho.commons.metadata.mqleditor.editor.JavascriptEditor::show(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)(domain_id, model_id, callback);
             }
           }-*/;
 
@@ -42,9 +53,45 @@ public class JavascriptEditor implements EntryPoint {
    */
   @SuppressWarnings("unused")
   private void show(final JavaScriptObject callback) {
-    editor = new GwtMqlEditor(service, new AsyncConstructorListener() {
 
-      public void asyncConstructorDone() {
+    final MqlDialogListener listener = new MqlDialogListener() {
+      public void onDialogAccept(final MqlQuery queryModel) {
+        service.serializeModel(queryModel, new XulServiceCallback<String>() {
+          public void success(String s) {
+            notifyCallbackSuccess(callback, s, queryModel.getMqlStr());
+          }
+
+          public void error(String s, Throwable throwable) {
+            notifyCallbackError(callback, throwable.getMessage());
+          }
+        });
+      }
+
+      public void onDialogCancel() {
+        editor.hide();
+        notifyCallbackCancel(callback);
+      }
+      
+      public void onDialogReady(){
+        notifyCallbackReady(callback);
+      }
+    };
+    editor.addMqlDialogListener(listener);
+
+  }
+  
+
+  private void show(final String domainId, final String modelId, final JavaScriptObject callback) {
+    
+    // Add a listener to wait for notification of that the dialog has refreshed it domain list.
+    editor.addMqlDialogListener(new MqlDialogListener(){
+      public void onDialogAccept(MqlQuery query) {
+      }
+
+      public void onDialogCancel() {
+      }
+      
+      public void onDialogReady(){
         final MqlDialogListener listener = new MqlDialogListener() {
           public void onDialogAccept(final MqlQuery queryModel) {
             service.serializeModel(queryModel, new XulServiceCallback<String>() {
@@ -62,28 +109,29 @@ public class JavascriptEditor implements EntryPoint {
             editor.hide();
             notifyCallbackCancel(callback);
           }
+          
+          public void onDialogReady(){
+            notifyCallbackReady(callback);
+          }
         };
         editor.addMqlDialogListener(listener);
-        JavascriptEditor.this.service
-            .deserializeModel(
-                "{\"MQLQuery\":{\"cols\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"BC_CUSTOMER_W_TER_CUSTOMERNUMBER\",\"name\":\"Customernumber\",\"type\":\"FLOAT\",\"aggTypes\":\"\"},{\"id\":\"BC_ORDERDETAILS_TOTAL\",\"name\":\"Total\",\"type\":\"FLOAT\",\"aggTypes\":\"\"},{\"id\":\"BC_ORDERS_STATUS\",\"name\":\"Status\",\"type\":\"TEXT\",\"aggTypes\":\"\"}]},\"conditions\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Condition\":[{\"@combinationType\":\"AND\",\"@defaultValue\":\"\",\"@operator\":\"=\",\"@selectedAggType\":\"\",\"@value\":\"131\",\"column\":{\"id\":\"BC_CUSTOMER_W_TER_CUSTOMERNUMBER\",\"name\":\"Customernumber\",\"type\":\"FLOAT\",\"aggTypes\":\"\"}},{\"@combinationType\":\"OR\",\"@defaultValue\":\"\",\"@operator\":\"=\",\"@selectedAggType\":\"\",\"@value\":\"145\",\"column\":{\"id\":\"BC_CUSTOMER_W_TER_CUSTOMERNUMBER\",\"name\":\"Customernumber\",\"type\":\"FLOAT\",\"aggTypes\":\"\"}}]}],\"orders\":[\"\"]},\"domain\":{\"@id\":\"default\",\"@name\":\"\\/org\\/pentaho\\/commons\\/metadata\\/mqleditor\\/sampleMql\"},\"model\":{\"@id\":\"BV_ORDERS\",\"@name\":\"Orders\"}}"
-
-                , new XulServiceCallback<MqlQuery>() {
-
-                  public void error(String arg0, Throwable arg1) {
-                    Window.alert("error deserializing model");
-                    editor.show();
-                  }
-
-                  public void success(MqlQuery savedQuery) {
-
-                    editor.setSavedQuery((Query) savedQuery);
-                    editor.show();
-                  }
-                });
+        
+        Window.alert("showing dialog");
+        editor.setSelectedDomainId(domainId);
+        editor.setSelectedModelId(modelId);
+        editor.show();
+        editor.removeMqlDialogListener(this);
       }
+      
     });
+    editor.updateDomainList();
+    
   }
+  
+
+  private native void notifyCallbackReady(JavaScriptObject callback)/*-{
+    callback.onReady();
+  }-*/;
 
   private native void notifyCallbackSuccess(JavaScriptObject callback, String mqlJSON, String query)/*-{
             callback.onOk(mqlJSON, query);

@@ -7,4 +7,6 @@ public interface MqlDialogListener {
   public void onDialogAccept(MqlQuery queryModel);
 
   public void onDialogCancel();
+  
+  public void onDialogReady();
 }

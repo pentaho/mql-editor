@@ -34,7 +34,25 @@
           }
         });
       }
+
+      function showMQLEditor2(){
+    	   openMqlEditorWithIDs("/org/pentaho/commons/metadata/mqleditor/sampleMql", "Orders", new function(){
+            this.onOk = function(json, mqlStr){
+              alert(json+"\n\n\n"+mqlStr);
+            }
+            this.onError = function(err){
+              alert(err);
+            }
+            this.onCancel = function(){
+              alert("Canceled");
+            }
+          });
+        }
     </script>
     <input type="button" onclick="showMQLEditor()" value="Test"/>
+    
+    
+    
+    <input type="button" onclick="showMQLEditor2()" value="Test"/>
   </body>
 </html>

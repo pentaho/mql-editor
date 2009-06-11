@@ -95,6 +95,9 @@ public class MainController extends AbstractXulEventHandler {
     bf.createBinding(domainList, "selectedIndex", workspace, "selectedDomain", new BindingConvertor<Integer, UIDomain>() {
       @Override
       public UIDomain sourceToTarget(Integer value) {
+        if(value < 0 || value > workspace.getDomains().size()){
+          return null;
+        }
         return workspace.getDomains().get(value);
       }
       @Override

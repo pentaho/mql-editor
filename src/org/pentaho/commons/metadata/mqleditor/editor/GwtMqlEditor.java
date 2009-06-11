@@ -46,6 +46,8 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
   OrderController orderController = new OrderController();
   PreviewController previewController = new PreviewController();
   private AsyncConstructorListener constructorListener;
+  private List<MqlDialogListener> listeners = new ArrayList<MqlDialogListener>();
+  private MQLEditorService service;
   
   public GwtMqlEditor(final MQLEditorService service, final AsyncConstructorListener constructorListener){
     mainController.setWorkspace(workspace);
@@ -86,10 +88,16 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
   }
   
   public void addMqlDialogListener(MqlDialogListener listener){
+    if(this.listeners.contains(listener) == false){
+      this.listeners.add(listener);
+    }
     mainController.addMqlDialogListener(listener);
   }
   
   public void removeMqlDialogListener(MqlDialogListener listener){
+    if(this.listeners.contains(listener)){
+      this.listeners.remove(listener);
+    }
     mainController.removeMqlDialogListener(listener);
   }
   
@@ -132,7 +140,9 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
       }
 
     } catch (Exception e) {
+      Window.alert("Error Loading MQLEditor Xul file: "+e.getMessage());
       e.printStackTrace();
+      
     }
   }
   
@@ -192,13 +202,31 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
       if (constructorListener != null) {
         constructorListener.asyncConstructorDone();
       }
-
+      
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
   
+  public void updateDomainList(){
+    service.refreshMetadataDomains(new XulServiceCallback<List<MqlDomain>>() {
+
+      public void error(String message, Throwable error) {
+        Window.alert("could not get list of metadata domains");
+      }
+
+      public void success(List<MqlDomain> domains) {
+        updateDomains(domains);
+        for(MqlDialogListener listener : listeners){
+          listener.onDialogReady();
+        }
+      }
+      
+    });
+  }
+  
   private void setService(MQLEditorService service){
+    this.service = service;
     previewController.setService(service);
     mainController.setService(service);
     service.getMetadataDomains(new XulServiceCallback<List<MqlDomain>>() {
@@ -208,7 +236,13 @@ public class GwtMqlEditor implements IMessageBundleLoadCallback {
       }
 
       public void success(List<MqlDomain> domains) {
+        Window.alert("got metadata domains");
         updateDomains(domains);
+        
+        for(MqlDialogListener listener : listeners){
+          listener.onDialogReady();
+        }
+        
         try {
           bundle = new MessageBundle(GWT.getModuleBaseURL(),"mainFrame", GwtMqlEditor.this );
         } catch (Exception e) {

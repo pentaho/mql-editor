@@ -383,7 +383,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   public void setDomains(List<UIDomain> domains) {
     List<UIDomain> oldDomains = this.domains;
     this.domains = domains;
-    if(oldDomains != domains || oldDomains.size() != domains.size()){
+    if(oldDomains != domains){
       this.firePropertyChange("domains", null, domains); //$NON-NLS-1$
     }
   }
