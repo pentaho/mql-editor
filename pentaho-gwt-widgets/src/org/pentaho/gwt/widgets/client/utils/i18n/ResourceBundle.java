@@ -310,6 +310,9 @@ public class ResourceBundle {
 
   public String getString(String key) {
     String resource = bundle.get(key);
+    if (resource == null) {
+      return key;
+    }
     return decodeUTF8(resource);
   }
 
