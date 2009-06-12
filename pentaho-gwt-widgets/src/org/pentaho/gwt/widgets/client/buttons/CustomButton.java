@@ -37,25 +37,24 @@ public class CustomButton extends Widget {
 
   private String baseStyleName = "customButton"; //$NON-NLS-1$
   private Command command;
-  private SimplePanel buttonPanel = new SimplePanel();
   private boolean enabled = true;
   private Image image;
   private String text;
   private ButtonLabelType type;
   private List<ClickListener> listeners = new ArrayList<ClickListener>();
-  HorizontalPanel sp;
+  HorizontalPanel buttonPanel;
   public CustomButton() {
   }
 
   public CustomButton(Image image, String text, ButtonLabelType type) {
     SimplePanel spacer = new SimplePanel();
     spacer.setWidth("10px");
-    sp = new HorizontalPanel();
-    sp.add(spacer);
-    sp.add(ButtonHelper.createButtonElement(image, text, type));
-    sp.add(spacer);
-    this.setElement(sp.getElement());
-    sp.setStylePrimaryName(baseStyleName);
+    buttonPanel = new HorizontalPanel();
+    buttonPanel.add(spacer);
+    buttonPanel.add(ButtonHelper.createButtonElement(image, text, type));
+    buttonPanel.add(spacer);
+    this.setElement(buttonPanel.getElement());
+    buttonPanel.setStylePrimaryName(baseStyleName);
     sinkEvents(Event.MOUSEEVENTS);
     sinkEvents(Event.ONDBLCLICK);    
   }
@@ -74,19 +73,19 @@ public class CustomButton extends Widget {
   public void setStylePrimaryName(String style) {
     super.setStylePrimaryName(style);
     baseStyleName = style;
-    sp.setStylePrimaryName(style); //$NON-NLS-1$
+    buttonPanel.setStylePrimaryName(style); //$NON-NLS-1$
   }
 
   @Override
   public void addStyleDependentName(String style) {
     super.addStyleDependentName(style);
-    sp.addStyleDependentName(style);
+    buttonPanel.addStyleDependentName(style);
   }
 
   @Override
   public void removeStyleDependentName(String style) {
     super.removeStyleDependentName(style);
-    sp.removeStyleDependentName(style);
+    buttonPanel.removeStyleDependentName(style);
   }
 
   public String getText() {
