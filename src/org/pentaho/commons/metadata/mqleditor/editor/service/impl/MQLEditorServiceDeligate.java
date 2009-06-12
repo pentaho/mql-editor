@@ -497,7 +497,7 @@ public class MQLEditorServiceDeligate {
             org.pentaho.metadata.model.Category view = findCategory(model, condition.getColumn());
             AggregationType type = getAggregationType(condition.getSelectedAggType());
             String field = "[";
-            field += view +"." + condition.getColumn().getId();
+            field += view.getId() +"." + condition.getColumn().getId();
             if (type != null) {
               field += "." + type.toString();
             }
