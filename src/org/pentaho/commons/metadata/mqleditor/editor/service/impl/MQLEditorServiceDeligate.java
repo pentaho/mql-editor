@@ -99,6 +99,7 @@ public class MQLEditorServiceDeligate {
 
   public List<MqlDomain> refreshMetadataDomains() {
     domains.clear();
+    domainNames.clear();
     if(domainRepository != null){
       for (String id : domainRepository.getDomainIds()) {
         if (!domainNames.contains(id)) {
