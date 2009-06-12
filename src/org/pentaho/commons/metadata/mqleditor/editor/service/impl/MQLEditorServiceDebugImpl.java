@@ -21,41 +21,41 @@ import org.pentaho.ui.xul.XulServiceCallback;
 
 public class MQLEditorServiceDebugImpl implements MQLEditorService{
 
-  MQLEditorServiceDeligate deligate;
+  MQLEditorServiceDelegate delegate;
 
   public MQLEditorServiceDebugImpl(SchemaMeta meta){
 
-    deligate = new MQLEditorServiceDeligate(meta);
+    delegate = new MQLEditorServiceDelegate(meta);
 
     // this is normally provided by PentahoSystem or the metadata editor.
     FileBasedMetadataDomainRepository repo = new FileBasedMetadataDomainRepository();
     repo.setDomainFolder("src/org/pentaho/commons/metadata/mqleditor/sampleMql/thinmodels");
-    deligate.initializeThinMetadataDomains(repo);
+    delegate.initializeThinMetadataDomains(repo);
   }
 
   public void getDomainByName(String name, XulServiceCallback<MqlDomain> callback) {
-    callback.success(deligate.getDomainByName(name));
+    callback.success(delegate.getDomainByName(name));
   }
 
   public void refreshMetadataDomains(XulServiceCallback<List<MqlDomain>> callback) {
-    callback.success(deligate.refreshMetadataDomains());
+    callback.success(delegate.refreshMetadataDomains());
   }
   
   public void getMetadataDomains(XulServiceCallback<List<MqlDomain>> callback) {
-    callback.success(deligate.getMetadataDomains());
+    callback.success(delegate.getMetadataDomains());
   }
 
   public void saveQuery(MqlQuery model, XulServiceCallback<String> callback) {
-    callback.success(deligate.saveQuery(model));
+    callback.success(delegate.saveQuery(model));
   }
 
   public void serializeModel(MqlQuery query, XulServiceCallback<String> callback) {
-    callback.success(deligate.serializeModel(query));
+    callback.success(delegate.serializeModel(query));
   }
 
   public void getPreviewData(MqlQuery query, int page, int limit, XulServiceCallback<String[][]> callback) {
       try{
-        MQLQuery mqlQuery = this.deligate.convertModel(query);
+        MQLQuery mqlQuery = this.delegate.convertModel(query);
         
         DatabaseMeta databaseMeta = mqlQuery.getSelections().get(0).getBusinessColumn().getPhysicalColumn().getTable()
             .getDatabaseMeta();
@@ -125,7 +125,7 @@ public class MQLEditorServiceDebugImpl implements MQLEditorService{
     }
 
   public void deserializeModel(String serializedQuery, XulServiceCallback<MqlQuery> callback) {
-    callback.success(deligate.deserializeModel(serializedQuery));
+    callback.success(delegate.deserializeModel(serializedQuery));
   }
   
   

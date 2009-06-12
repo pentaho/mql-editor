@@ -31,7 +31,7 @@ import org.pentaho.commons.metadata.mqleditor.editor.models.UIOrder;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
 import org.pentaho.commons.metadata.mqleditor.editor.service.CWMStartup;
 import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
-import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDeligate;
+import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDelegate;
 import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceGwtImpl;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
 import org.pentaho.pms.core.CWM;
@@ -40,7 +40,7 @@ import org.pentaho.pms.factory.CwmSchemaFactory;
 public class WorkspaceTest {
 
   private Query mqlQuery;
-  private MQLEditorServiceDeligate service;
+  private MQLEditorServiceDelegate service;
   Workspace workspace;
   
   @Before
@@ -125,7 +125,7 @@ public class WorkspaceTest {
     List<CWM> cwms = new ArrayList<CWM>();
     cwms.add(cwm);
     
-    service = new MQLEditorServiceDeligate(cwms, factory);
+    service = new MQLEditorServiceDelegate(cwms, factory);
 
     workspace = new Workspace();
     

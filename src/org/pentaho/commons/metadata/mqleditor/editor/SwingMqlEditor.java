@@ -25,7 +25,7 @@ import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
 import org.pentaho.commons.metadata.mqleditor.editor.service.CWMStartup;
 import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDebugImpl;
-import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDeligate;
+import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDelegate;
 import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceImpl;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
 import org.pentaho.pms.core.CWM;
@@ -52,7 +52,7 @@ public class SwingMqlEditor {
   private Workspace workspace = new Workspace();
   private XulDomContainer container;
   private MQLEditorService service;
-  private MQLEditorServiceDeligate deligate;
+  private MQLEditorServiceDelegate delegate;
   
   public SwingMqlEditor(String xmiFile){
     CWM cwm = CWM.getInstance("");
@@ -66,7 +66,7 @@ public class SwingMqlEditor {
         CwmSchemaFactory factory = new CwmSchemaFactory();
         meta = factory.getSchemaMeta(cwm);
 
-        this.deligate = new MQLEditorServiceDeligate(meta);
+        this.delegate = new MQLEditorServiceDelegate(meta);
         this.service = new MQLEditorServiceImpl(meta);
       } catch (IOException e) {
         log.error(e);
@@ -83,7 +83,7 @@ public class SwingMqlEditor {
 
     this.service = service;
     if(meta != null){
-      this.deligate = new MQLEditorServiceDeligate(meta);
+      this.delegate = new MQLEditorServiceDelegate(meta);
     }
     
     init();
@@ -183,14 +183,14 @@ public class SwingMqlEditor {
     if(query == null){
       mainController.clearWorkspace();
     } else {
-      mainController.setSavedQuery((Query) this.deligate.convertModelToThin(query));
+      mainController.setSavedQuery((Query) this.delegate.convertModelToThin(query));
     }
   }
   
   public MQLQuery getMQLQuery(){
     MqlQuery query = workspace.getMqlQuery();
     
-    return deligate.convertModel(query);
+    return delegate.convertModel(query);
   }
 
   public static void main(String[] args){

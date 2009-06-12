@@ -22,7 +22,7 @@ import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
 import org.pentaho.commons.metadata.mqleditor.editor.service.CWMStartup;
 import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDebugImpl;
-import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDeligate;
+import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDelegate;
 import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceImpl;
 import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.factory.CwmSchemaFactory;
@@ -51,14 +51,14 @@ public class SwtMqlEditor {
   private Workspace workspace = new Workspace();
   private XulDomContainer container;
   private MQLEditorService service;
-  private MQLEditorServiceDeligate deligate;
+  private MQLEditorServiceDelegate delegate;
   private static Log logger = LogFactory.getLog(SwtMqlEditor.class);
 
   public SwtMqlEditor(MQLEditorService service, SchemaMeta meta) {
     try {
       this.service = service;
       if(meta != null){
-        this.deligate = new MQLEditorServiceDeligate(meta);
+        this.delegate = new MQLEditorServiceDelegate(meta);
       }
       
       container = new SwtXulLoader()
@@ -155,12 +155,12 @@ public class SwtMqlEditor {
     if(query == null){
       mainController.clearWorkspace();
     } else {
-      mainController.setSavedQuery((Query) this.deligate.convertModelToThin(query));
+      mainController.setSavedQuery((Query) this.delegate.convertModelToThin(query));
     }
   }
   
   public MQLQuery getMqlQuery(){
-    return deligate.convertModel(workspace.getMqlQuery());
+    return delegate.convertModel(workspace.getMqlQuery());
     
   }
 

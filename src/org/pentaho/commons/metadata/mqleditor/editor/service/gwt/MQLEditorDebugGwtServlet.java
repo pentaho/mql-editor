@@ -20,7 +20,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQLEditorGwtService {
 
-  org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDeligate deligate;
+  org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDelegate delegate;
   private SchemaMeta meta;
 
   public MQLEditorDebugGwtServlet() {
@@ -32,40 +32,40 @@ public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQ
     cwms.add(cwm);
     CwmSchemaFactory factory = new CwmSchemaFactory();
     meta = factory.getSchemaMeta(cwm);
-    deligate = new org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDeligate(cwms, factory);
+    delegate = new org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDelegate(cwms, factory);
 
     // this is normally provided by PentahoSystem or the metadata editor.
     // Un-comment out the next 3 lines to test thin models
     
 //    FileBasedMetadataDomainRepository repo = new FileBasedMetadataDomainRepository();
 //    repo.setDomainFolder("src/org/pentaho/commons/metadata/mqleditor/sampleMql/thinmodels");
-//    deligate.initializeThinMetadataDomains(repo);
+//    delegate.initializeThinMetadataDomains(repo);
 
   }
 
   public MqlDomain getDomainByName(String name) {
-    return deligate.getDomainByName(name);
+    return delegate.getDomainByName(name);
   }
 
   public List<MqlDomain> refreshMetadataDomains() {
-    return deligate.refreshMetadataDomains();
+    return delegate.refreshMetadataDomains();
   }
   
   public List<MqlDomain> getMetadataDomains() {
-    return deligate.getMetadataDomains();
+    return delegate.getMetadataDomains();
   }
 
   public String saveQuery(MqlQuery model) {
-    return deligate.saveQuery(model);
+    return delegate.saveQuery(model);
   }
 
   public String serializeModel(MqlQuery query) {
-    return deligate.serializeModel(query);
+    return delegate.serializeModel(query);
   }
   
   public String[][] getPreviewData(MqlQuery query, int page, int limit) {
     try{
-      MQLQuery mqlQuery = this.deligate.convertModel(query);
+      MQLQuery mqlQuery = this.delegate.convertModel(query);
       
       DatabaseMeta databaseMeta = mqlQuery.getSelections().get(0).getBusinessColumn().getPhysicalColumn().getTable()
           .getDatabaseMeta();
@@ -134,7 +134,7 @@ public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQ
   }
 
   public MqlQuery deserializeModel(String serializedQuery) {
-    return deligate.deserializeModel(serializedQuery);
+    return delegate.deserializeModel(serializedQuery);
   }
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.MqlDialogListener;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumn;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumns;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
@@ -14,6 +15,7 @@ import org.pentaho.ui.xul.XulServiceCallback;
 import org.pentaho.ui.xul.binding.Binding;
 import org.pentaho.ui.xul.binding.BindingConvertor;
 import org.pentaho.ui.xul.binding.BindingFactory;
+import org.pentaho.ui.xul.components.XulButton;
 import org.pentaho.ui.xul.components.XulMenuList;
 import org.pentaho.ui.xul.components.XulMessageBox;
 import org.pentaho.ui.xul.containers.XulDialog;
@@ -32,7 +34,8 @@ public class MainController extends AbstractXulEventHandler {
 
   private XulMenuList modelList;
   private XulMenuList domainList;
-  private XulTree categoryTree;;
+  private XulTree categoryTree;
+  private XulButton acceptButton;
 
   private Workspace workspace;
   private XulTree fieldTable;
@@ -85,7 +88,27 @@ public class MainController extends AbstractXulEventHandler {
     ordersTable = (XulTree) document.getElementById("orderTable");
     fieldTable = (XulTree) document.getElementById("selectedColumnTree");
     dialog = (XulDialog) document.getElementById("mqlEditorDialog");
+    acceptButton = (XulButton) document.getElementById("mqlEditorDialog_accept");
 
+    // bind the selections empty status to the ok button (i.e. if no selections, disable OK button)
+    bf.setBindingType(Binding.Type.ONE_WAY);
+    final Binding acceptButtonBinding = bf.createBinding(workspace, "selectedColumns", acceptButton, "!disabled", new BindingConvertor<UIColumns, Boolean>() {
+
+      @Override
+      public Boolean sourceToTarget(UIColumns value) {
+        return value != null && !value.isEmpty();
+      }
+
+      @Override
+      public UIColumns targetToSource(Boolean value) {
+        return null;
+      }
+      
+    });
+    
+    
+    
+    
     // Bind the domain list to the domain menulist drop-down.
     bf.setBindingType(Binding.Type.ONE_WAY);
     final Binding domainBinding = bf.createBinding(this.workspace, "domains", domainList, "elements");

@@ -55,15 +55,15 @@ import org.pentaho.pms.util.UniqueList;
 
 /**
  * 
- * This deligate class provides the majority of functionality needed by an implementation of the MQLEditor Service.
+ * This delegate class provides the majority of functionality needed by an implementation of the MQLEditor Service.
  * If you wish to use this file as a starting point for your implementation you'll need to provide a CWM isntance and
  * CWMSchemaFactory
  *
- * This deligate is used in the debug services provided in the base application.
+ * This delegate is used in the debug services provided in the base application.
  *
  */
 
-public class MQLEditorServiceDeligate {
+public class MQLEditorServiceDelegate {
 
   private String locale = Locale.getDefault().toString();
 
@@ -81,7 +81,7 @@ public class MQLEditorServiceDeligate {
   
   private List<CWM> cwms;
 
-  public MQLEditorServiceDeligate(List<CWM> cwms, CwmSchemaFactoryInterface factory) {
+  public MQLEditorServiceDelegate(List<CWM> cwms, CwmSchemaFactoryInterface factory) {
     this.factory = factory;
     this.cwms = cwms;
     for (CWM cwm : cwms) {
@@ -90,11 +90,11 @@ public class MQLEditorServiceDeligate {
     }
   }
 
-  public MQLEditorServiceDeligate(SchemaMeta meta) {
+  public MQLEditorServiceDelegate(SchemaMeta meta) {
     addLegacyDomain(meta);
   }
 
-  public MQLEditorServiceDeligate() {
+  public MQLEditorServiceDelegate() {
   }
 
   public List<MqlDomain> refreshMetadataDomains() {
@@ -431,6 +431,11 @@ public class MQLEditorServiceDeligate {
   }
 
   public String saveQuery(MqlQuery query) {
+    if (query.getColumns().isEmpty()) {
+      // UI allowed user to create a query without columns
+      throw new RuntimeException("query is not valid without columns"); //$NON-NLS-1$
+    }
+    
     if (domainRepository != null) {
       org.pentaho.metadata.model.Domain thinDomain = domainRepository.getDomain(query.getDomain().getName());
       if (thinDomain != null) {
