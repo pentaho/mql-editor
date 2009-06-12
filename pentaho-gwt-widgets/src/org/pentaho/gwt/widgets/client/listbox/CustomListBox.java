@@ -72,6 +72,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   private boolean suppressLayout;
   
   private boolean enabled = true;
+  private String val;
 
 
   public CustomListBox(){
@@ -112,6 +113,26 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
     setTdStyles(this.getElement());
     setTdStyles(listPanel.getElement());
+    
+    editableTextBox = new TextBox(){
+      @Override
+      public void onBrowserEvent(Event event) {
+        int code = event.getKeyCode();
+
+        switch(DOM.eventGetType(event)){
+          case Event.ONKEYUP:
+            onChange(editableTextBox);
+            val = editableTextBox.getText();
+//             event.cancelBubble(true);
+            break;
+          case Event.ONMOUSEUP:
+            super.onBrowserEvent(event);
+            event.cancelBubble(true);
+          default:
+            return;
+        }
+      }
+    };
 
   }
 
@@ -340,26 +361,10 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
         selectedWidget = items.get(0).getWidgetForDropdown();
       }
     } else {
-      editableTextBox = new TextBox(){
-        @Override
-        public void onBrowserEvent(Event event) {
-          int code = event.getKeyCode();
-
-          switch(DOM.eventGetType(event)){
-            case Event.ONKEYUP:
-              onChange(editableTextBox);
- //             event.cancelBubble(true);
-              break;
-            case Event.ONMOUSEUP:
-              super.onBrowserEvent(event);
-              event.cancelBubble(true);
-            default:
-              return;
-          }
-        }
-      };
       
-      if(selectedIndex >= 0){
+      if(this.val != null){
+        editableTextBox.setText(this.val);
+      } else if(selectedIndex >= 0){
         editableTextBox.setText(items.get(selectedIndex).getValue().toString());
       } else if(items.size() > 0){
         editableTextBox.setText(items.get(0).getValue().toString());
@@ -574,6 +579,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       }
       
       if(visible == 1 && this.isAttached()){
+        this.val = null;
         updateSelectedDropWidget();
         scrollSelectedItemIntoView();
       }
@@ -803,6 +809,14 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       return (editableTextBox != null)
         ? editableTextBox.getText()
         : null;
+    }
+  }
+  
+  public void setValue(String text){
+    this.val = text;
+    if(editable){
+      editableTextBox.setText(text);
+      this.onChange(editableTextBox);
     }
   }
 
