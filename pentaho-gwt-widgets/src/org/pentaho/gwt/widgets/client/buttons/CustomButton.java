@@ -58,6 +58,20 @@ public class CustomButton extends Widget {
     sinkEvents(Event.MOUSEEVENTS);
     sinkEvents(Event.ONDBLCLICK);    
   }
+
+  public CustomButton(Image image, String text, ButtonLabelType type, String className) {
+    SimplePanel spacer = new SimplePanel();
+    spacer.setWidth("10px");
+    buttonPanel = new HorizontalPanel();
+    buttonPanel.add(spacer);
+    buttonPanel.add(ButtonHelper.createButtonElement(image, text, type, className));
+    buttonPanel.add(spacer);
+    this.setElement(buttonPanel.getElement());
+    buttonPanel.setStylePrimaryName(baseStyleName);
+    sinkEvents(Event.MOUSEEVENTS);
+    sinkEvents(Event.ONDBLCLICK);    
+  }
+  
   public CustomButton(Image image, String text, ButtonLabelType type, Command command) {
     this(image, text, type);
     setCommand(command);
