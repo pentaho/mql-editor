@@ -1,8 +1,12 @@
 package org.pentaho.gwt.widgets.samples;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
 
+import org.pentaho.gwt.widgets.client.controls.ColorPicker;
+import org.pentaho.gwt.widgets.client.controls.ColorPickerListener;
 import org.pentaho.gwt.widgets.client.listbox.CustomListBox;
 import org.pentaho.gwt.widgets.client.listbox.DefaultListItem;
 
@@ -78,11 +82,12 @@ public class SampleApp implements EntryPoint {
     list2.addItem(new DefaultListItem("Testing 2", new CheckBox()));
 
     list2.setEditable(true);
+    list2.setValue("Bogus");
 
 
-    //RootPanel.get().add(new Label(""));
-    //RootPanel.get().add(new Label("Combo2: "));
-    //RootPanel.get().add(list2);
+    RootPanel.get().add(new Label(""));
+    RootPanel.get().add(new Label("Combo2: "));
+    RootPanel.get().add(list2);
 
     
     CustomListBox list3 = new CustomListBox();
@@ -116,6 +121,7 @@ public class SampleApp implements EntryPoint {
     final CustomListBox list4 = new CustomListBox();
 
     list4.addItem("Albert");
+    list4.addItem("Greg");
     list4.setWidth("170px");
 
     RootPanel.get().add(new Label(""));
@@ -124,5 +130,30 @@ public class SampleApp implements EntryPoint {
 
     RootPanel.get().add(showSelectedLabel);
     RootPanel.get().add(showSelectedTextBox);
+    
+    
+    
+    final ColorPicker picker = new ColorPicker();
+    picker.addColorPickerListener(new ColorPickerListener(){
+
+      public void colorPicked(ColorPicker picker) {
+        System.out.println("color: " + picker.getColor());
+        
+      }
+      
+    });
+    
+    RootPanel.get().add(picker);
+    Button btn = new Button("colorPicker");
+    RootPanel.get().add(btn);
+    
+    btn.addClickHandler(new ClickHandler(){
+
+      public void onClick(ClickEvent event) {
+        picker.showPicker();
+        
+      }
+      
+    });
   }
 }

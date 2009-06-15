@@ -687,7 +687,6 @@ body{
 }
 
 
-
 .customButton {
   font-size: 0.85em;
   border: 1px outset #ccc;
@@ -710,3 +709,28 @@ body{
 .customButton-disabled-hover {
   border: 1px outset #ccc;
 }
+
+.color-picker-popup{
+  background-color: white;
+  border: 1px solid black;
+}
+
+.color-swatch{
+	border: 1px transparent;
+	padding: 3px;
+	background-color: white;
+	cursor: pointer;
+	}
+	
+	.color-swatch:hover{
+  border: 1px solid #bbb;
+  padding: 3px;
+  background-color: #eee;
+  cursor: pointer;
+  }
+  
+  .color-swatch-center{
+  height: 10px;
+  width: 10px;
+  }
+	
