@@ -5,6 +5,8 @@
   <!-- <vbox id="dataModelContainer" flex="0" visible="false"/> -->
   <!-- <vbox id="categoryTreeContainer" flex="0" height="390"/> -->
   <vbox id="categoryTreeContainer" flex="0" height="290"/>
+  
+  <tree id="categoryTree" height="290"/>
   <vbox id="tableContainer" flex="5" height="330"/>
 
   <spacer id="rightColumnVerticalAlignment" height="14" />
