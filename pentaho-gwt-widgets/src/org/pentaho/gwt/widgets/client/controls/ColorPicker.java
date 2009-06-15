@@ -117,6 +117,7 @@ public class ColorPicker extends Image{
     };
     
     public ColorPickerDialog(){
+      super(true);
       this.setStyleName("color-picker-popup");
       
       FlexTable table = new FlexTable();
