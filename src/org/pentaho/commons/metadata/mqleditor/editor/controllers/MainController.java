@@ -264,7 +264,7 @@ public class MainController extends AbstractXulEventHandler {
             box.setTitle("Mql Query");
             retVal = retVal.replace("><", ">\n<");
             box.setMessage(retVal);
-            box.open();
+            //box.open();
           } catch(Exception e){
             //ignore
           }
