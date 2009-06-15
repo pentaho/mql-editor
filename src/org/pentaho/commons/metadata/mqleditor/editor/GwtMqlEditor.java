@@ -132,6 +132,7 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
             public void onResponseReceived(Request request, Response response) {
               
               loadOverlay(response.getText());
+              
             }
           });
         } catch (RequestException e) {
@@ -140,7 +141,7 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
       } catch (Exception e) {
         e.printStackTrace();
       }
-
+      
     } catch (Exception e) {
       Window.alert("Error Loading MQLEditor Xul file: "+e.getMessage());
       e.printStackTrace();

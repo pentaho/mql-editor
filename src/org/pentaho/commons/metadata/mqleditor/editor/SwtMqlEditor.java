@@ -63,6 +63,7 @@ public class SwtMqlEditor {
       
       container = new SwtXulLoader()
           .loadXul("org/pentaho/commons/metadata/mqleditor/editor/public/mainFrame.xul");
+      loadOverlays();
 
       final XulRunner runner = new SwtXulRunner();
       runner.addContainer(container);
@@ -136,6 +137,17 @@ public class SwtMqlEditor {
     XulDialog dialog = (XulDialog) container.getDocumentRoot().getElementById("mqlEditorDialog");
     dialog.show();
     
+  }
+  
+  private void loadOverlays(){
+    // Load the overlay to remove the "dynamic" behavior of the "combine" column in the "conditions" table
+    // SWT table cannot accommodate more then one widget type in a given column yet 
+    try {
+      container.loadOverlay("org/pentaho/commons/metadata/mqleditor/editor/public/mainFrame-swt-overlay.xul"); //$NON-NLS-1$
+    } catch (XulException e) {
+      log.error("Error loading Xul overlay: mainFrame-swt-overlay.xul");
+      e.printStackTrace();
+    }
   }
   
   public static void main(String[] args) {

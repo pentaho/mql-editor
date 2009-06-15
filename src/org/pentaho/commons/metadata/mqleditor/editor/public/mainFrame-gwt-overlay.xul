@@ -2,12 +2,20 @@
 <?xml-stylesheet href="file://E:/workspaces/sprint_workspace/pentaho-xul/test/resource/documents/xul.css" type="text/css"?>
 <overlay 
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:pen="http://www.pentaho.org/2008/xul">
-  <vbox id="buttonVbox1" flex="0" height="126"/>
-  <vbox id="buttonVbox2" flex="0" height="126"/>
-  <vbox id="buttonVbox3" flex="0" height="126"/>
-  
-  <tree id="orderTable" height="137" width="575" />
-  <tree id="conditionsTree" height="137" width="575" />
-  <tree id="selectedColumnTree" height="137" width="575" />
+  <!-- <vbox id="dataModelContainer" flex="0" visible="false"/> -->
+  <!-- <vbox id="categoryTreeContainer" flex="0" height="390"/> -->
+  <vbox id="categoryTreeContainer" flex="0" height="290"/>
+  <vbox id="tableContainer" flex="5" height="330"/>
+
+  <spacer id="rightColumnVerticalAlignment" height="14" />
+
+  <vbox id="buttonContainer" height="400"/>  
+  <spacer id="buttonContainerVerticalSpacer" height="10" />
+
+  <spacer id="conditionsSpacer" width="500" />
+
+  <tree id="orderTable" height="100" width="640" />
+  <tree id="conditionsTree" height="100" width="640" />
+  <tree id="selectedColumnTree" height="100" width="640" />
 
 </overlay>

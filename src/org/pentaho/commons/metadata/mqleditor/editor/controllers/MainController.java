@@ -188,9 +188,9 @@ public class MainController extends AbstractXulEventHandler {
     });
     
     // Bind the selected columns, conditions and orders to their respective tables
-    bf.createBinding(workspace, "selectedColumns", fieldTable, "elements");
-    bf.createBinding(workspace, "conditions", conditionsTable, "elements");
-    bf.createBinding(workspace, "orders", ordersTable, "elements");
+    bf.createBinding(workspace, "selectedColumns", fieldTable, "elements"); //$NON-NLS-1$ //$NON-NLS-2$
+    bf.createBinding(workspace, "conditions", conditionsTable, "elements"); //$NON-NLS-1$ //$NON-NLS-2$
+    bf.createBinding(workspace, "orders", ordersTable, "elements"); //$NON-NLS-1$ //$NON-NLS-2$
 
     try {
       // Fires the population of the model listbox. This cascades down to the categories and columns. In essence, this
