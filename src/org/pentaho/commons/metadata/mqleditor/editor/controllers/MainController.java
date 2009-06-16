@@ -59,16 +59,13 @@ public class MainController extends AbstractXulEventHandler {
     if (savedQuery == null) {
       this.clearWorkspace();
     }
-  }
-  
-  public void init() {
-
-    createBindings();
-    
     if (savedQuery != null) {
       workspace.wrap(savedQuery);
     }
-    
+  }
+  
+  public void init() {
+    createBindings();
   }
   
   public void showDialog(){
