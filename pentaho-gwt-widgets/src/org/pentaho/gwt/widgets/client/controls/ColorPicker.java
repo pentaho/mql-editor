@@ -61,6 +61,9 @@ public class ColorPicker extends Image{
       picker.setPopupPosition(DOM.getAbsoluteLeft(this.getElement()), DOM.getAbsoluteTop(this.getElement()) + rect.height + 2);
       picker.show();
       break;
+    case Event.ONMOUSEOVER:
+    case Event.ONMOUSEOUT:
+      break;
     default:
       break;
     }
@@ -163,6 +166,9 @@ public class ColorPicker extends Image{
       case Event.ONCLICK:
         ColorPicker.this.setColor(color);
         dialog.hide();
+        break;
+      case Event.ONMOUSEOVER:
+      case Event.ONMOUSEOUT:
         break;
       default:
         break;
