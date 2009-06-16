@@ -1,5 +1,6 @@
 package org.pentaho.commons.metadata.mqleditor.editor.service.impl;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.pentaho.commons.connection.IPentahoResultSet;
 import org.pentaho.commons.metadata.mqleditor.AggType;
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.CombinationType;
@@ -30,13 +31,14 @@ import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelUtil;
+import org.pentaho.di.core.database.Database;
+import org.pentaho.di.core.database.DatabaseMeta;
 import org.pentaho.metadata.model.LogicalColumn;
 import org.pentaho.metadata.model.LogicalModel;
 import org.pentaho.metadata.model.concept.types.AggregationType;
 import org.pentaho.metadata.query.model.Constraint;
 import org.pentaho.metadata.query.model.util.QueryXmlHelper;
 import org.pentaho.metadata.repository.IMetadataDomainRepository;
-import org.pentaho.metadata.util.ThinModelConverter;
 import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.factory.CwmSchemaFactoryInterface;
 import org.pentaho.pms.mql.MQLQuery;
@@ -44,7 +46,6 @@ import org.pentaho.pms.mql.MQLQueryImpl;
 import org.pentaho.pms.mql.OrderBy;
 import org.pentaho.pms.mql.Selection;
 import org.pentaho.pms.mql.WhereCondition;
-import org.pentaho.pms.mql.dialect.SQLQueryModel.OrderType;
 import org.pentaho.pms.schema.BusinessCategory;
 import org.pentaho.pms.schema.BusinessColumn;
 import org.pentaho.pms.schema.BusinessModel;
@@ -157,8 +158,73 @@ public class MQLEditorServiceDelegate {
     }
   }
 
-  public String[][] getPreviewData(String query, int page, int limit) {
-    throw new NotImplementedException("Implement in your class");
+  public String[][] getPreviewData(MqlQuery query, int page, int limit) {
+    try{
+      MQLQuery mqlQuery = convertModel(query);
+      
+      DatabaseMeta databaseMeta = mqlQuery.getSelections().get(0).getBusinessColumn().getPhysicalColumn().getTable()
+          .getDatabaseMeta();
+      Database database = new Database(databaseMeta);
+      String sqlQuery = mqlQuery.getQuery().getQuery();
+      
+      Map<String, String> params = query.getDefaultParameterMap();
+      for(Map.Entry<String, String> entry : params.entrySet()){
+        sqlQuery = sqlQuery.replaceAll("\\{"+entry.getKey()+"\\}", entry.getValue());  //$NON-NLS-1$//$NON-NLS-2$
+      }
+      
+      String[][] results = executeSQL(database, sqlQuery, limit);
+      return results;
+    } catch(Exception e){
+      // TODO: add logging
+      System.out.println(e.getMessage());
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  private String[][] executeSQL(Database database, String sql, int limit) {
+    String[][] queryResults = new String[0][0];
+    ResultSet rows = null;
+
+    try {
+      database.connect();
+      database.setQueryLimit(limit);
+      rows = database.openQuery(sql);
+      
+      int colCount = 0;
+      int rowCount = 0;
+      List<ArrayList<String>> listofRows = new ArrayList<ArrayList<String>>();
+      
+      if(rows.next()){
+        colCount = rows.getMetaData().getColumnCount();
+      }
+
+      do{
+        ArrayList<String> row = new ArrayList<String>();
+        for(int i=1; i<=colCount; i++){
+          row.add(""+rows.getObject(i));
+        }
+        listofRows.add(row);
+        rowCount++;
+      } while(rows.next());
+      queryResults = new String[rowCount][colCount];
+      
+      for(int i=0; i< listofRows.size(); i++){
+        queryResults[i] = listofRows.get(i).toArray(new String[]{});
+      }
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      if (database != null){
+        try{
+          database.closeQuery(rows);
+        } catch (Exception ignored){}
+        database.disconnect();
+      }
+    }
+    
+    return queryResults;
   }
 
   private Model createModel(BusinessModel m) {
