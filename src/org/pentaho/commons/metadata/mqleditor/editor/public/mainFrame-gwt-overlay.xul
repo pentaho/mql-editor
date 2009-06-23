@@ -2,22 +2,24 @@
 <?xml-stylesheet href="file://E:/workspaces/sprint_workspace/pentaho-xul/test/resource/documents/xul.css" type="text/css"?>
 <overlay 
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:pen="http://www.pentaho.org/2008/xul">
-  <!-- <vbox id="dataModelContainer" flex="0" visible="false"/> -->
-  <!-- <vbox id="categoryTreeContainer" flex="0" height="390"/> -->
-  <vbox id="categoryTreeContainer" flex="0" height="290"/>
+  <!-- Mod size -->
+  <vbox id="dataModelContainer" flex="0" visible="false"/>
+  <vbox id="categoryTreeContainer" flex="0" height="395"/>
+  <!-- categoryTree height must be set to force scrolling -->
+  <tree id="categoryTree" height="395"/>
   
-  <tree id="categoryTree" height="290"/>
   <vbox id="tableContainer" flex="5" height="330"/>
 
-  <spacer id="rightColumnVerticalAlignment" height="14" />
+  <spacer id="leftColumnVerticalAlignment" height="0" />
+  <spacer id="rightColumnVerticalAlignment" height="9" />
 
-  <vbox id="buttonContainer" height="400"/>  
+  <vbox id="buttonContainer" height="425"/>  
   <spacer id="buttonContainerVerticalSpacer" height="10" />
 
   <spacer id="conditionsSpacer" width="500" />
 
-  <tree id="orderTable" height="100" width="640" />
-  <tree id="conditionsTree" height="100" width="640" />
-  <tree id="selectedColumnTree" height="100" width="640" />
+  <tree id="orderTable" height="110" width="640" />
+  <tree id="conditionsTree" height="110" width="640" />
+  <tree id="selectedColumnTree" height="110" width="640" />
 
 </overlay>

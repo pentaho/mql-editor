@@ -29,11 +29,20 @@
     </vbox>
   </dialog>
 
-  <dialog id="mqlEditorDialog" buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttonlabelextra1="preview"
-    buttons="accept,cancel" ondialogaccept="mainController.saveQuery()"
-    ondialogcancel="mainController.closeDialog()" buttonalign="right"
-    title="${window.title}" width="855" height="505">
-    <vbox padding="10" flex="1" >
+  <dialog id="mqlEditorDialog" 
+    buttonlabelextra1="${preview}"
+    buttonlabelaccept="${ok}"
+    buttonlabelcancel="${close}"
+    buttons="extra1,accept,cancel"
+    pen:extra1buttonalign="center"
+    pen:acceptbuttonalign="right"
+    pen:cancelbuttonalign="right"
+    ondialogextra1="previewController.showPreview()"
+    ondialogaccept="mainController.saveQuery()"
+    ondialogcancel="mainController.closeDialog()"
+    title="${window.title}" width="855" height="505"
+    buttonalign="right">
+    <vbox id="mainPanel" padding="10" flex="1" >
       <hbox flex="1">
         <vbox flex="1">
           <spacer id="leftColumnVerticalAlignment" height="5" />
@@ -146,10 +155,5 @@
         </vbox>
       </hbox>
     </vbox>
-    <hbox>
-      <spacer flex="1"/>
-      <button label="Preview" id="previewBtn"  onclick="previewController.showPreview()"/>
-      <spacer flex="1"/>
-    </hbox>
   </dialog>
 </window>
