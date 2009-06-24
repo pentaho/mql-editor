@@ -17,8 +17,8 @@
 
   <spacer id="conditionsSpacer" width="500" />
 
-  <tree id="orderTable" height="110" width="640" />
-  <tree id="conditionsTree" height="110" width="640" />
-  <tree id="selectedColumnTree" height="110" width="640" />
+  <tree id="selectedColumnTree" height="154" width="640" />
+  <tree id="conditionsTree" height="88" width="640" />
+  <tree id="orderTable" height="88" width="640" />  
 
 </overlay>

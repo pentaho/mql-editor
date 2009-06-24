@@ -40,8 +40,7 @@
     ondialogextra1="previewController.showPreview()"
     ondialogaccept="mainController.saveQuery()"
     ondialogcancel="mainController.closeDialog()"
-    title="${window.title}" width="855" height="505"
-    buttonalign="right">
+    title="${window.title}" width="855" height="505">
     <vbox id="mainPanel" padding="10" flex="1" >
       <hbox flex="1">
         <vbox flex="1">
