@@ -13,7 +13,6 @@
   <spacer id="leftColumnVerticalAlignment" height="0" />
   <spacer id="rightColumnVerticalAlignment" height="9" />
 
-  <vbox id="buttonContainer" height="425"/>  
   <spacer id="buttonContainerVerticalSpacer" height="10" />
 
   <spacer id="conditionsSpacer" width="500" />
