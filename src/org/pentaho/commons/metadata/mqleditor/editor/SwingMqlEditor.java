@@ -14,6 +14,7 @@ import javax.swing.JDialog;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.swt.widgets.Control;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.beans.Column;
@@ -43,6 +44,7 @@ import org.pentaho.ui.xul.XulRunner;
 import org.pentaho.ui.xul.XulServiceCallback;
 import org.pentaho.ui.xul.binding.BindingFactory;
 import org.pentaho.ui.xul.binding.DefaultBindingFactory;
+import org.pentaho.ui.xul.components.XulButton;
 import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.swing.SwingXulLoader;
 import org.pentaho.ui.xul.swing.SwingXulRunner;
@@ -214,7 +216,13 @@ public class SwingMqlEditor {
 
     SwingMqlEditor editor = new SwingMqlEditor(new MQLEditorServiceDebugImpl(
         meta), meta);
+    editor.hidePreview();
     editor.show();
   }
+  
+  public void hidePreview(){
+    SwingDialog dialog = (SwingDialog) container.getDocumentRoot().getElementById("mqlEditorDialog");
+    dialog.setButtons("accept,cancel");
+   }
 
 }

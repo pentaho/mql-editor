@@ -39,6 +39,7 @@ import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.swt.SwtBindingFactory;
 import org.pentaho.ui.xul.swt.SwtXulLoader;
 import org.pentaho.ui.xul.swt.SwtXulRunner;
+import org.pentaho.ui.xul.swt.tags.SwtDialog;
 
 /**
  * Default Swt implementation. This class requires a concreate Service
@@ -92,7 +93,7 @@ public class SwtMqlEditor {
 
       mainController.setService(service);
       previewController.setService(service);
-
+      
       service.getMetadataDomains(new XulServiceCallback<List<MqlDomain>>() {
 
         public void error(String message, Throwable error) {
@@ -160,6 +161,7 @@ public class SwtMqlEditor {
     SchemaMeta meta = factory.getSchemaMeta(cwm);
 
     SwtMqlEditor editor = new SwtMqlEditor(new MQLEditorServiceDebugImpl(meta), null);
+    editor.hidePreview();
     editor.show();
   }
   
@@ -177,6 +179,7 @@ public class SwtMqlEditor {
   }
 
   public void hidePreview(){
-   ((Control)  ((XulButton) container.getDocumentRoot().getElementById("previewBtn")).getManagedObject()).dispose();
+    SwtDialog dialog = (SwtDialog) container.getDocumentRoot().getElementById("mqlEditorDialog");
+    dialog.setButtons("accept,cancel");
   }
 }
