@@ -7,8 +7,6 @@
   <vbox id="categoryTreeContainer" flex="0" height="395"/>
   <!-- categoryTree height must be set to force scrolling -->
   <tree id="categoryTree" height="395"/>
-  
-  <vbox id="tableContainer" flex="5" height="330"/>
 
   <spacer id="leftColumnVerticalAlignment" height="0" />
   <spacer id="rightColumnVerticalAlignment" height="9" />
@@ -17,8 +15,11 @@
 
   <spacer id="conditionsSpacer" width="500" />
 
-  <tree id="selectedColumnTree" height="154" width="640" />
-  <tree id="conditionsTree" height="88" width="640" />
-  <tree id="orderTable" height="88" width="640" />  
+  <tree id="selectedColumnTree" flex="0" height="154" width="640" />
+  <tree id="conditionsTree" flex="0" height="88" width="640" />
+  <tree id="orderTable" flex="0" height="88" width="640" />  
+
+  <!-- This must be below the tree elements until xul-gwt is fixed -->
+  <vbox id="tableContainer" flex="5" height="330"/>
 
 </overlay>
