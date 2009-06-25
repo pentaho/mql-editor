@@ -22,6 +22,11 @@ public class CWMStartup {
           cwm.importFromXMI(xmiInputStream);
           return cwm;
         }
+        xmiInputStream = new FileInputStream(new File(metadataFileName));
+        if (xmiInputStream != null) {
+          cwm.importFromXMI(xmiInputStream);
+          return cwm;
+        }
       } catch (Throwable t) {
       } finally {
         if (xmiInputStream != null) {

@@ -201,7 +201,7 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
       runner.start();
 
       
-      RootPanel.get().add(runner.getRootPanel());
+      //RootPanel.get().add(runner.getRootPanel());
       if (constructorListener != null) {
         constructorListener.asyncConstructorDone();
       }
