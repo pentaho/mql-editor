@@ -2,7 +2,6 @@ package org.pentaho.commons.metadata.mqleditor.editor.service.impl;
 
 import java.util.List;
 
-import org.pentaho.commons.metadata.mqleditor.MqlColumn;
 import org.pentaho.commons.metadata.mqleditor.*;
 import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -19,11 +18,23 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
 
     SERVICE = (org.pentaho.commons.metadata.mqleditor.editor.service.gwt.MQLEditorGwtServiceAsync) GWT.create(org.pentaho.commons.metadata.mqleditor.editor.service.gwt.MQLEditorGwtService.class);
     ServiceDefTarget endpoint = (ServiceDefTarget) SERVICE;
-    String moduleRelativeURL = GWT.getModuleBaseURL() + "MqlService"; //$NON-NLS-1$
-    endpoint.setServiceEntryPoint(moduleRelativeURL);
-
+    endpoint.setServiceEntryPoint(getBaseUrl() + "gwtrpc/MqlService");
   }
 
+  private static String getBaseUrl() {
+    String baseUrl = GWT.getModuleBaseURL();
+    
+    //
+    //Set the base url appropriately based on the context in which we are running this client
+    //
+    if(baseUrl.indexOf("content") > -1) {
+      //we are running the client in the context of a BI Server plugin, so 
+      //point the request to the GWT rpc proxy servlet
+      baseUrl = baseUrl.substring(0, baseUrl.indexOf("content"));
+    }
+    return  baseUrl;
+  }
+  
   public MQLEditorServiceGwtImpl() {
 
   }
