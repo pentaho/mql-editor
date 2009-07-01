@@ -7,12 +7,16 @@ import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 import org.pentaho.gwt.widgets.client.utils.Rectangle;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class ColorPicker extends Image{
 
@@ -24,8 +28,16 @@ public class ColorPicker extends Image{
     super(GWT.getModuleBaseURL()+"style/images/color_picker_frame.png");
     this.getElement().getStyle().setProperty("backgroundColor", "#fff");
     this.getElement().getStyle().setProperty("cursor", "pointer");
+    this.addMouseUpHandler(new MouseUpHandler(){
 
-    this.sinkEvents(Event.MOUSEEVENTS);
+      public void onMouseUp(MouseUpEvent event) {
+        Rectangle rect = ElementUtils.getSize(ColorPicker.this.getElement());
+        picker.setPopupPosition(DOM.getAbsoluteLeft(ColorPicker.this.getElement()), DOM.getAbsoluteTop(ColorPicker.this.getElement()) + rect.height + 2);
+        picker.show();
+      }
+      
+    });
+    
   }
   
   public String getColor(){
@@ -49,26 +61,6 @@ public class ColorPicker extends Image{
   public void addColorPickerListener(ColorPickerListener listener){
     listeners.add(listener);
   }
-  
-  @Override
-  public void onBrowserEvent(Event event) {
-    
-    switch(event.getKeyCode()){
-    case Event.ONDBLCLICK:
-    case Event.ONCLICK:
-      
-      Rectangle rect = ElementUtils.getSize(this.getElement());
-      picker.setPopupPosition(DOM.getAbsoluteLeft(this.getElement()), DOM.getAbsoluteTop(this.getElement()) + rect.height + 2);
-      picker.show();
-      break;
-    case Event.ONMOUSEOVER:
-    case Event.ONMOUSEOUT:
-      break;
-    default:
-      break;
-    }
-  }
-  
   
   private class ColorPickerDialog extends PopupPanel{
     
@@ -155,7 +147,7 @@ public class ColorPicker extends Image{
       panel.getElement().getStyle().setProperty("backgroundColor", color);
       add(panel);
       panel.setStyleName("color-swatch-center");
-      this.sinkEvents(Event.MOUSEEVENTS);
+      this.sinkEvents(Event.ONCLICK );
     }
 
     @Override
@@ -169,8 +161,9 @@ public class ColorPicker extends Image{
         break;
       case Event.ONMOUSEOVER:
       case Event.ONMOUSEOUT:
-        break;
       default:
+        event.stopPropagation();
+        event.preventDefault();
         break;
       }
     }

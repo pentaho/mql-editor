@@ -713,11 +713,11 @@ body{
 .color-picker-popup{
   background-color: white;
   border: 1px solid black;
-  z-index: 1000;
+  z-index: 2000;
 }
 
 .color-swatch{
-	border: 1px transparent;
+	border: 1px solid transparent;
 	padding: 3px;
 	background-color: white;
 	cursor: pointer;
