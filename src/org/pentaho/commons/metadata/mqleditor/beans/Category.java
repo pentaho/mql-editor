@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.MqlCategory;
 
-public class Category implements MqlCategory<Column> {
+public class Category implements MqlCategory {
 
   private String id, name;
   private List<Column> columns = new ArrayList<Column>();

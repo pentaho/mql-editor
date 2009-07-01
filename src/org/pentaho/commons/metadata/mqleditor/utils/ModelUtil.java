@@ -96,7 +96,6 @@ public class ModelUtil {
       }
     }
     query.setConditions(conditions);
-    query.setDefaultParameterMap(uiQuery.getDefaultParameterMap());
     return query;
   }
 }

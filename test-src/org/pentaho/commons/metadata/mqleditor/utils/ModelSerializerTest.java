@@ -1,6 +1,6 @@
 package org.pentaho.commons.metadata.mqleditor.utils;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,6 +76,7 @@ public class ModelSerializerTest {
     cond.setColumn(column);
     cond.setCombinationType(CombinationType.OR);
     cond.setOperator(Operator.EQUAL);
+    cond.setDefaultValue("default");
     cond.setValue("myvalue1");
     conditions.add(cond);
 
@@ -103,11 +104,11 @@ public class ModelSerializerTest {
     orders.add(order);
 
     mqlQuery.setOrders(orders);
-//
-//    Map<String, String> defaultParameterMap = new HashMap<String, String>();
-//
-//    defaultParameterMap.put("myparameter", "myvalue3");
-//    mqlQuery.setDefaultParameterMap(defaultParameterMap);
+
+    Map<String, String> defaultParameterMap = new HashMap<String, String>();
+
+    defaultParameterMap.put("myparameter", "myvalue3");
+    mqlQuery.setDefaultParameterMap(defaultParameterMap);
   }
 
   @After
@@ -117,13 +118,9 @@ public class ModelSerializerTest {
 
   @Test
   public void testSerializeAndDeSerialize() {
+    
     String serialized = ModelSerializer.serialize(mqlQuery);
     System.out.println(serialized);
-    Map<String, String> defaultParameterMap = new HashMap<String, String>();
-
-    defaultParameterMap.put("myparameter", "myvalue3");
-    mqlQuery.setDefaultParameterMap(defaultParameterMap);
-    
     
     MqlQuery deserialized = ModelSerializer.deSerialize(serialized);
     //MqlQuery deserialized = ModelSerializer.deSerialize("{\"MQLQuery\":{\"cols\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"}]},\"conditions\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Condition\":[{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"},\"operator\":[\"EQUAL\"],\"value\":\"myvalue1\",\"comboType\":\"OR\",\"parameterized\":false},{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"},\"operator\":[\"EQUAL\"],\"value\":\"myvalue2\",\"comboType\":\"OR\",\"parameterized\":false},{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"},\"operator\":[\"EQUAL\"],\"value\":\"myparameter\",\"comboType\":\"OR\",\"parameterized\":true}]}],\"orders\":{\"org.pentaho.commons.metadata.mqleditor.beans.Order\":[{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"},\"orderType\":[\"ASC\"]}]},\"domain\":{\"id\":\"mydomain\",\"name\":\"mydomain\",\"models\":{\"org.pentaho.commons.metadata.mqleditor.beans.Model\":[{\"categories\":{\"org.pentaho.commons.metadata.mqleditor.beans.Category\":[{\"id\":\"mycategory\",\"name\":\"mycategory\",\"columns\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"}]}}]},\"id\":[\"mymodel\"],\"name\":\"mymodel\"}]}},\"model\":{\"categories\":{\"org.pentaho.commons.metadata.mqleditor.beans.Category\":[{\"id\":\"mycategory\",\"name\":\"mycategory\",\"columns\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"}]}}]},\"id\":[\"mymodel\"],\"name\":\"mymodel\"}}}");
@@ -132,6 +129,7 @@ public class ModelSerializerTest {
     
     // spot check fields since Query doesn't implement equals!!!
     assertEquals(mqlQuery.getDomain().getName(), deserialized.getDomain().getName());
+    assertEquals(mqlQuery.getModel().getName(), deserialized.getModel().getName());
     assertEquals(mqlQuery.getColumns().get(0).getId(), deserialized.getColumns().get(0).getId());
     assertEquals(mqlQuery.getOrders().get(0).getColumn().getName(), deserialized.getOrders().get(0).getColumn()
         .getName());
@@ -139,10 +137,13 @@ public class ModelSerializerTest {
         .getId());
     assertEquals(mqlQuery.getConditions().get(0).isParameterized(), deserialized.getConditions().get(0)
         .isParameterized());
+    assertEquals(mqlQuery.getConditions().get(0).getDefaultValue(), deserialized.getConditions().get(0)
+        .getDefaultValue());
 
     assertEquals(mqlQuery.getConditions().get(0).getCombinationType(), deserialized.getConditions().get(0).getCombinationType());
     
-    assertEquals(mqlQuery.getDefaultParameterMap(), deserialized.getDefaultParameterMap());
+    assertNotNull(mqlQuery.getDefaultParameterMap().get("myparameter"));
+    assertEquals(mqlQuery.getDefaultParameterMap().get("myparameter"), deserialized.getDefaultParameterMap().get("myparameter"));
   }
 
 }

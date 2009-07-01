@@ -2,8 +2,9 @@ package org.pentaho.commons.metadata.mqleditor.editor.controllers;
 
 import java.util.List;
 
+import org.pentaho.commons.metadata.mqleditor.MqlQuery;
+import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
-import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
 import org.pentaho.ui.xul.XulComponent;
 import org.pentaho.ui.xul.XulException;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -79,6 +80,9 @@ public class PreviewController extends AbstractXulEventHandler {
   }
 
   public void showPreview() {
+    
+    MqlQuery q = workspace.getMqlQuery();
+    
     service.getPreviewData(workspace.getMqlQuery(), page, previewLimit, new XulServiceCallback<String[][]>() {
 
       public void error(String message, Throwable error) {

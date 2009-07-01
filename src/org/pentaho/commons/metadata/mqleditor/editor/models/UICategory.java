@@ -8,7 +8,7 @@ import org.pentaho.commons.metadata.mqleditor.MqlCategory;
 import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Category;
 
-public class UICategory extends AbstractModelNode<UIColumn> implements MqlCategory<UIColumn> {
+public class UICategory extends AbstractModelNode<UIColumn> implements MqlCategory {
   
   private String id, name;
   

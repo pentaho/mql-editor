@@ -5,11 +5,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
-import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.ConditionsController;
@@ -19,13 +16,7 @@ import org.pentaho.commons.metadata.mqleditor.editor.controllers.PreviewControll
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.SelectedColumnController;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
-import org.pentaho.commons.metadata.mqleditor.editor.service.CWMStartup;
-import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
-import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDebugImpl;
-import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDelegate;
-import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceImpl;
-import org.pentaho.pms.core.CWM;
-import org.pentaho.pms.factory.CwmSchemaFactory;
+import org.pentaho.commons.metadata.mqleditor.editor.service.util.MQLEditorServiceCWMDelegate;
 import org.pentaho.pms.mql.MQLQuery;
 import org.pentaho.pms.schema.SchemaMeta;
 import org.pentaho.ui.xul.XulDomContainer;
@@ -34,7 +25,6 @@ import org.pentaho.ui.xul.XulRunner;
 import org.pentaho.ui.xul.XulServiceCallback;
 import org.pentaho.ui.xul.binding.BindingFactory;
 import org.pentaho.ui.xul.binding.DefaultBindingFactory;
-import org.pentaho.ui.xul.components.XulButton;
 import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.swt.SwtBindingFactory;
 import org.pentaho.ui.xul.swt.SwtXulLoader;
@@ -42,62 +32,60 @@ import org.pentaho.ui.xul.swt.SwtXulRunner;
 import org.pentaho.ui.xul.swt.tags.SwtDialog;
 
 /**
- * Default Swt implementation. This class requires a concreate Service
- * implemetation
+ * Default Swt implementation. This class requires a concrete Service
+ * implementation
  */
 public class SwtMqlEditor {
 
   private static Log log = LogFactory.getLog(SwingMqlEditor.class);
+  
   private MainController mainController = new MainController();
+  private SelectedColumnController selectedColumnController = new SelectedColumnController();
+  private ConditionsController constraintController = new ConditionsController();
+  private OrderController orderController = new OrderController();
+  private PreviewController previewController = new PreviewController();
+  
   private Workspace workspace = new Workspace();
   private XulDomContainer container;
-  private MQLEditorService service;
-  private MQLEditorServiceDelegate delegate;
-  private static Log logger = LogFactory.getLog(SwtMqlEditor.class);
+  private MQLEditorServiceCWMDelegate delegate;
 
   public SwtMqlEditor(MQLEditorService service, SchemaMeta meta) {
     try {
-      this.service = service;
       if(meta != null){
-        this.delegate = new MQLEditorServiceDelegate(meta);
+        this.delegate = new MQLEditorServiceCWMDelegate(meta);
       }
       
-      container = new SwtXulLoader()
-          .loadXul("org/pentaho/commons/metadata/mqleditor/editor/public/mainFrame.xul");
+      container = new SwtXulLoader().loadXul("org/pentaho/commons/metadata/mqleditor/editor/xul/mainFrame.xul");
       loadOverlays();
 
       final XulRunner runner = new SwtXulRunner();
       runner.addContainer(container);
 
-      BindingFactory bf = new SwtBindingFactory();
+      BindingFactory bf = new DefaultBindingFactory();
       bf.setDocument(container.getDocumentRoot());
 
       mainController.setBindingFactory(bf);
-      container.addEventHandler(mainController);
-
-      final SelectedColumnController selectedColumnController = new SelectedColumnController();
       selectedColumnController.setBindingFactory(bf);
-      container.addEventHandler(selectedColumnController);
-
-      final ConditionsController constraintController = new ConditionsController();
-      constraintController.setBindingFactory(bf);
-      container.addEventHandler(constraintController);
-
-      final OrderController orderController = new OrderController();
+      constraintController.setBindingFactory(bf);      
       orderController.setBindingFactory(bf);
-      container.addEventHandler(orderController);
-
-      final PreviewController previewController = new PreviewController();
       previewController.setBindingFactory(bf);
+      
+      container.addEventHandler(mainController);
+      container.addEventHandler(selectedColumnController);
+      container.addEventHandler(constraintController);
+      container.addEventHandler(orderController);
       container.addEventHandler(previewController);
 
-      mainController.setService(service);
-      previewController.setService(service);
+      mainController.setWorkspace(workspace);
+      selectedColumnController.setWorkspace(workspace);
+      constraintController.setWorkspace(workspace);
+      orderController.setWorkspace(workspace);
+      previewController.setWorkspace(workspace);
       
       service.getMetadataDomains(new XulServiceCallback<List<MqlDomain>>() {
 
         public void error(String message, Throwable error) {
-
+          log.error("error getting list of Domains", error);
         }
 
         public void success(List<MqlDomain> retVal) {
@@ -108,12 +96,6 @@ public class SwtMqlEditor {
           }
 
           workspace.setDomains(uiDomains);
-
-          mainController.setWorkspace(workspace);
-          selectedColumnController.setWorkspace(workspace);
-          constraintController.setWorkspace(workspace);
-          orderController.setWorkspace(workspace);
-          previewController.setWorkspace(workspace);
 
           try {
             runner.initialize();
@@ -144,25 +126,11 @@ public class SwtMqlEditor {
     // Load the overlay to remove the "dynamic" behavior of the "combine" column in the "conditions" table
     // SWT table cannot accommodate more then one widget type in a given column yet 
     try {
-      container.loadOverlay("org/pentaho/commons/metadata/mqleditor/editor/public/mainFrame-swt-overlay.xul"); //$NON-NLS-1$
+      container.loadOverlay("org/pentaho/commons/metadata/mqleditor/editor/xul/mainFrame-swt-overlay.xul"); //$NON-NLS-1$
     } catch (XulException e) {
       log.error("Error loading Xul overlay: mainFrame-swt-overlay.xul");
       e.printStackTrace();
     }
-  }
-  
-  public static void main(String[] args) {
-    
-
-    CWMStartup.loadCWMInstance("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/repository.properties", "/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/PentahoCWM.xml"); //$NON-NLS-1$ //$NON-NLS-2$
-    CWM cwm = CWMStartup.loadMetadata("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata_steelwheels.xmi", "/org/pentaho/commons/metadata/mqleditor/sampleMql"); //$NON-NLS-1$ //$NON-NLS-2$
-
-    CwmSchemaFactory factory = new CwmSchemaFactory();
-    SchemaMeta meta = factory.getSchemaMeta(cwm);
-
-    SwtMqlEditor editor = new SwtMqlEditor(new MQLEditorServiceDebugImpl(meta), null);
-    editor.hidePreview();
-    editor.show();
   }
   
   public void setMqlQuery(MQLQuery query){

@@ -94,23 +94,31 @@ public enum Operator implements Serializable{
     return ops.toArray(new Operator[]{});
   }
   
-  public String formatCondition(String objectName, String value, boolean forceString){
+  public String formatCondition(String objectName, String value, boolean parameterized){
+    
+    if(parameterized){
+     value = "[param:"+value.replaceAll("[\\{\\}]","")+"]";
+    }
     String retVal = "";
     switch(this){
       case EXACTLY_MATCHES:
-        retVal += objectName+" = \"" + value + "\"";
+        if(parameterized){
+          retVal += objectName+" = " + value;
+        } else {
+          retVal += objectName+" = \"" + value + "\"";
+        }
         break;
       case CONTAINS:
-        retVal += "LIKE("+objectName+"; \"%" + value + "%\")";
+        retVal += "CONTAINS("+objectName+",\""+value+"\")";
         break;
       case DOES_NOT_CONTAIN:
-        retVal += "NOT(LIKE("+objectName+"; \"%" + value + "%\"))";
+        retVal += "NOT(CONTAINS("+objectName+",\""+value+"\"))";
         break;
       case BEGINS_WITH:
-        retVal += "LIKE("+objectName+"; \"" + value + "%\")";
+        retVal += "BEGINSWITH("+objectName+",\""+value+"\")";
         break;
       case ENDS_WITH:
-        retVal += "LIKE("+objectName+"; \"%" + value + "\")";
+        retVal += "ENDSWITH("+objectName+",\""+value+"\")";
         break;
       case IS_EMPTY:
       case IS_NULL:
@@ -123,7 +131,7 @@ public enum Operator implements Serializable{
       default:
         retVal = objectName + " " + this.toString();
         if(this.requiresValue){
-          if(this.stringType || forceString){
+          if(this.stringType){
             retVal += "\""+value+"\"";
           } else {
             retVal += value;

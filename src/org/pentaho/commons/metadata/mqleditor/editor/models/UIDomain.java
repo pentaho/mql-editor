@@ -6,7 +6,7 @@ import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.beans.Model;
 
-public class UIDomain extends AbstractModelNode<UIModel> implements MqlDomain<UIModel> {
+public class UIDomain extends AbstractModelNode<UIModel> implements MqlDomain {
   
   private String id = "default";
   private String name;

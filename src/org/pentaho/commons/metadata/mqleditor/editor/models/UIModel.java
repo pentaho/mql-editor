@@ -9,7 +9,7 @@ import org.pentaho.commons.metadata.mqleditor.MqlModel;
 import org.pentaho.commons.metadata.mqleditor.beans.Category;
 import org.pentaho.commons.metadata.mqleditor.beans.Model;
 
-public class UIModel extends AbstractModelNode<UICategory> implements MqlModel<UICategory> {
+public class UIModel extends AbstractModelNode<UICategory> implements MqlModel {
   
   private List<UICategory> categories = new ArrayList<UICategory>();
 

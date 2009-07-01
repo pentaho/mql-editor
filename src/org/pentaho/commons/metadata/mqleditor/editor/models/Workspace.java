@@ -354,15 +354,6 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     query.setDomain(this.selectedDomain);
     query.setModel(this.selectedModel);
 
-
-    Map<String, String> params = new HashMap<String, String>();
-    for(UICondition c : this.conditions){
-      if(c.isParameterized()){
-        params.put(c.getValue().replaceAll("[\\{\\}]", ""), c.getDefaultValue());
-      }
-    }
-    query.setDefaultParameterMap(params);
-
     return ModelUtil.convertUIModelToBean(query);
   }
   

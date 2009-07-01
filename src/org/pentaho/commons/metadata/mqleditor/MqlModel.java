@@ -8,15 +8,14 @@ import java.util.List;
  *
  * Represents a Metadata Model object containing one or more {@see MqlCategory}s
  *
- * @param <T> implementation of an MqlCategory
  */
-public interface MqlModel<T extends MqlCategory> extends Serializable{
+public interface MqlModel extends Serializable{
 
   public String getId();
 
   public String getName();
 
-  public List<T> getCategories();
+  public List<? extends MqlCategory> getCategories();
   
 
 }

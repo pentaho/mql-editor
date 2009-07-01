@@ -8,7 +8,7 @@ import org.pentaho.commons.metadata.mqleditor.CombinationType;
 import org.pentaho.commons.metadata.mqleditor.MqlCondition;
 import org.pentaho.commons.metadata.mqleditor.Operator;
 
-public class Condition implements MqlCondition<Column> {
+public class Condition implements MqlCondition {
 
   private Column column;
   private Operator operator = Operator.EQUAL;
@@ -63,7 +63,7 @@ public class Condition implements MqlCondition<Column> {
   }
 
   public String getCondition(String objName) {
-    return this.operator.formatCondition(objName, this.value, (this.isParameterized()));
+    return this.operator.formatCondition(objName, this.value, this.isParameterized());
   }
 
   public boolean isParameterized() {

@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @param <T>
  */
-public interface MqlDomain<T extends MqlModel> extends Serializable{
+public interface MqlDomain extends Serializable{
 
   // this should be deleted, it causes confusion and is not used.
   @Deprecated
@@ -17,6 +17,6 @@ public interface MqlDomain<T extends MqlModel> extends Serializable{
 
   public String getName();
 
-  public List<T> getModels();
+  public List<? extends MqlModel> getModels();
 
 }

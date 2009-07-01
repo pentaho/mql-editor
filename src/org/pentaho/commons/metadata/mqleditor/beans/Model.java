@@ -5,7 +5,7 @@ import org.pentaho.commons.metadata.mqleditor.MqlModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Model implements MqlModel<Category> {
+public class Model implements MqlModel {
 
   private List<Category> categories = new ArrayList<Category>();
 

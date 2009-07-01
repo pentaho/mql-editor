@@ -12,7 +12,7 @@ import org.pentaho.commons.metadata.mqleditor.Operator;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 
-public class UICondition extends XulEventSourceAdapter implements MqlCondition<UIColumn> {
+public class UICondition extends XulEventSourceAdapter implements MqlCondition {
   
   private String defaultValue;
   private UIColumn column;

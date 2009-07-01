@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.pentaho.commons.metadata.mqleditor.MqlOrder.Type;
 import org.pentaho.commons.metadata.mqleditor.beans.Category;
@@ -21,26 +19,23 @@ import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.beans.Model;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
-import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumns;
-import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
-import org.pentaho.commons.metadata.mqleditor.editor.models.UIOrders;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumn;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumns;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UICondition;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIOrder;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIOrders;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
-import org.pentaho.commons.metadata.mqleditor.editor.service.CWMStartup;
-import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorService;
-import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceDelegate;
-import org.pentaho.commons.metadata.mqleditor.editor.service.impl.MQLEditorServiceGwtImpl;
-import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
+import org.pentaho.commons.metadata.mqleditor.editor.service.util.CWMStartup;
+import org.pentaho.commons.metadata.mqleditor.editor.service.util.MQLEditorServiceCWMDelegate;
 import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.factory.CwmSchemaFactory;
 
 public class WorkspaceTest {
 
   private Query mqlQuery;
-  private MQLEditorServiceDelegate service;
+  private MQLEditorServiceCWMDelegate service;
   Workspace workspace;
   
   @Before
@@ -125,7 +120,7 @@ public class WorkspaceTest {
     List<CWM> cwms = new ArrayList<CWM>();
     cwms.add(cwm);
     
-    service = new MQLEditorServiceDelegate(cwms, factory);
+    service = new MQLEditorServiceCWMDelegate(cwms, factory);
 
     workspace = new Workspace();
     
