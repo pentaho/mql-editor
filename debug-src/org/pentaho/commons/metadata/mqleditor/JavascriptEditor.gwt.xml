@@ -1,7 +1,8 @@
 <!--
-  This is the generic GWT module from which concreate implementations are based. if you want to add MQL Editing
-  functionality to your GWT application, this is the module to inherit.
+This module serves as the Debuging environment and default implementation for integration with Javascript applications
+
 -->
+
 <module>
 
   <inherits name='com.google.gwt.user.User'/>
@@ -10,13 +11,10 @@
     <inherits name="org.pentaho.gwt.widgets.Widgets"/>
   
     <inherits name="org.pentaho.ui.xul.Gwt"/>
-    <source path="../">
+    <source path="">
         <exclude name="**/SwingMqlEditor*"/>
-        <exclude name="**/MQLEditorServiceDeligate*"/>
         <exclude name="**/MQLEditorServiceImpl*"/>
-        <exclude name="**/MQLEditorServiceCWMImpl*"/>
-        <exclude name="**/MQLEditorDebugGwtServlet*"/>
-        <exclude name="**/MQLEditorServiceDebugImpl*"/>
+        <exclude name="**/MQLEditorServiceDeligate*"/>
         <exclude name="**/MQLEditorGwtServlet*"/>
         <exclude name="**/MQLEditorServiceSyncImpl*"/>
         <exclude name="**/ModelSerializer*"/>
@@ -27,6 +25,8 @@
         
     </source>
     <public path="editor/xul"/>
-  <servlet path="/gwtrpc/MqlService" class="org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorDebugGwtServlet" />
+    <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.gwt.DebugEntryPoint"/>
+    
+  <servlet path="/gwtrpc/MqlService" class="org.pentaho.commons.metadata.mqleditor.editor.gwt.MQLEditorDebugGwtServlet" />
   
  </module>
