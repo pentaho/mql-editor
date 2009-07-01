@@ -1,19 +1,12 @@
 <!-- ======================================================================
      description: main build file for pentaho  . .                                                    
      ====================================================================== -->
-<project name="pentaho-commons-mql" default="dist" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="pentaho-commons-mql" default="jar" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 	<description>Pentaho Commons MQL Editor build file</description>
 
-	<property file="build.properties" />
-	
-	<!-- override classpath to use recurse lib -->
-	<path id="classpath">
-		<fileset dir="lib">
-			<include name="**/*.jar" />
-			<include name="**/*.zip" />
-		</fileset>
-	</path>
-	
+  <!-- Import the version information -->
+  <property file="${basedir}/version.properties" />
+
   <!-- Define the default location of the gwt common build file -->
   <property name="gwt.common.build.file" value="./gwt_common_build.xml" description="This is the location of the standardized common_build.xml file" />
 
@@ -29,15 +22,32 @@
   <!-- Directory in which the source will be copied before a compile -->
   <property name="temp-src.dir" value="${bin.dir}/src" />
 
+
   <!--=======================================================================
-      gwt-compile
+      source.jar
       
-      Performs the required gwt compiles
+      Creates a jar of the project source for distribution
       ====================================================================-->
-  <target name="gwt-compile" description="Performs the required GWT Compilation">
-    <!-- Compile the Mantle Application -->
-    <ant antfile="${gwt.common.build.file}" target="gwt-compile">
-      <property name="gwt-module.path" value="org.pentaho.commons.metadata.mqleditor.JavascriptEditor" />
-    </ant>
+  <target name="source.jar" depends="init">
+    <jar jarfile="${dist.dir}/${ivy.artifact.id}-${project.revision}-sources.jar" >
+      <fileset dir="src"/>
+    	<fileset dir="debug-gwt"/>
+    	</jar>
   </target>
+
+
+  <!--=======================================================================
+      source.targz
+      
+      Creates a gzipped tar of the project source for distribution
+      ====================================================================-->
+  <target name="source.targz" depends="init">
+    <tar compression="gzip"
+         destfile="${dist.dir}/${ivy.artifact.id}-${project.revision}-sources.tar.gz"
+         >
+      <fileset dir="src"/>
+      <fileset dir="debug-gwt"/>
+  	</tar>
+  </target>
+
 </project>
