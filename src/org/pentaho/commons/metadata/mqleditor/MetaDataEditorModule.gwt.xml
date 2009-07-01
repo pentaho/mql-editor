@@ -27,6 +27,6 @@
         
     </source>
     <public path="editor/xul"/>
-  <servlet path="/gwtrpc/MqlService" class="org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorDebugGwtServlet" />
+  <servlet path="/gwtrpc/MqlService" class="org.pentaho.commons.metadata.mqleditor.editor.gwt.MQLEditorDebugGwtServlet" />
   
  </module>
