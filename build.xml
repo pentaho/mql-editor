@@ -31,7 +31,7 @@
   <target name="source.jar" depends="init">
     <jar jarfile="${dist.dir}/${ivy.artifact.id}-${project.revision}-sources.jar" >
       <fileset dir="src"/>
-    	<fileset dir="debug-gwt"/>
+    	<fileset dir="debug-src"/>
     	</jar>
   </target>
 
@@ -46,7 +46,7 @@
          destfile="${dist.dir}/${ivy.artifact.id}-${project.revision}-sources.tar.gz"
          >
       <fileset dir="src"/>
-      <fileset dir="debug-gwt"/>
+      <fileset dir="debug-src"/>
   	</tar>
   </target>
 
