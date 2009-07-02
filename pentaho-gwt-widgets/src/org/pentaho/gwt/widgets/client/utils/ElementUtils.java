@@ -41,7 +41,9 @@ public class ElementUtils {
   }
 
   public static native void blur(Element e)/*-{
-   e.blur();
+    if(e.blur){
+     e.blur();
+    }
   }-*/;
 
   public static void removeScrollingFromSplitPane(Widget panel){
