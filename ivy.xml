@@ -86,7 +86,8 @@
         <dependency org="pentaho" name="pentaho-xul-swing" rev="${dependency.pentaho-xul.revision}" conf="default->default"/>
         <dependency org="pentaho" name="pentaho-xul-swt" rev="${dependency.pentaho-xul.revision}" conf="default->default"/>
         
-    <dependency org="pentaho" name="pentaho-bi-platform-plugin-actions" rev="${project.revision}" changing="true" conf="default->default"/>
+    <dependency org="pentaho" name="pentaho-bi-platform-plugin-actions" rev="${project.revision}" changing="true" conf="test->default"/>
+    <dependency org="pentaho" name="pentaho-bi-platform-plugin-actions" rev="${project.revision}" changing="true" conf="codegen->default"/>
         
     <dependency org="pentaho" name="pentaho-bi-platform-api" rev="${project.revision}" changing="true" conf="test->default"/>
     <dependency org="pentaho" name="pentaho-bi-platform-util" rev="${project.revision}" changing="true" conf="test->default"/>
