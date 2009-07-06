@@ -109,16 +109,16 @@ public enum Operator implements Serializable{
         }
         break;
       case CONTAINS:
-        retVal += "CONTAINS("+objectName+",\""+value+"\")";
+        retVal += "CONTAINS("+objectName+";\""+value+"\")";
         break;
       case DOES_NOT_CONTAIN:
-        retVal += "NOT(CONTAINS("+objectName+",\""+value+"\"))";
+        retVal += "NOT(CONTAINS("+objectName+";\""+value+"\"))";
         break;
       case BEGINS_WITH:
-        retVal += "BEGINSWITH("+objectName+",\""+value+"\")";
+        retVal += "BEGINSWITH("+objectName+";\""+value+"\")";
         break;
       case ENDS_WITH:
-        retVal += "ENDSWITH("+objectName+",\""+value+"\")";
+        retVal += "ENDSWITH("+objectName+";\""+value+"\")";
         break;
       case IS_EMPTY:
       case IS_NULL:
