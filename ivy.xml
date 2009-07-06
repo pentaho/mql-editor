@@ -89,6 +89,9 @@
     <dependency org="pentaho" name="pentaho-bi-platform-plugin-actions" rev="${project.revision}" changing="true" conf="test->default"/>
     <dependency org="pentaho" name="pentaho-bi-platform-plugin-actions" rev="${project.revision}" changing="true" conf="codegen->default"/>
         
+        
+        
+    <!-- Micro Platform dependancies. Used in Debugging, but not production. Test config here to support development classpath.-->
     <dependency org="pentaho" name="pentaho-bi-platform-api" rev="${project.revision}" changing="true" conf="test->default"/>
     <dependency org="pentaho" name="pentaho-bi-platform-util" rev="${project.revision}" changing="true" conf="test->default"/>
     <dependency org="pentaho" name="pentaho-bi-platform-engine-core" rev="${project.revision}" changing="true" conf="test->default"/>
@@ -96,8 +99,18 @@
     <dependency org="pentaho" name="pentaho-bi-platform-engine-services" rev="${project.revision}" changing="true" conf="test->default"/>
     <dependency org="pentaho" name="pentaho-bi-platform-repository" rev="${project.revision}" changing="true" conf="test->default"/>
     <dependency org="pentaho" name="pentaho-bi-platform-ui-foundation" rev="${project.revision}" changing="true" conf="test->default"/>
-    
     <dependency org="pentaho" name="pentaho-bi-platform-test-foundation" rev="${project.revision}" changing="true" conf="test->default"/>
+    
+    
+    <!-- Micro Platform dependancies. Used in Debugging, but not production. Duplicated here for compilation classpath -->
+    <dependency org="pentaho" name="pentaho-bi-platform-api" rev="${project.revision}" changing="true" conf="codegen->default"/>
+    <dependency org="pentaho" name="pentaho-bi-platform-util" rev="${project.revision}" changing="true" conf="codegen->default"/>
+    <dependency org="pentaho" name="pentaho-bi-platform-engine-core" rev="${project.revision}" changing="true" conf="codegen->default"/>
+    <dependency org="pentaho" name="pentaho-bi-platform-engine-security" rev="${project.revision}" changing="true" conf="codegen->default"/>
+    <dependency org="pentaho" name="pentaho-bi-platform-engine-services" rev="${project.revision}" changing="true" conf="codegen->default"/>
+    <dependency org="pentaho" name="pentaho-bi-platform-repository" rev="${project.revision}" changing="true" conf="codegen->default"/>
+    <dependency org="pentaho" name="pentaho-bi-platform-ui-foundation" rev="${project.revision}" changing="true" conf="codegen->default"/>
+    <dependency org="pentaho" name="pentaho-bi-platform-test-foundation" rev="${project.revision}" changing="true" conf="codegen->default"/>
 
     </dependencies>
 </ivy-module>
