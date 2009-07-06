@@ -41,7 +41,7 @@ public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQ
   public MQLEditorDebugGwtServlet() {
     
 
-    microPlatform = new MicroPlatform("test-res/solution1/");
+    microPlatform = new MicroPlatform("resources/solution1/");
     microPlatform.define(ISolutionEngine.class, SolutionEngine.class);
     microPlatform.define(ISolutionRepository.class, FileBasedSolutionRepository.class);
     microPlatform.define(IMetadataDomainRepository.class, FileBasedMetadataDomainRepository.class, Scope.GLOBAL);
@@ -50,7 +50,7 @@ public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQ
     microPlatform.define(IDatasourceService.class, JndiDatasourceService.class, Scope.GLOBAL);
     // JNDI
     System.setProperty("java.naming.factory.initial", "org.osjava.sj.SimpleContextFactory"); //$NON-NLS-1$ //$NON-NLS-2$
-    System.setProperty("org.osjava.sj.root", "test-res/solution1/simple-jndi"); //$NON-NLS-1$ //$NON-NLS-2$
+    System.setProperty("org.osjava.sj.root", "resources/solution1/simple-jndi"); //$NON-NLS-1$ //$NON-NLS-2$
     System.setProperty("org.osjava.sj.delimiter", "/"); //$NON-NLS-1$ //$NON-NLS-2$
     
     microPlatform.init();
