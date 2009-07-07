@@ -111,10 +111,11 @@ public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQ
     
     if (component.execute()) {
       IPentahoResultSet rs = component.getResultSet();
-      String[][] results = new String[rs.getRowCount()][rs.getColumnCount()];
-      for (int i = 0; i < rs.getRowCount(); i++) {
+      String[][] results = new String[Math.min(rs.getRowCount(), limit)][rs.getColumnCount()];
+      
+      for (int i = 0; i < Math.min(rs.getRowCount(), limit); i++) {
         for (int j = 0; j < rs.getColumnCount(); j++) {
-          results[i][j] = "" + rs.getValueAt(i, j); //$NON-NLS-1$
+          results[i][j] = "" + rs.getValueAt(((page-1) * limit)+i, j); //$NON-NLS-1$
         }
       }
       return results;
