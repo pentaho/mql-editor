@@ -200,7 +200,6 @@ public class BaseTable extends Composite {
       
       cellFormatter.setHorizontalAlignment(0, i, HasHorizontalAlignment.ALIGN_LEFT);
       
-      disableTextSelectionForCell(cellFormatter.getElement(0, i));
     }
     
     tableHeader.setCellPadding(2);
@@ -353,8 +352,7 @@ public class BaseTable extends Composite {
         }catch(Exception e){}
         
         if (element != null){
-          disableTextSelectionForCell(element);
-        
+          
           if (value != null && value instanceof String && !value.equals("&nbsp;")){ //$NON-NLS-1$
             element.setTitle(value.toString());
           }
@@ -382,37 +380,6 @@ public class BaseTable extends Composite {
     return false;
   }
   
-  /**
-   * Disables text selection for a table cell containing a child element (typically a span).
-   */
-  private void disableTextSelectionForCell(Element cellElement){
-    if (cellElement != null){
-      Node node = cellElement.getChildNodes().getItem(0);
-      
-      disableTextSelection(cellElement);
-      
-      if (node != null){
-        disableTextSelection(node);
-        disableTextSelection(node.getFirstChild());
-      }
-    }
-  }
-  
-  /**
-   * Disables the ability to select text on the given object.
-   */
-  private static native void disableTextSelection(JavaScriptObject target) /*-{
-    if (target){
-      if (typeof target.onselectstart != "undefined"){
-        target.onselectstart = function(){
-          return false;
-        }
-      }else if (target.style && typeof target.style.MozUserSelect != "undefined"){ // Firefox only
-        target.style.MozUserSelect = "none";
-      }
-    }
-  }-*/;
-
   /**
    * Creates the table using the default values specified in the constructor but with new data for
    * the rows. 
