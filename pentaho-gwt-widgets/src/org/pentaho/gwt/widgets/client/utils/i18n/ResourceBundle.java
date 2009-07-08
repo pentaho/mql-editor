@@ -29,6 +29,7 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 
 /**
@@ -143,7 +144,14 @@ public class ResourceBundle {
         // always fetch the base first
         currentAttemptUrl = ResourceBundle.this.path + bundleName + PROPERTIES_EXTENSION + getUrlExtras();
         if (bundleCache.containsKey(currentAttemptUrl)) {
-          baseCallback.onResponseReceived(null, new FakeResponse(bundleCache.get(currentAttemptUrl)));
+          // call in a separate timeout, to simulate the request builder call as closely as possible
+          Timer t = new Timer() {
+            @Override
+            public void run() {
+              baseCallback.onResponseReceived(null, new FakeResponse(bundleCache.get(currentAttemptUrl)));
+            }
+          };
+          t.schedule(1);
         } else {
           RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, currentAttemptUrl);
           try {
