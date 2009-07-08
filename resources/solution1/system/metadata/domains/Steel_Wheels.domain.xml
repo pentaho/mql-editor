@@ -20,7 +20,7 @@
       <properties/>
       <id>SampleData</id>
       <datasource>
-        <type>JDBC</type>
+        <type>NATIVE</type>
         <databaseName>SampleData</databaseName>
       </datasource>
       <physicalTables>
