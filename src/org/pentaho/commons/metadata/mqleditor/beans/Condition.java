@@ -41,7 +41,7 @@ public class Condition implements MqlCondition {
   public void setColumn(Column column) {
     this.column = column;  
 
-    if(column.getType() == ColumnType.TEXT){
+    if(column.getType() == ColumnType.TEXT && operator == Operator.EQUAL){
       operator = Operator.EXACTLY_MATCHES;
     }
   }
