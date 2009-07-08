@@ -10,7 +10,7 @@
       </list>
     </entry>
   </properties>
-  <id>testing</id>
+  <id>Customers</id>
   <physicalModels>
     <org.pentaho.metadata.model.SqlPhysicalModel>
       <properties>
@@ -20,16 +20,17 @@
             <localeStringMap>
               <entry>
                 <string>en_US</string>
-                <string>testing</string>
+                <string>Customers</string>
               </entry>
             </localeStringMap>
           </org.pentaho.metadata.model.concept.types.LocalizedString>
         </entry>
       </properties>
-      <id>bv_testing</id>
+      <id>bv_Customers</id>
       <datasource>
         <type>JNDI</type>
         <databaseName>SampleData</databaseName>
+        <attributes/>
       </datasource>
       <physicalTables>
         <org.pentaho.metadata.model.SqlPhysicalTable>
@@ -465,7 +466,7 @@
             <localeStringMap>
               <entry>
                 <string>en_US</string>
-                <string>testing</string>
+                <string>Customers</string>
               </entry>
             </localeStringMap>
           </org.pentaho.metadata.model.concept.types.LocalizedString>
@@ -907,13 +908,13 @@
                 <localeStringMap>
                   <entry>
                     <string>en_US</string>
-                    <string>testing</string>
+                    <string>Customers</string>
                   </entry>
                 </localeStringMap>
               </org.pentaho.metadata.model.concept.types.LocalizedString>
             </entry>
           </properties>
-          <id>bc_testing</id>
+          <id>bc_Customers</id>
           <logicalColumns>
             <org.pentaho.metadata.model.LogicalColumn reference="../../../../logicalTables/org.pentaho.metadata.model.LogicalTable/logicalColumns/org.pentaho.metadata.model.LogicalColumn"/>
             <org.pentaho.metadata.model.LogicalColumn reference="../../../../logicalTables/org.pentaho.metadata.model.LogicalTable/logicalColumns/org.pentaho.metadata.model.LogicalColumn[2]"/>
