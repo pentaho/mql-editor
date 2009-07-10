@@ -51,20 +51,22 @@ public class DebugSwingMqlEditor {
     XmiParser parser = new XmiParser();
     try {
       InputStream inStr = SwingMqlEditor.class.getResourceAsStream("/metadata_steelwheels.xmi"); //$NON-NLS-1$
-      if(inStr == null){
-        System.out.println("error with XMI input");  //$NON-NLS-1$
+      if(inStr != null){
         org.pentaho.metadata.model.Domain d = parser.parseXmi(inStr);
         d.setId("Steel-Wheels");  //$NON-NLS-1$
         repo.storeDomain(d, false);
         repo.reloadDomains();
         
+      } else {
+        System.out.println("Error loading XMI file");
+        System.exit(1);
       }
     } catch (Exception e) {
       System.out.println("error with XMI input"); //$NON-NLS-1$
     }
     
     SwingMqlEditor editor = new SwingMqlEditor(repo);
-    editor.hidePreview();
+    //editor.hidePreview();
     editor.show();
   }
   
