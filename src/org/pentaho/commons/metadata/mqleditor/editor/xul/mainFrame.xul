@@ -2,168 +2,166 @@
 <?xml-stylesheet href="file://E:/workspaces/sprint_workspace/pentaho-xul/test/resource/documents/xul.css" type="text/css"?>
 
 <dialog id="mqlEditorDialog" buttonlabelextra1="${preview}"
-	buttonlabelaccept="${ok}" buttonlabelcancel="${close}" buttons="extra1,accept,cancel"
-	pen:extra1buttonalign="center" pen:acceptbuttonalign="right"
-	pen:cancelbuttonalign="right" ondialogextra1="previewController.showPreview()"
-	ondialogaccept="mainController.saveQuery()" ondialogcancel="mainController.closeDialog()"
-	title="${window.title}" width="855" height="505"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	xmlns:pen="http://www.pentaho.org/2008/xul"
-	onload="mainController.init(), selectedColumns.init(), conditionsController.init(), orderController.init(), previewController.init()">
+  buttonlabelaccept="${ok}" buttonlabelcancel="${cancel}" buttons="extra1,accept,cancel"
+  pen:extra1buttonalign="center" pen:acceptbuttonalign="right"
+  pen:cancelbuttonalign="right" ondialogextra1="previewController.showPreview()"
+  ondialogaccept="mainController.saveQuery()" ondialogcancel="mainController.closeDialog()"
+  title="${window.title}" width="855" height="505"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  xmlns:pen="http://www.pentaho.org/2008/xul"
+  onload="mainController.init(), selectedColumns.init(), conditionsController.init(), orderController.init(), previewController.init()">
 
 
-	<dialog id="previewDialog" buttonlabelcancel="${close}" buttons="cancel"
-		ondialogcancel="previewController.closeDialog()" buttonalign="right"
-		title="${window.title}" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-		xmlns:pen="http://www.pentaho.org/2008/xul" height="300" width="400">
+  <dialog id="previewDialog" buttonlabelcancel="${close}" buttons="cancel"
+    ondialogcancel="previewController.closeDialog()" buttonalign="right"
+    title="${preview.title}" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    xmlns:pen="http://www.pentaho.org/2008/xul" height="300" width="400">
 
-		<vbox padding="10" flex="1">
-			<tree editable="false" seltype="none" enableColumnDrag="false"
-				id="previewTree" flex="1" height="210">
-				<treecols />
-				<treechildren />
-			</tree>
-			<hbox>
-				<spacer flex="1" />
-				<label value="Limit:" />
-				<textbox id="previewLimit" value="10" width="30" />
-				<button label="update" onclick="previewController.upateQuery()" />
-			</hbox>
-		</vbox>
-	</dialog>
-
-
-	<vbox id="mainPanel" padding="10" flex="1">
-		<hbox flex="1">
-			<vbox flex="1">
-				<spacer id="leftColumnVerticalAlignment" height="5" />
-				<vbox id="dataModelContainer" width="170">
-					<label value="${business.domains}" />
-					<menulist label="Domain" id="domainList" pen:binding="name"
-						width="170">
-						<menupopup />
-					</menulist>
-					<label value="${business.models}" />
-					<menulist label="Model" id="modelList" width="170"
-						pen:binding="name">
-						<menupopup />
-					</menulist>
-				</vbox>
-
-				<vbox id="categoryTreeContainer" flex="1">
-					<label value="${categories.columns}" />
-					<tree flex="1" id="categoryTree" width="170" istree="true">
-						<treecols>
-							<treecol flex="1" label="" primary="true" pen:binding="name"
-								pen:childrenbinding="children" />
-						</treecols>
-						<treechildren>
-							<treeitem container="true" open="true">
-								<treerow>
-									<treecell label="" />
-								</treerow>
-								<treechildren></treechildren>
-							</treeitem>
-						</treechildren>
-					</tree>
-				</vbox>
-			</vbox>
-
-			<vbox id="buttonContainer">
-				<spacer id="buttonContainerVerticalSpacer" height="33" />
-				<vbox id="buttonVbox1" flex="1">
-					<spacer flex="1" />
-					<button image="images/e_forward.gif" onclick="mainController.moveSelectionToFields()" />
-					<spacer flex="1" />
-				</vbox>
-				<vbox id="buttonVbox2" flex="1">
-					<spacer flex="1" />
-					<button image="images/e_forward.gif" onclick="mainController.moveSelectionToConditions()" />
-					<spacer flex="1" />
-				</vbox>
-				<vbox id="buttonVbox3" flex="1">
-					<spacer flex="1" />
-					<button image="images/e_forward.gif" onclick="mainController.moveSelectionToOrders()" />
-					<spacer flex="1" />
-				</vbox>
-			</vbox>
-
-			<vbox id="tableContainer" flex="5">
-				<spacer id="rightColumnVerticalAlignment" height="5" />
-				<hbox>
-					<label value="${select.columns}" flex="1" />
-					<spacer flex="1" />
-					<button id="colDown" disabled="true" onclick="selectedColumns.moveDown()"
-						image="images/move_down.gif" />
-					<button id="colUp" disabled="true" onclick="selectedColumns.moveUp()"
-						image="images/move_up.gif" />
-					<button id="colRemove" disabled="true" onclick="selectedColumns.remove()"
-						image="images/delete.png" />
-				</hbox>
-				<tree flex="1" editable="false" seltype="single"
-					enableColumnDrag="false" id="selectedColumnTree" width="575">
-					<treecols>
-						<treecol flex="1" label="${aggtype}" type="combobox"
-							editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType" />
-						<treecol flex="3" label="${column}" pen:binding="name" />
-					</treecols>
-					<treechildren />
-				</tree>
+    <vbox padding="10" flex="1">
+      <tree editable="false" seltype="none" enableColumnDrag="false"
+        id="previewTree" flex="1" height="210">
+        <treecols />
+        <treechildren />
+      </tree>
+      <hbox>
+        <spacer flex="1" />
+        <label value="Limit:" />
+        <textbox id="previewLimit" value="10" width="30" />
+        <button label="{update}" onclick="previewController.upateQuery()" />
+      </hbox>
+    </vbox>
+  </dialog>
 
 
-				<hbox>
-					<label value="${conditions}" flex="1" />
-					<spacer id="conditionsSpacer" flex="1" />
-					<button id="conditionDown" disabled="true"
-						onclick="conditionsController.moveDown()" image="images/move_down.gif" />
-					<button id="conditionUp" disabled="true"
-						onclick="conditionsController.moveUp()" image="images/move_up.gif" />
-					<button id="conditionRemove" disabled="true"
-						onclick="conditionsController.remove()" image="images/delete.png" />
-				</hbox>
-				<tree flex="1" editable="true" seltype="single"
-					enableColumnDrag="false" id="conditionsTree" width="575">
-					<treecols>
-						<treecol id="combineColumn" label="${combine}" flex="2"
-							pen:binding="combinationType" pen:combobinding="combinations"
-							type="dynamic" pen:columntypebinding="cellType" editable="true" />
-						<treecol flex="2" label="${aggtype}" type="combobox"
-							editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType" />
-						<treecol label="${column}" flex="3" pen:binding="columnName" />
-						<treecol label="${comparison}" flex="2" pen:binding="operator"
-							type="combobox" pen:combobinding="comparisons" editable="true" />
-						<treecol label="${value}" flex="2" pen:binding="value"
-							editable="true" type="text" />
-						<treecol label="${default}" flex="2" pen:binding="defaultValue"
-							editable="true" type="text" pen:disabledbinding="defaultDisabled" />
-					</treecols>
-					<treechildren />
-				</tree>
+  <vbox id="mainPanel" padding="10" flex="1">
+    <hbox flex="1">
+      <vbox flex="1">
+        <vbox id="dataModelContainer" width="170">
+          <label value="${business.domains}" />
+          <menulist label="Domain" id="domainList" pen:binding="name"
+            width="170">
+            <menupopup />
+          </menulist>
+          <label value="${business.models}" />
+          <menulist label="Model" id="modelList" width="170"
+            pen:binding="name">
+            <menupopup />
+          </menulist>
+        </vbox>
 
-				<hbox>
-					<label value="${order.by}" flex="1" />
-					<spacer flex="1" />
-					<button id="orderDown" disabled="true" onclick="orderController.moveDown()"
-						image="images/move_down.gif" />
-					<button id="orderUp" disabled="true" onclick="orderController.moveUp()"
-						image="images/move_up.gif" />
-					<button id="orderRemove" disabled="true" onclick="orderController.remove()"
-						image="images/delete.png" />
-				</hbox>
-				<tree flex="1" editable="true" seltype="single"
-					enableColumnDrag="false" id="orderTable" width="575">
-					<treecols>
-						<treecol flex="1" label="${aggtype}" type="combobox"
-							editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType" />
-						<treecol label="${column}" pen:binding="columnName" flex="2" />
-						<treecol label="${order}" pen:binding="orderType"
-							pen:combobinding="orderTypes" type="combobox" editable="true"
-							flex="2" />
-					</treecols>
-					<treechildren />
-				</tree>
+        <vbox id="categoryTreeContainer" flex="1">
+          <label value="${categories.columns}" />
+          <tree flex="1" id="categoryTree" width="170" istree="true">
+            <treecols>
+              <treecol flex="1" label="" primary="true" pen:binding="name"
+                pen:childrenbinding="children" />
+            </treecols>
+            <treechildren>
+              <treeitem container="true" open="true">
+                <treerow>
+                  <treecell label="" />
+                </treerow>
+                <treechildren></treechildren>
+              </treeitem>
+            </treechildren>
+          </tree>
+        </vbox>
+      </vbox>
 
-			</vbox>
-		</hbox>
-	</vbox>
+      <vbox id="buttonContainer">
+        <spacer id="buttonContainerVerticalSpacer" height="27" />
+        <vbox id="buttonVbox1" flex="1">
+          <spacer flex="1" />
+          <button image="images/e_forward.gif" onclick="mainController.moveSelectionToFields()" />
+          <spacer flex="1" />
+        </vbox>
+        <vbox id="buttonVbox2" flex="1">
+          <spacer flex="1" />
+          <button image="images/e_forward.gif" onclick="mainController.moveSelectionToConditions()" />
+          <spacer flex="1" />
+        </vbox>
+        <vbox id="buttonVbox3" flex="1">
+          <spacer flex="1" />
+          <button image="images/e_forward.gif" onclick="mainController.moveSelectionToOrders()" />
+          <spacer flex="1" />
+        </vbox>
+      </vbox>
+
+      <vbox id="tableContainer" flex="5">
+        <hbox>
+          <label value="${select.columns}" flex="1" />
+          <spacer flex="1" />
+          <button id="colDown" disabled="true" onclick="selectedColumns.moveDown()"
+            image="images/move_down.gif" />
+          <button id="colUp" disabled="true" onclick="selectedColumns.moveUp()"
+            image="images/move_up.gif" />
+          <button id="colRemove" disabled="true" onclick="selectedColumns.remove()"
+            image="images/delete.png" />
+        </hbox>
+        <tree flex="1" editable="false" seltype="single"
+          enableColumnDrag="false" id="selectedColumnTree" width="575">
+          <treecols>
+            <treecol flex="1" label="${aggtype}" type="combobox"
+              editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType" />
+            <treecol flex="3" label="${column}" pen:binding="name" />
+          </treecols>
+          <treechildren />
+        </tree>
+
+
+        <hbox>
+          <label value="${conditions}" flex="1" />
+          <spacer id="conditionsSpacer" flex="1" />
+          <button id="conditionDown" disabled="true"
+            onclick="conditionsController.moveDown()" image="images/move_down.gif" />
+          <button id="conditionUp" disabled="true"
+            onclick="conditionsController.moveUp()" image="images/move_up.gif" />
+          <button id="conditionRemove" disabled="true"
+            onclick="conditionsController.remove()" image="images/delete.png" />
+        </hbox>
+        <tree flex="1" editable="true" seltype="single"
+          enableColumnDrag="false" id="conditionsTree" width="575">
+          <treecols>
+            <treecol id="combineColumn" label="${combine}" flex="2"
+              pen:binding="combinationType" pen:combobinding="combinations"
+              type="dynamic" pen:columntypebinding="cellType" editable="true" />
+            <treecol flex="2" label="${aggtype}" type="combobox"
+              editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType" />
+            <treecol label="${column}" flex="3" pen:binding="columnName" />
+            <treecol label="${comparison}" flex="2" pen:binding="operator"
+              type="combobox" pen:combobinding="comparisons" editable="true" />
+            <treecol label="${value}" flex="2" pen:binding="value"
+              editable="true" type="text" />
+            <treecol label="${default}" flex="2" pen:binding="defaultValue"
+              editable="true" type="text" pen:disabledbinding="defaultDisabled" />
+          </treecols>
+          <treechildren />
+        </tree>
+
+        <hbox>
+          <label value="${order.by}" flex="1" />
+          <spacer flex="1" />
+          <button id="orderDown" disabled="true" onclick="orderController.moveDown()"
+            image="images/move_down.gif" />
+          <button id="orderUp" disabled="true" onclick="orderController.moveUp()"
+            image="images/move_up.gif" />
+          <button id="orderRemove" disabled="true" onclick="orderController.remove()"
+            image="images/delete.png" />
+        </hbox>
+        <tree flex="1" editable="true" seltype="single"
+          enableColumnDrag="false" id="orderTable" width="575">
+          <treecols>
+            <treecol flex="1" label="${aggtype}" type="combobox"
+              editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType" />
+            <treecol label="${column}" pen:binding="columnName" flex="2" />
+            <treecol label="${order}" pen:binding="orderType"
+              pen:combobinding="orderTypes" type="combobox" editable="true"
+              flex="2" />
+          </treecols>
+          <treechildren />
+        </tree>
+
+      </vbox>
+    </hbox>
+  </vbox>
 </dialog>
