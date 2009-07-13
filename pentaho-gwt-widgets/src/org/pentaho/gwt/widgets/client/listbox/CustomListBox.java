@@ -774,12 +774,27 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
    * This is the arrow rendered in the drop-down.
    */
   private class DropDownArrow extends SimplePanel{
+    private Image img;
+    private boolean enabled = true;
     public DropDownArrow(){
-      Image img = new Image(GWT.getModuleBaseURL() + "arrow.png");
+      img = new Image(GWT.getModuleBaseURL() + "arrow.png");
 
       this.setStylePrimaryName("combo-arrow");
       super.add(img);
       ElementUtils.preventTextSelection(this.getElement());
+    }
+    public void setEnabled(boolean enabled){
+      if(this.enabled == enabled){
+        return;
+      }
+      this.enabled = enabled;
+      if(enabled){
+        img.setUrl(GWT.getModuleBaseURL() + "arrow.png");
+        this.setStylePrimaryName("combo-arrow");
+      } else {
+        this.setStylePrimaryName("combo-arrow-disabled");
+        img.setUrl(GWT.getModuleBaseURL() + "arrow_disabled.png");
+      }
     }
   }
 
@@ -828,7 +843,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   
   public void setEnabled(boolean enabled){
     this.enabled = enabled;
-
+    arrow.setEnabled(enabled);
     this.setStylePrimaryName((this.enabled) ? "custom-list" : "custom-list-disabled");
   }
   

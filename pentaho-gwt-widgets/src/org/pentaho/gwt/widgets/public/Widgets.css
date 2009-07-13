@@ -641,6 +641,17 @@ body{
   cursor: pointer;
 }
 
+.combo-arrow-disabled{
+  padding: 4px;
+  background: url("arrow_slice.png");
+  background-repeat: repeat-x;
+  border-left: 1px solid #ececec;
+  border-top: 1px solid #ececec;
+  border-right: 1px solid #808080;
+  border-bottom: 1px solid #808080;
+  cursor: pointer;
+}
+
 .custom-list{
  padding: 0px;
   margin: 0px;

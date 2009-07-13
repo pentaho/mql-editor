@@ -89,13 +89,13 @@ public class DefaultListItem  implements ListItem<Object> {
       Image i = new Image(img.getUrl(), img.getOriginLeft(), img.getOriginTop(), img.getWidth(), img.getHeight());
       panel.add(i);
       panel.setCellVerticalAlignment(i, HasVerticalAlignment.ALIGN_MIDDLE);
-      i.getElement().getStyle().setProperty("marginRight","2px"); //$NON-NLS-1$ //$NON-NLS-2$
+      i.getElement().getStyle().setProperty("marginRight","5px"); //$NON-NLS-1$ //$NON-NLS-2$
     } else if(extraWidget != null){
       Element ele = DOM.clone(extraWidget.getElement(), true);
       Widget w = new WrapperWidget(ele);
       panel.add(w);
       panel.setCellVerticalAlignment(w, HasVerticalAlignment.ALIGN_MIDDLE);
-      w.getElement().getStyle().setProperty("marginRight","2px"); //$NON-NLS-1$ //$NON-NLS-2$
+      w.getElement().getStyle().setProperty("marginRight","5px"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     Label label = new Label(text);
