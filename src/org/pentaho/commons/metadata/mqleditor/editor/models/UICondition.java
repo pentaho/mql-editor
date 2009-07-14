@@ -19,10 +19,11 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
   private Operator operator = Operator.EQUAL;
   private String value;
   private CombinationType combinationType = CombinationType.AND;
-  private boolean parameterized = false;
+  private boolean parameterized;
+  private boolean valueDisabled;
   private AggType selectedAggType;
   
-  private boolean topMost = false;
+  private boolean topMost;
   
   public UICondition(){
   }
@@ -75,10 +76,20 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
 
   public void setOperator(Operator operator) {
     this.operator = operator;
+    switch(this.operator){
+      case IS_NULL:
+      case IS_NOT_NULL:
+      case IS_EMPTY:
+      case IS_NOT_EMPTY:
+        this.setValueDisabled(true);
+        break;
+      default:
+        this.setValueDisabled(false);
+    }
   }
 
   public void setOperator(Object operator) {
-    this.operator = (Operator) operator;
+    setOperator((Operator) operator);
   }
 
   public String getValue() {
@@ -87,7 +98,10 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
 
 
   public void setValue(String value) {
+    String prevVal = this.value;
     this.value = value;
+    this.firePropertyChange("value", prevVal, this.value);
+    
     this.setParameterized(value != null && value.contains("{") && value.contains("}"));
   }
 
@@ -214,6 +228,19 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
 
   public boolean isTopMost() {
     return topMost;
+  }
+  
+  public boolean isValueDisabled(){
+    return valueDisabled;
+  }
+  
+  public void setValueDisabled(boolean disabled){
+    boolean prevVal = this.valueDisabled;
+    this.valueDisabled = disabled;
+    this.firePropertyChange("valueDisabled", prevVal, this.valueDisabled);
+    if(disabled){
+      setValue(null);
+    }
   }
 }
 
