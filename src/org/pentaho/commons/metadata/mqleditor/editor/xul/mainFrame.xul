@@ -27,7 +27,7 @@
         <spacer flex="1" />
         <label value="Limit:" />
         <textbox id="previewLimit" value="10" width="30" />
-        <button label="{update}" onclick="previewController.upateQuery()" />
+        <button label="${update}" onclick="previewController.upateQuery()" />
       </hbox>
     </vbox>
   </dialog>

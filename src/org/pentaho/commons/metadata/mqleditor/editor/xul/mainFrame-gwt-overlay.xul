@@ -24,8 +24,8 @@
   <spacer id="rightColumnVerticalAlignment" height="9" />
 
   <spacer id="buttonContainerVerticalSpacer" height="10" />
-  <vbox id="buttonVbox1" flex="0" height="154" />
-  <vbox id="buttonVbox2" flex="0" height="133" />
+  <vbox id="buttonVbox1" flex="0" height="130" />
+  <vbox id="buttonVbox2" flex="0" height="95" />
   <vbox id="buttonVbox3" flex="0" height="80" />
 
   <spacer id="conditionsSpacer" width="500" />
