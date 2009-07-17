@@ -79,6 +79,7 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
   }
   
   public void show(){
+    workspace.setSelectedColumn(null);
     mainController.showDialog();
   }
 
