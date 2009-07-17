@@ -26,8 +26,8 @@ import org.pentaho.gwt.widgets.client.dialogs.ResizableDialogBox;
 import org.pentaho.gwt.widgets.client.filechooser.FileChooser.FileChooserMode;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
 import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
+import org.pentaho.gwt.widgets.client.utils.string.StringUtils;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.xml.client.Document;
 
 public class FileChooserDialog extends ResizableDialogBox implements FileChooserListener{
@@ -158,19 +158,25 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
    */
   private boolean isFileNameValid() {
     final String fileName = getFileName();
-    if (fileName == null || "".equals(fileName)) { //$NON-NLS-1$
+    if (StringUtils.isEmpty(fileName)) { //$NON-NLS-1$
       MessageDialogBox dialogBox = new MessageDialogBox(MSGS.error(), MSGS.noFilenameEntered(), false, false, true);
       dialogBox.center();
       return false;
-    }    
+    } else if (StringUtils.containsAnyChars(fileName, "/?%*:|\"<>")) { //$NON-NLS-1$
+      MessageDialogBox dialogBox = new MessageDialogBox(MSGS.error(), MSGS.invalidFilename(), false, false, true);
+      dialogBox.center();
+      return false;
+    }
     return true;
   }
 
   public void fileSelected(String solution, String path, String name, String localizedFileName) {
-    for(FileChooserListener listener : listeners){
-      listener.fileSelected(solution, path, name, localizedFileName);
+    if (isFileNameValid()) {
+      for(FileChooserListener listener : listeners){
+        listener.fileSelected(solution, path, name, localizedFileName);
+      }
+      this.hide();
     }
-    this.hide();
   }
 
   public void fileSelectionChanged(String solution, String path, String name) {

@@ -51,6 +51,18 @@ public class StringUtils {
     return Integer.toString( Integer.parseInt( strDividend ) / divisor );
   }
 
+  public static boolean containsAnyChars(String str, String checkChars) {
+    if (StringUtils.isEmpty(str) || StringUtils.isEmpty(checkChars)) {
+      return false;
+    }
+    for (int i=0;i<checkChars.length();i++) {
+      if (str.indexOf(checkChars.charAt(i)) >= 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   // MAX_INT = 2147483647
   private static final String MATCH_POSITIVE_INTEGER_RE = "^\\s*[0-9]{1,10}\\s*$"; //$NON-NLS-1$
   public static boolean isPositiveInteger( String strInt ) {

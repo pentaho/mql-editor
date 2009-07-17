@@ -1382,6 +1382,16 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String noFilenameEntered();
 
   /**
+   * Translated "Invalid filename, filenames cannot include the characters: /?%*:|"<>.".
+   * 
+   * @return translated "Invalid filename, filenames cannot include the characters: /?%*:|"<>."
+  
+   */
+  @DefaultMessage("Invalid filename, filenames cannot include the characters: /?%*:|\"<>.")
+  String invalidFilename();
+
+  
+  /**
    * Translated "Schedule Edit".
    * 
    * @return translated "Schedule Edit"
