@@ -122,11 +122,11 @@ public enum Operator implements Serializable{
         break;
       case IS_EMPTY:
       case IS_NULL:
-        retVal += "ISNA("+objectName+"; NULL())";
+        retVal += "ISNA("+objectName+")";
         break;
       case IS_NOT_NULL:
       case IS_NOT_EMPTY:
-        retVal += "NOT(ISNA("+objectName+"; NULL()))";
+        retVal += "NOT(ISNA("+objectName+"))";
         break;
       default:
         retVal = objectName + " " + this.toString();
