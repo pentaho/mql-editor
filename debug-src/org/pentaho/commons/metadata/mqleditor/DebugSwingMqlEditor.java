@@ -59,7 +59,7 @@ public class DebugSwingMqlEditor {
         
       } else {
         System.out.println("Error loading XMI file");
-        System.exit(1);
+       //  System.exit(1);
       }
     } catch (Exception e) {
       System.out.println("error with XMI input"); //$NON-NLS-1$

@@ -12,7 +12,8 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
 
 
   private ColumnType type;
-  private String id, name;
+  private String id;
+  private String name;
 
   private List<AggType> aggTypes = new ArrayList<AggType>();
   private AggType defaultAggType;
@@ -21,6 +22,16 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
   
   public UIColumn() {
 
+  }
+  
+  public Object clone() {
+    UIColumn col = new UIColumn();
+    col.type = type;
+    col.id = id;
+    col.name = name;
+    col.aggTypes = aggTypes;
+    col.selectedAggType = selectedAggType;
+    return col;
   }
 
   public UIColumn(MqlColumn col) {
