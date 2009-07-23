@@ -128,7 +128,7 @@
             <treecol flex="2" label="${aggtype}" type="combobox"
               editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType" />
             <treecol label="${column}" flex="3" pen:binding="columnName" />
-            <treecol label="${comparison}" flex="2" pen:binding="operator"
+            <treecol label="${comparison}" flex="3" pen:binding="operator"
               type="combobox" pen:combobinding="comparisons" editable="true" />
             <treecol label="${value}" flex="2" pen:binding="value"
               editable="true" type="text" pen:disabledbinding="valueDisabled" />
