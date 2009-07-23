@@ -28,6 +28,7 @@ public class UIOrder extends XulEventSourceAdapter implements MqlOrder {
       this.column = new UIColumn(order.getColumn());
     }
     this.orderType = order.getOrderType();
+    this.selectedAggType = order.getSelectedAggType();
   }
 
   public UIOrder(UIColumn column, Type type){

@@ -45,6 +45,7 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
     this.value = bean.getValue();
     this.combinationType = bean.getCombinationType();
     column = new UIColumn(bean.getColumn());
+    this.selectedAggType = bean.getSelectedAggType();
   }
   
   public boolean validate(){

@@ -89,7 +89,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     
     if (thinWorkspace.getColumns() != null) {
       for( MqlColumn col : thinWorkspace.getColumns()){
-        UIColumn c = findColumn(col);
+        UIColumn c = findAndCloneColumn(col);
         if(c != null){
           selectedColumns.add(c);
         } else {
@@ -101,14 +101,14 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     if (thinWorkspace.getOrders() != null) {
       for( MqlOrder order : thinWorkspace.getOrders()){
         UIOrder ord = new UIOrder(order);
-        ord.setColumn(findColumn(order.getColumn()));
+        ord.setColumn(findAndCloneColumn(order.getColumn()));
         orders.add(ord);
       }
     }
     if (thinWorkspace.getConditions() != null) {
       for( Condition condition : thinWorkspace.getConditions()){
         UICondition cond = new UICondition(condition);
-        cond.setColumn(findColumn(condition.getColumn()));
+        cond.setColumn(findAndCloneColumn(condition.getColumn()));
         conditions.add(cond);
       }
     }
@@ -153,11 +153,13 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
   
   
-  private UIColumn findColumn(MqlColumn col){
+  private UIColumn findAndCloneColumn(MqlColumn col){
     for(UICategory cat : this.selectedModel.getCategories()){
       for(UIColumn c : cat.getBusinessColumns()){
         if(c.getId().equals(col.getId())){
-          return c;
+          UIColumn column = (UIColumn)c.clone();
+          column.setSelectedAggType(col.getSelectedAggType());
+          return column;
         }
       }
     }

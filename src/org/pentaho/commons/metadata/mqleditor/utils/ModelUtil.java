@@ -67,6 +67,7 @@ public class ModelUtil {
         
         ord.setColumn(col);
         ord.setOrderType(order.getOrderType());
+        ord.setSelectedAggType(order.getSelectedAggType());
         orders.add(ord);
       }
     }
@@ -91,6 +92,7 @@ public class ModelUtil {
         con.setDefaultValue(condition.getDefaultValue());
         con.setOperator(condition.getOperator());
         con.setValue(condition.getValue());
+        con.setSelectedAggType(condition.getSelectedAggType());
         
         conditions.add(con);
       }
