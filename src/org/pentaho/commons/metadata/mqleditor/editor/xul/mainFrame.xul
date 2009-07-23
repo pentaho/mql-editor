@@ -19,7 +19,7 @@
 
     <vbox padding="10" flex="1">
       <tree editable="false" seltype="none" enableColumnDrag="false"
-        id="previewTree" flex="1" height="210">
+        id="previewTree" flex="1" height="210" width="386">
         <treecols />
         <treechildren />
       </tree>
