@@ -18,7 +18,7 @@
     xmlns:pen="http://www.pentaho.org/2008/xul" height="300" width="400">
 
     <vbox padding="10" flex="1">
-      <tree editable="false" seltype="none" enableColumnDrag="false"
+      <tree editable="false" seltype="none" enableColumnDrag="false" 
         id="previewTree" flex="1" height="210" width="386">
         <treecols />
         <treechildren />
