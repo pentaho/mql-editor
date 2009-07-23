@@ -7,11 +7,13 @@
   <vbox id="categoryTreeContainer" flex="0" height="395"/>
   <!-- categoryTree height must be set to force scrolling -->
   <tree id="categoryTree" height="395"/>
+
   
+  <!-- Changing the source of these buttons is causing IE to crash. Re-evaluate later.
   <button id="colDown" image="images/thin_down.png" />
   <button id="colUp" image="images/thin_up.png" />
   <button id="colRemove" image="images/remove.png" />
-
+  
   <button id="conditionDown" image="images/thin_down.png" />
   <button id="conditionUp" image="images/thin_up.png" />
   <button id="conditionRemove" image="images/remove.png" />
@@ -19,6 +21,8 @@
   <button id="orderDown" image="images/thin_down.png" />
   <button id="orderUp" image="images/thin_up.png" />
   <button id="orderRemove" image="images/remove.png" />
+  -->
+
 
   <spacer id="leftColumnVerticalAlignment" height="0" />
   <spacer id="rightColumnVerticalAlignment" height="9" />
