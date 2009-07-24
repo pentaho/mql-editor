@@ -452,7 +452,10 @@ public class MQLEditorServiceDelegate {
       case BOOLEAN:
         return DataType.BOOLEAN;
       case DATE:
-        return DataType.DATE;
+        // As we are crafting an open formula function to handle dates, the parameter data type needs to be a String.
+        // This will eventually be handled by the Metadata layer.
+        return DataType.STRING;
+        // return DataType.DATE;
       case FLOAT:
       case NUMERIC:
         return DataType.NUMERIC;
