@@ -560,6 +560,14 @@ public class MQLEditorServiceCWMDelegate {
 
         Condition cond = new Condition();
         cond.setColumn(c);
+        
+        if(c.getType() == ColumnType.DATE ){
+          p = Pattern.compile("DATEVALUE\\(\"([^\\)]*)\"\\)");
+          m = p.matcher(condition);
+          if(m.find()){
+            condition = m.group(1);
+          }
+        }
         cond.setValue(condition);
         cond.setOperator(Operator.parse(operator));
         conditions.add(cond);

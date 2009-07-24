@@ -125,7 +125,7 @@ public class PreviewController extends AbstractXulEventHandler {
 
   public void setPreviewData(String[][] previewData) {
     this.previewData = previewData;
-    if(previewData.length == 0){
+    if(previewData == null || previewData.length == 0){
       previewTree.setElements(null);
       return;
     }
