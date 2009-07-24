@@ -60,18 +60,22 @@ public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQ
     repo.setDomainFolder("resources/solution1/system/metadata/domains"); //$NON-NLS-1$
 
 
+    // Parse and add legacy CWM domain for testing purposes.
     XmiParser parser = new XmiParser();
     try {
       InputStream inStr = getClass().getResourceAsStream("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata_steelwheels.xmi"); //$NON-NLS-1$
-      if(inStr == null){
-        log.error("error with XMI input");  //$NON-NLS-1$
-        Domain d = parser.parseXmi(inStr);
+      if(inStr != null){
+        org.pentaho.metadata.model.Domain d = parser.parseXmi(inStr);
         d.setId("Steel-Wheels");  //$NON-NLS-1$
         repo.storeDomain(d, false);
         repo.reloadDomains();
+        
+      } else {
+        System.out.println("Error loading XMI file");
+       //  System.exit(1);
       }
     } catch (Exception e) {
-      log.error("error with XMI input", e); //$NON-NLS-1$
+      System.out.println("error with XMI input"); //$NON-NLS-1$
     }
     
     delegate = new MQLEditorServiceDelegate(repo);
