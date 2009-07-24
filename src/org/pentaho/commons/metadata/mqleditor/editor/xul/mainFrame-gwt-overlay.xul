@@ -9,7 +9,7 @@
   <tree id="categoryTree" height="395"/>
 
   
-  <!-- Changing the source of these buttons is causing IE to crash. Re-evaluate later.
+  <!-- Changing the source of these buttons is causing IE to crash. Re-evaluate later. -->
   <button id="colDown" image="images/thin_down.png" />
   <button id="colUp" image="images/thin_up.png" />
   <button id="colRemove" image="images/remove.png" />
@@ -21,7 +21,7 @@
   <button id="orderDown" image="images/thin_down.png" />
   <button id="orderUp" image="images/thin_up.png" />
   <button id="orderRemove" image="images/remove.png" />
-  -->
+
 
 
   <spacer id="leftColumnVerticalAlignment" height="0" />
