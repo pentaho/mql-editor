@@ -97,45 +97,40 @@ public enum Operator implements Serializable{
   public String formatCondition(String objectName, String value, boolean parameterized){
     
     if(parameterized){
-     value = "[param:"+value.replaceAll("[\\{\\}]","")+"]";
+     value = "[param:"+value.replaceAll("[\\{\\}]","")+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    } else if (this.stringType) {
+      value = "\"" + value + "\""; //$NON-NLS-1$ //$NON-NLS-2$ 
     }
-    String retVal = "";
+    String retVal = ""; //$NON-NLS-1$
+    
     switch(this){
       case EXACTLY_MATCHES:
-        if(parameterized){
-          retVal += objectName+" = " + value;
-        } else {
-          retVal += objectName+" = \"" + value + "\"";
-        }
+        retVal += objectName+" = " + value; //$NON-NLS-1$
         break;
       case CONTAINS:
-        retVal += "CONTAINS("+objectName+";\""+value+"\")";
+        retVal += "CONTAINS("+objectName+";"+value+")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         break;
       case DOES_NOT_CONTAIN:
-        retVal += "NOT(CONTAINS("+objectName+";\""+value+"\"))";
+        retVal += "NOT(CONTAINS("+objectName+";"+value+"))"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         break;
       case BEGINS_WITH:
-        retVal += "BEGINSWITH("+objectName+";\""+value+"\")";
+        retVal += "BEGINSWITH("+objectName+";"+value+")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         break;
       case ENDS_WITH:
-        retVal += "ENDSWITH("+objectName+";\""+value+"\")";
+        retVal += "ENDSWITH("+objectName+";"+value+")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         break;
       case IS_EMPTY:
       case IS_NULL:
-        retVal += "ISNA("+objectName+")";
+        retVal += "ISNA("+objectName+")"; //$NON-NLS-1$ //$NON-NLS-2$
         break;
       case IS_NOT_NULL:
       case IS_NOT_EMPTY:
-        retVal += "NOT(ISNA("+objectName+"))";
+        retVal += "NOT(ISNA("+objectName+"))"; //$NON-NLS-1$ //$NON-NLS-2$
         break;
       default:
-        retVal = objectName + " " + this.toString();
+        retVal = objectName + " " + this.toString(); //$NON-NLS-1$
         if(this.requiresValue){
-          if(this.stringType){
-            retVal += "\""+value+"\"";
-          } else {
-            retVal += value;
-          }
+          retVal += value;
         }
         break;
     }
