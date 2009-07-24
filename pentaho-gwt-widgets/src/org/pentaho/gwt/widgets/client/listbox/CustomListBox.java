@@ -669,6 +669,9 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     this.listScrollPanel.setWidth("100%");
     this.width = s;
     this.popupWidth = s;
+    if(s != null){
+      dropGrid.setWidth("100%"); 
+    }
     super.setWidth(s);
   }
 
