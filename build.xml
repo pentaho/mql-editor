@@ -2,7 +2,7 @@
      description: main build file for pentaho  . .                                                    
      ====================================================================== -->
 <project name="pentaho-commons-mql" default="jar" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
-	<description>Pentaho Commons MQL Editor build file</description>
+	<description>Pentaho Commons MQL Editor Core build file</description>
 
 	<!-- Import the version information -->
 	<property file="${basedir}/version.properties" />

@@ -10,6 +10,7 @@
     This is the common build for Pentaho GWT projects
   </description>
 
+	
   <!-- Define the default location of the common build file -->
   <property name="common.build.file"
             value="./common_build.xml"
