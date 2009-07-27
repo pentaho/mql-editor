@@ -22,11 +22,7 @@
         <exclude name="**/ModelSerializer*"/>
         <exclude name="**/CWMStartup*"/>
         <exclude name="**/Swt*"/>
-        <exclude name="**/MQLEditorServiceDebugImpl*"/>
-        <exclude name="**/MQLEditorDebugGwtServlet*"/>
-        
     </source>
     <public path="editor/xul"/>
-  <servlet path="/gwtrpc/MqlService" class="org.pentaho.commons.metadata.mqleditor.editor.gwt.MQLEditorDebugGwtServlet" />
   
  </module>
