@@ -38,7 +38,7 @@ public class WorkspaceTest {
   private MQLEditorServiceCWMDelegate service;
   Workspace workspace;
   
-  @Before
+  @Before 
   public void setUp() throws Exception {
     mqlQuery = new Query();
 
