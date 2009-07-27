@@ -1,0 +1,89 @@
+<!-- ======================================================================
+     description: main build file for pentaho  . .                                                    
+     ====================================================================== -->
+<project name="pentaho-mql-editor-debug" default="jar" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+	<description>Pentaho Commons MQL Editor Debug build file</description>
+
+	<!-- Import the version information -->
+	<property file="${basedir}/version.properties" />
+
+	<!-- Define the default location of the gwt common build file -->
+	<property name="gwt.common.build.file" value="./gwt_common_build.xml" description="This is the location of the standardized common_build.xml file" />
+
+	<!-- Import the common_build.xml file which contains all the default tasks -->
+	<import file="${gwt.common.build.file}" />
+
+	<!--
+      AS STATED ABOVE, THE ONLY TASKS THAT SHOULD EXIST IN THIS BUILD FILE ARE
+      THE TASKS THAT NEED TO DIFFER FROM THE DEFAULT IMPLEMENTATION OF THE TASKS
+      FOUND IN common_build.xml.
+    -->
+
+	<!-- Directory in which the source will be copied before a compile -->
+	<property name="temp-src.dir" value="${bin.dir}/src" />
+
+
+	<!--=======================================================================
+      source.jar
+      
+      Creates a jar of the project source for distribution
+      ====================================================================-->
+	<target name="source.jar" depends="init">
+		<jar jarfile="${dist.dir}/${ivy.artifact.id}-${project.revision}-sources.jar">
+			<fileset dir="src" />
+			<fileset dir="debug-src" />
+		</jar>
+	</target>
+
+
+	<!--=======================================================================
+      source.targz
+      
+      Creates a gzipped tar of the project source for distribution
+      ====================================================================-->
+	<target name="source.targz" depends="init">
+		<tar compression="gzip" destfile="${dist.dir}/${ivy.artifact.id}-${project.revision}-sources.tar.gz">
+			<fileset dir="src" />
+			<fileset dir="debug-src" />
+		</tar>
+	</target>
+
+
+	<target name="compile.compile" depends="init">
+		<javac destdir="${classes.dir}" debug="${javac.debug}" deprecation="${javac.deprecation}" fork="true" source="${javac.source}" target="${javac.target}">
+			<classpath>
+				<path refid="classpath" />
+			</classpath>
+			<src path="${src.dir}" />
+		</javac>
+
+		<javac destdir="${classes.dir}" debug="${javac.debug}" deprecation="${javac.deprecation}" fork="true" source="${javac.source}" target="${javac.target}">
+			<classpath>
+				<path refid="classpath" />
+			</classpath>
+			<src path="debug-src" />
+
+		</javac>
+	</target>
+
+	  <target name="create-dot-classpath"
+	          depends="install-pentaho-ant-tasks,init">
+	    <dot-classpath>
+	      <!-- Include all lib dirs -->
+	      <classpath>
+	        <fileset dir="${lib.dir}">
+	          <include name="*.jar" />
+	        </fileset>
+	        <fileset dir="${devlib.dir}">
+	          <include name="*.jar" />
+	        </fileset>
+	        <fileset dir="${testlib.dir}">
+	          <include name="*.jar" />
+	        </fileset>
+	        <fileset dir="codegen-lib">
+	          <include name="*.jar" />
+	        </fileset>
+	      </classpath>
+	    </dot-classpath>
+	  </target>
+</project>
