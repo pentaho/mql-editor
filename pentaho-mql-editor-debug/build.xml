@@ -22,50 +22,6 @@
 	<!-- Directory in which the source will be copied before a compile -->
 	<property name="temp-src.dir" value="${bin.dir}/src" />
 
-
-	<!--=======================================================================
-      source.jar
-      
-      Creates a jar of the project source for distribution
-      ====================================================================-->
-	<target name="source.jar" depends="init">
-		<jar jarfile="${dist.dir}/${ivy.artifact.id}-${project.revision}-sources.jar">
-			<fileset dir="src" />
-			<fileset dir="debug-src" />
-		</jar>
-	</target>
-
-
-	<!--=======================================================================
-      source.targz
-      
-      Creates a gzipped tar of the project source for distribution
-      ====================================================================-->
-	<target name="source.targz" depends="init">
-		<tar compression="gzip" destfile="${dist.dir}/${ivy.artifact.id}-${project.revision}-sources.tar.gz">
-			<fileset dir="src" />
-			<fileset dir="debug-src" />
-		</tar>
-	</target>
-
-
-	<target name="compile.compile" depends="init">
-		<javac destdir="${classes.dir}" debug="${javac.debug}" deprecation="${javac.deprecation}" fork="true" source="${javac.source}" target="${javac.target}">
-			<classpath>
-				<path refid="classpath" />
-			</classpath>
-			<src path="${src.dir}" />
-		</javac>
-
-		<javac destdir="${classes.dir}" debug="${javac.debug}" deprecation="${javac.deprecation}" fork="true" source="${javac.source}" target="${javac.target}">
-			<classpath>
-				<path refid="classpath" />
-			</classpath>
-			<src path="debug-src" />
-
-		</javac>
-	</target>
-
 	  <target name="create-dot-classpath"
 	          depends="install-pentaho-ant-tasks,init">
 	    <dot-classpath>
