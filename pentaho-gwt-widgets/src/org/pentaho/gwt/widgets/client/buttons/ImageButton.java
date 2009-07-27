@@ -113,7 +113,7 @@ public class ImageButton extends Image {
     // only change the url if it's different and not null
     if (isEnabled && this.getUrl().equals(enabledUrl) == false) {
       this.setSrc(enabledUrl);
-    } else if (disabledUrl != null
+    } else if (!isEnabled && disabledUrl != null
         && this.getUrl().equals(disabledUrl) == false) {
       this.setSrc(disabledUrl);
     }
@@ -129,7 +129,7 @@ public class ImageButton extends Image {
     if (isEnabled && enabledUrl != null
         && this.getUrl().equals(enabledUrl) == false) {
       this.setSrc(enabledUrl);
-    } else if (this.getUrl().equals(disabledUrl) == false) {
+    } else if (!isEnabled && this.getUrl().equals(disabledUrl) == false) {
       this.setSrc(disabledUrl);
     }
   }
