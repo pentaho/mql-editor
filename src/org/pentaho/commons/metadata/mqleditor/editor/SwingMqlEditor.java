@@ -141,7 +141,8 @@ public class SwingMqlEditor {
     } else {
       QueryXmlHelper helper = new QueryXmlHelper();
       Query queryObject = helper.fromXML(repo, query);
-      //mainController.setSavedQuery((Query) this.delegate.convertModelToThin(query));
+      org.pentaho.commons.metadata.mqleditor.beans.Query thinQuery = (org.pentaho.commons.metadata.mqleditor.beans.Query) this.delegate.convertModelToThin(queryObject);
+      mainController.setSavedQuery(thinQuery);
     }
   }
   

@@ -12,10 +12,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.pentaho.commons.connection.IPentahoResultSet;
 import org.pentaho.commons.metadata.mqleditor.AggType;
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.CombinationType;
+import org.pentaho.commons.metadata.mqleditor.MqlCategory;
 import org.pentaho.commons.metadata.mqleditor.MqlColumn;
 import org.pentaho.commons.metadata.mqleditor.MqlCondition;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
@@ -32,8 +32,6 @@ import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelUtil;
-import org.pentaho.di.core.database.Database;
-import org.pentaho.di.core.database.DatabaseMeta;
 import org.pentaho.metadata.model.LogicalColumn;
 import org.pentaho.metadata.model.LogicalModel;
 import org.pentaho.metadata.model.concept.types.AggregationType;
@@ -42,7 +40,6 @@ import org.pentaho.metadata.query.model.Constraint;
 import org.pentaho.metadata.query.model.Parameter;
 import org.pentaho.metadata.query.model.util.QueryXmlHelper;
 import org.pentaho.metadata.repository.IMetadataDomainRepository;
-import org.pentaho.pms.core.CWM;
 import org.pentaho.pms.factory.CwmSchemaFactoryInterface;
 import org.pentaho.pms.mql.MQLQuery;
 import org.pentaho.pms.mql.MQLQueryImpl;
@@ -718,4 +715,89 @@ public class MQLEditorServiceDelegate {
 
   }
 
+  
+  
+  public MqlQuery convertModelToThin(org.pentaho.metadata.query.model.Query query){
+    Query q = new Query();
+    
+    String domainId = query.getDomain().getId();
+    String modelId = query.getLogicalModel().getId();
+    
+    MqlDomain selectedDomain = null;
+    MqlModel selectedModel = null;
+    for(MqlDomain d : this.domains){
+      if(d.getName().equals(domainId)){
+        selectedDomain = d;
+        break;
+      }
+    }
+    if(selectedDomain == null){
+      throw new IllegalStateException("Could not find domain: "+domainId);
+    }
+    q.setDomain((Domain) selectedDomain);
+    for(MqlModel m : selectedDomain.getModels()){
+      if(m.getId().equals(modelId)){
+        selectedModel = m;
+        break;
+      }
+    }
+    if(selectedModel == null){
+      throw new IllegalStateException("Could not find model: "+modelId); 
+    }
+    q.setModel((Model) selectedModel);
+    List<Column> cols = q.getColumns();
+    for(org.pentaho.metadata.query.model.Selection sel : query.getSelections()){
+      Column c = (Column) convertNewThinColumn(selectedModel, sel.getLogicalColumn().getId());
+      c.setSelectedAggType(convertNewThinAggregationType(sel.getAggregationType())); 
+      cols.add(c);
+    }
+    
+    for(org.pentaho.metadata.query.model.Constraint constraint : query.getConstraints()){
+      Condition cond = FormulaParser.parse(selectedModel, constraint.getFormula());
+      cond.setCombinationType(CombinationType.valueOf(constraint.getCombinationType().toString().toUpperCase()));
+      q.getConditions().add(cond);
+    }
+    
+    for(org.pentaho.metadata.query.model.Order ord : query.getOrders()){
+      Order o = new Order();
+      o.setColumn((Column) convertNewThinColumn(selectedModel, ord.getSelection().getLogicalColumn().getId()));
+      o.setOrderType(MqlOrder.Type.valueOf(ord.getType().toString().toUpperCase()));
+      q.getOrders().add(o);
+    }
+    return q;
+  }
+  
+  private AggType convertNewThinAggregationType(AggregationType aggregationType) {
+    switch(aggregationType){
+      case COUNT:
+        return AggType.COUNT;
+      case DISTINCT_COUNT:
+        return AggType.COUNT_DISTINCT;
+      case AVG:
+        return AggType.AVERAGE;
+      case MIN:
+        return AggType.MIN;
+      case MAX:
+        return AggType.MAX;
+      case SUM:
+        return AggType.SUM;
+      case NONE:
+      default:
+        return AggType.NONE;
+    }
+  }
+
+
+  private MqlColumn convertNewThinColumn(MqlModel selectedModel, String colId){
+
+    for(MqlCategory c : selectedModel.getCategories()){
+      for(MqlColumn col : c.getBusinessColumns()){
+        if(col.getId().equals(colId)){
+         return col;
+        }
+      }
+    }
+    
+    return null;
+  }
 }
