@@ -755,6 +755,20 @@ public class MQLEditorServiceDelegate {
     for(org.pentaho.metadata.query.model.Constraint constraint : query.getConstraints()){
       Condition cond = FormulaParser.parse(selectedModel, constraint.getFormula());
       cond.setCombinationType(CombinationType.valueOf(constraint.getCombinationType().toString().toUpperCase()));
+      String val = cond.getValue();
+      
+      // check to see if it was parameterized, if so resolve default and setup the condition properly
+      if(val.indexOf("[param:") == 0){
+        String paramKey = val.substring(7, val.length() -1);
+        cond.setValue("{"+paramKey+"}");
+        cond.setParameterized(true);
+        for(Parameter p : query.getParameters()){
+          if(p.getName().equals(paramKey)){
+            cond.setDefaultValue(p.getDefaultValue().toString());
+            break;
+          }
+        }
+      }
       q.getConditions().add(cond);
     }
     
