@@ -40,6 +40,9 @@ public enum Operator implements Serializable{
   }
   
   public static Operator parse(String val){
+    
+    // These are the UI equivalents that are re-resolved. Note this needs to be i18n
+    // @TODO i18n
     if(val.equals(">")){
       return Operator.GREATER_THAN;
     } else if(val.equals(">=")){
@@ -66,6 +69,16 @@ public enum Operator implements Serializable{
       return Operator.IS_NOT_NULL;
     } 
     
+    // Actual generated Open Formula formula name is passed in from deserialization routine. Try to match those here.
+    if(val.equals("CONTAINS")){
+      return Operator.CONTAINS;
+    } else if(val.equals("BEGINSWITH")){
+      return Operator.BEGINS_WITH;
+    } else if(val.equals("ENDSWITH")){
+      return Operator.ENDS_WITH;
+    } else if(val.equals("ISNA")){
+      return Operator.IS_NULL;
+    }
     
     return Operator.EQUAL;
   }
