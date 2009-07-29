@@ -4,14 +4,11 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.pentaho.commons.connection.IPentahoResultSet;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.util.MQLEditorServiceDelegate;
-import org.pentaho.metadata.query.model.util.QueryXmlHelper;
 import org.pentaho.metadata.repository.IMetadataDomainRepository;
-import org.pentaho.platform.plugin.action.pentahometadata.MetadataQueryComponent;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 public class MQLEditorServiceImpl implements MQLEditorService{
@@ -44,28 +41,7 @@ public class MQLEditorServiceImpl implements MQLEditorService{
   }
 
   public void getPreviewData(MqlQuery query, int page, int limit, XulServiceCallback<String[][]> callback) {
-    org.pentaho.metadata.query.model.Query mqlQuery = delegate.convertQueryModel(query);
-
-
-    MetadataQueryComponent component = new MetadataQueryComponent();
-    
-    String mqlString = new QueryXmlHelper().toXML(mqlQuery);
-    
-    component.setQuery(mqlString);
-    component.setLive(false);
-    
-    if (component.execute()) {
-      IPentahoResultSet rs = component.getResultSet();
-      String[][] results = new String[rs.getRowCount()][rs.getColumnCount()];
-      for (int i = 0; i < rs.getRowCount(); i++) {
-        for (int j = 0; j < rs.getColumnCount(); j++) {
-          results[i][j] = "" + rs.getValueAt(i, j); //$NON-NLS-1$
-        }
-      }
-      callback.success(results);
-      return;
-    } 
-    callback.error("Could not generate preview for unknown reason", new Throwable("Could not generate preview for unknown reason"));   //$NON-NLS-1$ //$NON-NLS-2$
+    throw new UnsupportedOperationException();
   }
 
   public void deserializeModel(String serializedQuery, XulServiceCallback<MqlQuery> callback) {
@@ -73,5 +49,3 @@ public class MQLEditorServiceImpl implements MQLEditorService{
   }
   
 }
-
-  
