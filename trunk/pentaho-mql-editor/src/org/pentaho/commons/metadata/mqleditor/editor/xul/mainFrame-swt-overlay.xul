@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<?xml-stylesheet href="file://E:/workspaces/sprint_workspace/pentaho-xul/test/resource/documents/xul.css" type="text/css"?>
-<overlay 
-  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:pen="http://www.pentaho.org/2008/xul">
-  <treecol id="combineColumn" type="combobox"/>
-
-</overlay>
