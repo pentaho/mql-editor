@@ -577,10 +577,10 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       if(this.isAttached()){
         items.get(idx).onSelect();
       }
-      
+
+      this.val = null;
+      updateSelectedDropWidget();
       if(visible == 1 && this.isAttached()){
-        this.val = null;
-        updateSelectedDropWidget();
         scrollSelectedItemIntoView();
       }
     }
