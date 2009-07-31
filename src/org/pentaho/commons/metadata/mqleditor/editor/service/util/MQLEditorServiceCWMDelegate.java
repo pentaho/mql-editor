@@ -369,14 +369,16 @@ public class MQLEditorServiceCWMDelegate {
     return null;
   }
 
-  private MQLWhereConditionModel[] getConditions(BusinessModel model, List<? extends MqlCondition> thinConditions) {
+  private MQLWhereConditionModel[] getConditions(BusinessModel model, BusinessCategory rootCat, List<? extends MqlCondition> thinConditions) {
     MQLWhereConditionModel[] conditions = new MQLWhereConditionModel[thinConditions.size()];
     int i = 0;
     for (MqlCondition thinCondition : thinConditions) {
       org.pentaho.pms.schema.BusinessColumn col = getColumn(model, thinCondition.getColumn());
+      BusinessCategory cat = rootCat.findBusinessCategoryForBusinessColumn(col);
+      
       MQLWhereConditionModel where = new MQLWhereConditionModel(
           thinCondition.getCombinationType() == null ? "" : thinCondition.getCombinationType().toString(), //$NON-NLS-1$
-          col, thinCondition.getCondition("[" + col.toString() + "]"));
+          col, thinCondition.getCondition("[" + cat.getId()+"."+col.getId() + "]", false));
       conditions[i++] = where;
     }
     return conditions;
@@ -540,40 +542,24 @@ public class MQLEditorServiceCWMDelegate {
 
     List<Condition> conditions = new ArrayList<Condition>();
     for (WhereCondition w : fatQ.getConstraints()) {
-      Pattern p = Pattern.compile("\\[([^\\]]*)\\.([^\\]]*)\\] (.*)"); //$NON-NLS-1$
-      Matcher m = p.matcher(w.getCondition());
-      if (m.find()) {
-        String cat = m.group(1);
-        String col = m.group(2);
+      
+      FormulaParser fp = new FormulaParser(w.getCondition());
+      
+      Condition cond = fp.getCondition();
+      
+      String colId = fp.getColID();
 
-        UniqueList list = model.getAllBusinessColumns();
-        BusinessColumn fatcol = null;
-        for (Object c : list.getList()) {
-          if (((BusinessColumn) c).getId().equals(col)) {
-            fatcol = (org.pentaho.pms.schema.BusinessColumn) c;
-
-          }
+      UniqueList list = model.getAllBusinessColumns();
+      BusinessColumn fatcol = null;
+      for (Object c : list.getList()) {
+        if (((BusinessColumn) c).getId().equals(colId)) {
+          fatcol = (org.pentaho.pms.schema.BusinessColumn) c;
         }
-        Column c = createColumn(model, fatcol);
-        String condition = m.group(3);
-        String operator = w.getOperator();
-
-        Condition cond = new Condition();
-        cond.setColumn(c);
-        
-        if(c.getType() == ColumnType.DATE ){
-          p = Pattern.compile("DATEVALUE\\(\"([^\\)]*)\"\\)");
-          m = p.matcher(condition);
-          if(m.find()){
-            condition = m.group(1);
-          }
-        }
-        cond.setValue(condition);
-        cond.setOperator(Operator.parse(operator));
-        conditions.add(cond);
-      } else {
-        // log error?
       }
+
+      Column c = createColumn(model, fatcol);
+      cond.setColumn(c);
+      conditions.add(cond);
     }
 
     query.setConditions(conditions);
@@ -622,9 +608,9 @@ public class MQLEditorServiceCWMDelegate {
           }
 
           mqlQuery.setSelections(selections);
-          MQLWhereConditionModel wherelist[] = getConditions(realModel, query.getConditions());
-          ArrayList<WhereCondition> constraints = new ArrayList<WhereCondition>();
           BusinessCategory rootCat = businessModel.getRootCategory();
+          MQLWhereConditionModel wherelist[] = getConditions(realModel, rootCat, query.getConditions());
+          ArrayList<WhereCondition> constraints = new ArrayList<WhereCondition>();
           //mqlQuery.setDisableDistinct(!this.distinctSelections.getSelection());
           for (int i = 0; i < wherelist.length; i++) {
             BusinessCategory businessCategory = rootCat.findBusinessCategoryForBusinessColumn(wherelist[i].getField());

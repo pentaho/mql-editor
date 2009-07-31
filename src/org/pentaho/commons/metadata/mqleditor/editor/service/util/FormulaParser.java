@@ -14,20 +14,26 @@ public class FormulaParser {
 
   private static final String WRAPPED = "([^\\(]*)\\(\\[([^\\]]*)\\];([^\\)]*)\\)";
   private static final String GENERIC = "\\[([^\\]]*)\\]\\s+([^\\s]*)\\s+(.*)";
-  
-  
+
   private static Pattern genericPat = Pattern.compile(GENERIC); //$NON-NLS-1$
   private static Pattern wrappedPat = Pattern.compile(WRAPPED); //$NON-NLS-1$
+
+  private String functionName = null;
+  private String fieldName = null;
+  private String value = null;
+  private String catId = null;
+  private String colId = null;
+  private boolean notOperator = false;
+  private String formula;
+  private Condition c = new Condition();
   
-  public static Condition parse(MqlModel model, String formula){
-    Condition c = new Condition();
-    String functionName = null;
-    String fieldName = null;
-    String value = null;
-    String catId = null;
-    String colId = null;
-    boolean notOperator = false;
-    
+  public FormulaParser(String formula){
+    this.formula = formula;
+    parse();
+  }
+  
+  private void parse(){
+
     Matcher m = genericPat.matcher(formula);
     if(m.find()){
       functionName = m.group(2);
@@ -47,6 +53,7 @@ public class FormulaParser {
         value = m.group(3);
       }
     }
+    
     Operator op = Operator.parse(functionName.toUpperCase());
     // handle special NOT() wrapped functions
     if(notOperator){
@@ -73,19 +80,17 @@ public class FormulaParser {
       String[] pair = fieldName.split("\\.");
       catId = pair[0];
       colId = pair[1];
-    } 
-    
-    if(model != null && colId != null){
-      Outter:
-      for(MqlCategory cat : model.getCategories()){
-        for(MqlColumn col : cat.getBusinessColumns()){
-          if(col.getId().equals(colId)){
-            c.setColumn((Column) col);
-            break Outter;
-          }
-        }
-      }
     }
+  }
+  
+  public Condition getCondition(){
     return c;
+  }
+  
+  public String getColID(){
+    return colId;
+  }
+  public String getCatID(){
+    return catId;
   }
 }
