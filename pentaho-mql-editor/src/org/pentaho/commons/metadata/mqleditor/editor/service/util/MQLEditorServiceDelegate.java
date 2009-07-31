@@ -753,7 +753,19 @@ public class MQLEditorServiceDelegate {
     }
     
     for(org.pentaho.metadata.query.model.Constraint constraint : query.getConstraints()){
-      Condition cond = FormulaParser.parse(selectedModel, constraint.getFormula());
+      FormulaParser fp = new FormulaParser(constraint.getFormula());
+      
+      Condition cond = fp.getCondition();
+      Outter:
+      for(MqlCategory cat : selectedModel.getCategories()){
+        for(MqlColumn col : cat.getBusinessColumns()){
+          if(col.getId().equals(fp.getColID())){
+            cond.setColumn((Column) col);
+            break Outter;
+          }
+        }
+      }
+      
       cond.setCombinationType(CombinationType.valueOf(constraint.getCombinationType().toString().toUpperCase()));
       String val = cond.getValue();
       

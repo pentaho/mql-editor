@@ -134,7 +134,7 @@ public class SwtMqlEditor {
   }
   
   public void setMqlQuery(MQLQuery query){
-    if(query == null){
+    if(query == null || query.equals("")){
       mainController.clearWorkspace();
     } else {
       mainController.setSavedQuery((Query) this.delegate.convertModelToThin(query));
