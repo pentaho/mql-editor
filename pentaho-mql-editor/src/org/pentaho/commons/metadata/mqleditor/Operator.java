@@ -41,6 +41,9 @@ public enum Operator implements Serializable{
   
   public static Operator parse(String val){
     
+    if(val == null || val.equals("")){
+      return Operator.EQUAL;
+    }
     // These are the UI equivalents that are re-resolved. Note this needs to be i18n
     // @TODO i18n
     if(val.equals(">")){

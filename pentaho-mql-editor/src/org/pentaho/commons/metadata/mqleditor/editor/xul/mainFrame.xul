@@ -132,7 +132,7 @@
               type="combobox" pen:combobinding="comparisons" editable="true" />
             <treecol label="${value}" flex="2" pen:binding="value"
               editable="true" type="text" pen:disabledbinding="valueDisabled" />
-            <treecol label="${default}" flex="2" pen:binding="defaultValue"
+            <treecol label="${default}" flex="2" pen:binding="defaultValue" id="defualtValCol"
               editable="true" type="text" pen:disabledbinding="defaultDisabled" />
           </treecols>
           <treechildren />
