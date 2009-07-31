@@ -63,11 +63,15 @@ public class Condition implements MqlCondition {
   }
 
   public String getCondition(String objName) {
+    return getCondition(objName, true);
+  }
+
+  public String getCondition(String objName, boolean enforceParameters){
     String val = this.value;
     
     // Date is a special case where we craft a formula function.
     if(this.column.getType() == ColumnType.DATE){
-      if(this.isParameterized()){
+      if(this.isParameterized() && enforceParameters){
         // Due to the fact that the value of a Date is a forumula function, the tokenizing of
         // the value needs to happen here instead of letting the Operator class handle it.
         val = "DATEVALUE("+"[param:"+value.replaceAll("[\\{\\}]","")+"]"+")";
@@ -76,8 +80,7 @@ public class Condition implements MqlCondition {
         val = "DATEVALUE(\""+val+"\")";
       }
     }
-    
-    return this.operator.formatCondition(objName, val, this.isParameterized());
+    return this.operator.formatCondition(objName, val, this.isParameterized() && enforceParameters);
   }
 
   public boolean isParameterized() {

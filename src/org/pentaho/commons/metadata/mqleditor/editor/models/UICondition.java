@@ -166,9 +166,13 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
     return "COMBOBOX"; //$NON-NLS-1$
   }
 
-
+  
   public String getCondition(String objName) {
-    return this.operator.formatCondition(objName, this.value, (this.isParameterized()));
+    throw new RuntimeException("UI does not implement this method");
+  }
+  
+  public String getCondition(String objName, boolean enforceParameters){
+    throw new RuntimeException("UI does not implement this method");
   }
 
   public boolean isParameterized() {
