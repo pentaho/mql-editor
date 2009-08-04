@@ -79,7 +79,7 @@ public class WorkspaceTest {
     List<Condition> conditions = new ArrayList<Condition>();
     Condition cond = new Condition();
     cond.setColumn(column);
-    cond.setCombinationType(CombinationType.OR);
+    cond.setCombinationType(null);
     cond.setOperator(Operator.BEGINS_WITH);
     cond.setValue("myvalue1");
     conditions.add(cond);
@@ -109,18 +109,8 @@ public class WorkspaceTest {
     orders.add(order);
 
     mqlQuery.setOrders(orders);
-
-    Map<String, String> defaultParameterMap = new HashMap<String, String>();
     
-    CWMStartup.loadCWMInstance("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/repository.properties", "/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata/PentahoCWM.xml"); //$NON-NLS-1$ //$NON-NLS-2$
-    CWM cwm = CWMStartup.loadMetadata("/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata_steelwheels.xmi", "/org/pentaho/commons/metadata/mqleditor/sampleMql"); //$NON-NLS-1$ //$NON-NLS-2$
-
-    CwmSchemaFactory factory = new CwmSchemaFactory();
-    
-    List<CWM> cwms = new ArrayList<CWM>();
-    cwms.add(cwm);
-    
-    service = new MQLEditorServiceCWMDelegate(cwms, factory);
+    //service = new MQLEditorServiceCWMDelegate(cwms, factory);
 
     workspace = new Workspace();
     
