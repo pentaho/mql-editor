@@ -74,7 +74,7 @@ public class ModelSerializerTest {
     List<Condition> conditions = new ArrayList<Condition>();
     Condition cond = new Condition();
     cond.setColumn(column);
-    cond.setCombinationType(CombinationType.OR);
+    cond.setCombinationType(null);
     cond.setOperator(Operator.EQUAL);
     cond.setDefaultValue("default");
     cond.setValue("myvalue1");
