@@ -57,7 +57,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   // Members for drop-down style
   private Grid dropGrid = new Grid(1,2);
   private boolean popupShowing = false;
-  private DropPopupPanel popup = new DropPopupPanel();
+  private DropPopupPanel popup;
   private PopupList popupVbox = new PopupList();
   private FocusPanel fPanel = new FocusPanel();
   private ScrollPanel popupScrollPanel = new ScrollPanel();
@@ -96,13 +96,11 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     fPanel.add(dropGrid);
     fPanel.setHeight("100%");
     super.add(fPanel);
-
-    popup.addPopupListener(this);
+    
     popupScrollPanel.add(popupVbox);
     popupScrollPanel.getElement().getStyle().setProperty("overflowX","hidden");
     popupVbox.setWidth("100%");
     popupVbox.setSpacing(spacing);
-    popup.add(popupScrollPanel);
 
     fPanel.addMouseListener(this);
     fPanel.addFocusListener(this);
@@ -491,8 +489,15 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   private void togglePopup(){
     if(popupShowing == false){
 
-//      popupScrollPanel.setWidth(this.getElement().getOffsetWidth() - 8 +"px");
-
+      // This delayed instantiation works around a problem with the underlying GWT widgets that 
+      // throw errors positioning when the GWT app is loaded in a frame that's not visible.
+      
+      if(popup == null){
+        popup = new DropPopupPanel();
+        popup.addPopupListener(this);
+        popup.add(popupScrollPanel);
+      }
+      
       popup.setPopupPosition(this.getElement().getAbsoluteLeft(), this.getElement().getAbsoluteTop() + this.getElement().getOffsetHeight()+2);
       
       popup.show();
