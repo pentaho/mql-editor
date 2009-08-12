@@ -24,6 +24,7 @@ import org.pentaho.ui.xul.gwt.GwtXulLoader;
 import org.pentaho.ui.xul.gwt.GwtXulRunner;
 import org.pentaho.ui.xul.gwt.binding.GwtBindingFactory;
 import org.pentaho.ui.xul.gwt.util.AsyncConstructorListener;
+import org.pentaho.ui.xul.gwt.util.AsyncXulLoader;
 import org.pentaho.ui.xul.gwt.util.EventHandlerWrapper;
 
 import com.google.gwt.core.client.GWT;
@@ -105,6 +106,9 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
   private void loadContainer(String xul){
     try{
 
+      if(xul == null || xul.indexOf(AsyncXulLoader.NS_KEY) < 0){
+        Window.alert("Error loading XUL Application. Your session may have timed out.");
+      }
       
       GwtXulLoader loader = new GwtXulLoader();
   
@@ -167,31 +171,21 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
     
       GwtBindingFactory bf = new GwtBindingFactory(container.getDocumentRoot());
       
-      EventHandlerWrapper wrapper = GWT.create(MainController.class);
       mainController.setBindingFactory(bf);
-      wrapper.setHandler(mainController);      
-      container.addEventHandler(wrapper);
+      container.addEventHandler(mainController);
       
-      wrapper = GWT.create(ConditionsController.class);
       constraintController.setBindingFactory(bf);
-      wrapper.setHandler(constraintController);      
-      container.addEventHandler(wrapper);
+      container.addEventHandler(constraintController);
       
-      wrapper = GWT.create(SelectedColumnController.class);
       selectedColumnController.setBindingFactory(bf);
-      wrapper.setHandler(selectedColumnController);      
-      container.addEventHandler(wrapper);
+      container.addEventHandler(selectedColumnController);
 
 
-      wrapper = GWT.create(OrderController.class);
       orderController.setBindingFactory(bf);
-      wrapper.setHandler(orderController);      
-      container.addEventHandler(wrapper);
+      container.addEventHandler(orderController);
       
-      wrapper = GWT.create(PreviewController.class);
       previewController.setBindingFactory(bf);
-      wrapper.setHandler(previewController);      
-      container.addEventHandler(wrapper);
+      container.addEventHandler(previewController);
       
       
       runner.addContainer(container);
