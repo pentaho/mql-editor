@@ -10,6 +10,8 @@ public class GlassPane {
   private List<GlassPaneListener> listeners = new ArrayList<GlassPaneListener>();
 
   private boolean shown = false;
+  
+  private int dialogCount = 0;
 
   private GlassPane() {
 
@@ -20,6 +22,7 @@ public class GlassPane {
   }
 
   public void show() {
+    dialogCount++;
     if (!shown) {
       shown = true;
       List<GlassPaneListener> listenersToRemove = new ArrayList<GlassPaneListener>();
@@ -43,7 +46,12 @@ public class GlassPane {
   }
 
   public void hide() {
-    if (shown) {
+    dialogCount--;
+    
+    if(dialogCount < 0){ // this shouldn't happen, but let's account for it.
+      dialogCount = 0;
+    }
+    if (shown && dialogCount == 0) {
       shown = false;
 
       List<GlassPaneListener> listenersToRemove = new ArrayList<GlassPaneListener>();
