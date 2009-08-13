@@ -143,7 +143,7 @@ public class WorkspaceTest {
   public void testSelections() {
     
     // Test Conditions
-    UIColumns outColumns = workspace.getSelectedColumns();
+    UIColumns outColumns = workspace.getSelections();
     
     assertEquals(outColumns.size(), mqlQuery.getColumns().size());
     

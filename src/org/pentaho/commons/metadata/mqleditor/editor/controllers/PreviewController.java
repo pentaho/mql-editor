@@ -17,6 +17,7 @@ import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.containers.XulTreeItem;
 import org.pentaho.ui.xul.containers.XulTreeRow;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
+import org.pentaho.ui.xul.stereotype.Bindable;
 
 public class PreviewController extends AbstractXulEventHandler {
 
@@ -38,6 +39,7 @@ public class PreviewController extends AbstractXulEventHandler {
   
   private int previewLimit = 10;
   
+  @Bindable
   public void init() {
     previewTree = (XulTree) document.getElementById("previewTree");
     previewDialog = (XulDialog) document.getElementById("previewDialog");
@@ -79,6 +81,7 @@ public class PreviewController extends AbstractXulEventHandler {
     this.service = service;
   }
 
+  @Bindable
   public void showPreview() {
     
     MqlQuery q = workspace.getMqlQuery();
@@ -99,14 +102,17 @@ public class PreviewController extends AbstractXulEventHandler {
     });
   }
 
+  @Bindable
   private void openDialog() {
     previewDialog.show();
   }
 
+  @Bindable
   public String[][] getPreviewData() {
     return previewData;
   }
   
+  @Bindable
   public void upateQuery(){
 
     service.getPreviewData(workspace.getMqlQuery(), page, previewLimit, new XulServiceCallback<String[][]>() {
@@ -155,7 +161,7 @@ public class PreviewController extends AbstractXulEventHandler {
     }
       
     for(int i = 0; i < previewTree.getColumns().getColumnCount(); i++){
-      previewTree.getColumns().getColumn(i).setLabel(workspace.getSelectedColumns().get(i).getName());
+      previewTree.getColumns().getColumn(i).setLabel(workspace.getSelections().get(i).getName());
     }
     
     previewTree.getRootChildren().removeAll();
@@ -183,15 +189,18 @@ public class PreviewController extends AbstractXulEventHandler {
     
   }
   
+  @Bindable
   public void closeDialog(){
     previewDialog.hide();
   }
 
+  @Bindable
   public int getPreviewLimit() {
   
     return previewLimit;
   }
 
+  @Bindable
   public void setPreviewLimit(int previewLimit) {
   
     this.previewLimit = previewLimit;

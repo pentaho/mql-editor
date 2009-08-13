@@ -21,6 +21,7 @@ import org.pentaho.ui.xul.components.XulMessageBox;
 import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
+import org.pentaho.ui.xul.stereotype.Bindable;
 
 
 /**
@@ -64,6 +65,7 @@ public class MainController extends AbstractXulEventHandler {
     }
   }
   
+  @Bindable
   public void init() {
     createBindings();
   }
@@ -89,15 +91,15 @@ public class MainController extends AbstractXulEventHandler {
 
     // bind the selections empty status to the ok button (i.e. if no selections, disable OK button)
     bf.setBindingType(Binding.Type.ONE_WAY);
-    final Binding acceptButtonBinding = bf.createBinding(workspace, "selectedColumns", acceptButton, "!disabled", new BindingConvertor<UIColumns, Boolean>() {
+    final Binding acceptButtonBinding = bf.createBinding(workspace, "selections", acceptButton, "!disabled", new BindingConvertor<List<UIColumns>, Boolean>() {
 
       @Override
-      public Boolean sourceToTarget(UIColumns value) {
+      public Boolean sourceToTarget(List<UIColumns> value) {
         return value != null && !value.isEmpty();
       }
 
       @Override
-      public UIColumns targetToSource(Boolean value) {
+      public List<UIColumns> targetToSource(Boolean value) {
         return null;
       }
       
@@ -166,9 +168,9 @@ public class MainController extends AbstractXulEventHandler {
     bf.createBinding(workspace, "categories", categoryTree, "elements");
     
     // Bind the selected column from the tree to the workspace 
-    bf.createBinding(categoryTree, "selectedRows", workspace, "selectedColumn", new BindingConvertor<int[], UIColumn>() {
+    bf.createBinding(categoryTree, "selectedRows", workspace, "selectedColumns", new BindingConvertor<int[], List<UIColumn>>() {
       @Override
-      public UIColumn sourceToTarget(int[] array) {
+      public List<UIColumn> sourceToTarget(int[] array) {
         if(array.length == 0){
           return null;
         }
@@ -176,16 +178,21 @@ public class MainController extends AbstractXulEventHandler {
         if(value < 0){
           return null;
         }
-        return workspace.getColumnByPos(value);
+        return workspace.getColumnsByPos(array);
       }
       @Override
-      public int[] targetToSource(UIColumn value) {
-        return new int[]{workspace.getSelectedCategory().getChildren().indexOf(value)};
+      public int[] targetToSource(List<UIColumn> value) {
+        int[] positions = new int[value.size()];
+        int i = 0;
+        for(UIColumn col : value){
+          positions[i++] = workspace.getSelectedCategory().getChildren().indexOf(col); 
+        }
+        return positions;
       }
     });
     
     // Bind the selected columns, conditions and orders to their respective tables
-    bf.createBinding(workspace, "selectedColumns", fieldTable, "elements"); //$NON-NLS-1$ //$NON-NLS-2$
+    bf.createBinding(workspace, "selections", fieldTable, "elements"); //$NON-NLS-1$ //$NON-NLS-2$
     bf.createBinding(workspace, "conditions", conditionsTable, "elements"); //$NON-NLS-1$ //$NON-NLS-2$
     bf.createBinding(workspace, "orders", ordersTable, "elements"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -202,25 +209,30 @@ public class MainController extends AbstractXulEventHandler {
     
   }
   
+  @Bindable
   public void moveSelectionToFields(){
-    UIColumn col = workspace.getSelectedColumn();
-    if(col != null){
+    List<UIColumn> cols = workspace.getSelectedColumns();
+    for(UIColumn col : cols){
       workspace.addColumn((UIColumn)col.clone());
     }
   }
   
 
+  @Bindable
   public void moveSelectionToConditions(){
-    UIColumn col = workspace.getSelectedColumn();
-    if(col != null){
+    List<UIColumn> cols = workspace.getSelectedColumns();
+    for(UIColumn col : cols){
       workspace.addCondition(col);
     }
   }
 
+  @Bindable
   public void moveSelectionToOrders(){
-    UIColumn col = workspace.getSelectedColumn();
-    if(col != null && workspace.getOrders().contains(col) == false){
-      workspace.addOrder(col);
+    List<UIColumn> cols = workspace.getSelectedColumns();
+    for(UIColumn col : cols){
+      if(workspace.getOrders().contains(col) == false){
+        workspace.addOrder(col);
+      }
     }
   }
 
@@ -238,6 +250,7 @@ public class MainController extends AbstractXulEventHandler {
     return "mainController";
   }
   
+  @Bindable
   public void closeDialog(){
     this.dialog.hide();
     
@@ -246,6 +259,8 @@ public class MainController extends AbstractXulEventHandler {
       listeners.get(i).onDialogCancel();
     }
   }
+  
+  @Bindable
   public void saveQuery(){
     service.saveQuery(workspace.getMqlQuery(),
       new XulServiceCallback<String>(){

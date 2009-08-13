@@ -6,6 +6,7 @@ import org.pentaho.ui.xul.binding.BindingConvertor;
 import org.pentaho.ui.xul.binding.BindingFactory;
 import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
+import org.pentaho.ui.xul.stereotype.Bindable;
 
 public class OrderController extends AbstractXulEventHandler{
 
@@ -13,6 +14,7 @@ public class OrderController extends AbstractXulEventHandler{
   private BindingFactory bf;
   private XulTree orderTree;
   
+  @Bindable
   public void init(){
     orderTree = (XulTree) document.getElementById("orderTable");
     bf.createBinding(workspace, "orders", orderTree, "elements");
@@ -41,6 +43,7 @@ public class OrderController extends AbstractXulEventHandler{
     return (rows != null && rows.length == 0) ? -1 : rows[0];
   }
 
+  @Bindable
   public void moveUp(){
     try{
       int prevIndex = getSelectedIndex();
@@ -52,6 +55,7 @@ public class OrderController extends AbstractXulEventHandler{
     }
   }
 
+  @Bindable
   public void moveDown(){
     int prevIndex = getSelectedIndex();
     try{
@@ -63,6 +67,7 @@ public class OrderController extends AbstractXulEventHandler{
     }
   }
   
+  @Bindable
   public void remove(){
     if(getSelectedIndex() < 0){
       return;

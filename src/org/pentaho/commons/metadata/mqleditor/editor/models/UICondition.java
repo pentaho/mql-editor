@@ -11,6 +11,7 @@ import org.pentaho.commons.metadata.mqleditor.MqlCondition;
 import org.pentaho.commons.metadata.mqleditor.Operator;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
+import org.pentaho.ui.xul.stereotype.Bindable;
 
 public class UICondition extends XulEventSourceAdapter implements MqlCondition {
   
@@ -54,12 +55,14 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
   }
 
 
+  @Bindable
   public UIColumn getColumn() {
     return column;
   }
 
   
 
+  @Bindable
   public void setColumn(UIColumn column) {
     this.column = column;
     
@@ -70,11 +73,13 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
   }
 
 
+  @Bindable
   public Operator getOperator() {
     return operator;
   }
 
 
+  @Bindable
   public void setOperator(Operator operator) {
     this.operator = operator;
     switch(this.operator){
@@ -89,15 +94,18 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
     }
   }
 
+  @Bindable
   public void setOperator(Object operator) {
     setOperator((Operator) operator);
   }
 
+  @Bindable
   public String getValue() {
     return value;
   }
 
 
+  @Bindable
   public void setValue(String value) {
     String prevVal = this.value;
     this.value = value;
@@ -107,6 +115,7 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
   }
 
 
+  @Bindable
   public CombinationType getCombinationType() {
     if(isTopMost()){
       return null;
@@ -115,6 +124,7 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
   }
 
 
+  @Bindable
   public void setCombinationType(CombinationType combinationType) {
     this.combinationType = combinationType;
   }
@@ -130,14 +140,17 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
     //TODO: Ignored! remove once Tree bindings respect one-way with editable="false"
   }
   
+  @Bindable
   public String getColumnName(){
     return column.getName();
   }
 
+  @Bindable
   public void setColumnName(String name){
     //TODO: Ignored! remove once Tree bindings respect one-way with editable="false"
   }
   
+  @Bindable
   public Vector getComparisons(){
     Vector v = new Vector();
 
@@ -149,16 +162,21 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
     
     return v;
   }
+  
+  @Bindable
   public void setComparisons(String str){}
   
+  @Bindable
   public Vector getCombinations(){
     Vector v = new Vector();
     v.addAll(Arrays.asList(CombinationType.values()));
     return v;
   }
   
+  @Bindable
   public void setCombinations(String str){}
   
+  @Bindable
   public String getCellType(){
     if(isTopMost()){
       return "LABEL"; //$NON-NLS-1$
@@ -167,18 +185,22 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
   }
 
   
+  @Bindable
   public String getCondition(String objName) {
     throw new RuntimeException("UI does not implement this method");
   }
   
+  @Bindable
   public String getCondition(String objName, boolean enforceParameters){
     throw new RuntimeException("UI does not implement this method");
   }
 
+  @Bindable
   public boolean isParameterized() {
     return parameterized;
   }
 
+  @Bindable
   public void setParameterized(boolean parameterized) {
     boolean prevVal = isParameterized();
     this.firePropertyChange("parameterized", prevVal, parameterized);
@@ -189,56 +211,70 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
     }
   }
 
+  @Bindable
   public boolean isDefaultDisabled(){
     return ! parameterized;
   }
 
+  @Bindable
   public void setDefaultValue(String val){
     String prevVal = this.defaultValue;
     this.defaultValue = val;
     this.firePropertyChange("defaultValue", prevVal, val);
   }
   
+  @Bindable
   public String getDefaultValue(){
     return defaultValue;
   }
 
 
+  @Bindable
   public void setSelectedAggType(AggType aggType){
     this.selectedAggType = aggType;
   }
   
+  @Bindable
   public AggType getSelectedAggType(){
     return this.selectedAggType;
   }
 
+  @Bindable
   public void setSelectedAggType(Object o){
     setSelectedAggType((AggType)  o);
   }
 
+  @Bindable
   public List<AggType> getAggTypes() {
     return this.column.getAggTypes();
   }
+  
+  @Bindable
   public void setAggTypes(List<AggType> ignored){
     
   }
 
+  @Bindable
   public Vector getBindingAggTypes(){
     return column.getBindingAggTypes();
   }
 
+  @Bindable
   public void setTopMost(boolean topMost) {
     this.topMost = topMost;
   }
 
+  @Bindable
   public boolean isTopMost() {
     return topMost;
   }
   
+  @Bindable
   public boolean isValueDisabled(){
     return valueDisabled;
   }
   
+  @Bindable
   public void setValueDisabled(boolean disabled){
     boolean prevVal = this.valueDisabled;
     this.valueDisabled = disabled;
@@ -249,4 +285,3 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
   }
 }
 
-  

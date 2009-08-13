@@ -21,6 +21,7 @@ import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelUtil;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
+import org.pentaho.ui.xul.stereotype.Bindable;
 
 /**
  *
@@ -37,8 +38,10 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   private UIOrder selectedOrder;
   
   private UIColumn selectedColumn;
+  private List<UIColumn> selectedColumns;
   
-  private UIColumns selectedColumns = new UIColumns();
+  
+  private UIColumns selections = new UIColumns();
   private UIConditions conditions = new UIConditions();
   private UIOrders orders = new UIOrders();
   private String queryStr;
@@ -91,7 +94,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
       for( MqlColumn col : thinWorkspace.getColumns()){
         UIColumn c = findAndCloneColumn(col);
         if(c != null){
-          selectedColumns.add(c);
+          selections.add(c);
         } else {
           System.out.println("could not find column");
         }
@@ -114,17 +117,20 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     }
   }
   
+  @Bindable
   public void clear(){
     removeListeners();
+    this.selectedColumn = null;
+    this.selectedColumns = null;
     this.setOrders(new UIOrders());
-    this.setSelectedColumns(new UIColumns());
+    this.setSelections(new UIColumns());
     this.setConditions(new UIConditions());
     setupListeners();
   }
   
   private PropertyChangeListener columnListener = new PropertyChangeListener(){
     public void propertyChange(PropertyChangeEvent evt) {
-      Workspace.this.firePropertyChange("selectedColumns", null, getSelectedColumns());
+      Workspace.this.firePropertyChange("selections", null, getSelections());
     }
   };
     
@@ -141,13 +147,13 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   };
   
   public void setupListeners(){
-    selectedColumns.addPropertyChangeListener("children", columnListener);
+    selections.addPropertyChangeListener("children", columnListener);
     conditions.addPropertyChangeListener("children", conditionListener);
     orders.addPropertyChangeListener("children", orderListener);
   }
 
   public void removeListeners(){
-    selectedColumns.removePropertyChangeListener(columnListener);
+    selections.removePropertyChangeListener(columnListener);
     conditions.removePropertyChangeListener(conditionListener);
     orders.removePropertyChangeListener(orderListener);
   }
@@ -166,6 +172,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     return null;
   }
   
+  @Bindable
   public void setSelectedModel(UIModel m){
     UIModel prevVal = this.selectedModel;
     this.selectedModel = m;
@@ -174,6 +181,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     this.firePropertyChange("categories", null, getCategories());
   }
   
+  @Bindable
   public UIModel getSelectedModel(){
     return selectedModel;
   }
@@ -200,22 +208,33 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     return null;
   }
   
+  public List<UIColumn> getColumnsByPos(int[] positions){
+    List<UIColumn> cols = new ArrayList<UIColumn>();
+    for(int pos : positions){
+      cols.add(getColumnByPos(pos));
+    }
+    return cols;
+  }
   
+  
+  @Bindable
   public List<UICategory> getCategories() {
     
     return (this.selectedModel != null) ? this.selectedModel.getChildren() : null;
   }
 
+  @Bindable
   public void setCategories(List<UICategory> categories) {
     this.categories = categories;
     this.firePropertyChange("categories", null, getCategories());
   }
 
+  @Bindable
   public UICategory getSelectedCategory() {
-  
     return selectedCategory;
   }
 
+  @Bindable
   public void setSelectedCategory(UICategory selectedCategory) {
   
     List<UIColumn> prevColumns = getColumns();
@@ -226,6 +245,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     
   }
 
+  @Bindable
   public void setSelectedOrder(UIOrder selectedOrder) {
   
     UIOrder prevOrder = this.selectedOrder;
@@ -238,11 +258,13 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     return (this.selectedCategory != null) ? this.selectedCategory.getChildren() : null;
   }
 
+  @Bindable
   public UIColumn getSelectedColumn() {
   
     return selectedColumn;
   }
 
+  @Bindable
   public void setSelectedColumn(UIColumn selectedColumn) {
   
     UIColumn prevColumn = this.selectedColumn;
@@ -251,7 +273,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
   
   public void addColumn(UIColumn col){
-    selectedColumns.add(col);
+    selections.add(col);
     
   }
 
@@ -272,51 +294,71 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
   
   
-  public UIColumns getSelectedColumns() {
+  @Bindable
+  public UIColumns getSelections() {
   
-    return selectedColumns;
+    return selections;
   }
 
-  public void setSelectedColumns(UIColumns columns) {
-    this.selectedColumns = columns;
-    this.firePropertyChange("selectedColumns", null, getSelectedColumns());
+  @Bindable
+  public void setSelections(UIColumns columns) {
+    this.selections = columns;
+    this.firePropertyChange("selections", null, getSelectedColumns());
   }
 
+  @Bindable
   public void setSelectedColumns(List<UIColumn> selectedColumns) {
-    this.selectedColumns = new UIColumns(selectedColumns);
-    this.firePropertyChange("selectedColumns", null, getSelectedColumns());
+    List<UIColumn> prevSelected = this.selectedColumns;
+    
+    this.selectedColumns = selectedColumns;
+    this.firePropertyChange("selectedColumns", prevSelected , selectedColumns);
   }
+  
+  @Bindable
+  public List<UIColumn> getSelectedColumns() {
+    return this.selectedColumns;
+  }
+  
+  
 
+  @Bindable
   public UIConditions getConditions() {
     return conditions;
   }
 
+  @Bindable
   public void setConditions(UIConditions conditions) {
     this.conditions = conditions;
     this.firePropertyChange("conditions", null, getConditions());
   }
 
+  @Bindable
   public UIOrders getOrders() {
     return orders;
   }
 
+  @Bindable
   public void setOrders(UIOrders orders) {
     this.orders = orders;
     this.firePropertyChange("orders", null, getOrders());
   }
 
+  @Bindable
   public MqlModel getModel() {
     return this.selectedModel;   
   }
   
+  @Bindable
   protected void setModel(UIModel model){
     this.selectedModel = model;
   }
 
+  @Bindable
   public UIDomain getSelectedDomain() {
     return selectedDomain;
   }
 
+  @Bindable
   public void setSelectedDomain(UIDomain selectedDomain){
     UIDomain prevDomain = this.selectedDomain;
     this.selectedDomain = selectedDomain;
@@ -324,6 +366,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     this.firePropertyChange("selectedDomain", prevDomain, selectedDomain);
   }
 
+  @Bindable
   public MqlDomain getDomain(){
     return this.selectedDomain;
   }
@@ -336,7 +379,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     List<UIOrder> orders = new ArrayList<UIOrder>();
     List<UICondition> conditions = new ArrayList<UICondition>();
     
-    for(UIColumn col : this.selectedColumns){
+    for(UIColumn col : this.selections){
       cols.add(col);
     }
 
@@ -369,10 +412,12 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     this.queryStr = query;
   }
 
+  @Bindable
   public List<UIDomain> getDomains() {
     return domains;
   }
 
+  @Bindable
   public void setDomains(List<UIDomain> domains) {
     List<UIDomain> oldDomains = this.domains;
     this.domains = domains;
@@ -391,6 +436,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     throw new UnsupportedOperationException();
   }
 
+  @Bindable
   public void setSelectedModelId(String modelId) {
     for (UIModel uiModel : selectedDomain.getModels()) {
       if (uiModel.getId().equals(modelId)) {
@@ -400,6 +446,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     }
   }
 
+  @Bindable
   public void setSelectedDomainId(String domainId) {
     for (UIDomain uiDomain : domains) {
       if (uiDomain.getName().equals(domainId)) {

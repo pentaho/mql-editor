@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.pentaho.ui.xul.XulEventSourceAdapter;
+import org.pentaho.ui.xul.stereotype.Bindable;
 
 /**
  * Base class for UI model objects that provides {@see java.util.List}
@@ -42,6 +43,7 @@ public class AbstractModelNode<T> extends XulEventSourceAdapter implements
     this.parent = parent;
   }
 
+  @Bindable
   public List<T> getChildren() {
     // return Collections.unmodifiableList(children);
 
