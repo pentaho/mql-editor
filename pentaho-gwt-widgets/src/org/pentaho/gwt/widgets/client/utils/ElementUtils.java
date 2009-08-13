@@ -173,14 +173,20 @@ public class ElementUtils {
   }
 
   public static Rectangle getSize(com.google.gwt.user.client.Element ele){
-    com.google.gwt.user.client.Element e = DOM.clone(ele, true);
-    sandbox.getElement().appendChild(e);
     Rectangle r = new Rectangle();
-    r.width = e.getOffsetWidth();
-    r.height = e.getOffsetHeight();
-
-    sandbox.getElement().removeChild(e);
+    r.width = ele.getOffsetWidth();
+    r.height = ele.getOffsetHeight();
     
+    // If the element is not on the DOM, or not visible, browsers may not be able to calculate the size
+    // Clone the element and put it in the "sandbox" to grab the size.
+    if(r.width == 0 && r.height == 0){
+      com.google.gwt.user.client.Element e = DOM.clone(ele, true);
+      sandbox.getElement().appendChild(e);
+      r.width = e.getOffsetWidth();
+      r.height = e.getOffsetHeight();
+
+      sandbox.getElement().removeChild(e);
+    }
     return r;
   }
 
