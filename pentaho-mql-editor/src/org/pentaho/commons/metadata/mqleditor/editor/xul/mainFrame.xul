@@ -6,7 +6,7 @@
   pen:extra1buttonalign="center" pen:acceptbuttonalign="right"
   pen:cancelbuttonalign="right" ondialogextra1="previewController.showPreview()"
   ondialogaccept="mainController.saveQuery()" ondialogcancel="mainController.closeDialog()"
-  title="${window.title}" width="855" height="505"
+  title="${window.title}" width="855" height="505" resizable="true"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   xmlns:pen="http://www.pentaho.org/2008/xul"
   onload="mainController.init(), selectedColumns.init(), conditionsController.init(), orderController.init(), previewController.init()">
@@ -51,7 +51,7 @@
 
         <vbox id="categoryTreeContainer" flex="1">
           <label value="${categories.columns}" />
-          <tree flex="1" id="categoryTree" width="170" istree="true">
+          <tree flex="1" id="categoryTree" width="170" istree="true" seltype="multiple">
             <treecols>
               <treecol flex="1" label="" primary="true" pen:binding="name"
                 pen:childrenbinding="children" />

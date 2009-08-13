@@ -7,6 +7,7 @@ import java.util.Vector;
 import org.pentaho.commons.metadata.mqleditor.AggType;
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.MqlColumn;
+import org.pentaho.ui.xul.stereotype.Bindable;
 
 public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
 
@@ -52,23 +53,28 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
     this.id = id;
   }
 
+  @Bindable
   public String getName() {
     return this.name;
   }
   
+  @Bindable
   public void setName(String name){
     this.name = name;
   }
   
+  @Bindable
   public void setTableName(String name){
     //TODO: Ignored! remove once Tree bindings respect one-way with editable="false"
   }
   
+  @Bindable
   public ColumnType getType() {
 
     return type;
   }
   
+  @Bindable
   public void setType(ColumnType type){
     this.type = type;
   }
@@ -77,34 +83,42 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
     return id;
   }
 
+  @Bindable
   public AggType getDefaultAggType() {
     return defaultAggType;
   }
 
+  @Bindable
   public List<AggType> getAggTypes() {
     return aggTypes;
   }
 
+  @Bindable
   public void setAggTypes(List<AggType> aggTypes) {
     this.aggTypes = aggTypes;
   }
 
+  @Bindable
   public void setDefaultAggType(AggType defaultAggType) {
     this.defaultAggType = defaultAggType;
   }
   
+  @Bindable
   public void setSelectedAggType(Object o){
     setSelectedAggType((AggType)  o);
   }
 
+  @Bindable
   public void setSelectedAggType(AggType aggType){
     this.selectedAggType = aggType;
   }
   
+  @Bindable
   public AggType getSelectedAggType(){
     return this.selectedAggType;
   }
   
+  @Bindable
   public Vector getBindingAggTypes(){
     Vector v = new Vector();
     for(AggType t : this.aggTypes){
@@ -112,4 +126,27 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
     }
     return v;
   }
+
+  @Override
+  // We clone this object so default equality from Object is not valid.
+  public boolean equals(Object o) {
+    if(o instanceof UIColumn == false){
+      return false;
+    }
+    
+    UIColumn other = (UIColumn) o;
+    if(type != other.getType()){
+      return false;
+    } else if(id.equals(other.getId()) == false){
+      return false;
+    } else if(name.equals(other.getName()) == false){
+      return false;
+    } else if(selectedAggType != other.getSelectedAggType()){
+      return false;
+    }
+    
+    return true;
+  }
+  
+  
 }

@@ -6,6 +6,7 @@ import org.pentaho.ui.xul.binding.BindingConvertor;
 import org.pentaho.ui.xul.binding.BindingFactory;
 import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
+import org.pentaho.ui.xul.stereotype.Bindable;
 
 public class SelectedColumnController extends AbstractXulEventHandler {
 
@@ -13,6 +14,7 @@ public class SelectedColumnController extends AbstractXulEventHandler {
   private Workspace workspace;
   private BindingFactory bf;
   
+  @Bindable
   public void init(){
     columnTree = (XulTree) document.getElementById("selectedColumnTree");
 
@@ -39,10 +41,11 @@ public class SelectedColumnController extends AbstractXulEventHandler {
     return (rows != null && rows.length == 0) ? -1 : rows[0];
   }
 
+  @Bindable
   public void moveUp(){
     try{
       int prevIndex = getSelectedIndex();
-      workspace.getSelectedColumns().moveChildUp(getSelectedIndex());
+      workspace.getSelections().moveChildUp(getSelectedIndex());
       columnTree.clearSelection();
       columnTree.setSelectedRows(new int[]{prevIndex -1});
     } catch(IllegalArgumentException e){
@@ -50,10 +53,11 @@ public class SelectedColumnController extends AbstractXulEventHandler {
     }
   }
 
+  @Bindable
   public void moveDown(){
     int prevIndex = getSelectedIndex();
     try{
-      workspace.getSelectedColumns().moveChildDown(getSelectedIndex());
+      workspace.getSelections().moveChildDown(getSelectedIndex());
       columnTree.clearSelection();
       columnTree.setSelectedRows(new int[]{prevIndex+1});
     } catch(IllegalArgumentException e){
@@ -61,11 +65,12 @@ public class SelectedColumnController extends AbstractXulEventHandler {
     }
   }
   
+  @Bindable
   public void remove(){
     if(getSelectedIndex() < 0){
       return;
     }
-    workspace.getSelectedColumns().remove(getSelectedIndex());
+    workspace.getSelections().remove(getSelectedIndex());
     columnTree.clearSelection();
   }
 

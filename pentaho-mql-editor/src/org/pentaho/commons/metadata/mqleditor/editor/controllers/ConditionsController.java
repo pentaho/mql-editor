@@ -6,6 +6,7 @@ import org.pentaho.ui.xul.binding.BindingConvertor;
 import org.pentaho.ui.xul.binding.BindingFactory;
 import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
+import org.pentaho.ui.xul.stereotype.Bindable;
 
 public class ConditionsController extends AbstractXulEventHandler{
 
@@ -14,6 +15,7 @@ public class ConditionsController extends AbstractXulEventHandler{
   private BindingFactory bf;
   private XulTree conditionTree;
   
+  @Bindable
   public void init(){
     conditionsTree = (XulTree) document.getElementById("conditionsTree");
     
@@ -44,6 +46,7 @@ public class ConditionsController extends AbstractXulEventHandler{
     return (rows != null && rows.length == 0) ? -1 : rows[0];
   }
 
+  @Bindable
   public void moveUp(){
     try{
       int prevIndex = getSelectedIndex();
@@ -56,6 +59,7 @@ public class ConditionsController extends AbstractXulEventHandler{
     }
   }
 
+  @Bindable
   public void moveDown(){
     int prevIndex = getSelectedIndex();
     try{
@@ -68,6 +72,7 @@ public class ConditionsController extends AbstractXulEventHandler{
     }
   }
   
+  @Bindable
   public void remove(){
     if(getSelectedIndex() < 0){
       return;

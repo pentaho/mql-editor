@@ -82,6 +82,8 @@ public class SwtMqlEditor {
       orderController.setWorkspace(workspace);
       previewController.setWorkspace(workspace);
       
+      mainController.setService(service);
+      
       service.getMetadataDomains(new XulServiceCallback<List<MqlDomain>>() {
 
         public void error(String message, Throwable error) {

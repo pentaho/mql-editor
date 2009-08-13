@@ -7,6 +7,7 @@ import java.util.Map;
 import org.pentaho.commons.metadata.mqleditor.MqlCategory;
 import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Category;
+import org.pentaho.ui.xul.stereotype.Bindable;
 
 public class UICategory extends AbstractModelNode<UIColumn> implements MqlCategory {
   
@@ -30,10 +31,12 @@ public class UICategory extends AbstractModelNode<UIColumn> implements MqlCatego
     this.id = id;
   }
 
+  @Bindable
   public String getName() {
     return this.name;
   }
   
+  @Bindable
   public void setName(String name){
     this.name = name;
   }

@@ -11,6 +11,7 @@ import org.pentaho.commons.metadata.mqleditor.MqlColumn;
 import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
+import org.pentaho.ui.xul.stereotype.Bindable;
 
 public class UIOrder extends XulEventSourceAdapter implements MqlOrder {
   
@@ -36,43 +37,52 @@ public class UIOrder extends XulEventSourceAdapter implements MqlOrder {
     this.orderType = type;
   }
   
+  @Bindable
   public UIColumn getColumn() {
   
     return column;
   }
 
+  @Bindable
   public void setColumn(UIColumn column) {
   
     this.column = (UIColumn) column;
   }
 
+  @Bindable
   public Type getOrderType() {
   
     return orderType;
   }
 
+  @Bindable
   public void setOrderType(Type orderType) {
   
     this.orderType = orderType;
   }
   
+  @Bindable
   public void setOrderType(Object orderType) {
   
     this.orderType = (Type) orderType;
   }
   
+  @Bindable
   public void setTableName(String str){
     // ignored
   }
   
+  @Bindable
   public void setColumnName(String str){
     // ignored
   }
   
+  @Bindable
   public String getColumnName(){
     return this.column.getName();
   }
 
+  @Bindable
   public Vector getOrderTypes(){
     Vector v = new Vector();
     v.addAll(Arrays.asList(MqlOrder.Type.values()));
@@ -80,27 +90,33 @@ public class UIOrder extends XulEventSourceAdapter implements MqlOrder {
   }
   
 
+  @Bindable
   public void setSelectedAggType(Object aggType){
     setSelectedAggType((AggType) aggType);
   }
   
 
+  @Bindable
   public void setSelectedAggType(AggType aggType){
     this.selectedAggType = aggType;
   }
   
+  @Bindable
   public AggType getSelectedAggType(){
     return this.selectedAggType;
   }
   
-
+  @Bindable
   public List<AggType> getAggTypes() {
     return this.column.getAggTypes();
   }
+  
+  @Bindable
   public void setAggTypes(List<AggType> ignored){
     
   }
 
+  @Bindable
   public Vector getBindingAggTypes(){
     return column.getBindingAggTypes();
   }
