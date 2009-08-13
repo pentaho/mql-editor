@@ -286,13 +286,13 @@ public class MQLEditorServiceCWMDelegate {
       case COUNT:
         return AggregationType.COUNT;
       case COUNT_DISTINCT:
-        return AggregationType.DISTINCT_COUNT;
+        return AggregationType.COUNT_DISTINCT;
       case AVERAGE:
-        return AggregationType.AVG;
+        return AggregationType.AVERAGE;
       case MAX:
-        return AggregationType.MAX;
+        return AggregationType.MAXIMUM;
       case MIN:
-        return AggregationType.MIN;
+        return AggregationType.MINIMUM;
       case SUM:
         return AggregationType.SUM;
       default:
