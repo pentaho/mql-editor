@@ -21,6 +21,16 @@ import java.util.List;
 
 import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DomEvent;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasMouseDownHandlers;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -29,7 +39,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class RoundedButton extends Widget {
+public class RoundedButton extends Widget implements HasClickHandlers{
 
   private String text = ""; //$NON-NLS-1$
   private String baseStyleName = "roundedbutton"; //$NON-NLS-1$
@@ -175,17 +185,31 @@ public class RoundedButton extends Widget {
 
     }
   }
-
+  
+  public HandlerRegistration addClickHandler(ClickHandler handler){
+    return addDomHandler(handler, ClickEvent.getType());
+  }
+  
   private void fireClicked() {
+    
+    // Deprecated interface
     for (ClickListener listener : listeners) {
       listener.onClick(this);
     }
+    
+    // New 1.6 style events
+    NativeEvent evt = Document.get().createClickEvent(0, 0, 0, 0, 0, false, false, false, false);
+    DomEvent.fireNativeEvent(evt, this);
+    
   }
-
+  
+  
+  @Deprecated
   public void addClickListener(ClickListener listener) {
     listeners.add(listener);
   }
 
+  @Deprecated
   public void removeClickListener(ClickListener listener) {
     listeners.remove(listener);
   }
