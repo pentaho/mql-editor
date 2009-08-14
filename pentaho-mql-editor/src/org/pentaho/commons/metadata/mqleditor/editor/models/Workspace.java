@@ -303,7 +303,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   @Bindable
   public void setSelections(UIColumns columns) {
     this.selections = columns;
-    this.firePropertyChange("selections", null, getSelectedColumns());
+    this.firePropertyChange("selections", null, getSelections());
   }
 
   @Bindable
