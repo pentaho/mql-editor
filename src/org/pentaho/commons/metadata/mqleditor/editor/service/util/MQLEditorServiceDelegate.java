@@ -95,6 +95,10 @@ public class MQLEditorServiceDelegate {
   public MQLEditorServiceDelegate() {
   }
 
+  protected String getLocale() {
+    return locale;
+  }
+  
   public List<MqlDomain> refreshMetadataDomains() {
     domains.clear();
     domainNames.clear();
@@ -134,7 +138,7 @@ public class MQLEditorServiceDelegate {
 
   private Model createModel(BusinessModel m) {
     Model model = new Model();
-    model.setName(m.getName(locale));
+    model.setName(m.getName(getLocale()));
     model.setId(m.getId());
 
     UniqueList<BusinessCategory> cats = m.getRootCategory().getBusinessCategories();
@@ -147,7 +151,7 @@ public class MQLEditorServiceDelegate {
 
   private Model createModel(LogicalModel m) {
     Model model = new Model();
-    model.setName(m.getName(locale));
+    model.setName(m.getName(getLocale()));
     model.setId(m.getId());
     for (org.pentaho.metadata.model.Category cat : m.getCategories()) {
       model.getCategories().add(createCategory(m, cat));
@@ -159,7 +163,7 @@ public class MQLEditorServiceDelegate {
 
   private Category createCategory(BusinessModel m, BusinessCategory c) {
     Category cat = new Category();
-    cat.setName(c.getName(locale));
+    cat.setName(c.getName(getLocale()));
     cat.setId(c.getId());
     UniqueList<org.pentaho.pms.schema.BusinessColumn> cols = c.getBusinessColumns();
     for (org.pentaho.pms.schema.BusinessColumn col : cols) {
@@ -171,7 +175,7 @@ public class MQLEditorServiceDelegate {
 
   private Category createCategory(LogicalModel m, org.pentaho.metadata.model.Category c) {
     Category cat = new Category();
-    cat.setName(c.getName(locale));
+    cat.setName(c.getName(getLocale()));
     cat.setId(c.getId());
     for (LogicalColumn col : c.getLogicalColumns()) {
       cat.getBusinessColumns().add(createColumn(m, col));
@@ -182,7 +186,7 @@ public class MQLEditorServiceDelegate {
 
   private Column createColumn(BusinessModel m, org.pentaho.pms.schema.BusinessColumn c) {
     Column col = new Column();
-    col.setName(c.getName(locale));
+    col.setName(c.getName(getLocale()));
     col.setId(c.getId());
 
     int type = c.getPhysicalColumn().getDataType().getType();
@@ -222,7 +226,7 @@ public class MQLEditorServiceDelegate {
 
   private Column createColumn(LogicalModel m, LogicalColumn c) {
     Column col = new Column();
-    col.setName(c.getName(locale));
+    col.setName(c.getName(getLocale()));
     col.setId(c.getId());
 
     ColumnType ourType = null;
