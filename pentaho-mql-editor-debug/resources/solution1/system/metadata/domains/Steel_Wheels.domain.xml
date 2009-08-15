@@ -2962,9 +2962,9 @@
                   <string>aggregation_list</string>
                   <list>
                     <org.pentaho.metadata.model.concept.types.AggregationType>SUM</org.pentaho.metadata.model.concept.types.AggregationType>
-                    <org.pentaho.metadata.model.concept.types.AggregationType>AVG</org.pentaho.metadata.model.concept.types.AggregationType>
-                    <org.pentaho.metadata.model.concept.types.AggregationType>MIN</org.pentaho.metadata.model.concept.types.AggregationType>
-                    <org.pentaho.metadata.model.concept.types.AggregationType>MAX</org.pentaho.metadata.model.concept.types.AggregationType>
+                    <org.pentaho.metadata.model.concept.types.AggregationType>AVERAGE</org.pentaho.metadata.model.concept.types.AggregationType>
+                    <org.pentaho.metadata.model.concept.types.AggregationType>MINIMUM</org.pentaho.metadata.model.concept.types.AggregationType>
+                    <org.pentaho.metadata.model.concept.types.AggregationType>MAXIMUM</org.pentaho.metadata.model.concept.types.AggregationType>
                   </list>
                 </entry>
                 <entry>
@@ -3058,9 +3058,9 @@
                   <string>aggregation_list</string>
                   <list>
                     <org.pentaho.metadata.model.concept.types.AggregationType>SUM</org.pentaho.metadata.model.concept.types.AggregationType>
-                    <org.pentaho.metadata.model.concept.types.AggregationType>AVG</org.pentaho.metadata.model.concept.types.AggregationType>
-                    <org.pentaho.metadata.model.concept.types.AggregationType>MIN</org.pentaho.metadata.model.concept.types.AggregationType>
-                    <org.pentaho.metadata.model.concept.types.AggregationType>MAX</org.pentaho.metadata.model.concept.types.AggregationType>
+                    <org.pentaho.metadata.model.concept.types.AggregationType>AVERAGE</org.pentaho.metadata.model.concept.types.AggregationType>
+                    <org.pentaho.metadata.model.concept.types.AggregationType>MINIMUM</org.pentaho.metadata.model.concept.types.AggregationType>
+                    <org.pentaho.metadata.model.concept.types.AggregationType>MAXIMUM</org.pentaho.metadata.model.concept.types.AggregationType>
                   </list>
                 </entry>
                 <entry>
@@ -6384,7 +6384,7 @@
               <properties>
                 <entry>
                   <string>aggregation</string>
-                  <org.pentaho.metadata.model.concept.types.AggregationType>AVG</org.pentaho.metadata.model.concept.types.AggregationType>
+                  <org.pentaho.metadata.model.concept.types.AggregationType>AVERAGE</org.pentaho.metadata.model.concept.types.AggregationType>
                 </entry>
               </properties>
               <id>BC_PRODUCTS_BUYPRICE</id>
@@ -6395,7 +6395,7 @@
               <properties>
                 <entry>
                   <string>aggregation</string>
-                  <org.pentaho.metadata.model.concept.types.AggregationType>AVG</org.pentaho.metadata.model.concept.types.AggregationType>
+                  <org.pentaho.metadata.model.concept.types.AggregationType>AVERAGE</org.pentaho.metadata.model.concept.types.AggregationType>
                 </entry>
               </properties>
               <id>BC_PRODUCTS_MSRP</id>
@@ -6497,7 +6497,7 @@
               <properties>
                 <entry>
                   <string>aggregation</string>
-                  <org.pentaho.metadata.model.concept.types.AggregationType>AVG</org.pentaho.metadata.model.concept.types.AggregationType>
+                  <org.pentaho.metadata.model.concept.types.AggregationType>AVERAGE</org.pentaho.metadata.model.concept.types.AggregationType>
                 </entry>
                 <entry>
                   <string>name</string>
