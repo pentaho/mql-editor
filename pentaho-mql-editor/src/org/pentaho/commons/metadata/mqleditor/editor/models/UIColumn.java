@@ -31,6 +31,7 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
     col.id = id;
     col.name = name;
     col.aggTypes = aggTypes;
+    col.defaultAggType = defaultAggType;
     col.selectedAggType = selectedAggType;
     return col;
   }
@@ -56,6 +57,14 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
   @Bindable
   public String getName() {
     return this.name;
+  }
+  
+  public String getPreviewName() {
+    if (selectedAggType != AggType.NONE) {
+			return name + " (" + selectedAggType.toString() + ")";   
+    } else {
+	    return name;
+	  }
   }
   
   @Bindable

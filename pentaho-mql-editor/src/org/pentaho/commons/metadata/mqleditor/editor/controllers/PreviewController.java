@@ -161,7 +161,7 @@ public class PreviewController extends AbstractXulEventHandler {
     }
       
     for(int i = 0; i < previewTree.getColumns().getColumnCount(); i++){
-      previewTree.getColumns().getColumn(i).setLabel(workspace.getSelections().get(i).getName());
+      previewTree.getColumns().getColumn(i).setLabel(workspace.getSelections().get(i).getPreviewName());
     }
     
     previewTree.getRootChildren().removeAll();
