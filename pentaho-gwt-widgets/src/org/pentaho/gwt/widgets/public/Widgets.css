@@ -672,6 +672,7 @@ body{
   background: white;
   border: 1px solid gray;
   z-index: 1350;
+  width: auto;
 }
 
 .custom-list-item{
