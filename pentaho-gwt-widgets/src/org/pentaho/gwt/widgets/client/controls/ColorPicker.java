@@ -7,16 +7,17 @@ import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 import org.pentaho.gwt.widgets.client.utils.Rectangle;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 
 public class ColorPicker extends Image{
 
@@ -25,7 +26,7 @@ public class ColorPicker extends Image{
   private String selectedColor = "#FFF";
   
   public ColorPicker(){
-    super(GWT.getModuleBaseURL()+"style/images/color_picker_frame.png");
+    super(GWT.getModuleBaseURL()+"style/images/color_picker_frame.gif");
     this.getElement().getStyle().setProperty("backgroundColor", "#fff");
     this.getElement().getStyle().setProperty("cursor", "pointer");
     this.addMouseUpHandler(new MouseUpHandler(){
@@ -134,9 +135,10 @@ public class ColorPicker extends Image{
     
   }
   
-  private class ColorBox extends SimplePanel{
+  private class ColorBox extends SimplePanel implements HasClickHandlers, ClickHandler {
     String color;
     ColorPickerDialog dialog;
+
     public ColorBox(ColorPickerDialog dialog, String color){
       this.dialog = dialog;
       this.color = color;
@@ -147,27 +149,17 @@ public class ColorPicker extends Image{
       panel.getElement().getStyle().setProperty("backgroundColor", color);
       add(panel);
       panel.setStyleName("color-swatch-center");
-      this.sinkEvents(Event.ONCLICK );
+      this.addClickHandler(this);
     }
 
-    @Override
-    public void onBrowserEvent(Event event) {
-      
-      switch(event.getKeyCode()){
-      case Event.ONDBLCLICK:
-      case Event.ONCLICK:
-        ColorPicker.this.setColor(color);
-        dialog.hide();
-        break;
-      case Event.ONMOUSEOVER:
-      case Event.ONMOUSEOUT:
-      default:
-        event.stopPropagation();
-        event.preventDefault();
-        break;
-      }
+    public HandlerRegistration addClickHandler(ClickHandler handler) {
+      return addDomHandler(handler, ClickEvent.getType());
     }
-    
+
+    public void onClick(ClickEvent event) {
+      ColorPicker.this.setColor(color);
+      dialog.hide();
+    }
     
   }
 }
