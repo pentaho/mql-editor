@@ -146,6 +146,10 @@ public class SwingMqlEditor {
     }
   }
   
+  public boolean getOkClicked() {
+  	return mainController.getOkClicked();
+  }
+  
   public String getQuery() {
     return delegate.saveQuery(workspace.getMqlQuery());
   }

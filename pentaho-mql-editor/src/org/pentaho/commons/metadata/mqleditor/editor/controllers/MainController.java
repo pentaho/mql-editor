@@ -32,6 +32,10 @@ import org.pentaho.ui.xul.stereotype.Bindable;
  */
 public class MainController extends AbstractXulEventHandler {
 
+	public static final int CANCELLED = 0;
+	public static final int OK = 1;
+	
+	private int lastClicked = CANCELLED;
 
   private XulMenuList modelList;
   private XulMenuList domainList;
@@ -53,6 +57,10 @@ public class MainController extends AbstractXulEventHandler {
   public MainController() {
     
     
+  }
+  
+  public boolean getOkClicked() {
+  	return lastClicked == OK;
   }
 
   public void setSavedQuery(Query savedQuery) {
@@ -252,6 +260,7 @@ public class MainController extends AbstractXulEventHandler {
   
   @Bindable
   public void closeDialog(){
+  	lastClicked = CANCELLED;
     this.dialog.hide();
     
     // listeners may remove themselves, old-style iteration
@@ -262,6 +271,7 @@ public class MainController extends AbstractXulEventHandler {
   
   @Bindable
   public void saveQuery(){
+  	lastClicked = OK;
     service.saveQuery(workspace.getMqlQuery(),
       new XulServiceCallback<String>(){
 
