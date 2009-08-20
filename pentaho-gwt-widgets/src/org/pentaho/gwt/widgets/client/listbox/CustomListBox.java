@@ -44,6 +44,7 @@ import java.util.List;
  * Time: 11:01:57 AM
  * 
  */
+@SuppressWarnings("deprecation")
 public class CustomListBox extends HorizontalPanel implements ChangeListener, PopupListener, MouseListener, FocusListener, KeyboardListener{
   private List<ListItem> items = new ArrayList<ListItem>();
   private int selectedIndex = -1;
@@ -66,6 +67,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   private List<ChangeListener> listeners = new ArrayList<ChangeListener>();
   private final int spacing = 1;
   private int maxHeight, maxWidth, averageHeight; //height and width of largest ListItem
+  @SuppressWarnings("unused")
   private String primaryStyleName;
   private String height, width;
   private String popupHeight, popupWidth;
@@ -77,7 +79,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
   public CustomListBox(){
 
-    dropGrid.getColumnFormatter().setWidth(0, "100%");
+    dropGrid.getColumnFormatter().setWidth(0, "100%"); //$NON-NLS-1$
     dropGrid.setWidget(0,1, arrow);
     dropGrid.setCellPadding(0);
     dropGrid.setCellSpacing(1);
@@ -85,28 +87,28 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
     // Add List Panel to it's scrollPanel
     listScrollPanel.add(listPanel);
-    listScrollPanel.setHeight("100%");
-    listScrollPanel.setWidth("100%");
-    listScrollPanel.getElement().getStyle().setProperty("overflowX","hidden");
+    listScrollPanel.setHeight("100%"); //$NON-NLS-1$
+    listScrollPanel.setWidth("100%"); //$NON-NLS-1$
+    listScrollPanel.getElement().getStyle().setProperty("overflowX","hidden"); //$NON-NLS-1$ //$NON-NLS-2$
     //listScrollPanel.getElement().getStyle().setProperty("padding",spacing+"px");
     listPanel.setSpacing(spacing);
-    listPanel.setWidth("100%");
+    listPanel.setWidth("100%"); //$NON-NLS-1$
 
     //default to drop-down
     fPanel.add(dropGrid);
-    fPanel.setHeight("100%");
+    fPanel.setHeight("100%"); //$NON-NLS-1$
     super.add(fPanel);
     
     popupScrollPanel.add(popupVbox);
-    popupScrollPanel.getElement().getStyle().setProperty("overflowX","hidden");
-    popupVbox.setWidth("100%");
+    popupScrollPanel.getElement().getStyle().setProperty("overflowX","hidden"); //$NON-NLS-1$ //$NON-NLS-2$
+    popupVbox.setWidth("100%"); //$NON-NLS-1$
     popupVbox.setSpacing(spacing);
 
     fPanel.addMouseListener(this);
     fPanel.addFocusListener(this);
     fPanel.addKeyboardListener(this);
 
-    this.setStylePrimaryName("custom-list");
+    this.setStylePrimaryName("custom-list"); //$NON-NLS-1$
 
 
     setTdStyles(this.getElement());
@@ -115,7 +117,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     editableTextBox = new TextBox(){
       @Override
       public void onBrowserEvent(Event event) {
-        int code = event.getKeyCode();
+//        int code = event.getKeyCode();
 
         switch(DOM.eventGetType(event)){
           case Event.ONKEYUP:
@@ -153,7 +155,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   @Override
   public void add(Widget child) {
     throw new UnsupportedOperationException(
-        "This panel does not support no-arg add()");
+        "This panel does not support no-arg add()"); //$NON-NLS-1$
   }
   
   /**
@@ -344,14 +346,14 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
     // Update the popup to respect this value
     if(maxHeight > 0){ //Items already added
-      this.popupHeight = this.maxDropVisible * maxHeight + "px";
+      this.popupHeight = this.maxDropVisible * maxHeight + "px"; //$NON-NLS-1$
     }
   }
 
   private TextBox editableTextBox;
   private SimplePanel selectedItemWrapper = new SimplePanel();
   private void updateSelectedDropWidget(){
-    Widget selectedWidget = new Label(""); //Default to show in case of empty sets?
+    Widget selectedWidget = new Label(""); //Default to show in case of empty sets? //$NON-NLS-1$
     if(editable == false){ // only show their widget if editable is false
       if(selectedIndex >= 0){
         selectedWidget = items.get(selectedIndex).getWidgetForDropdown();
@@ -367,7 +369,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       } else if(items.size() > 0){
         editableTextBox.setText(items.get(0).getValue().toString());
       }
-      editableTextBox.setWidth("100%");
+      editableTextBox.setWidth("100%"); //$NON-NLS-1$
       editableTextBox.sinkEvents(Event.KEYEVENTS);
       editableTextBox.sinkEvents(Event.MOUSEEVENTS);
       selectedWidget = editableTextBox;
@@ -375,7 +377,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
     }
     this.setTdStyles(selectedWidget.getElement());
-    selectedItemWrapper.getElement().getStyle().setProperty("overflow", "hidden");
+    selectedItemWrapper.getElement().getStyle().setProperty("overflow", "hidden"); //$NON-NLS-1$ //$NON-NLS-2$
     selectedItemWrapper.clear();
     selectedItemWrapper.add(selectedWidget);
     dropGrid.setWidget(0,0, selectedItemWrapper);
@@ -402,7 +404,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
       // Add it to the dropdown
       listPanel.add(w);
-      listPanel.setCellWidth(w, "100%");
+      listPanel.setCellWidth(w, "100%"); //$NON-NLS-1$
     }
     if(height == null){
       maxHeight = Math.round(maxHeight / this.items.size());
@@ -410,10 +412,10 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
     // we only care about this if the user has specified a visible row count and no heihgt
     if(height == null){
-      this.listScrollPanel.setHeight((this.visible * (maxHeight + spacing)) + "px");
+      this.listScrollPanel.setHeight((this.visible * (maxHeight + spacing)) + "px"); //$NON-NLS-1$
     }
     if(width == null){
-      this.fPanel.setWidth(maxWidth + 40 + "px"); //20 is scrollbar space
+      this.fPanel.setWidth(maxWidth + 40 + "px"); //20 is scrollbar space //$NON-NLS-1$
     }
 
   }
@@ -444,7 +446,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       
       // Add it to the dropdown
       popupVbox.add(w);
-      popupVbox.setCellWidth(w, "100%");
+      popupVbox.setCellWidth(w, "100%"); //$NON-NLS-1$
     }
 
     // Average the height of the items
@@ -456,20 +458,20 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     // Set the size of the drop-down based on the largest list item
     if(width == null){
       //TODO: move "10" to a static member  
-      dropGrid.setWidth(maxWidth + (spacing*4) + maxHeight + "px"); //adding a little more room with the 10 
-      this.popupWidth = maxWidth + (spacing*4) + maxHeight + "px";
-    } else if(width.equals("100%")){
-      dropGrid.setWidth("100%");
-      this.popupWidth = maxWidth + (spacing*4) + maxHeight + "px";
+      dropGrid.setWidth(maxWidth + (spacing*4) + maxHeight + "px"); //adding a little more room with the 10  //$NON-NLS-1$
+      this.popupWidth = maxWidth + (spacing*4) + maxHeight + "px"; //$NON-NLS-1$
+    } else if(width.equals("100%")){ //$NON-NLS-1$
+      dropGrid.setWidth("100%"); //$NON-NLS-1$
+      this.popupWidth = maxWidth + (spacing*4) + maxHeight + "px"; //$NON-NLS-1$
     } else {
-      dropGrid.setWidth("100%");
+      dropGrid.setWidth("100%"); //$NON-NLS-1$
       int w = -1;
-      if(width.indexOf("px") > 0) {
-        w = Integer.parseInt(this.width.replace("px",""));
-      } else if(width.indexOf("%") > 0) {
-        w = Integer.parseInt(this.width.replace("%",""));
+      if(width.indexOf("px") > 0) { //$NON-NLS-1$
+        w = Integer.parseInt(this.width.replace("px","")); //$NON-NLS-1$ //$NON-NLS-2$
+      } else if(width.indexOf("%") > 0) { //$NON-NLS-1$
+        w = Integer.parseInt(this.width.replace("%","")); //$NON-NLS-1$ //$NON-NLS-2$
       }
-      selectedItemWrapper.setWidth( (w - (averageHeight + (this.spacing*6))) + "px" );
+      selectedItemWrapper.setWidth( (w - (averageHeight + (this.spacing*6))) + "px" ); //$NON-NLS-1$
     }
 
     // Store the the size of the popup to respect MaxDropVisible now that we know the item height
@@ -477,9 +479,9 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
     if(maxDropVisible > 0){
       // (Lesser of maxDropVisible or items size) * (Average item height + spacing value) 
-      this.popupHeight = (Math.min(this.maxDropVisible, this.items.size()) * (averageHeight + (this.spacing * 2) )) + "px";
+      this.popupHeight = (Math.min(this.maxDropVisible, this.items.size()) * (averageHeight + (this.spacing * 2) )) + "px"; //$NON-NLS-1$
     } else {
-      this.popupHeight = totalHeight + "px";
+      this.popupHeight = totalHeight + "px"; //$NON-NLS-1$
     }
   }
 
@@ -504,11 +506,11 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
 
       // Set the size of the popup calculated in updateDropDown().
       if(this.popupHeight != null){
-        this.popupScrollPanel.getElement().getStyle().setProperty("height", this.popupHeight);
+        this.popupScrollPanel.getElement().getStyle().setProperty("height", this.popupHeight); //$NON-NLS-1$
       }
       
       if(this.popupWidth != null){
-        this.popupScrollPanel.getElement().getStyle().setProperty("width", Math.max(this.getElement().getOffsetWidth()-2, this.maxWidth+10)+"px");
+        this.popupScrollPanel.getElement().getStyle().setProperty("width", Math.max(this.getElement().getOffsetWidth()-2, this.maxWidth+10)+"px"); //$NON-NLS-1$ //$NON-NLS-2$
       }
       
       scrollSelectedItemIntoView();
@@ -546,7 +548,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
    */
   public void setSelectedItem(ListItem item){
     if(items.contains(item) == false){
-      throw new RuntimeException("Item not in collection");
+      throw new RuntimeException("Item not in collection"); //$NON-NLS-1$
     }
     // Clear previously selected item
     if(selectedIndex > -1){
@@ -568,7 +570,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
    */
   public void setSelectedIndex(int idx){
     if(idx > items.size()){
-      throw new RuntimeException("Index out of bounds: "+ idx);
+      throw new RuntimeException("Index out of bounds: "+ idx); //$NON-NLS-1$
     }
     // De-Select the current
     if(selectedIndex > -1 && this.isAttached()){
@@ -671,11 +673,11 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   @Override
   public void setWidth(String s) {
     fPanel.setWidth(s);
-    this.listScrollPanel.setWidth("100%");
+    this.listScrollPanel.setWidth("100%"); //$NON-NLS-1$
     this.width = s;
     this.popupWidth = s;
     if(s != null){
-      dropGrid.setWidth("100%"); 
+      dropGrid.setWidth("100%");  //$NON-NLS-1$
     }
     super.setWidth(s);
   }
@@ -750,7 +752,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   private class DropPopupPanel extends PopupPanel {
     public DropPopupPanel(){
       super(true);
-      setStyleName("drop-popup");
+      setStyleName("drop-popup"); //$NON-NLS-1$
     }
 
     @Override
@@ -785,9 +787,9 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     private Image img;
     private boolean enabled = true;
     public DropDownArrow(){
-      img = new Image(GWT.getModuleBaseURL() + "arrow.png");
+      img = new Image(GWT.getModuleBaseURL() + "arrow.png"); //$NON-NLS-1$
 
-      this.setStylePrimaryName("combo-arrow");
+      this.setStylePrimaryName("combo-arrow"); //$NON-NLS-1$
       super.add(img);
       ElementUtils.preventTextSelection(this.getElement());
     }
@@ -797,11 +799,11 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
       }
       this.enabled = enabled;
       if(enabled){
-        img.setUrl(GWT.getModuleBaseURL() + "arrow.png");
-        this.setStylePrimaryName("combo-arrow");
+        img.setUrl(GWT.getModuleBaseURL() + "arrow.png"); //$NON-NLS-1$
+        this.setStylePrimaryName("combo-arrow"); //$NON-NLS-1$
       } else {
-        this.setStylePrimaryName("combo-arrow-disabled");
-        img.setUrl(GWT.getModuleBaseURL() + "arrow_disabled.png");
+        this.setStylePrimaryName("combo-arrow-disabled"); //$NON-NLS-1$
+        img.setUrl(GWT.getModuleBaseURL() + "arrow_disabled.png"); //$NON-NLS-1$
       }
     }
   }
@@ -852,7 +854,7 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
   public void setEnabled(boolean enabled){
     this.enabled = enabled;
     arrow.setEnabled(enabled);
-    this.setStylePrimaryName((this.enabled) ? "custom-list" : "custom-list-disabled");
+    this.setStylePrimaryName((this.enabled) ? "custom-list" : "custom-list-disabled"); //$NON-NLS-1$ //$NON-NLS-2$
   }
   
   public boolean isEnabled(){

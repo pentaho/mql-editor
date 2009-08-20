@@ -33,6 +33,7 @@ import org.pentaho.gwt.widgets.client.utils.TimeUtil;
  *
  */
 
+@SuppressWarnings("deprecation")
 public class DatePickerEx extends org.zenika.widget.client.datePicker.DatePicker implements IChangeHandler {
 
   private ICallback<IChangeHandler> onChangeHandler;

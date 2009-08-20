@@ -53,7 +53,7 @@ public class ResourceBundle {
   private String path = null;
   private String bundleName = null;
   private IResourceBundleLoadCallback bundleLoadCallback = null;
-  private String localeName = "default";
+  private String localeName = "default"; //$NON-NLS-1$
   private String currentAttemptUrl = null;
   private boolean attemptLocalizedFetches = true;
   private Map<String, String> supportedLanguages = null;
@@ -93,7 +93,7 @@ public class ResourceBundle {
   }
 
   public ResourceBundle() {
-    this.localeName = StringUtils.defaultIfEmpty(Window.Location.getParameter("locale"), getLanguagePreference());
+    this.localeName = StringUtils.defaultIfEmpty(Window.Location.getParameter("locale"), getLanguagePreference()); //$NON-NLS-1$
   }
 
   /**
@@ -119,8 +119,8 @@ public class ResourceBundle {
     this.bundleLoadCallback = bundleLoadCallback;
     this.attemptLocalizedFetches = attemptLocalizedFetches;
 
-    if (!StringUtils.isEmpty(path) && !path.endsWith("/")) {
-      path = path + "/";
+    if (!StringUtils.isEmpty(path) && !path.endsWith("/")) { //$NON-NLS-1$
+      path = path + "/"; //$NON-NLS-1$
     }
     this.path = path;
 
@@ -157,7 +157,7 @@ public class ResourceBundle {
           try {
             requestBuilder.sendRequest(null, baseCallback);
           } catch (RequestException e) {
-            Window.alert("base load: " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+            Window.alert("base load: " + e.getMessage()); //$NON-NLS-1$
             fireBundleLoadCallback();
           }
         }
@@ -168,10 +168,10 @@ public class ResourceBundle {
     // we do not want attempt to load that bundle..
     if (attemptLocalizedFetches && supportedLanguages == null) {
       // load supported_languages bundle
-      supportedLanguagesBundle.loadBundle(path, "supported_languages", false, supportedLangCallback); //$NON-NLS-1$ //$NON-NLS-2$
+      supportedLanguagesBundle.loadBundle(path, "supported_languages", false, supportedLangCallback); //$NON-NLS-1$
     } else {
       // simulate callback
-      supportedLangCallback.bundleLoaded("supported_languages");
+      supportedLangCallback.bundleLoaded("supported_languages"); //$NON-NLS-1$
     }
     
   }
@@ -179,7 +179,7 @@ public class ResourceBundle {
   private void initCallbacks() {
     baseCallback = new RequestCallback() {
       public void onError(Request request, Throwable exception) {
-        Window.alert("baseCallback: " + exception.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+        Window.alert("baseCallback: " + exception.getMessage()); //$NON-NLS-1$
         fireBundleLoadCallback();
       }
 
@@ -195,7 +195,7 @@ public class ResourceBundle {
           }
         } else {
           // put empty bundle in cache (not found, but we want to remember it was not found)
-          bundleCache.put(currentAttemptUrl, "");
+          bundleCache.put(currentAttemptUrl, ""); //$NON-NLS-1$
         }
 
         // if we are not attempting to fetch any localized bundles
@@ -216,23 +216,23 @@ public class ResourceBundle {
             String lang = st.tokenAt(0);
             // 2. fetch bundleName_lang.properties
             // 3. fetch bundleName_lang_country.properties
-            currentAttemptUrl = path + bundleName + "_" + lang + PROPERTIES_EXTENSION + getUrlExtras();
+            currentAttemptUrl = path + bundleName + "_" + lang + PROPERTIES_EXTENSION + getUrlExtras(); //$NON-NLS-1$
 
             // IE caches the file and causes an issue with the request
 
             if (!isSupportedLanguage(lang) || bundleCache.containsKey(currentAttemptUrl)) {
               langCallback.onResponseReceived(null, new FakeResponse(bundleCache.get(currentAttemptUrl)));
             } else {
-              RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, currentAttemptUrl); //$NON-NLS-1$ //$NON-NLS-2$
+              RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, currentAttemptUrl);
 
               // Caching causing some strange behavior with IE6.
               // TODO: Investigate caching issue.
-              requestBuilder.setHeader("Cache-Control", "no-cache");
+              requestBuilder.setHeader("Cache-Control", "no-cache"); //$NON-NLS-1$  //$NON-NLS-2$
 
               try {
                 requestBuilder.sendRequest(null, langCallback);
               } catch (RequestException e) {
-                Window.alert("lang: " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+                Window.alert("lang: " + e.getMessage()); //$NON-NLS-1$
                 fireBundleLoadCallback();
               }
             }
@@ -246,7 +246,7 @@ public class ResourceBundle {
     };
     langCallback = new RequestCallback() {
       public void onError(Request request, Throwable exception) {
-        Window.alert("langCallback: " + exception.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+        Window.alert("langCallback: " + exception.getMessage()); //$NON-NLS-1$
         fireBundleLoadCallback();
       }
 
@@ -261,21 +261,21 @@ public class ResourceBundle {
           }
         } else {
           // put empty bundle in cache (not found, but we want to remember it was not found)
-          bundleCache.put(currentAttemptUrl, "");
+          bundleCache.put(currentAttemptUrl, ""); //$NON-NLS-1$
         }
 
         StringTokenizer st = new StringTokenizer(localeName, '_');
         if (st.countTokens() == 2) {
           // 3. fetch bundleName_lang_country.properties
-          currentAttemptUrl = path + bundleName + "_" + localeName + PROPERTIES_EXTENSION + getUrlExtras();
+          currentAttemptUrl = path + bundleName + "_" + localeName + PROPERTIES_EXTENSION + getUrlExtras(); //$NON-NLS-1$
           if (!isSupportedLanguage(localeName) || bundleCache.containsKey(currentAttemptUrl)) {
             langCountryCallback.onResponseReceived(null, new FakeResponse(bundleCache.get(currentAttemptUrl)));
           } else {
-            RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, currentAttemptUrl); //$NON-NLS-1$ //$NON-NLS-2$
+            RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, currentAttemptUrl);
             try {
               requestBuilder.sendRequest(null, langCountryCallback);
             } catch (RequestException e) {
-              Window.alert("langCountry: " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+              Window.alert("langCountry: " + e.getMessage()); //$NON-NLS-1$
               fireBundleLoadCallback();
             }
           }
@@ -288,7 +288,7 @@ public class ResourceBundle {
     };
     langCountryCallback = new RequestCallback() {
       public void onError(Request request, Throwable exception) {
-        Window.alert("langCountryCallback: " + exception.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+        Window.alert("langCountryCallback: " + exception.getMessage()); //$NON-NLS-1$
         fireBundleLoadCallback();
       }
 
@@ -303,7 +303,7 @@ public class ResourceBundle {
           }
         } else {
           // put empty bundle in cache (not found, but we want to remember it was not found)
-          bundleCache.put(currentAttemptUrl, "");
+          bundleCache.put(currentAttemptUrl, ""); //$NON-NLS-1$
         }
         fireBundleLoadCallback();
       }

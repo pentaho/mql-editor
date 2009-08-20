@@ -40,6 +40,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * Framework for creating Wizards
  */
+@SuppressWarnings("deprecation")
 public abstract class AbstractWizardDialog extends DialogBox implements IWizardPanelListener {
   
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();

@@ -27,10 +27,6 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.MouseListener;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.Window;
-
 /**
  * Clickable image with enable/disable functionality built in.
  */
@@ -166,7 +162,7 @@ public class ImageButton extends Image {
    * @param src
    */
   private void setSrc(String src){
-    this.getElement().setAttribute("src", src);
+    this.getElement().setAttribute("src", src); //$NON-NLS-1$
   }
 
   public void setFocus(boolean focus) {

@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.PopupListener;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@SuppressWarnings("deprecation")
 public class ToolbarComboButton extends ToolbarButton implements ToolbarPopupSource, PopupListener{
   
   private String COMBO_STYLE = "toolbar-combo-button";   //$NON-NLS-1$

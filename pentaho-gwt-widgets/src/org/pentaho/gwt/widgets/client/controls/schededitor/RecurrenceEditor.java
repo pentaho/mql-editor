@@ -60,6 +60,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  */
 
+@SuppressWarnings("deprecation")
 public class RecurrenceEditor extends VerticalPanel implements IChangeHandler {
 
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();

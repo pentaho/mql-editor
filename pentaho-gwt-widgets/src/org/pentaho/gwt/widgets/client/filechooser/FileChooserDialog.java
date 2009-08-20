@@ -41,12 +41,12 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
   private FileFilter filter;
   
   public FileChooserDialog(FileChooserMode mode, String selectedPath, boolean autoHide, boolean modal) {
-    this(mode, selectedPath, autoHide, modal, mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save");
+    this(mode, selectedPath, autoHide, modal, mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
   }
   
   public FileChooserDialog(FileChooserMode mode, String selectedPath, boolean autoHide, boolean modal, String title, String okText) {
-    super(title, okText, "Cancel", new FileChooser(mode, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+    super(title, okText, "Cancel", new FileChooser(mode, //$NON-NLS-1$
         selectedPath), true);
     fileChooser = (FileChooser) getContent();
     fileChooser.setWidth("100%"); //$NON-NLS-1$
@@ -69,7 +69,7 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
   }
   
   public FileChooserDialog(FileChooserMode mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal, String title, String okText) {
-    super(title, okText, "Cancel", new FileChooser(), true); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+    super(title, okText, "Cancel", new FileChooser(), true); //$NON-NLS-1$
     fileChooser = (FileChooser) getContent();
     fileChooser.setWidth("100%"); //$NON-NLS-1$
     fileChooser.setMode(mode);
@@ -97,7 +97,7 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
   }
 
   public FileChooserDialog(FileChooserMode mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal) {
-    this(mode, selectedPath, repositoryDocument, autoHide, modal, mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save");
+    this(mode, selectedPath, repositoryDocument, autoHide, modal, mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
   }
 
   public void addFileChooserListener(FileChooserListener listener) {
@@ -158,7 +158,7 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
    */
   private boolean isFileNameValid() {
     final String fileName = getFileName();
-    if (StringUtils.isEmpty(fileName)) { //$NON-NLS-1$
+    if (StringUtils.isEmpty(fileName)) { 
       MessageDialogBox dialogBox = new MessageDialogBox(MSGS.error(), MSGS.noFilenameEntered(), false, false, true);
       dialogBox.center();
       return false;

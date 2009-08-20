@@ -74,7 +74,7 @@ public class TreeBuilder {
         //ElementUtils.preventTextSelection(childTreeItem.getElement());
         
         HashMap<String, Object> attributeMap = new HashMap<String, Object>();
-        attributeMap.put("name", fileName); //$NON-NLS-1$ //$NON-NLS-2$
+        attributeMap.put("name", fileName); //$NON-NLS-1$
         attributeMap.put("localized-name", childElement.getAttribute("localized-name")); //$NON-NLS-1$ //$NON-NLS-2$
         attributeMap.put("description", childElement.getAttribute("description")); //$NON-NLS-1$ //$NON-NLS-2$
         attributeMap.put("lastModifiedDate", childElement.getAttribute("lastModifiedDate")); //$NON-NLS-1$ //$NON-NLS-2$

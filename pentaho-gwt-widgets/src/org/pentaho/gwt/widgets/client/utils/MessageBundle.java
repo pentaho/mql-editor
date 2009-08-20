@@ -60,7 +60,7 @@ public class MessageBundle {
   private String path = null;
   private String bundleName = null;
   private IMessageBundleLoadCallback bundleLoadCallback = null;
-  private String localeName = "default";
+  private String localeName = "default"; //$NON-NLS-1$
   private String currentAttemptUrl = null;
 
   private class FakeResponse extends Response {
@@ -116,7 +116,7 @@ public class MessageBundle {
     this.bundleName = bundleName;
     this.bundleLoadCallback = bundleLoadCallback;
     // get the locale meta property if the url parameter is missing
-    this.localeName = StringUtils.defaultIfEmpty(Window.Location.getParameter("locale"), getLanguagePreference());
+    this.localeName = StringUtils.defaultIfEmpty(Window.Location.getParameter("locale"), getLanguagePreference()); //$NON-NLS-1$
     initCallbacks();
     // decompose locale
     // _en_US
@@ -164,7 +164,7 @@ public class MessageBundle {
           }
         } else {
           // put empty bundle in cache (not found, but we want to remember it was not found)
-          bundleCache.put(currentAttemptUrl, "");
+          bundleCache.put(currentAttemptUrl, ""); //$NON-NLS-1$
         }
         
         // now fetch the the lang/country variants
@@ -178,7 +178,7 @@ public class MessageBundle {
             String lang = st.tokenAt(0);
             // 2. fetch bundleName_lang.properties
             // 3. fetch bundleName_lang_country.properties
-            currentAttemptUrl = path + bundleName + "_" + lang + PROPERTIES_EXTENSION + getUrlExtras();
+            currentAttemptUrl = path + bundleName + "_" + lang + PROPERTIES_EXTENSION + getUrlExtras(); //$NON-NLS-1$
             
             // IE caches the file and causes an issue with the request
             
@@ -186,11 +186,11 @@ public class MessageBundle {
             if (bundleCache.containsKey(currentAttemptUrl)) {
               langCallback.onResponseReceived(null, new FakeResponse(bundleCache.get(currentAttemptUrl)));
             } else {
-              RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, currentAttemptUrl); //$NON-NLS-1$ //$NON-NLS-2$
+              RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, currentAttemptUrl);
               
               // Caching causing some strange behavior with IE6. 
               // TODO: Investigate caching issue.
-              requestBuilder.setHeader("Cache-Control", "no-cache");
+              requestBuilder.setHeader("Cache-Control", "no-cache"); //$NON-NLS-1$ //$NON-NLS-2$
               
               try {
                 requestBuilder.sendRequest(null, langCallback);
@@ -224,18 +224,18 @@ public class MessageBundle {
           }
         } else {
           // put empty bundle in cache (not found, but we want to remember it was not found)
-          bundleCache.put(currentAttemptUrl, "");
+          bundleCache.put(currentAttemptUrl, ""); //$NON-NLS-1$
         }
 
         
         StringTokenizer st = new StringTokenizer(localeName, '_');
         if (st.countTokens() == 2) {
           // 3. fetch bundleName_lang_country.properties
-          currentAttemptUrl = path + bundleName + "_" + localeName + PROPERTIES_EXTENSION + getUrlExtras();
+          currentAttemptUrl = path + bundleName + "_" + localeName + PROPERTIES_EXTENSION + getUrlExtras(); //$NON-NLS-1$
           if (bundleCache.containsKey(currentAttemptUrl)) {
             langCountryCallback.onResponseReceived(null, new FakeResponse(bundleCache.get(currentAttemptUrl)));
           } else {
-            RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, currentAttemptUrl); //$NON-NLS-1$ //$NON-NLS-2$
+            RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, currentAttemptUrl);
             try {
               requestBuilder.sendRequest(null, langCountryCallback);
             } catch (RequestException e) {
@@ -267,7 +267,7 @@ public class MessageBundle {
           }
         } else {
           // put empty bundle in cache (not found, but we want to remember it was not found)
-          bundleCache.put(currentAttemptUrl, "");
+          bundleCache.put(currentAttemptUrl, ""); //$NON-NLS-1$
         }
         fireBundleLoadCallback();
       }

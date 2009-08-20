@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@SuppressWarnings("deprecation")
 public class DialogBox extends com.google.gwt.user.client.ui.DialogBox implements PopupListener {
 
   private static FocusPanel pageBackground = null;

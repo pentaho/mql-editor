@@ -102,7 +102,7 @@ public class DefaultListItem  implements ListItem<Object> {
     label.getElement().getStyle().setProperty("cursor","pointer"); //$NON-NLS-1$ //$NON-NLS-2$
     label.setWidth("100%"); //$NON-NLS-1$
     SimplePanel sp = new SimplePanel();
-    sp.getElement().getStyle().setProperty("overflowX","auto");
+    sp.getElement().getStyle().setProperty("overflowX","auto"); //$NON-NLS-1$ //$NON-NLS-2$
     sp.add(label);
 
 

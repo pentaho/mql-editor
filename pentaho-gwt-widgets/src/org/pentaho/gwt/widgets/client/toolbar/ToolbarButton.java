@@ -38,6 +38,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author nbaker
  *
  */
+@SuppressWarnings("deprecation")
 public class ToolbarButton {
   protected DockPanel button = new DockPanel();
   protected boolean enabled = true;

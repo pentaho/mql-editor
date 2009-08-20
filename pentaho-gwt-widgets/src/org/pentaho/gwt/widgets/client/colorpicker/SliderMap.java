@@ -194,6 +194,7 @@ import com.google.gwt.user.client.ui.Image;
 /**
  * Implements the SliderMap control.
  */
+@SuppressWarnings("deprecation")
 public final class SliderMap extends HTML implements EventPreview
 {
 	private ColorPickerImageBundle cpImageBundle;

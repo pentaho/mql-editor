@@ -27,6 +27,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author wseyler
  *
  */
+@SuppressWarnings("deprecation")
 public class DigitsOnlyListener extends KeyboardListenerAdapter {
   public void onKeyPress(Widget sender, char keyCode, int modifiers) {
     if ((!Character.isDigit(keyCode)) && (keyCode != (char) KEY_TAB)

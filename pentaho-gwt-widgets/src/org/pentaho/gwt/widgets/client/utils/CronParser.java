@@ -338,6 +338,7 @@ public class CronParser {
    * 
    * @throws CronParseException
    */
+  @SuppressWarnings("deprecation")
   private void tokenizeForRecurrence() throws CronParseException {
     
     String[] tokens = cronStr.split( "\\s" ); // split on white space //$NON-NLS-1$
@@ -608,6 +609,7 @@ public class CronParser {
     return sb.toString().trim(); 
   }
 
+  @SuppressWarnings("deprecation")
   private static void validateIsInt( String strInt ) throws CronParseException {
     if ( !StringUtils.isPositiveInteger( strInt ) ) {
       throw new CronParseException( MSGS.invalidIntegerToken( strInt ) );

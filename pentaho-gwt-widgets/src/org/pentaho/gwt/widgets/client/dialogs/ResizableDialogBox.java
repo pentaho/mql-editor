@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@SuppressWarnings("deprecation")
 public class ResizableDialogBox {
 
   private AbsolutePanel boundaryPanel;
@@ -52,7 +53,7 @@ public class ResizableDialogBox {
     boundaryPanel.setVisible(true);
     RootPanel.get().add(boundaryPanel, 0, 0);
     boundaryPanel.sinkEvents(Event.ONCLICK);
-    boundaryPanel.getElement().getStyle().setProperty("cursor", "wait");
+    boundaryPanel.getElement().getStyle().setProperty("cursor", "wait"); //$NON-NLS-1$ //$NON-NLS-2$
 
     // initialize window controller which provides drag and resize windows
     WindowController windowController = new WindowController(boundaryPanel);

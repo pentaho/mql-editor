@@ -195,6 +195,7 @@ import com.google.gwt.user.client.ui.Image;
 /**
  * Implements the SliderBar control.
  */
+@SuppressWarnings("deprecation")
 public final class SliderBar extends HTML implements EventPreview
 {
 	private ColorPickerImageBundle cpImageBundle;

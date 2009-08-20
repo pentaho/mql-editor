@@ -110,7 +110,7 @@ public class Toolbar extends HorizontalPanel implements ToolbarPopupListener, To
     bar.add(p);
     //spacer now passed in as panel
     if(p instanceof SimplePanel){
-      if(p.getStyleName().equals("spacer")){
+      if(p.getStyleName().equals("spacer")){ //$NON-NLS-1$
         //TODO: handle flex spacer;
       }
     }

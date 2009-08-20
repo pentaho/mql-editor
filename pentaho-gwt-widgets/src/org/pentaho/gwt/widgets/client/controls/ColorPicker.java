@@ -23,12 +23,12 @@ public class ColorPicker extends Image{
 
   private List<ColorPickerListener> listeners  = new ArrayList<ColorPickerListener>();
   private ColorPickerDialog picker = new ColorPickerDialog();
-  private String selectedColor = "#FFF";
+  private String selectedColor = "#FFF"; //$NON-NLS-1$
   
   public ColorPicker(){
-    super(GWT.getModuleBaseURL()+"style/images/color_picker_frame.gif");
-    this.getElement().getStyle().setProperty("backgroundColor", "#fff");
-    this.getElement().getStyle().setProperty("cursor", "pointer");
+    super(GWT.getModuleBaseURL()+"style/images/color_picker_frame.gif"); //$NON-NLS-1$
+    this.getElement().getStyle().setProperty("backgroundColor", "#fff"); //$NON-NLS-1$  //$NON-NLS-2$
+    this.getElement().getStyle().setProperty("cursor", "pointer"); //$NON-NLS-1$  //$NON-NLS-2$
     this.addMouseUpHandler(new MouseUpHandler(){
 
       public void onMouseUp(MouseUpEvent event) {
@@ -48,7 +48,7 @@ public class ColorPicker extends Image{
   
   public void setColor(String hex){
     this.selectedColor = hex;
-    this.getElement().getStyle().setProperty("backgroundColor", hex);
+    this.getElement().getStyle().setProperty("backgroundColor", hex); //$NON-NLS-1$
     
     for(ColorPickerListener listener : listeners){
       listener.colorPicked(this);
@@ -64,7 +64,7 @@ public class ColorPicker extends Image{
   }
   
   private class ColorPickerDialog extends PopupPanel{
-    
+    @SuppressWarnings("nls")
     private String[] colors = new String[]{
         "#000",
         "#993300",
@@ -114,7 +114,7 @@ public class ColorPicker extends Image{
     
     public ColorPickerDialog(){
       super(true);
-      this.setStyleName("color-picker-popup");
+      this.setStyleName("color-picker-popup"); //$NON-NLS-1$
       
       FlexTable table = new FlexTable();
       table.setCellPadding(0);
@@ -127,7 +127,7 @@ public class ColorPicker extends Image{
         }
       }
       SimplePanel panel = new SimplePanel();
-      panel.getElement().getStyle().setProperty("padding", "3px");
+      panel.getElement().getStyle().setProperty("padding", "3px"); //$NON-NLS-1$ //$NON-NLS-2$
       panel.add(table);
       
       this.add(panel);
@@ -142,13 +142,13 @@ public class ColorPicker extends Image{
     public ColorBox(ColorPickerDialog dialog, String color){
       this.dialog = dialog;
       this.color = color;
-      this.setStyleName("color-swatch");
+      this.setStyleName("color-swatch"); //$NON-NLS-1$
       SimplePanel panel = new SimplePanel();
 
-      panel.getElement().getStyle().setProperty("border", "1px solid #aaa");
-      panel.getElement().getStyle().setProperty("backgroundColor", color);
+      panel.getElement().getStyle().setProperty("border", "1px solid #aaa"); //$NON-NLS-1$ //$NON-NLS-2$
+      panel.getElement().getStyle().setProperty("backgroundColor", color); //$NON-NLS-1$
       add(panel);
-      panel.setStyleName("color-swatch-center");
+      panel.setStyleName("color-swatch-center"); //$NON-NLS-1$
       this.addClickHandler(this);
     }
 

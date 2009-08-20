@@ -49,6 +49,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Steven Barkdull
  *
  */
+@SuppressWarnings("deprecation")
 public class ScheduleEditor extends VerticalPanel implements IChangeHandler {
 
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();

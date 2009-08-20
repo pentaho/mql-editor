@@ -1,18 +1,10 @@
 package org.pentaho.gwt.widgets.client.colorpicker;
 
-import com.google.gwt.user.client.Cookies;
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.CustomButton;
-import com.google.gwt.user.client.ui.FocusWidget;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.KeyboardListener;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -21,6 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author cboyden
  *
  */
+@SuppressWarnings("deprecation")
 public class ColorPalette extends Composite implements ClickListener, KeyboardListener, ChangeListener {
   protected String DEFAULT_COLOR = "FFFFFF"; //$NON-NLS-1$
   
@@ -55,7 +48,7 @@ public class ColorPalette extends Composite implements ClickListener, KeyboardLi
   }
   
   protected void refreshDisplay(){
-    VerticalPanel tempPalettePanel = new VerticalPanel();
+//    VerticalPanel tempPalettePanel = new VerticalPanel();
     
     Widget paletteItem = null;
     
@@ -64,7 +57,7 @@ public class ColorPalette extends Composite implements ClickListener, KeyboardLi
       for(int col = 0; col < cols; col++){
         paletteItem = new CustomButton(){
           {
-            this.setHTML("<div style=\"color: #ff0000; background-color: #ff0000;\">test</div>");
+            this.setHTML("<div style=\"color: #ff0000; background-color: #ff0000;\">test</div>"); //$NON-NLS-1$
             
           }
         };

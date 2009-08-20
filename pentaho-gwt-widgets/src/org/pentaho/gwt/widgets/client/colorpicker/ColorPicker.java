@@ -223,6 +223,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author AurorisNET
  * @copyright (C) 2007 AurorisNET. All Rights Reserved.
  */
+@SuppressWarnings("deprecation")
 public class ColorPicker extends Composite implements ClickListener, KeyboardListener, ChangeListener
 {
 	// Elements

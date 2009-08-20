@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.Widget;
 
+@SuppressWarnings("deprecation")
 public class ToolbarToggleButton extends ToolbarButton {
 
   private boolean selected = false;

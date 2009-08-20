@@ -36,6 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Steven Barkdull
  *
  */
+@SuppressWarnings("deprecation")
 public class DateRangeEditor extends CaptionPanel implements IChangeHandler {
 
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();

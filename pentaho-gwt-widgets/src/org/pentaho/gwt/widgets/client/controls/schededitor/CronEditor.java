@@ -36,6 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Steven Barkdull
  *
  */
+@SuppressWarnings("deprecation")
 public class CronEditor extends VerticalPanel implements IChangeHandler {
   private static final String CRON_LABEL = "cron-label"; //$NON-NLS-1$
   

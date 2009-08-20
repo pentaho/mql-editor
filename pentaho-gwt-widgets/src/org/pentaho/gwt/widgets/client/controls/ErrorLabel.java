@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  */
 
+@SuppressWarnings("deprecation")
 public class ErrorLabel extends VerticalPanel {
 
     private Label errorLabel = null;

@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@SuppressWarnings("deprecation")
 public class ToolTip extends PopupPanel implements MouseListener{
 
   private Timer timer = new Timer() {

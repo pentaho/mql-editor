@@ -20,19 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pentaho.gwt.widgets.client.utils.ButtonHelper;
-import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 import org.pentaho.gwt.widgets.client.utils.ButtonHelper.ButtonLabelType;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@SuppressWarnings("deprecation")
 public class CustomButton extends Widget {
 
   private String baseStyleName = "customButton"; //$NON-NLS-1$
@@ -48,7 +46,7 @@ public class CustomButton extends Widget {
 
   public CustomButton(Image image, String text, ButtonLabelType type) {
     SimplePanel spacer = new SimplePanel();
-    spacer.setWidth("10px");
+    spacer.setWidth("10px"); //$NON-NLS-1$
     buttonPanel = new HorizontalPanel();
     buttonPanel.add(spacer);
     buttonPanel.add(ButtonHelper.createButtonElement(image, text, type));
@@ -61,7 +59,7 @@ public class CustomButton extends Widget {
 
   public CustomButton(Image image, String text, ButtonLabelType type, String className) {
     SimplePanel spacer = new SimplePanel();
-    spacer.setWidth("10px");
+    spacer.setWidth("10px"); //$NON-NLS-1$
     buttonPanel = new HorizontalPanel();
     buttonPanel.add(spacer);
     buttonPanel.add(ButtonHelper.createButtonElement(image, text, type, className));
@@ -87,7 +85,7 @@ public class CustomButton extends Widget {
   public void setStylePrimaryName(String style) {
     super.setStylePrimaryName(style);
     baseStyleName = style;
-    buttonPanel.setStylePrimaryName(style); //$NON-NLS-1$
+    buttonPanel.setStylePrimaryName(style);
   }
 
   @Override

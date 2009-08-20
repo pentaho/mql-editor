@@ -16,7 +16,9 @@ import org.pentaho.gwt.widgets.client.listbox.DefaultListItem;
  * Date: Mar 9, 2009
  * Time: 12:54:29 PM
  */
+@SuppressWarnings("nls")
 public class SampleApp implements EntryPoint {
+  @SuppressWarnings("deprecation")
   public void onModuleLoad() {
 
     final CustomListBox list = new CustomListBox();

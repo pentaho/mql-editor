@@ -26,9 +26,7 @@ import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 import org.pentaho.gwt.widgets.client.table.ColumnComparators.BaseColumnComparator;
 import org.pentaho.gwt.widgets.client.table.ColumnComparators.ColumnComparatorTypes;
 
-import com.google.gwt.dom.client.Node;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -39,9 +37,9 @@ import com.google.gwt.user.client.ui.TableListener;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widgetideas.table.client.FixedWidthFlexTable;
+import com.google.gwt.widgetideas.table.client.FixedWidthGrid;
 import com.google.gwt.widgetideas.table.client.ScrollTable;
 import com.google.gwt.widgetideas.table.client.SelectionGrid;
-import com.google.gwt.widgetideas.table.client.FixedWidthGrid;
 import com.google.gwt.widgetideas.table.client.SortableGrid;
 import com.google.gwt.widgetideas.table.client.TableSelectionListener;
 import com.google.gwt.widgetideas.table.client.ScrollTable.ResizePolicy;
@@ -65,6 +63,7 @@ import com.google.gwt.widgetideas.table.client.overrides.HTMLTable.CellFormatter
  *   - You may need to set the height to a non-percentage value to get the scrollbars to appear.
  *   - Never set the resize policy to FILL_WIDTH or FireFox will experience an ever growing table.
  */
+@SuppressWarnings("deprecation")
 public class BaseTable extends Composite {
   
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
@@ -140,7 +139,7 @@ public class BaseTable extends Composite {
       createTableWithShortMessage(MSGS.loading());
 
       parentPanel.setWidth("100%"); //$NON-NLS-1$
-      scrollTable.setWidth("100%");
+      scrollTable.setWidth("100%"); //$NON-NLS-1$
       scrollTable.setScrollPolicy(ScrollPolicy.BOTH);
       this.parentPanel.add(scrollTable);
       //this.fillWidth();
@@ -393,8 +392,8 @@ public class BaseTable extends Composite {
     // scrollTable.fillWidth(); is not sufficient, need explicitly set width
     // http://code.google.com/p/google-web-toolkit-incubator/issues/detail?id=47
     scrollTable.fillWidth();
-    scrollTable.getHeaderTable().setWidth("100%");
-    scrollTable.getDataTable().setWidth("100%");
+    scrollTable.getHeaderTable().setWidth("100%"); //$NON-NLS-1$
+    scrollTable.getDataTable().setWidth("100%"); //$NON-NLS-1$
     
   }
   

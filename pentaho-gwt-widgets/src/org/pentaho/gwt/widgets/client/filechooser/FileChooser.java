@@ -65,6 +65,7 @@ import com.google.gwt.xml.client.XMLParser;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
+@SuppressWarnings("deprecation")
 public class FileChooser extends VerticalPanel {
 
   private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();

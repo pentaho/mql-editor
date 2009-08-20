@@ -32,10 +32,10 @@ public class ElementUtils {
   private static AbsolutePanel sandbox = new AbsolutePanel(); //Used to find the size of elements
 
   static{
-    sandbox.getElement().getStyle().setProperty("position","absolute");
-    sandbox.getElement().getStyle().setProperty("overflow","hidden");
-    sandbox.getElement().getStyle().setProperty("width","0px");
-    sandbox.getElement().getStyle().setProperty("height","0px");
+    sandbox.getElement().getStyle().setProperty("position","absolute"); //$NON-NLS-1$ //$NON-NLS-2$
+    sandbox.getElement().getStyle().setProperty("overflow","hidden"); //$NON-NLS-1$ //$NON-NLS-2$
+    sandbox.getElement().getStyle().setProperty("width","0px"); //$NON-NLS-1$ //$NON-NLS-2$
+    sandbox.getElement().getStyle().setProperty("height","0px"); //$NON-NLS-1$ //$NON-NLS-2$
     RootPanel.get().add(sandbox);
     
   }
@@ -191,10 +191,10 @@ public class ElementUtils {
   }
 
   public boolean isVisible(com.google.gwt.user.client.Element ele){
-    if(ele.getStyle().getProperty("display").equals("none")){
+    if(ele.getStyle().getProperty("display").equals("none")){ //$NON-NLS-1$ //$NON-NLS-2$
       return false;
     }
-    if(ele.getStyle().getProperty("visibility").equals("hidden")){
+    if(ele.getStyle().getProperty("visibility").equals("hidden")){ //$NON-NLS-1$ //$NON-NLS-2$
       return false;
     }
 

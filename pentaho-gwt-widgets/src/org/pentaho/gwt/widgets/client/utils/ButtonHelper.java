@@ -1,6 +1,5 @@
 package org.pentaho.gwt.widgets.client.utils;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -43,11 +42,11 @@ public final class ButtonHelper {
       }
       if (type == ButtonLabelType.TEXT_ON_LEFT) {
         hpanel.add(html);
-        hpanel.add(new HTML("&nbsp;"));
+        hpanel.add(new HTML("&nbsp;")); //$NON-NLS-1$
         hpanel.add(img);
       } else {
         hpanel.add(img);
-        hpanel.add(new HTML("&nbsp;"));
+        hpanel.add(new HTML("&nbsp;")); //$NON-NLS-1$
         hpanel.add(html);
       }
       hpanel.setCellVerticalAlignment(html, HasVerticalAlignment.ALIGN_MIDDLE);
@@ -88,11 +87,11 @@ public final class ButtonHelper {
       }
       if (type == ButtonLabelType.TEXT_ON_LEFT) {
         hpanel.add(html);
-        hpanel.add(new HTML("&nbsp;"));
+        hpanel.add(new HTML("&nbsp;")); //$NON-NLS-1$
         hpanel.add(img);
       } else {
         hpanel.add(img);
-        hpanel.add(new HTML("&nbsp;"));
+        hpanel.add(new HTML("&nbsp;")); //$NON-NLS-1$
         hpanel.add(html);
       }
       hpanel.setCellVerticalAlignment(html, HasVerticalAlignment.ALIGN_MIDDLE);

@@ -35,6 +35,7 @@ import org.pentaho.gwt.widgets.client.utils.TimeUtil;
  * @author Steven Barkdull
  *
  */
+@SuppressWarnings("deprecation")
 public class RecurrenceEditorValidator implements IUiValidator {
   
   private RecurrenceEditor recurrenceEditor = null;
