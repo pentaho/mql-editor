@@ -109,17 +109,39 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
   public void setValue(String value) {
     String prevVal = this.value;
     this.value = value;
-    this.firePropertyChange("value", prevVal, this.value);
+    this.firePropertyChange("value", prevVal, this.value); //$NON-NLS-1$
     
-    this.setParameterized(value != null && value.contains("{") && value.contains("}"));
+    this.setParameterized(value != null && value.contains("{") && value.contains("}"));  //$NON-NLS-1$ //$NON-NLS-2$
+  }
+  
+  
+  @Bindable
+  public String getComboTypeStr() {
+    if (isTopMost()) {
+      if (combinationType == CombinationType.AND_NOT) {
+        return "NOT"; //$NON-NLS-1$
+      } else {
+        return ""; //$NON-NLS-1$
+      }
+    } else {
+      return combinationType.name();
+    }
   }
 
+  public void setComboTypeStr(Object name) {
+    if (isTopMost()) {
+      if (name.equals("NOT")) { //$NON-NLS-1$
+        combinationType = CombinationType.AND_NOT; 
+      } else {
+        combinationType = CombinationType.AND;
+      }
+    } else {
+      combinationType = CombinationType.valueOf((String)name);
+    }
+  }
 
   @Bindable
   public CombinationType getCombinationType() {
-    if(isTopMost()){
-      return null;
-    }
     return combinationType;
   }
 
@@ -168,9 +190,18 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
   
   @Bindable
   public Vector getCombinations(){
-    Vector v = new Vector();
-    v.addAll(Arrays.asList(CombinationType.values()));
-    return v;
+    if (isTopMost()) {
+      Vector v = new Vector();
+      v.add(""); //$NON-NLS-1$
+      v.add("NOT"); //$NON-NLS-1$
+      return v;
+    } else {
+      Vector v = new Vector();
+      for (CombinationType type : CombinationType.values()) {
+        v.add(type.name());
+      }
+      return v;
+    }
   }
   
   @Bindable
@@ -178,9 +209,6 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
   
   @Bindable
   public String getCellType(){
-    if(isTopMost()){
-      return "LABEL"; //$NON-NLS-1$
-    }
     return "COMBOBOX"; //$NON-NLS-1$
   }
 

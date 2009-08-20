@@ -770,7 +770,7 @@ public class MQLEditorServiceDelegate {
         }
       }
       
-      cond.setCombinationType(CombinationType.valueOf(constraint.getCombinationType().toString().toUpperCase()));
+      cond.setCombinationType(CombinationType.valueOf(constraint.getCombinationType().name().toUpperCase()));
       String val = cond.getValue();
       
       // check to see if it was parameterized, if so resolve default and setup the condition properly

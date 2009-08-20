@@ -123,7 +123,7 @@
           enableColumnDrag="false" id="conditionsTree" width="575">
           <treecols>
             <treecol id="combineColumn" label="${combine}" flex="2"
-              pen:binding="combinationType" pen:combobinding="combinations"
+              pen:binding="comboTypeStr" pen:combobinding="combinations"
               type="dynamic" pen:columntypebinding="cellType" editable="true" />
             <treecol flex="2" label="${aggtype}" type="combobox"
               editable="true" pen:combobinding="bindingAggTypes" pen:binding="selectedAggType" />
