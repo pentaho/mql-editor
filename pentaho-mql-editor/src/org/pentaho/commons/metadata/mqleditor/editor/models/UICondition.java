@@ -128,6 +128,7 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
     }
   }
 
+  @Bindable
   public void setComboTypeStr(Object name) {
     if (isTopMost()) {
       if (name.equals("NOT")) { //$NON-NLS-1$
