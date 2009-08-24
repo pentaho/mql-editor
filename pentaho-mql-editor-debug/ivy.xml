@@ -34,14 +34,14 @@
         </dependency>
 	    <dependency org="pentaho" name="pentaho-bi-platform-plugin-actions" rev="${project.revision}" changing="true" conf="default->default"/>
 	        
-	    <dependency org="pentaho" name="pentaho-bi-platform-api" rev="${project.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-util" rev="${project.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-engine-core" rev="${project.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-engine-security" rev="${project.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-engine-services" rev="${project.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-repository" rev="${project.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-ui-foundation" rev="${project.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-test-foundation" rev="${project.revision}" changing="true" conf="default->default"/>
+	    <dependency org="pentaho" name="pentaho-bi-platform-api" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
+	    <dependency org="pentaho" name="pentaho-bi-platform-util" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
+	    <dependency org="pentaho" name="pentaho-bi-platform-engine-core" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
+	    <dependency org="pentaho" name="pentaho-bi-platform-engine-security" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
+	    <dependency org="pentaho" name="pentaho-bi-platform-engine-services" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
+	    <dependency org="pentaho" name="pentaho-bi-platform-repository" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
+	    <dependency org="pentaho" name="pentaho-bi-platform-ui-foundation" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
+	    <dependency org="pentaho" name="pentaho-bi-platform-test-foundation" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
 	    
 	    
         <dependency org="pentaho" name="pentaho-xul-core" rev="${dependency.pentaho-xul.revision}" conf="default->default" changing="true">
