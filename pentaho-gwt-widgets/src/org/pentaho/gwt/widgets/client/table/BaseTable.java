@@ -493,6 +493,12 @@ public class BaseTable extends Composite {
     dataGrid.deselectRows();
   }
   
+  public void onResize(){
+    if(scrollTable != null){
+      scrollTable.onResize(scrollTable.getOffsetWidth(), scrollTable.getOffsetHeight());
+    }
+  }
+  
   /**
    * Default column sorter for this class.
    */
