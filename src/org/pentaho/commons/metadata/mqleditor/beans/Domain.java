@@ -21,6 +21,9 @@ public class Domain implements MqlDomain {
   }
 
   public String getName() {
+    if(name == null) {
+        name = "default";
+    }
     return name;
   }
 
