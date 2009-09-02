@@ -3,20 +3,18 @@ package org.pentaho.commons.metadata.mqleditor.editor.service.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.pentaho.commons.metadata.mqleditor.MqlCategory;
-import org.pentaho.commons.metadata.mqleditor.MqlColumn;
-import org.pentaho.commons.metadata.mqleditor.MqlModel;
 import org.pentaho.commons.metadata.mqleditor.Operator;
-import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
 
 public class FormulaParser {
 
   private static final String WRAPPED = "([^\\(]*)\\(\\[([^\\]]*)\\];([^\\)]*)\\)";
-  private static final String GENERIC = "\\[([^\\]]*)\\]\\s+([^\\s]*)\\s+(.*)";
+  private static final String GENERIC = "\\[([^\\]]*)\\]\\s*([><=]*)\\s*(.*)";
+  private static final String VALUE_EVAL = ".*\"(.*)\"";
 
   private static Pattern genericPat = Pattern.compile(GENERIC); //$NON-NLS-1$
   private static Pattern wrappedPat = Pattern.compile(WRAPPED); //$NON-NLS-1$
+  private static Pattern valueEvalPat = Pattern.compile(VALUE_EVAL);
 
   private String functionName = null;
   private String fieldName = null;
@@ -70,8 +68,13 @@ public class FormulaParser {
       }
     }
     c.setOperator(op);
-    if(value != null && value.charAt(0) == '\"' && value.charAt(value.length()-1) == '\"'){
-      value = value.substring(1, value.length()-1);
+    
+    if(value != null) {
+       //Extracts the value contained inside double quotes in the string
+       Matcher matcher = valueEvalPat.matcher(value);
+       if(matcher.find()) {
+           value = matcher.group(1);
+       }
     }
     c.setValue(value);
     
