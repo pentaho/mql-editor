@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 import org.pentaho.gwt.widgets.client.utils.Rectangle;
@@ -477,11 +478,11 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
     // Store the the size of the popup to respect MaxDropVisible now that we know the item height
     // This cannot be set here as the popup is not visible :(
 
-    if(maxDropVisible > 0){
+    if(maxDropVisible > 0 && items.size() > maxDropVisible){
       // (Lesser of maxDropVisible or items size) * (Average item height + spacing value) 
       this.popupHeight = (Math.min(this.maxDropVisible, this.items.size()) * (averageHeight + (this.spacing * 2) )) + "px"; //$NON-NLS-1$
     } else {
-      this.popupHeight = totalHeight + "px"; //$NON-NLS-1$
+      this.popupHeight = null;//ElementUtils.getSize(popupVbox.getElement()).height+ "px"; //$NON-NLS-1$
     }
   }
 
@@ -500,7 +501,20 @@ public class CustomListBox extends HorizontalPanel implements ChangeListener, Po
         popup.add(popupScrollPanel);
       }
       
-      popup.setPopupPosition(this.getElement().getAbsoluteLeft(), this.getElement().getAbsoluteTop() + this.getElement().getOffsetHeight()+2);
+      int x = this.getElement().getAbsoluteLeft();
+      int y = this.getElement().getAbsoluteTop() + this.getElement().getOffsetHeight() + 1;
+      int windowH = Window.getClientHeight();
+      int windowW = Window.getClientWidth();
+      
+      Rectangle popupSize = ElementUtils.getSize(popup.getElement());
+      if(y + popupSize.height > windowH){
+        y = windowH - popupSize.height;
+      }
+      if(x + popupSize.width > windowW){
+        x = windowW - popupSize.width;
+      }
+      
+      popup.setPopupPosition(x, y);
       
       popup.show();
 
