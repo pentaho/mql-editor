@@ -47,17 +47,8 @@ public class PromptDialogBox extends DialogBox {
     okButton = new RoundedButton(okText);
     okButton.getElement().setAttribute("id", "okButton"); //$NON-NLS-1$ //$NON-NLS-2$
     okButton.addClickListener(new ClickListener() {
-
       public void onClick(Widget sender) {
-        if (validatorCallback == null || (validatorCallback != null && validatorCallback.validate())) {
-          try {
-            if (callback != null) {
-              callback.okPressed();
-            }
-          } catch (Throwable dontCare) {
-          }
-          hide();
-        }
+        onOk();
       }
     });
     final HorizontalPanel dialogButtonPanel = new HorizontalPanel();
@@ -67,15 +58,8 @@ public class PromptDialogBox extends DialogBox {
       cancelButton = new RoundedButton(cancelText);
       cancelButton.getElement().setAttribute("id", "cancelButton"); //$NON-NLS-1$ //$NON-NLS-2$
       cancelButton.addClickListener(new ClickListener() {
-
         public void onClick(Widget sender) {
-          try {
-            if (callback != null) {
-              callback.cancelPressed();
-            }
-          } catch (Throwable dontCare) {
-          }
-          hide();
+          onCancel();
         }
       });
       dialogButtonPanel.add(cancelButton);
@@ -116,18 +100,10 @@ public class PromptDialogBox extends DialogBox {
     // enter or escape is pressed.
     switch (key) {
     case KeyboardListener.KEY_ENTER:
-      if (validatorCallback == null || (validatorCallback != null && validatorCallback.validate())) {
-        hide();
-        if (callback != null) {
-          callback.okPressed();
-        }
-      }
+      onOk();
       break;
     case KeyboardListener.KEY_ESCAPE:
-      if (callback != null) {
-        callback.cancelPressed();
-      }
-      hide();
+      onCancel();
       break;
     }
     return true;
@@ -163,6 +139,28 @@ public class PromptDialogBox extends DialogBox {
 
   public void setValidatorCallback(IDialogValidatorCallback validatorCallback) {
     this.validatorCallback = validatorCallback;
+  }
+  
+  protected void onOk() {
+    if (validatorCallback == null || (validatorCallback != null && validatorCallback.validate())) {
+      try {
+        if (callback != null) {
+          callback.okPressed();
+        }
+      } catch (Throwable dontCare) {
+      }
+      hide();
+    }
+  }
+  
+  protected void onCancel() {
+    try {
+      if (callback != null) {
+        callback.cancelPressed();
+      }
+    } catch (Throwable dontCare) {
+    }
+    hide();
   }
 
 }
