@@ -162,6 +162,7 @@ public class RoundedButton extends Widget implements HasClickHandlers{
         if (command != null) {
           command.execute();
         }
+        removeStyleDependentName("over"); //$NON-NLS-1$
         event.cancelBubble(true);
         event.preventDefault();
       }
