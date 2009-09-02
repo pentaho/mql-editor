@@ -38,13 +38,15 @@ public class PromptDialogBox extends DialogBox {
   IDialogValidatorCallback validatorCallback;
   Widget content;
   final FlexTable dialogContent = new FlexTable();
+  protected RoundedButton okButton = null;
+  protected RoundedButton cancelButton = null;
 
   public PromptDialogBox(String title, String okText, String cancelText, boolean autoHide, boolean modal) {
     super(autoHide, modal);
     setText(title);
-    RoundedButton ok = new RoundedButton(okText);
-    ok.getElement().setAttribute("id", "okButton"); //$NON-NLS-1$ //$NON-NLS-2$
-    ok.addClickListener(new ClickListener() {
+    okButton = new RoundedButton(okText);
+    okButton.getElement().setAttribute("id", "okButton"); //$NON-NLS-1$ //$NON-NLS-2$
+    okButton.addClickListener(new ClickListener() {
 
       public void onClick(Widget sender) {
         if (validatorCallback == null || (validatorCallback != null && validatorCallback.validate())) {
@@ -60,11 +62,11 @@ public class PromptDialogBox extends DialogBox {
     });
     final HorizontalPanel dialogButtonPanel = new HorizontalPanel();
     dialogButtonPanel.setSpacing(2);
-    dialogButtonPanel.add(ok);
+    dialogButtonPanel.add(okButton);
     if (cancelText != null) {
-      RoundedButton cancel = new RoundedButton(cancelText);
-      cancel.getElement().setAttribute("id", "cancelButton"); //$NON-NLS-1$ //$NON-NLS-2$
-      cancel.addClickListener(new ClickListener() {
+      cancelButton = new RoundedButton(cancelText);
+      cancelButton.getElement().setAttribute("id", "cancelButton"); //$NON-NLS-1$ //$NON-NLS-2$
+      cancelButton.addClickListener(new ClickListener() {
 
         public void onClick(Widget sender) {
           try {
@@ -76,7 +78,7 @@ public class PromptDialogBox extends DialogBox {
           hide();
         }
       });
-      dialogButtonPanel.add(cancel);
+      dialogButtonPanel.add(cancelButton);
     }
     HorizontalPanel dialogButtonPanelWrapper = new HorizontalPanel();
     if (okText != null && cancelText != null) {
