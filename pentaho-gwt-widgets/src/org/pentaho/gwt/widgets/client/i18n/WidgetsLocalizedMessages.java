@@ -1382,6 +1382,15 @@ public interface WidgetsLocalizedMessages extends com.google.gwt.i18n.client.Mes
   String noFilenameEntered();
 
   /**
+   * Translated "You cannot save files in the root of the repository.".
+   * 
+   * @return translated "You cannot save files in the root of the repository."
+  
+   */
+  @DefaultMessage("You cannot save files in the root of the repository.")
+  String noSolutionSelected();
+  
+  /**
    * Translated "Invalid filename, filenames cannot include the characters: /?%*:|"<>.".
    * 
    * @return translated "Invalid filename, filenames cannot include the characters: /?%*:|"<>."

@@ -157,6 +157,15 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
    * If the file name is empty or null then return false, else return true.
    */
   private boolean isFileNameValid() {
+    
+    // don't allow saving in the root of the solution repository
+    String solution = fileChooser.getSolution();
+    if (solution == null || solution.trim().length() == 0) {
+      MessageDialogBox dialogBox = new MessageDialogBox(MSGS.error(), MSGS.noSolutionSelected(), false, false, true);
+      dialogBox.center();
+      return false;
+    }
+    
     final String fileName = getFileName();
     if (StringUtils.isEmpty(fileName)) { 
       MessageDialogBox dialogBox = new MessageDialogBox(MSGS.error(), MSGS.noFilenameEntered(), false, false, true);
