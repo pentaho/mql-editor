@@ -40,4 +40,13 @@ public class PentahoMenuItem extends MenuItem {
   public boolean isEnabled() {
     return enabled;
   }
+  
+  @Override
+  public Command getCommand() {
+    if (isEnabled()) {
+      return super.getCommand();
+    } else {
+      return null;
+    }
+  }
 }
