@@ -460,6 +460,14 @@ html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
   height: 100%;
 }
 
+.login-dialog {
+  z-index: 2000;	
+ }
+ 
+ .error-login-dialog {
+  z-index: 2100;	
+ }
+ 
 /* Begin Wizard Styles ------------------------------------------------------ */ 
 .pentaho-wizard-deck-panel {
 	height: 80%;

@@ -1,0 +1,16 @@
+<module>
+
+  <!-- Inherit the core Web Toolkit stuff. -->
+  <inherits name='com.google.gwt.user.User'/>
+  <inherits name='com.google.gwt.xml.XML'/>
+  <inherits name='com.google.gwt.i18n.I18N' />
+  <inherits name='org.pentaho.gwt.widgets.Widgets'/>
+
+  <set-property name="gwt.suppressNonStaticFinalFieldWarnings" value="true" /> 
+
+  <!-- Specify the app entry point class.                   -->
+  <entry-point class='org.pentaho.gwt.widgets.login.client.LoginEntryPoint'/>
+  <source path="">
+  
+  </source>
+</module>
