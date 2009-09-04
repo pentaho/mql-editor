@@ -23,7 +23,7 @@ public class FrameUtils {
    * @param visible
    */
   private static native void toggleEmbedVisibility(Element frame, boolean visible)/*-{
-  
+    
     try{
       var doc = (frame.contentWindow.document || frame.contentDocument);
       
@@ -44,6 +44,14 @@ public class FrameUtils {
           }
         } else {
           frame.style.display = "none" ;  //hide frame
+        }
+      } else {
+        var iframes = doc.getElementsByTagName("iframe");
+        if(iframes.length > 0){ // iframe has it's own iframes
+          //recurse with child iframe
+          for(var i=0; i<iframes.length; i++){
+            @org.pentaho.gwt.widgets.client.utils.FrameUtils::toggleEmbedVisibility(Lcom/google/gwt/dom/client/Element;Z)(iframes[i], visible);      
+          }
         }
       }
     } catch(e) {
