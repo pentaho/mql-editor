@@ -9,6 +9,7 @@ This module serves as the Debuging environment and default implementation for in
     <inherits name='com.googlecode.gwtx.Java'/>
   <inherits name='com.google.gwt.xml.XML'/>
     <inherits name="org.pentaho.gwt.widgets.Widgets"/>
+    <inherits name="org.pentaho.gwt.widgets.login.Login"/>
   
     <inherits name="org.pentaho.ui.xul.Gwt"/>
     <source path="">
