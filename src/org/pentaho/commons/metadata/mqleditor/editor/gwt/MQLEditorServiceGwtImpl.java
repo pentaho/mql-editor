@@ -5,6 +5,8 @@ import java.util.List;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
+import org.pentaho.gwt.widgets.login.client.AuthenticatedGwtServiceUtil;
+import org.pentaho.gwt.widgets.login.client.IAuthenticatedGwtCommand;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 import com.google.gwt.core.client.GWT;
@@ -17,33 +19,37 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
 
   static {
 
-    SERVICE = (org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtServiceAsync) GWT.create(org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtService.class);
+    SERVICE = (org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtServiceAsync) GWT
+        .create(org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtService.class);
     ServiceDefTarget endpoint = (ServiceDefTarget) SERVICE;
     endpoint.setServiceEntryPoint(getBaseUrl() + "gwtrpc/MqlService");
   }
 
   private static String getBaseUrl() {
     String baseUrl = GWT.getModuleBaseURL();
-    
+
     //
-    //Set the base url appropriately based on the context in which we are running this client
+    // Set the base url appropriately based on the context in which we are running this client
     //
-    if(baseUrl.indexOf("content") > -1) {
-      //we are running the client in the context of a BI Server plugin, so 
-      //point the request to the GWT rpc proxy servlet
+    if (baseUrl.indexOf("content") > -1) {
+      // we are running the client in the context of a BI Server plugin, so
+      // point the request to the GWT rpc proxy servlet
       baseUrl = baseUrl.substring(0, baseUrl.indexOf("content"));
     }
-    return  baseUrl;
+    return baseUrl;
   }
-  
+
   public MQLEditorServiceGwtImpl() {
 
   }
 
-  public void getDomainByName(String name, final XulServiceCallback<MqlDomain> callback) {
+  public void getDomainByName(final String name, final XulServiceCallback<MqlDomain> callback) {
 
-    SERVICE.getDomainByName(name, new AsyncCallback<MqlDomain>() {
-
+    AuthenticatedGwtServiceUtil.invokeCommand(new IAuthenticatedGwtCommand<MqlDomain>() {
+      public void execute(AsyncCallback<MqlDomain> callback) {
+        SERVICE.getDomainByName(name, callback);
+      }
+    }, new AsyncCallback<MqlDomain>() {
       public void onFailure(Throwable arg0) {
         callback.error("error loading metadata domains: ", arg0);
       }
@@ -51,14 +57,16 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
       public void onSuccess(MqlDomain arg0) {
         callback.success(arg0);
       }
-
     });
 
   }
 
   public void getMetadataDomains(final XulServiceCallback<List<MqlDomain>> callback) {
-    SERVICE.getMetadataDomains(new AsyncCallback<List<MqlDomain>>() {
-
+    AuthenticatedGwtServiceUtil.invokeCommand(new IAuthenticatedGwtCommand<List<MqlDomain>>() {
+      public void execute(AsyncCallback<List<MqlDomain>> callback) {
+        SERVICE.getMetadataDomains(callback);
+      }
+    }, new AsyncCallback<List<MqlDomain>>() {
       public void onFailure(Throwable arg0) {
         callback.error("error loading metadata domains: ", arg0);
       }
@@ -66,10 +74,9 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
       public void onSuccess(List<MqlDomain> arg0) {
         callback.success(arg0);
       }
-
     });
   }
-  
+
   public void refreshMetadataDomains(final XulServiceCallback<List<MqlDomain>> callback) {
     SERVICE.refreshMetadataDomains(new AsyncCallback<List<MqlDomain>>() {
 
@@ -82,11 +89,29 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
       }
 
     });
+    
+    AuthenticatedGwtServiceUtil.invokeCommand(new IAuthenticatedGwtCommand<List<MqlDomain>>() {
+      public void execute(AsyncCallback<List<MqlDomain>> callback) {
+        SERVICE.refreshMetadataDomains(callback);
+      }
+    }, new AsyncCallback<List<MqlDomain>>() {
+      public void onFailure(Throwable arg0) {
+        callback.error("error loading metadata domains: ", arg0);
+      }
+
+      public void onSuccess(List<MqlDomain> arg0) {
+        callback.success(arg0);
+      }
+    });
   }
 
-  public void saveQuery(MqlQuery model, final XulServiceCallback<String> callback) {
-    SERVICE.saveQuery(model, new AsyncCallback<String>() {
-
+  public void saveQuery(final MqlQuery model, final XulServiceCallback<String> callback) {
+    
+    AuthenticatedGwtServiceUtil.invokeCommand(new IAuthenticatedGwtCommand<String>() {
+      public void execute(AsyncCallback<String> callback) {
+        SERVICE.saveQuery(model, callback);
+      }
+    }, new AsyncCallback<String>() {
       public void onFailure(Throwable arg0) {
         callback.error("error loading metadata domains: ", arg0);
       }
@@ -94,14 +119,17 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
       public void onSuccess(String arg0) {
         callback.success(arg0);
       }
-
     });
 
   }
 
-  public void serializeModel(MqlQuery query, final XulServiceCallback<String> callback) {
-    SERVICE.serializeModel(query, new AsyncCallback<String>() {
+  public void serializeModel(final MqlQuery query, final XulServiceCallback<String> callback) {
 
+    AuthenticatedGwtServiceUtil.invokeCommand(new IAuthenticatedGwtCommand<String>() {
+      public void execute(AsyncCallback<String> callback) {
+        SERVICE.serializeModel(query, callback);
+      }
+    }, new AsyncCallback<String>() {
       public void onFailure(Throwable arg0) {
         callback.error("error loading metadata domains: ", arg0);
       }
@@ -109,14 +137,16 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
       public void onSuccess(String arg0) {
         callback.success(arg0);
       }
-
     });
-
   }
 
-  public void getPreviewData(MqlQuery query, int page, int limit, final XulServiceCallback<String[][]> callback) {
-    SERVICE.getPreviewData(query, page, limit, new AsyncCallback<String[][]>() {
+  public void getPreviewData(final MqlQuery query, final int page, final int limit, final XulServiceCallback<String[][]> callback) {
 
+    AuthenticatedGwtServiceUtil.invokeCommand(new IAuthenticatedGwtCommand<String[][]>() {
+      public void execute(AsyncCallback<String[][]> callback) {
+        SERVICE.getPreviewData(query, page, limit, callback);
+      }
+    }, new AsyncCallback<String[][]>() {
       public void onFailure(Throwable arg0) {
         callback.error("error loading metadata domains: ", arg0);
       }
@@ -124,13 +154,15 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
       public void onSuccess(String[][] arg0) {
         callback.success(arg0);
       }
-
     });
   }
 
   public void deserializeModel(final String serializedQuery, final XulServiceCallback<MqlQuery> callback) {
-    SERVICE.deserializeModel(serializedQuery, new AsyncCallback<MqlQuery>() {
-
+    AuthenticatedGwtServiceUtil.invokeCommand(new IAuthenticatedGwtCommand<MqlQuery>() {
+      public void execute(AsyncCallback<MqlQuery> callback) {
+        SERVICE.deserializeModel(serializedQuery, callback);
+      }
+    }, new AsyncCallback<MqlQuery>() {
       public void onFailure(Throwable arg0) {
         callback.error("error loading metadata domains: ", arg0);
       }
@@ -138,9 +170,8 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
       public void onSuccess(MqlQuery arg0) {
         callback.success(arg0);
       }
-
     });
 
   }
-  
+
 }
