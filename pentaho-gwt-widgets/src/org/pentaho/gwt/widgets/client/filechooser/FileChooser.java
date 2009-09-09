@@ -107,7 +107,11 @@ public class FileChooser extends VerticalPanel {
       }
 
       public void onKeyUp(Widget sender, char keyCode, int modifiers) {
-        actualFileName = fileNameTextBox.getText();
+        HashMap<String, Object> tmpAttributeMap = (HashMap<String, Object>) selectedTreeItem.getUserObject();
+        if (tmpAttributeMap.get(ACTUAL_FILE_NAME) != null) {
+          fileNameTextBox.setText((String) tmpAttributeMap.get(LOCALIZED_FILE_NAME));
+          actualFileName = (String) tmpAttributeMap.get(ACTUAL_FILE_NAME);
+        }
         if (keyCode == KeyboardListener.KEY_ENTER) {
           fireFileSelected();
         }

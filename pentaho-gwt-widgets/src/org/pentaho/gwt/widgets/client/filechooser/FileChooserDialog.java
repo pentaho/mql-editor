@@ -152,6 +152,19 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
       return ""; //$NON-NLS-1$
     }
   }
+
+  /**
+   * This method get the actual file name of the selected file
+   * @return the actual file name
+   */
+  private String getActualFileName() {    
+    final String actualFileName = fileChooser.getActualFileName();
+    if ( actualFileName != null && !"".equals(actualFileName) ) { //$NON-NLS-1$
+      return actualFileName;
+    } else {
+       return "";
+    }
+  }
   
   /*
    * If the file name is empty or null then return false, else return true.
@@ -166,7 +179,7 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
       return false;
     }
     
-    final String fileName = getFileName();
+    final String fileName = getActualFileName();
     if (StringUtils.isEmpty(fileName)) { 
       MessageDialogBox dialogBox = new MessageDialogBox(MSGS.error(), MSGS.noFilenameEntered(), false, false, true);
       dialogBox.center();
