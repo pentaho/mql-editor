@@ -25,12 +25,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * This interface needs to be implemented by the service using the AuthenticatedGwtService wrapper
  * and put any work then needs to be performed when the user selects the service
  */
-public interface IAuthenticatedGwtCommand {
+public interface IAuthenticatedGwtCommand<T> {
   /**
    * Work to be done. 
    * @param AsyncCallback - call back 
    */
-  public void execute(AsyncCallback callback);
+  public void execute(AsyncCallback<T> callback);
 }
 
   
