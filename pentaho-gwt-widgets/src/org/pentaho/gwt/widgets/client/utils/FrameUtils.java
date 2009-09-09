@@ -35,25 +35,35 @@ public class FrameUtils {
       
       var embeds = doc.getElementsByTagName("embed");
       if(embeds.length > 0){
-        if(visible){
-          if(frame.style.display == "none"){   //don't do anything unless you need to
-            frame.style.display = "" ;         //Show frame
-            
-            // have to reload the frame, as the plug-in doesn't re-render when visibility is returned!
-            frame.contentWindow.location.href = frame.contentWindow.location.href;   
+        var containsPdf = false;
+        for(var i=0; i< embeds.length; i++){
+          if(embeds[i].type && embeds[i].type == "application/pdf"){
+            containsPdf = true;
+            break;
           }
-        } else {
-          frame.style.display = "none" ;  //hide frame
         }
-      } else {
-        var iframes = doc.getElementsByTagName("iframe");
-        if(iframes.length > 0){ // iframe has it's own iframes
-          //recurse with child iframe
-          for(var i=0; i<iframes.length; i++){
-            @org.pentaho.gwt.widgets.client.utils.FrameUtils::toggleEmbedVisibility(Lcom/google/gwt/dom/client/Element;Z)(iframes[i], visible);      
+        if(containsPdf){
+          if(visible){
+            if(frame.style.display == "none"){   //don't do anything unless you need to
+              frame.style.display = "" ;         //Show frame
+              
+              // have to reload the frame, as the plug-in doesn't re-render when visibility is returned!
+              frame.contentWindow.location.href = frame.contentWindow.location.href;   
+            }
+          } else {
+            frame.style.display = "none" ;  //hide frame
           }
         }
       }
+      
+      var iframes = doc.getElementsByTagName("iframe");
+      if(iframes.length > 0){ // iframe has it's own iframes
+        //recurse with child iframe
+        for(var i=0; i<iframes.length; i++){
+          @org.pentaho.gwt.widgets.client.utils.FrameUtils::toggleEmbedVisibility(Lcom/google/gwt/dom/client/Element;Z)(iframes[i], visible);      
+        }
+      }
+    
     } catch(e) {
       // Cross-site scripting error in all likelihood
     }
