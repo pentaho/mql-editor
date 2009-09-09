@@ -26,8 +26,10 @@ import org.pentaho.gwt.widgets.client.ui.ICallback;
 import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 import org.pentaho.gwt.widgets.client.utils.TimeUtil;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 
 
 /**
@@ -41,7 +43,8 @@ public class RunOnceEditor extends VerticalPanel implements IChangeHandler {
   private static final String SCHEDULER_CAPTION_PANEL = "schedule-editor-caption-panel"; //$NON-NLS-1$
   
   private TimePicker startTimePicker = new TimePicker();
-  private DatePickerEx startDatePicker = new DatePickerEx();
+  private DefaultFormat format = new DefaultFormat(DateTimeFormat.getShortDateFormat()); 
+  private DatePickerEx startDatePicker = new DatePickerEx(format);
   private static final String DEFAULT_START_HOUR = "12"; //$NON-NLS-1$
   private static final String DEFAULT_START_MINUTE = "00"; //$NON-NLS-1$
   private static final TimeUtil.TimeOfDay DEFAULT_TIME_OF_DAY = TimeUtil.TimeOfDay.AM;
@@ -58,7 +61,7 @@ public class RunOnceEditor extends VerticalPanel implements IChangeHandler {
     
     CaptionPanel startDateCaptionPanel = new CaptionPanel(MSGS.startDate());
     startDateCaptionPanel.setStyleName(SCHEDULER_CAPTION_PANEL);
-    startDateCaptionPanel.add(startDatePicker);
+    startDateCaptionPanel.add(startDatePicker.getDatePicker());
     add( startDateCaptionPanel );
     
     configureOnChangeHandler();
@@ -69,7 +72,7 @@ public class RunOnceEditor extends VerticalPanel implements IChangeHandler {
   }
   
   public void setStartDate( Date d ) {
-    startDatePicker.setSelectedDate( d );
+    startDatePicker.getDatePicker().setValue( d );
   }
 
   public String getStartTime() {
@@ -84,8 +87,7 @@ public class RunOnceEditor extends VerticalPanel implements IChangeHandler {
     startTimePicker.setHour( DEFAULT_START_HOUR );
     startTimePicker.setMinute( DEFAULT_START_MINUTE );
     startTimePicker.setTimeOfDay( DEFAULT_TIME_OF_DAY );
-    startDatePicker.setSelectedDate( d );
-    startDatePicker.setYoungestDate( d );
+    startDatePicker.getDatePicker().setValue( d );
   }
   
   public void setStartDateError( String errorMsg ) {

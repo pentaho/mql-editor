@@ -765,7 +765,7 @@ body{
   background: #ffcccc;
 }
 .dateBoxPopup {
-  z-index: 3;
+  z-index: 1200;
 }
 
 .gwt-DatePicker {

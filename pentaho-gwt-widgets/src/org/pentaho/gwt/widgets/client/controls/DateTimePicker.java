@@ -21,10 +21,12 @@ import java.util.Date;
 import org.pentaho.gwt.widgets.client.ui.ICallback;
 import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 
 /**
  * @author Steven Barkdull
@@ -32,8 +34,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 
 public class DateTimePicker extends FlowPanel implements IChangeHandler {
-
-  private DatePickerEx datePicker = new DatePickerEx();
+  private DefaultFormat format = new DefaultFormat(DateTimeFormat.getShortDateFormat());
+  private DatePickerEx datePicker = new DatePickerEx(format);
   private TimePicker timePicker = new TimePicker();
   private ICallback<IChangeHandler> onChangeHandler = null;
   
@@ -47,9 +49,8 @@ public class DateTimePicker extends FlowPanel implements IChangeHandler {
       ? new HorizontalPanel()
       : new VerticalPanel();
     add( p );
-    datePicker.setWidth( "12ex" ); //$NON-NLS-1$
-    datePicker.setYoungestDate( new Date() );
-    p.add( datePicker );
+    datePicker.getDatePicker().setWidth( "12ex" ); //$NON-NLS-1$
+    p.add( datePicker.getDatePicker() );
     //timePicker.setWidth( "100%" );
     p.add( timePicker );
     configureOnChangeHandler();

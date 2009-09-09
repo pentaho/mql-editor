@@ -21,10 +21,17 @@ package org.pentaho.gwt.widgets.client.controls;
 
 import java.util.Date;
 
+import org.pentaho.gwt.widgets.client.datepicker.PentahoDatePicker;
 import org.pentaho.gwt.widgets.client.ui.ICallback;
 import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 import org.pentaho.gwt.widgets.client.utils.StringUtils;
 import org.pentaho.gwt.widgets.client.utils.TimeUtil;
+
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 
 // TODO sbarkdull, should not extend DatePicker, should aggregate it
 
@@ -34,24 +41,32 @@ import org.pentaho.gwt.widgets.client.utils.TimeUtil;
  */
 
 @SuppressWarnings("deprecation")
-public class DatePickerEx extends org.zenika.widget.client.datePicker.DatePicker implements IChangeHandler {
+public class DatePickerEx implements IChangeHandler {
 
+  private DefaultFormat format = null;
+  private DateBox datePicker = null;
   private ICallback<IChangeHandler> onChangeHandler;
   
   public DatePickerEx() {
-    super();
-    configureOnChangeHandler();
+    this(new DefaultFormat(DateTimeFormat.getShortDateFormat()));
   }
 
-  /**
-   * Create a DatePicker which show a specific Date.
-   * @param selectedDate Date to show
-   */
-  public DatePickerEx(Date selectedDate) {
-    super( selectedDate );
+  
+  public DatePickerEx(DefaultFormat format) {
+    datePicker = new DateBox(new PentahoDatePicker(), new Date(), format);
+    datePicker.addValueChangeHandler(new ValueChangeHandler<Date>(){
+
+      public void onValueChange(ValueChangeEvent<Date> event) {
+        changeHandler();
+      }
+    });
     configureOnChangeHandler();
   }
   
+
+  public DateBox getDatePicker() {
+    return datePicker;
+  }
   /**
    * Get the selected date. Return null if control's textbox is empty.
    * 
@@ -61,11 +76,12 @@ public class DatePickerEx extends org.zenika.widget.client.datePicker.DatePicker
    * @return Date the selected date.
    */
   public Date getSelectedDate() {
-    Date d = super.getSelectedDate();
-    String txt = super.getText();
-    return ( d == null || StringUtils.isEmpty( txt ) ) 
-      ? null
-      : TimeUtil.zeroTimePart( d );
+    Date d = datePicker.getValue();
+    if(d != null) {
+      return TimeUtil.zeroTimePart( d );
+    } else {
+      return null;
+    }
   }
   
   public void setOnChangeHandler( ICallback<IChangeHandler> handler ) {
@@ -85,9 +101,13 @@ public class DatePickerEx extends org.zenika.widget.client.datePicker.DatePicker
   }
   
   public void synchronizeFromDate() {
-    super.synchronizeFromDate();
     changeHandler();
   }
+  
+  public DefaultFormat getFormat() {
+    return format;
+  }
+
   
 //  /**
 //   * Create a DatePicker which uses a specific theme.

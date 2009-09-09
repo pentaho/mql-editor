@@ -3,10 +3,8 @@
 
       <!-- Inherit the core Web Toolkit stuff.                        -->
       <inherits name='com.google.gwt.user.User'/>
-    <inherits name="com.google.gwt.xml.XML"/>
+	  <inherits name="com.google.gwt.xml.XML"/>
       <!-- required for date picker control -->
-      <inherits name='org.zenika.widget.DatePickerModule'/>
-
       <inherits name='com.google.gwt.widgetideas.WidgetIdeas'/>
       <inherits name='com.google.gwt.widgetideas.ScrollTable'/>
 	
@@ -25,4 +23,8 @@
       <stylesheet src='gwt-dnd.css' />
       <stylesheet src='Widgets.css' />
       <stylesheet src='toolbar.css' />
+      
+      <!-- Specify the app entry point class.                   -->
+	  <entry-point class='org.pentaho.gwt.widgets.client.WidgetModule'/>
+      
 </module>

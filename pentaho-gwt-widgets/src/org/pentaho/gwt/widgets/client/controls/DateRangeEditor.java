@@ -23,6 +23,7 @@ import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 import org.pentaho.gwt.widgets.client.ui.ICallback;
 import org.pentaho.gwt.widgets.client.ui.IChangeHandler;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -31,6 +32,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 
 /**
  * @author Steven Barkdull
@@ -64,9 +66,10 @@ public class DateRangeEditor extends CaptionPanel implements IChangeHandler {
     Label l = new Label( MSGS.startLabel() );
     l.setStyleName("startLabel"); //$NON-NLS-1$
     hp.add( l );
-    startDatePicker = new DatePickerEx();
-    startDatePicker.setStyleName(START_DATE_PICKER);
-    hp.add(startDatePicker);
+    DefaultFormat format = new DefaultFormat(DateTimeFormat.getShortDateFormat());
+    startDatePicker = new DatePickerEx(format);
+    startDatePicker.getDatePicker().setStyleName(START_DATE_PICKER);
+    hp.add(startDatePicker.getDatePicker());
     startLabel = new ErrorLabel( hp );
     outerHP.add(startLabel);
 
@@ -86,7 +89,7 @@ public class DateRangeEditor extends CaptionPanel implements IChangeHandler {
   }
   
   public void setStartDate( Date d ) {
-    startDatePicker.setSelectedDate( d );
+    startDatePicker.getDatePicker().setValue(d);
   }
   
   public Date getEndDate() {
@@ -98,8 +101,7 @@ public class DateRangeEditor extends CaptionPanel implements IChangeHandler {
   }
   
   public void reset( Date d ) {
-    startDatePicker.setSelectedDate( d );
-    startDatePicker.setYoungestDate( d );
+    startDatePicker.getDatePicker().setValue( d );
     endDatePanel.reset( d );
   }
   
@@ -168,22 +170,23 @@ public class DateRangeEditor extends CaptionPanel implements IChangeHandler {
       endByRb = new RadioButton(END_DATE_RB_GROUP, MSGS.endByLabel() );
       endByRb.setStyleName("recurrenceRadioButton"); //$NON-NLS-1$
       endByPanel.add(endByRb);
-      endDatePicker = new DatePickerEx();
-      endDatePicker.setStyleName(END_DATE_PICKER);
-      endDatePicker.setEnabled(false);
-      endByPanel.add(endDatePicker);
+      DefaultFormat format = new DefaultFormat(DateTimeFormat.getShortDateFormat());
+      endDatePicker = new DatePickerEx(format);
+      endDatePicker.getDatePicker().setStyleName(END_DATE_PICKER);
+      endDatePicker.getDatePicker().setEnabled(false);
+      endByPanel.add(endDatePicker.getDatePicker());
       endByLabel = new ErrorLabel( endByPanel );
       hp.add( endByLabel );
   
       noEndDateRb.addClickListener(new ClickListener() {
         public void onClick(Widget sender) {
-          localThis.endDatePicker.setEnabled(false);
+          localThis.endDatePicker.getDatePicker().setEnabled(false);
         }
       });
   
       endByRb.addClickListener(new ClickListener() {
         public void onClick(Widget sender) {
-          localThis.endDatePicker.setEnabled(true);
+          localThis.endDatePicker.getDatePicker().setEnabled(true);
         }
       });
       reset( date );
@@ -192,8 +195,7 @@ public class DateRangeEditor extends CaptionPanel implements IChangeHandler {
     
     public void reset( Date d ) {
       setNoEndDate();
-      endDatePicker.setSelectedDate( d );
-      endDatePicker.setYoungestDate( d );
+      endDatePicker.getDatePicker().setValue( d );
     }
     
     public DatePickerEx getEndDatePicker() {
@@ -203,7 +205,7 @@ public class DateRangeEditor extends CaptionPanel implements IChangeHandler {
     public void setNoEndDate() {
       endByRb.setChecked( false );
       noEndDateRb.setChecked( true );
-      endDatePicker.setEnabled( false );
+      endDatePicker.getDatePicker().setEnabled( false );
     }
     
     public boolean isEndBy() {
@@ -213,7 +215,7 @@ public class DateRangeEditor extends CaptionPanel implements IChangeHandler {
     public void setEndBy() {
       noEndDateRb.setChecked( false );
       endByRb.setChecked( true );
-      endDatePicker.setEnabled( true );
+      endDatePicker.getDatePicker().setEnabled( true );
     }
     
     public boolean isNoEndDate() {
@@ -227,7 +229,7 @@ public class DateRangeEditor extends CaptionPanel implements IChangeHandler {
     }
     
     public void setDate( Date d ) {
-      endDatePicker.setSelectedDate( d );
+      endDatePicker.getDatePicker().setValue( d );
     }
     
     public void setEndByError( String errorMsg ) {

@@ -24,7 +24,6 @@
         <dependency org="com.google.gwt" name="gwt-dev"  rev="1.6.4" m:classifier="mac"      conf="codegen-mac->default"/>
         <dependency org="com.google.gwt" name="gwt-dev"  rev="1.6.4" m:classifier="windows"  conf="codegen-win->default"/>
         <dependency org="com.google.gwt" name="gwt-dev"  rev="1.6.4" m:classifier="linux"    conf="codegen-linux->default"/>
-        <dependency org="org.zenica"     name="gwt-datepicker" rev="r18"   conf="codegen->default"/>
         <dependency org="com.google.gwt" name="gwt-incubator" rev="1-5_Sept_04" 	conf="codegen->default"/>
         <dependency org="com.allen_sauer" name="gwt-dnd" rev="2.5.6"       conf="codegen->default"/>
 
