@@ -58,6 +58,12 @@ public class SwingMqlEditor {
     setService(new MQLEditorServiceImpl(repo));
   }
   
+  public SwingMqlEditor(IMetadataDomainRepository repo, MQLEditorServiceImpl service, MQLEditorServiceDelegate delegate) {
+    init();
+    this.repo = repo;
+    setService(service);
+    this.delegate = delegate;
+  }
   
   public SwingMqlEditor(IMetadataDomainRepository repo) {
     init();

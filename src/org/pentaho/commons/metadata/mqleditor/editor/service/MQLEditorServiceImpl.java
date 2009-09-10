@@ -13,11 +13,15 @@ import org.pentaho.ui.xul.XulServiceCallback;
 
 public class MQLEditorServiceImpl implements MQLEditorService{
 
-  private MQLEditorServiceDelegate delegate;
+  protected MQLEditorServiceDelegate delegate;
   private static Log log = LogFactory.getLog(MQLEditorServiceImpl.class);
 
   public MQLEditorServiceImpl(IMetadataDomainRepository repo){
     delegate = new MQLEditorServiceDelegate(repo);
+  }
+  
+  public MQLEditorServiceImpl(MQLEditorServiceDelegate delegate) {
+    this.delegate = delegate;
   }
 
   public void getDomainByName(String name, XulServiceCallback<MqlDomain> callback) {
