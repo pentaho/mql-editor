@@ -101,6 +101,7 @@ public class AuthenticatedGwtServiceUtil {
     LoginDialog.performLogin(new AsyncCallback<Object>() {
 
       public void onFailure(Throwable caught) {
+        if(caught instanceof AuthenticationFailedException) {
         MessageDialogBox dialogBox = new MessageDialogBox(
             Messages.getString("error"), Messages.getString("invalidLogin"), false, false, true); //$NON-NLS-1$ //$NON-NLS-2$
         dialogBox.addStyleName("error-login-dialog");
@@ -115,6 +116,9 @@ public class AuthenticatedGwtServiceUtil {
 
         });
         dialogBox.center();
+        } else if(caught instanceof AuthenticationCanceledException) {
+          theirCallback.onFailure(caught);
+        }
       }
 
       public void onSuccess(Object result) {

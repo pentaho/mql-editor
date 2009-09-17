@@ -77,6 +77,7 @@ public class LoginDialog extends PromptDialogBox {
   private final IDialogCallback myCallback = new IDialogCallback() {
 
     public void cancelPressed() {
+      outerCallback.onFailure(new AuthenticationCanceledException(Messages.getString("authCanceled"))); //$NON-NLS-1$
     }
 
     public void okPressed() {
@@ -95,7 +96,7 @@ public class LoginDialog extends PromptDialogBox {
           if (Response.SC_OK == response.getStatusCode()) {
               outerCallback.onSuccess(false);
           } else {
-              outerCallback.onFailure(new Throwable(Messages.getString("authFailed"))); //$NON-NLS-1$
+              outerCallback.onFailure(new AuthenticationFailedException(Messages.getString("authFailed"))); //$NON-NLS-1$
           }
         }
       };
