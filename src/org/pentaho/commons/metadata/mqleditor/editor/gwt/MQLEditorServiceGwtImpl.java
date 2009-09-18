@@ -94,18 +94,7 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
   }
 
   public void refreshMetadataDomains(final XulServiceCallback<List<MqlDomain>> callback) {
-    SERVICE.refreshMetadataDomains(new AsyncCallback<List<MqlDomain>>() {
 
-      public void onFailure(Throwable arg0) {
-        callback.error("error loading metadata domains: ", arg0);
-      }
-
-      public void onSuccess(List<MqlDomain> arg0) {
-        callback.success(arg0);
-      }
-
-    });
-    
     AuthenticatedGwtServiceUtil.invokeCommand(new IAuthenticatedGwtCommand<List<MqlDomain>>() {
       public void execute(AsyncCallback<List<MqlDomain>> callback) {
         SERVICE.refreshMetadataDomains(callback);
