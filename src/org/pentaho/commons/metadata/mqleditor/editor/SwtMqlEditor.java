@@ -23,6 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.widgets.Composite;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
+import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.ConditionsController;
@@ -160,7 +161,11 @@ public class SwtMqlEditor {
   }
   
   public MQLQuery getMqlQuery(){
-    return delegate.convertModel(workspace.getMqlQuery());
+    MqlQuery q = workspace.getMqlQuery();
+    if(q == null){
+      return null;
+    }
+    return delegate.convertModel(q);
     
   }
 

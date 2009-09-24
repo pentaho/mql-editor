@@ -37,9 +37,10 @@ public class ModelUtil {
 
     Query query = new Query();
 
-    if(uiQuery.getDomain() == null){
+    if(uiQuery.getDomain() == null || uiQuery.getModel() == null){
       return null;
     }
+    
     Domain domain = new Domain();
     domain.setName(uiQuery.getDomain().getName());
     domain.setId(uiQuery.getDomain().getId());
