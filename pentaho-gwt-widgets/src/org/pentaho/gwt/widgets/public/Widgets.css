@@ -440,6 +440,7 @@ html>body .gwt-MenuBarPopup .menuPopupMiddleRight {
   background-color: #ececec;
   border: 1px solid #848484;
   z-index: 1000;
+  position: absolute;
 }
 
 .gwt-DialogBox .Caption {
