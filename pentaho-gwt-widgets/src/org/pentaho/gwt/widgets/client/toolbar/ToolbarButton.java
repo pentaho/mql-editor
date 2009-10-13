@@ -112,7 +112,10 @@ public class ToolbarButton {
   
   public void setId(String id){
     if((button != null) && (button.getElement()!=null)){
-      button.getElement().setId(id);
+      button.getElement().setId(id.concat("_btn"));
+    }
+    if((eventWrapper != null) && (eventWrapper.getElement()!=null)){
+      eventWrapper.getElement().setId(id);
     }
 
   }
