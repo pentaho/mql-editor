@@ -98,7 +98,7 @@ public class FileChooser extends VerticalPanel {
   private FileFilter fileFilter;
 
   public FileChooser() {
-    fileNameTextBox.getElement().setId("FileNameTextBox");
+    fileNameTextBox.getElement().setId("fileNameTextBox");
     fileNameTextBox.addKeyboardListener(new KeyboardListener() {
 
       public void onKeyDown(Widget sender, char keyCode, int modifiers) {
@@ -221,7 +221,7 @@ public class FileChooser extends VerticalPanel {
       pathSegments.add(path.substring(path.lastIndexOf("/") + 1)); //$NON-NLS-1$
     }
     navigationListBox = new ListBox();
-    navigationListBox.getElement().setId("NavigationListBox");
+    navigationListBox.getElement().setId("navigationListBox");
     navigationListBox.setWidth("350px"); //$NON-NLS-1$
     // now we can find the tree nodes who match the path segments
     navigationListBox.addItem("/", "/"); //$NON-NLS-1$ //$NON-NLS-2$
