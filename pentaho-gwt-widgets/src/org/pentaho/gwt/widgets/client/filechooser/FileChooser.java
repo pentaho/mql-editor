@@ -509,7 +509,8 @@ public class FileChooser extends VerticalPanel {
         }
       }
     };
-    myNameLabel.getElement().setAttribute("id", attributeMap.get("name")); //$NON-NLS-1$ //$NON-NLS-2$
+    // biserver-2719: concatenate the name with fileChooser_ so the ids are unique in Mantle
+    myNameLabel.getElement().setAttribute("id", "fileChooser_".concat(attributeMap.get("name"))); //$NON-NLS-1$ //$NON-NLS-2$
     myNameLabel.sinkEvents(Event.ONDBLCLICK | Event.ONCLICK);
     myNameLabel.sinkEvents(Event.ONMOUSEOVER | Event.ONMOUSEOUT);
     myNameLabel.setTitle(attributeMap.get(LOCALIZED_FILE_NAME));
