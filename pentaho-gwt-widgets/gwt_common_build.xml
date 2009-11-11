@@ -21,7 +21,7 @@
   <property name="gwt.output.dir"
             value="${bin.dir}/gwt/output"
             description="Base directory that holds all gwt generated files" />
-  <property name="gwt-dev.revision" value="1.5.2" description="The release of GWT-dev to download and install" />
+  <property name="gwt-dev.revision" value="1.7.1" description="The release of GWT-dev to download and install" />
   <property name="gwt-log-level" value="INFO" description="The log level for GWT Compile" />
   <property name="gwt-style" value="OBF" description="Style in which javascript should be generated, options include OBF[uscated], PRETTY, and DETAILED"/>
   <property name="gwt-dev.zipfile"
@@ -41,8 +41,9 @@
             description="Location of the libraries needed for code generation" />
   <property name="gwt-compile.maxmemory" value="512M" description="maxmemory argument for com.google.gwt.dev.GWTCompiler java task" />
   <property name="gwt-compile.localWorkers" value="4" description="number of threads to use for running parallel compilation" />
-	
-  <path id="classpath">
+  <property name="gwt-compile.maxstack" value="1024k" description="vm stack size setting" />
+
+	<path id="classpath">
     <fileset dir="${codegenlib.dir}">
       <include name="*.jar" />
     </fileset>
@@ -96,7 +97,7 @@
   <target name="clean-codegen" description="Cleans codegen">
     <delete dir="${codegenlib.dir}" />
   </target>
-    
+
   <!--=======================================================================
       resolve (override)
       
@@ -128,7 +129,8 @@
           unless="gwtBuild.notRequired"
           description="Perform GWT Compile">
     <java classname="com.google.gwt.dev.Compiler" fork="true" failonerror="true" maxmemory="${gwt-compile.maxmemory}">
-      <classpath refid="classpath"/>
+ 	  <classpath refid="classpath"/>
+      <jvmarg value="-Xss${gwt-compile.maxstack}"/>    	
       <arg value="-war" />
       <arg value="${gwt.output.dir}" />
       <arg value="${gwt-module.path}" />
@@ -268,9 +270,9 @@
       <isset property="isMac" />
     </condition>
 
-    <get src="http://repo1.maven.org/maven2/com/google/gwt/gwt-dev/1.5.2/gwt-dev-${gwt-dev.revision}-${maven.classifier}-libs.zip"
+    <get src="http://repo1.maven.org/maven2/com/google/gwt/gwt-dev/${gwt-dev.revision}/gwt-dev-${gwt-dev.revision}-${maven.classifier}-libs.zip"
          dest="${gwt-dev.zipfile}" />
-    <get src="http://repo1.maven.org/maven2/com/google/gwt/gwt-dev/1.5.2/gwt-dev-${gwt-dev.revision}-${maven.classifier}.jar"
+    <get src="http://repo1.maven.org/maven2/com/google/gwt/gwt-dev/${gwt-dev.revision}/gwt-dev-${gwt-dev.revision}-${maven.classifier}.jar"
          dest="${gwt-dev.jarfile}" />
   </target>
 
