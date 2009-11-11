@@ -14,6 +14,8 @@ This module serves as the Debuging environment and default implementation for in
     <inherits name="org.pentaho.ui.xul.Gwt"/>
     <source path="">
         <exclude name="**/SwingMqlEditor*"/>
+        <exclude name="**/DebugSwingMqlEditor*"/>
+        <exclude name="**/DebugSwtMqlEditor*"/>
         <exclude name="**/MQLEditorServiceImpl*"/>
         <exclude name="**/MQLEditorServiceDeligate*"/>
         <exclude name="**/MQLEditorGwtServlet*"/>
@@ -23,11 +25,10 @@ This module serves as the Debuging environment and default implementation for in
         <exclude name="**/Swt*"/>
         <exclude name="**/MQLEditorServiceDebugImpl*"/>
         <exclude name="**/MQLEditorDebugGwtServlet*"/>
-        
+        <exclude name="**/MQLEditorServiceCWMDelegate*"/>
+        <exclude name="**/MQLEditorServiceDelegate*"/>
+        <exclude name="**/FormulaParser*"/>
     </source>
     <public path="editor/xul"/>
     <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.gwt.DebugEntryPoint"/>
-    
-  <servlet path="/gwtrpc/MqlService" class="org.pentaho.commons.metadata.mqleditor.editor.gwt.MQLEditorDebugGwtServlet" />
-  
  </module>

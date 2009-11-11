@@ -22,7 +22,7 @@
   <property name="gwt.output.dir"
             value="${bin.dir}/gwt/output"
             description="Base directory that holds all gwt generated files" />
-  <property name="gwt-dev.revision" value="1.6.4" description="The release of GWT-dev to download and install" />
+  <property name="gwt-dev.revision" value="1.7.1" description="The release of GWT-dev to download and install" />
   <property name="gwt-log-level" value="INFO" description="The log level for GWT Compile" />
   <property name="gwt-style" value="OBF" description="Style in which javascript should be generated, options include OBF[uscated], PRETTY, and DETAILED"/>
   <property name="gwt-dev.zipfile"

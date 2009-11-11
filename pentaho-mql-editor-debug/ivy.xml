@@ -21,12 +21,12 @@
     <dependencies defaultconf="default->default">
 
 
-        <dependency org="com.google.gwt" name="gwt-servlet" rev="1.6.4" conf="default->default"/>
+        <dependency org="com.google.gwt" name="gwt-servlet" rev="1.7.1" conf="default->default"/>
 
-    	<dependency org="com.google.gwt"  name="gwt-dev" rev="1.6.4" m:classifier="mac" conf="codegen-mac->default" />
-    	<dependency org="com.google.gwt"  name="gwt-dev" rev="1.6.4" m:classifier="windows" conf="codegen-win->default" />
-    	<dependency org="com.google.gwt"  name="gwt-dev" rev="1.6.4" m:classifier="linux" conf="codegen-linux->default" />
-    	<dependency org="com.google.gwt"  name="gwt-user" rev="1.6.4" conf="codegen->default" />
+	    <!-- it doesn't matter what platform of gwt-dev we use here. GWT compile only cares about the API part of the jar -->
+    	<dependency org="com.google.gwt" name="gwt-dev"  rev="1.7.1" m:classifier="windows"  conf="codegen->default"/>        
+    	<!--    gwt-user needs to be excluded from the open-admin web assembly.-->
+    	<dependency org="com.google.gwt" name="gwt-user" rev="1.7.1" conf="codegen->default" />
 
         <dependency org="pentaho" name="pentaho-mql-editor" rev="${project.revision}" conf="default->default" changing="true" transitive="false">
             <artifact name="pentaho-mql-editor"/>
