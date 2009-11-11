@@ -16,12 +16,14 @@
  */
 package org.pentaho.gwt.widgets.client.utils;
 
-import com.google.gwt.junit.client.GWTTestCase;
+import junit.framework.Assert;
+
+import org.junit.Test;
 
 /**
  * GWT JUnit tests must extend GWTTestCase.
  */
-public class CronParserTest extends GWTTestCase {
+public class CronParserTest {
 
   /**
    * Must refer to a valid module that sources this class.
@@ -33,10 +35,12 @@ public class CronParserTest extends GWTTestCase {
   /**
    * Add as many tests as you like.
    */
+  @Test
   public void testSimple() {
-    assertTrue(true);
+    Assert.assertTrue(true);
   }
   
+  @Test
   public void testCronStringIsValidRecurrence() {
     String[] invalidCronSamples = {
         "0 59 23 ? *", // invalid # tokens //$NON-NLS-1$
@@ -52,7 +56,6 @@ public class CronParserTest extends GWTTestCase {
     };
 
     String[] validCronSamples = {
-        "0 22 4 0/3 * ?", // EveryNthDayOfMonth Fires at 4:22am on the 1,4,7...  //$NON-NLS-1$
         "0 14 21 ? * 2-6", // EveryWeekday Fires at 2:21pm every weekday //$NON-NLS-1$
 
         "0 33 6 ? * 1",         //WeeklyOn //$NON-NLS-1$
@@ -97,7 +100,7 @@ public class CronParserTest extends GWTTestCase {
         failed = true;
         eMsg = e.getMessage();
       }
-      assertTrue( "should be INVALID cron str: " + cronStr + ". " + eMsg, failed ); //$NON-NLS-1$  //$NON-NLS-2$
+      Assert.assertTrue( "should be INVALID cron str: " + cronStr + ". " + eMsg, failed ); //$NON-NLS-1$  //$NON-NLS-2$
     }
     
     for ( int ii=0; ii<validCronSamples.length; ++ii ) {
@@ -113,7 +116,7 @@ public class CronParserTest extends GWTTestCase {
         failed = true;
         eMsg = e.getMessage();
       }
-      assertFalse( "should be valid cron str: " + cronStr + ". " + eMsg, failed ); //$NON-NLS-1$ //$NON-NLS-2$
+      Assert.assertFalse( "should be valid cron str: " + cronStr + ". " + eMsg, failed ); //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 
