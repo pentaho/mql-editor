@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE web-app PUBLIC
+   "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+   "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+
+  <servlet>
+    <servlet-name>MqlService</servlet-name>
+    <servlet-class>org.pentaho.commons.metadata.mqleditor.editor.gwt.MQLEditorDebugGwtServlet</servlet-class>
+  </servlet>
+  	
+  <servlet-mapping>
+    <servlet-name>MqlService</servlet-name>
+    <url-pattern>org.pentaho.commons.metadata.mqleditor.JavascriptEditor/gwtrpc/MqlService</url-pattern>
+  </servlet-mapping>
+</web-app>
