@@ -24,12 +24,7 @@
   <property name="gwt-dev.revision" value="1.7.1" description="The release of GWT-dev to download and install" />
   <property name="gwt-log-level" value="INFO" description="The log level for GWT Compile" />
   <property name="gwt-style" value="OBF" description="Style in which javascript should be generated, options include OBF[uscated], PRETTY, and DETAILED"/>
-  <property name="gwt-dev.zipfile"
-            value="${devlib.dir}/gwt-dev-libs.zip"
-            description="The download location of the GWT-dev zip file" />
-  <property name="gwt-dev.jarfile"
-            value="${devlib.dir}/gwt-dev-${gwt-dev.revision}.jar"
-            description="The download location of the GWT-dev jar file" />
+  <property name="gwt-devlib.dir" value="${basedir}/gwt-dev-lib" description="Directory containing GWT dev libs." />
   <property name="gwt.package.artifact.id"
             value="${ivy.artifact.id}-package"
             description="The name of the GWT package artifact" />
@@ -62,6 +57,7 @@
 	    ====================================================================-->
   <target name="init" description="Initializes the build process">
     <mkdir dir="${codegenlib.dir}" />
+    <mkdir dir="${gwt-devlib.dir}" />
     <ant antfile="${common.build.file}" target="init" />
   </target>
 
@@ -77,7 +73,7 @@
     <ant antfile="${common.build.file}" target="clean" />
     <delete file="${bin.dir}/.gwtBuild*" />
   </target>
-
+  
   <!--=======================================================================
       clean-jars (override)
       
@@ -239,14 +235,21 @@
       
       Downloads and installs gwt-dev jars and native libraries
       ====================================================================-->
-  <target name="install-gwt-dev" depends="gwt-dev.download" description="Installs gwt-dev jar and native libraries">
-    <unzip src="${gwt-dev.zipfile}" dest="${devlib.dir}" />
-    <delete file="${gwt-dev.zipfile}" />
+  <target name="install-gwt-dev" depends="gwt-dev.install" description="Installs gwt-dev jar and native libraries">
+    <condition property="short.os.name" value="windows">
+      <isset property="isWindows" />
+    </condition>
+    <condition property="short.os.name" value="linux">
+      <isset property="isLinux" />
+    </condition>
+    <condition property="short.os.name" value="mac">
+      <isset property="isMac" />
+    </condition>
 
     <echo>
       *************************************************************************************************
-      ** Gwt dev files have been installed to ${devlib.dir}.
-      ** Make sure ${gwt-dev.jarfile} 
+      ** Gwt dev files have been installed to ${gwt-devlib.dir}.
+      ** Make sure ${gwt-devlib.dir}/gwt-dev.jar
       ** appears before other jars in your IDE's classpath, 
       ** otherwise running in hosted mode may fail.
       *************************************************************************************************
@@ -255,25 +258,80 @@
 
 
   <!--=======================================================================
-      gwt-dev.download
+      gwt-dev.install
       
-      Downloads GWT dev libraries if they don't already exist
+      Installs GWT dev libraries
       ====================================================================-->
-  <target name="gwt-dev.download" depends="install-ivy,init">
-    <condition property="maven.classifier" value="windows">
-      <isset property="isWindows" />
-    </condition>
-    <condition property="maven.classifier" value="linux">
-      <isset property="isLinux" />
-    </condition>
-    <condition property="maven.classifier" value="mac">
-      <isset property="isMac" />
-    </condition>
-
-    <get src="http://repo1.maven.org/maven2/com/google/gwt/gwt-dev/${gwt-dev.revision}/gwt-dev-${gwt-dev.revision}-${maven.classifier}-libs.zip"
-         dest="${gwt-dev.zipfile}" />
-    <get src="http://repo1.maven.org/maven2/com/google/gwt/gwt-dev/${gwt-dev.revision}/gwt-dev-${gwt-dev.revision}-${maven.classifier}.jar"
-         dest="${gwt-dev.jarfile}" />
+  <target name="gwt-dev.install" depends="install-ivy,init,gwt-dev.install-windows,gwt-dev.install-mac,gwt-dev.install-linux">
+    
+  </target>
+  
+  <!--=======================================================================
+      gwt-dev.install-windows
+      
+      Installs GWT dev Windows libraries
+      ====================================================================-->
+  <target name="gwt-dev.install-windows" if="isWindows">
+    <property name="gwt-dev.archive.base" value="gwt-windows" />
+    <property name="gwt-dev.archive.baseWithRevision" value="${gwt-dev.archive.base}-${gwt-dev.revision}" />
+    <property name="gwt-dev.archive" value="${gwt-dev.archive.baseWithRevision}.zip" />
+    
+    <get src="http://google-web-toolkit.googlecode.com/files/${gwt-dev.archive}" 
+      dest="${gwt-devlib.dir}/${gwt-dev.archive}" />
+    
+    <unzip src="${gwt-devlib.dir}/${gwt-dev.archive}" dest="${gwt-devlib.dir}" />
+    <delete file="${gwt-devlib.dir}/${gwt-dev.archive}" />
+    <move todir="${gwt-devlib.dir}">
+      <fileset dir="${gwt-devlib.dir}/${gwt-dev.archive.baseWithRevision}" />
+    </move>
+    <delete dir="${gwt-devlib.dir}/${gwt-dev.archive.baseWithRevision}" />
+    <move file="${gwt-devlib.dir}/gwt-dev-windows.jar" tofile="${gwt-devlib.dir}/gwt-dev.jar" />
   </target>
 
+  <!--=======================================================================
+      gwt-dev.install-mac
+      
+      Installs GWT dev Mac libraries
+      ====================================================================-->
+  <target name="gwt-dev.install-mac" if="isMac">
+    <property name="gwt-dev.archive.base" value="gwt-mac" />
+    <property name="gwt-dev.archive.baseWithRevision" value="${gwt-dev.archive.base}-${gwt-dev.revision}" />
+    <property name="gwt-dev.archive" value="${gwt-dev.archive.baseWithRevision}.tar.gz" />
+    
+    <get src="http://google-web-toolkit.googlecode.com/files/${gwt-dev.archive}" 
+      dest="${gwt-devlib.dir}/${gwt-dev.archive}" />
+    
+    <untar src="${gwt-devlib.dir}/${gwt-dev.archive}" dest="${gwt-devlib.dir}" compression="gzip" />
+    <delete file="${gwt-devlib.dir}/${gwt-dev.archive}" />
+    <move todir="${gwt-devlib.dir}">
+      <fileset dir="${gwt-devlib.dir}/${gwt-dev.archive.baseWithRevision}" />
+    </move>
+    <delete dir="${gwt-devlib.dir}/${gwt-dev.archive.baseWithRevision}" />
+    <move file="${gwt-devlib.dir}/gwt-dev-mac.jar" tofile="${gwt-devlib.dir}/gwt-dev.jar" />
+  </target>
+
+  <!--=======================================================================
+      gwt-dev.install-linux
+      
+      Installs GWT dev Linux libraries
+      ====================================================================-->
+  <target name="gwt-dev.install-linux" if="isLinux">
+    <property name="gwt-dev.archive.base" value="gwt-linux" />
+    <property name="gwt-dev.archive.baseWithRevision" value="${gwt-dev.archive.base}-${gwt-dev.revision}" />
+    <property name="gwt-dev.archive" value="${gwt-dev.archive.baseWithRevision}.tar.bz2" />
+    
+    <get src="http://google-web-toolkit.googlecode.com/files/${gwt-dev.archive}" 
+      dest="${gwt-devlib.dir}/${gwt-dev.archive}" />
+    
+    <untar src="${gwt-devlib.dir}/${gwt-dev.archive}" dest="${gwt-devlib.dir}" compression="bzip2" />
+    <delete file="${gwt-devlib.dir}/${gwt-dev.archive}" />
+    <move todir="${gwt-devlib.dir}">
+      <fileset dir="${gwt-devlib.dir}/${gwt-dev.archive.baseWithRevision}" />
+    </move>
+    <delete dir="${gwt-devlib.dir}/${gwt-dev.archive.baseWithRevision}" />
+    <move file="${gwt-devlib.dir}/gwt-dev-linux.jar" tofile="${gwt-devlib.dir}/gwt-dev.jar" />
+    <chmod dir="${gwt-devlib.dir}" perm="a+x" includes="**" />
+  </target>
+
+  
 </project>
