@@ -57,7 +57,6 @@
 
 	    <!-- it doesn't matter what platform of gwt-dev we use here. GWT compile only cares about the API part of the jar -->
     	<dependency org="com.google.gwt" name="gwt-dev"  rev="1.7.1" m:classifier="windows"  conf="codegen->default"/>        
-    	<!--    gwt-user needs to be excluded from the open-admin web assembly.-->
     	<dependency org="com.google.gwt" name="gwt-user" rev="1.7.1" conf="codegen->default" />
 
         <dependency org="org.zenica" name="gwt-datepicker" rev="r18" conf="codegen->default"/>
