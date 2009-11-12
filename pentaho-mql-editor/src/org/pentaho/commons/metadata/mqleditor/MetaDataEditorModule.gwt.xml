@@ -21,6 +21,9 @@
         <exclude name="**/MQLEditorGwtServlet*"/>
         <exclude name="**/MQLEditorServiceSyncImpl*"/>
         <exclude name="**/ModelSerializer*"/>
+        <exclude name="**/MQLEditorServiceCWMDelegate*"/>
+        <exclude name="**/MQLEditorServiceDelegate*"/>
+        <exclude name="**/FormulaParser*"/>
         <exclude name="**/CWMStartup*"/>
         <exclude name="**/Swt*"/>
     </source>
