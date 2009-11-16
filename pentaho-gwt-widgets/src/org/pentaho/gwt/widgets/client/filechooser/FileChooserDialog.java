@@ -184,7 +184,7 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
       MessageDialogBox dialogBox = new MessageDialogBox(MSGS.error(), MSGS.noFilenameEntered(), false, false, true);
       dialogBox.center();
       return false;
-    } else if (StringUtils.containsAnyChars(fileName, "\\\'/?%*:|\"<>")) { //$NON-NLS-1$
+    } else if (StringUtils.containsAnyChars(fileName, "\\\'/?%*:|\"<>&")) { //$NON-NLS-1$
       MessageDialogBox dialogBox = new MessageDialogBox(MSGS.error(), MSGS.invalidFilename(), false, false, true);
       dialogBox.center();
       return false;
