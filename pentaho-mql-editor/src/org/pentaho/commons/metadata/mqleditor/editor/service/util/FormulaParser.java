@@ -25,7 +25,7 @@ import org.pentaho.commons.metadata.mqleditor.beans.Condition;
 public class FormulaParser {
 
   private static final String WRAPPED = "([^\\(]*)\\(\\[([^\\]]*)\\];([^\\)]*)\\)";
-  private static final String GENERIC = "\\[([^\\]]*)\\]\\s*([><=]*)\\s*(.*)";
+  private static final String GENERIC = "\\[([^\\]]*)\\]\\s*([><=]+)\\s*(.*)";
   private static final String VALUE_EVAL = ".*\"(.*)\"";
 
   private static Pattern genericPat = Pattern.compile(GENERIC); //$NON-NLS-1$
