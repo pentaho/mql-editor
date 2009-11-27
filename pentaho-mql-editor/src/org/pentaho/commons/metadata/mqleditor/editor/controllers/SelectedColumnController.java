@@ -53,7 +53,7 @@ public class SelectedColumnController extends AbstractXulEventHandler {
   }
     
   public int getSelectedIndex() {
-    int[] rows = this.columnTree.getSelectedRows();
+    int[] rows = this.columnTree.getAbsoluteSelectedRows();
     return (rows != null && rows.length == 0) ? -1 : rows[0];
   }
 
