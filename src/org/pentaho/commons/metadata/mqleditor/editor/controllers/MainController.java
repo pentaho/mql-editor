@@ -192,7 +192,7 @@ public class MainController extends AbstractXulEventHandler {
     bf.createBinding(workspace, "categories", categoryTree, "elements");
     
     // Bind the selected column from the tree to the workspace 
-    bf.createBinding(categoryTree, "selectedRows", workspace, "selectedColumns", new BindingConvertor<int[], List<UIColumn>>() {
+    bf.createBinding(categoryTree, "absoluteSelectedRows", workspace, "selectedColumns", new BindingConvertor<int[], List<UIColumn>>() {
       @Override
       public List<UIColumn> sourceToTarget(int[] array) {
         if(array.length == 0){

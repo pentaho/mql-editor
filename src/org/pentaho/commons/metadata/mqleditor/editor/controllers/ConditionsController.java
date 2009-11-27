@@ -58,7 +58,7 @@ public class ConditionsController extends AbstractXulEventHandler{
   }
 
   public int getSelectedIndex() {
-    int[] rows = this.conditionTree.getSelectedRows();
+    int[] rows = this.conditionTree.getAbsoluteSelectedRows();
     return (rows != null && rows.length == 0) ? -1 : rows[0];
   }
 

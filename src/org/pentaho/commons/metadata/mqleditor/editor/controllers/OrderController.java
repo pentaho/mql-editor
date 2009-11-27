@@ -55,7 +55,7 @@ public class OrderController extends AbstractXulEventHandler{
   }
 
   public int getSelectedIndex() {
-    int[] rows = this.orderTree.getSelectedRows();
+    int[] rows = this.orderTree.getAbsoluteSelectedRows();
     return (rows != null && rows.length == 0) ? -1 : rows[0];
   }
 
