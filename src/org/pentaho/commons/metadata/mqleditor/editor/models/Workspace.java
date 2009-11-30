@@ -54,7 +54,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   private UIOrder selectedOrder;
   
   private UIColumn selectedColumn;
-  private List<UIColumn> selectedColumns;
+  private List<UIColumn> selectedColumns = new ArrayList<UIColumn>();
   
   
   private UIColumns selections = new UIColumns();
@@ -137,7 +137,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   public void clear(){
     removeListeners();
     this.selectedColumn = null;
-    this.selectedColumns = null;
+    this.selectedColumns = new ArrayList<UIColumn>();
     this.setOrders(new UIOrders());
     this.setSelections(new UIColumns());
     this.setConditions(new UIConditions());
