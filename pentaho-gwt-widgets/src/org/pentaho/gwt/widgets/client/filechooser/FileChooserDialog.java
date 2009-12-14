@@ -40,6 +40,8 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
 
   private FileFilter filter;
   
+  private static final String ILLEGAL_NAME_CHARS = "\\\'/?%*:|\"<>&";
+  
   public FileChooserDialog(FileChooserMode mode, String selectedPath, boolean autoHide, boolean modal) {
     this(mode, selectedPath, autoHide, modal, mode == FileChooserMode.OPEN ? "Open" : "Save", mode == FileChooserMode.OPEN ? "Open" : "Save"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
@@ -184,7 +186,7 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
       MessageDialogBox dialogBox = new MessageDialogBox(MSGS.error(), MSGS.noFilenameEntered(), false, false, true);
       dialogBox.center();
       return false;
-    } else if (StringUtils.containsAnyChars(fileName, "\\\'/?%*:|\"<>&")) { //$NON-NLS-1$
+    } else if (StringUtils.containsAnyChars(fileName, ILLEGAL_NAME_CHARS)) { //$NON-NLS-1$
       MessageDialogBox dialogBox = new MessageDialogBox(MSGS.error(), MSGS.invalidFilename(), false, false, true);
       dialogBox.center();
       return false;
