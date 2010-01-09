@@ -101,8 +101,6 @@ public class UICondition extends XulEventSourceAdapter implements MqlCondition {
     switch(this.operator){
       case IS_NULL:
       case IS_NOT_NULL:
-      case IS_EMPTY:
-      case IS_NOT_EMPTY:
         this.setValueDisabled(true);
         break;
       default:

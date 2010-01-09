@@ -18,36 +18,39 @@ package org.pentaho.commons.metadata.mqleditor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Operator is used in the definition of a @see MqlCondition 
  */
 public enum Operator implements Serializable{
-  GREATER_THAN(">", false, true), 
-  LESS_THAN("<", false, true), 
-  EQUAL("=", false, true), 
-  GREATOR_OR_EQUAL(">=", false, true), 
-  LESS_OR_EQUAL("<=", false, true), 
-  IS_NULL("is null", false, false), 
-  IS_NOT_NULL("is not null", false, false),
-  
-  EXACTLY_MATCHES("exactly matches", true, true), 
-  CONTAINS("contains", true, true), 
-  DOES_NOT_CONTAIN("does not contain", true, true), 
-  BEGINS_WITH("begins with", true, true), 
-  ENDS_WITH("ends with", true, true), 
-  IS_EMPTY("is null", true, false), 
-  IS_NOT_EMPTY("is not null", true, false);
 
+  GREATER_THAN(">", 1, true), 
+  LESS_THAN("<", 1, true), 
+  EQUAL("=", 1, true), 
+  GREATOR_OR_EQUAL(">=", 1, true), 
+  LESS_OR_EQUAL("<=", 1, true), 
+  
+  EXACTLY_MATCHES("exactly matches", 0, true), 
+  CONTAINS("contains", 0, true), 
+  DOES_NOT_CONTAIN("does not contain", 0, true), 
+  BEGINS_WITH("begins with", 0, true), 
+  ENDS_WITH("ends with", 0, true),
+  
+  IS_NULL("is null", 2, false), 
+  IS_NOT_NULL("is not null", 2, false);
+
+  
   private String strVal;
-  private boolean stringType;
+  // 0 = string
+  // 1 = numeric
+  // 2 = both
+  private int operatorType;
   private boolean requiresValue;
 
-  Operator(String str, boolean stringType, boolean requiresValue) {
+  Operator(String str, int operatorType, boolean requiresValue) {
     this.strVal = str;
-    this.stringType = stringType;
+    this.operatorType = operatorType;
     this.requiresValue = requiresValue;
   }
 
@@ -106,10 +109,6 @@ public enum Operator implements Serializable{
     return requiresValue;
   }
   
-  public boolean isStringType(){
-    return this.stringType;
-  }
-  
   /**
    * Returns an array of types separated by whether or not they're string types
    * @param stringType
@@ -119,7 +118,11 @@ public enum Operator implements Serializable{
     Operator[] vals = Operator.values();
     List<Operator> ops = new ArrayList<Operator>();
     for(int i=0; i < vals.length; i++){
-      if(vals[i].isStringType() == stringType){
+      if (vals[i].operatorType == 2) {
+        ops.add(vals[i]); 
+      } else if(vals[i].operatorType == 0 && stringType){
+        ops.add(vals[i]); 
+      } else if (vals[i].operatorType == 1 && !stringType) {
         ops.add(vals[i]); 
       }
     }
@@ -130,7 +133,7 @@ public enum Operator implements Serializable{
     
     if(parameterized){
      value = "[param:"+value.replaceAll("[\\{\\}]","")+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    } else if (this.stringType) {
+    } else if (this.operatorType == 0 || this.operatorType == 2) {
       value = "\"" + value + "\""; //$NON-NLS-1$ //$NON-NLS-2$ 
     }
     String retVal = ""; //$NON-NLS-1$
@@ -151,12 +154,10 @@ public enum Operator implements Serializable{
       case ENDS_WITH:
         retVal += "ENDSWITH("+objectName+";"+value+")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         break;
-      case IS_EMPTY:
       case IS_NULL:
         retVal += "ISNA("+objectName+")"; //$NON-NLS-1$ //$NON-NLS-2$
         break;
       case IS_NOT_NULL:
-      case IS_NOT_EMPTY:
         retVal += "NOT(ISNA("+objectName+"))"; //$NON-NLS-1$ //$NON-NLS-2$
         break;
       default:
