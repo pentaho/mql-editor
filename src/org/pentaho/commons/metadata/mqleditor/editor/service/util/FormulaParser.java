@@ -59,6 +59,12 @@ public class FormulaParser {
         notOperator = true;
         formula = formula.substring(4, formula.length()-1);
       }
+      if (formula.contains("ISNA(")) {
+        formula = formula.substring(5, formula.length()-1);
+        fieldName = formula.substring(1, formula.length()-1);
+        functionName = "ISNA";
+        value = "";
+      }
       
       m = wrappedPat.matcher(formula);
       if(m.find()){
@@ -74,9 +80,6 @@ public class FormulaParser {
       switch(op){
         case IS_NULL:
           op = Operator.IS_NOT_NULL;
-          break;
-        case IS_EMPTY:
-          op = Operator.IS_NOT_EMPTY;
           break;
         case CONTAINS:
           op = Operator.DOES_NOT_CONTAIN;
