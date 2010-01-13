@@ -26,11 +26,16 @@ public class FormulaParser {
 
   private static final String WRAPPED = "([^\\(]*)\\(\\[([^\\]]*)\\];([^\\)]*)\\)";
   private static final String GENERIC = "\\[([^\\]]*)\\]\\s*([><=]+)\\s*(.*)";
+
+  // Special case for Datevalues, DATEVALUE([param:foo]) and DATEVALUE("2010-01-01");
+  private static final String DATEVALUE = "DATEVALUE\\(([^\\)]*)";
+  
   private static final String VALUE_EVAL = ".*\"(.*)\"";
 
-  private static Pattern genericPat = Pattern.compile(GENERIC); //$NON-NLS-1$
-  private static Pattern wrappedPat = Pattern.compile(WRAPPED); //$NON-NLS-1$
+  private static Pattern genericPat = Pattern.compile(GENERIC);
+  private static Pattern wrappedPat = Pattern.compile(WRAPPED);
   private static Pattern valueEvalPat = Pattern.compile(VALUE_EVAL);
+  private static Pattern datevaluePat = Pattern.compile(DATEVALUE);
 
   private String functionName = null;
   private String fieldName = null;
@@ -46,6 +51,14 @@ public class FormulaParser {
     parse();
   }
   
+  private String checkValueAsDataTime(String value){
+    Matcher m = datevaluePat.matcher(value);
+    if(m.find()){
+      return m.group(1);
+    } 
+    return value;
+  }
+  
   private void parse(){
 
     Matcher m = genericPat.matcher(formula);
@@ -53,6 +66,7 @@ public class FormulaParser {
       functionName = m.group(2);
       fieldName = m.group(1);
       value = m.group(3);
+      value = checkValueAsDataTime(value);
     } else {
       // see if it's a logical NOT(), strip it out and parse inner function
       if(formula.contains("NOT(")){
@@ -71,7 +85,7 @@ public class FormulaParser {
         functionName = m.group(1);
         fieldName = m.group(2);
         value = m.group(3);
-      }
+      } 
     }
     
     Operator op = Operator.parse(functionName.toUpperCase());
