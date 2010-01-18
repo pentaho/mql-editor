@@ -46,47 +46,45 @@ import org.pentaho.ui.xul.XulServiceCallback;
  */
 public class DebugSwtMqlEditor {
 
-
   public static void main(String[] args) {
-
 
     // initialize micro platorm
     MicroPlatform microPlatform = new MicroPlatform("resources/solution1/"); //$NON-NLS-1$
     microPlatform.define(ISolutionEngine.class, SolutionEngine.class);
     microPlatform.define(ISolutionRepository.class, FileBasedSolutionRepository.class);
-    microPlatform.define(IMetadataDomainRepository.class, FileBasedMetadataDomainRepository.class, Scope.GLOBAL); 
-    microPlatform.define("connection-SQL", SQLConnection.class);  //$NON-NLS-1$
+    microPlatform.define(IMetadataDomainRepository.class, FileBasedMetadataDomainRepository.class, Scope.GLOBAL);
+    microPlatform.define("connection-SQL", SQLConnection.class); //$NON-NLS-1$
 
     microPlatform.define(IDatasourceService.class, JndiDatasourceService.class, Scope.GLOBAL);
     // JNDI
     System.setProperty("java.naming.factory.initial", "org.osjava.sj.SimpleContextFactory"); //$NON-NLS-1$ //$NON-NLS-2$
     System.setProperty("org.osjava.sj.root", "resources/solution1/simple-jndi"); //$NON-NLS-1$ //$NON-NLS-2$
     System.setProperty("org.osjava.sj.delimiter", "/"); //$NON-NLS-1$ //$NON-NLS-2$
-    
+
     microPlatform.init();
     new StandaloneSession();
 
     FileBasedMetadataDomainRepository repo = (FileBasedMetadataDomainRepository) PentahoSystem.get(IMetadataDomainRepository.class, null);
     repo.setDomainFolder("resources/solution1/system/metadata/domains"); //$NON-NLS-1$
-    
+
     // Parse and add legacy CWM domain for testing purposes.
     XmiParser parser = new XmiParser();
     try {
       InputStream inStr = SwtMqlEditor.class.getResourceAsStream("/metadata_steelwheels.xmi"); //$NON-NLS-1$
-      if(inStr != null){
+      if (inStr != null) {
         org.pentaho.metadata.model.Domain d = parser.parseXmi(inStr);
-        d.setId("Steel-Wheels");  //$NON-NLS-1$
+        d.setId("Steel-Wheels"); //$NON-NLS-1$
         repo.storeDomain(d, false);
         repo.reloadDomains();
-        
+
       } else {
         System.out.println("Error loading XMI file");
-       //  System.exit(1);
+        //  System.exit(1);
       }
     } catch (Exception e) {
       System.out.println("error with XMI input"); //$NON-NLS-1$
     }
-    
+
     MQLEditorServiceDelegate delegate = new MQLEditorServiceDelegate(repo) {
       @Override
       public String[][] getPreviewData(MqlQuery query, int page, int limit) {
@@ -96,22 +94,22 @@ public class DebugSwtMqlEditor {
         component.setQuery(mqlString);
         component.setLive(true);
         IPentahoResultSet rs = null;
-        try{
+        try {
           if (component.execute()) {
             rs = component.getResultSet();
             String[][] results = new String[Math.min(rs.getRowCount(), limit)][rs.getColumnCount()];
-            
+
             for (int i = 0; i < Math.min(rs.getRowCount(), limit); i++) {
               for (int j = 0; j < rs.getColumnCount(); j++) {
-                results[i][j] = "" + rs.getValueAt(((page-1) * limit)+i, j); //$NON-NLS-1$
+                results[i][j] = "" + rs.getValueAt(((page - 1) * limit) + i, j); //$NON-NLS-1$
               }
             }
             return results;
           } else {
             return null;
           }
-        } finally{
-          if(rs != null){
+        } finally {
+          if (rs != null) {
             rs.close();
           }
         }
@@ -124,11 +122,10 @@ public class DebugSwtMqlEditor {
         callback.success(delegate.getPreviewData(query, page, limit));
       }
     };
-    
-    
+
     SwtMqlEditor editor = new SwtMqlEditor(repo, service, delegate);
     //editor.hidePreview();
     editor.show();
   }
-  
+
 }
