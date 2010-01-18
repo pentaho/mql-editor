@@ -26,7 +26,6 @@ import org.pentaho.ui.xul.XulLoader;
 import org.pentaho.ui.xul.XulRunner;
 import org.pentaho.ui.xul.swt.SwtXulLoader;
 import org.pentaho.ui.xul.swt.SwtXulRunner;
-import org.pentaho.ui.xul.swt.tags.SwtDialog;
 
 /**
  * Default Swt implementation. This class requires a concrete Service
