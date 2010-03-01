@@ -40,6 +40,7 @@ import org.pentaho.pms.core.exception.PentahoMetadataException;
 import org.pentaho.ui.xul.XulDomContainer;
 import org.pentaho.ui.xul.XulException;
 import org.pentaho.ui.xul.XulLoader;
+import org.pentaho.ui.xul.XulOverlay;
 import org.pentaho.ui.xul.XulRunner;
 import org.pentaho.ui.xul.XulServiceCallback;
 import org.pentaho.ui.xul.binding.BindingFactory;
@@ -181,6 +182,10 @@ public abstract class AbstractMqlEditor {
   public void hidePreview() {
     XulDialog dialog = (XulDialog) container.getDocumentRoot().getElementById("mqlEditorDialog");
     dialog.setButtons("accept,cancel");
+  }
+  
+  public void addOverlay(XulOverlay overlay) throws XulException{
+    container.loadOverlay(overlay.getOverlayUri());
   }
 
 }
