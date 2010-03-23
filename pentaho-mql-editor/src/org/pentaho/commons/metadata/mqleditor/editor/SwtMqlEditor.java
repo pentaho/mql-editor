@@ -37,7 +37,7 @@ public class SwtMqlEditor extends AbstractMqlEditor {
     super(parent, repo);
   }
   
-  public SwtMqlEditor(IMetadataDomainRepository repo, MQLEditorServiceImpl service, MQLEditorServiceDelegate delegate) {
+  public SwtMqlEditor(IMetadataDomainRepository repo, MQLEditorService service, MQLEditorServiceDelegate delegate) {
     super(repo, service, delegate);
   }
   

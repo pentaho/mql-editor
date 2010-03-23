@@ -36,7 +36,7 @@ public class SwingMqlEditor extends AbstractMqlEditor {
     super(parent, repo);
   }
   
-  public SwingMqlEditor(IMetadataDomainRepository repo, MQLEditorServiceImpl service, MQLEditorServiceDelegate delegate) {
+  public SwingMqlEditor(IMetadataDomainRepository repo, MQLEditorService service, MQLEditorServiceDelegate delegate) {
     super(repo, service, delegate);
   }
   
