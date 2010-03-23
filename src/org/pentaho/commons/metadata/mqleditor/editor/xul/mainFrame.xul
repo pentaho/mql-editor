@@ -15,11 +15,11 @@
   <dialog id="previewDialog" buttonlabelcancel="${close}" buttons="cancel"
     ondialogcancel="previewController.closeDialog()" buttonalign="right"
     title="${preview.title}" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-    xmlns:pen="http://www.pentaho.org/2008/xul" height="300" width="400">
+    xmlns:pen="http://www.pentaho.org/2008/xul" height="300" width="400" resizable="true">
 
     <vbox padding="10" flex="1">
       <tree editable="false" seltype="none" enableColumnDrag="false" 
-        id="previewTree" flex="1" height="210" width="386">
+        id="previewTree" flex="1">
         <treecols />
         <treechildren />
       </tree>

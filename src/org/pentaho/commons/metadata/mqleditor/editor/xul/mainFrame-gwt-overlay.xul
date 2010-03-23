@@ -38,5 +38,6 @@
 
   <!-- This must be below the tree elements until xul-gwt is fixed -->
   <vbox id="tableContainer" flex="5" height="330"/>
-
+  
+  <tree id="previewTree" height="210" width="386">
 </overlay>
