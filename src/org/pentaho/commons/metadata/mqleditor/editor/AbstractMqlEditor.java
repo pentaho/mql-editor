@@ -74,7 +74,7 @@ public abstract class AbstractMqlEditor {
     setService(new MQLEditorServiceImpl(repo));
   }
   
-  public AbstractMqlEditor(IMetadataDomainRepository repo, MQLEditorServiceImpl service, MQLEditorServiceDelegate delegate) {
+  public AbstractMqlEditor(IMetadataDomainRepository repo, MQLEditorService service, MQLEditorServiceDelegate delegate) {
     init();
     this.repo = repo;
     setService(service);
