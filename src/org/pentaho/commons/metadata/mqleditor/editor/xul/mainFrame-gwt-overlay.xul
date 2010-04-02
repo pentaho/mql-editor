@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<?xml-stylesheet href="file://E:/workspaces/sprint_workspace/pentaho-xul/test/resource/documents/xul.css" type="text/css"?>
 <overlay 
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:pen="http://www.pentaho.org/2008/xul">
   <!-- Mod size -->
@@ -39,5 +38,5 @@
   <!-- This must be below the tree elements until xul-gwt is fixed -->
   <vbox id="tableContainer" flex="5" height="330"/>
   
-  <tree id="previewTree" height="210" width="386">
+  <tree id="previewTree" height="210" width="386"/>
 </overlay>
