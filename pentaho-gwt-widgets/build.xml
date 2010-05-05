@@ -41,6 +41,14 @@
 		</ant>
 	</target>
 
+	<target name="gwt-compile-filechooser" description="GWT Compiles the FileChooser module">
+		<!-- Compile the Widgets modules -->
+		<ant antfile="${gwt.common.build.file}" target="gwt-compile">
+			<property name="gwt-module.path" value="org.pentaho.gwt.widgets.client.filechooser.FileChooser" />
+		</ant>
+	</target>
+
+	
 	<target name="package">
 	    <zip destfile="${gwt.package.zipfile}" compress="true" >
 			<zipfileset dir="${gwt.output.dir}" prefix="">

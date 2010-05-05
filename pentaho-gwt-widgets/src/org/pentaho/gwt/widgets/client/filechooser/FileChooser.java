@@ -25,8 +25,6 @@ import java.util.List;
 import org.pentaho.gwt.widgets.client.dialogs.IDialogCallback;
 import org.pentaho.gwt.widgets.client.dialogs.PromptDialogBox;
 import org.pentaho.gwt.widgets.client.filechooser.images.FileChooserImages;
-import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessages;
-import org.pentaho.gwt.widgets.client.i18n.WidgetsLocalizedMessagesSingleton;
 import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 
 import com.google.gwt.core.client.GWT;
@@ -67,8 +65,6 @@ import com.google.gwt.xml.client.XMLParser;
  */
 @SuppressWarnings("deprecation")
 public class FileChooser extends VerticalPanel {
-
-  private static final WidgetsLocalizedMessages MSGS = WidgetsLocalizedMessagesSingleton.getInstance().getMessages();
 
   public enum FileChooserMode {
     OPEN, OPEN_READ_ONLY, SAVE
@@ -160,13 +156,17 @@ public class FileChooser extends VerticalPanel {
       }
 
       public void onResponseReceived(Request request, Response response) {
-        // ok, we have a repository document, we can build the GUI
-        // consider caching the document
-        solutionRepositoryDocument = (Document) XMLParser.parse((String) response.getText());
-        repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames, fileFilter);
-        initUI(false);
-        if (completedCallback != null) {
-          completedCallback.okPressed();
+        if (response.getStatusCode() == Response.SC_OK) {
+          // ok, we have a repository document, we can build the GUI
+          // consider caching the document
+          solutionRepositoryDocument = (Document) XMLParser.parse((String) response.getText());
+          repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames, fileFilter);
+          initUI(false);
+          if (completedCallback != null) {
+            completedCallback.okPressed();
+          }
+        } else {
+          Window.alert("Solution Repository not found.");
         }
       }
 
@@ -238,7 +238,7 @@ public class FileChooser extends VerticalPanel {
     }
 
     if (fromSearch) {
-      navigationListBox.addItem(MSGS.searchResults(), MSGS.searchResults());
+      navigationListBox.addItem(FileChooserEntryPoint.messages.getString("searchResults"));
     }
 
     navigationListBox.setSelectedIndex(navigationListBox.getItemCount() - 1);
@@ -255,13 +255,13 @@ public class FileChooser extends VerticalPanel {
     clear();
 
     VerticalPanel locationBar = new VerticalPanel();
-    locationBar.add(new Label(MSGS.location()));
+    locationBar.add(new Label(FileChooserEntryPoint.messages.getString("location")));
 
     HorizontalPanel navigationBar = new HorizontalPanel();
 
     final Image searchImage = new Image();
     FileChooserImages.images.search().applyTo(searchImage);
-    searchImage.setTitle(MSGS.search());
+    searchImage.setTitle(FileChooserEntryPoint.messages.getString("search"));
     DOM.setStyleAttribute(searchImage.getElement(), "border", "1px solid white"); //$NON-NLS-1$ //$NON-NLS-2$
     searchImage.addMouseListener(new MouseListener() {
 
@@ -307,13 +307,13 @@ public class FileChooser extends VerticalPanel {
 
           public void okPressed() {
             TreeItem parentItem = new TreeItem();
-            parentItem.setText(MSGS.searchResults());
-            parentItem.setTitle(MSGS.searchResults());
+            parentItem.setText(FileChooserEntryPoint.messages.getString("searchResults"));
+            parentItem.setTitle(FileChooserEntryPoint.messages.getString("searchResults"));
 
             HashMap<String, Object> attributeMap = new HashMap<String, Object>();
-            attributeMap.put(ACTUAL_FILE_NAME, MSGS.searchResults());
-            attributeMap.put(LOCALIZED_FILE_NAME, MSGS.searchResults());
-            attributeMap.put("description", MSGS.searchResults()); //$NON-NLS-1$
+            attributeMap.put(ACTUAL_FILE_NAME, FileChooserEntryPoint.messages.getString("searchResults"));
+            attributeMap.put(LOCALIZED_FILE_NAME, FileChooserEntryPoint.messages.getString("searchResults"));
+            attributeMap.put("description", FileChooserEntryPoint.messages.getString("searchResults")); //$NON-NLS-1$
             attributeMap.put("lastModifiedDate", "" + (new Date()).getTime()); //$NON-NLS-1$ //$NON-NLS-2$
             attributeMap.put("visible", "true"); //$NON-NLS-1$ //$NON-NLS-2$
             attributeMap.put("isDirectory", "true"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -322,12 +322,13 @@ public class FileChooser extends VerticalPanel {
             findMatchingTreeItems(parentItem, repositoryTree.getItem(0), searchTextBox.getText().replace("*", "")); //$NON-NLS-1$ //$NON-NLS-2$
             selectedTreeItem = parentItem;
             previousPath = finalPath;
-            selectedPath = MSGS.searchResults();
+            selectedPath = FileChooserEntryPoint.messages.getString("searchResults");
             initUI(true);
           }
 
         };
-        PromptDialogBox searchDialog = new PromptDialogBox(MSGS.search(), MSGS.ok(), MSGS.cancel(), false, true, suggestTextBox);
+        PromptDialogBox searchDialog = new PromptDialogBox(FileChooserEntryPoint.messages.getString("search"), FileChooserEntryPoint.messages.getString("ok"),
+            FileChooserEntryPoint.messages.getString("cancel"), false, true, suggestTextBox);
         searchDialog.setCallback(callback);
         searchDialog.setFocusWidget(searchTextBox);
         searchDialog.center();
@@ -336,7 +337,7 @@ public class FileChooser extends VerticalPanel {
 
     final Image upDirImage = new Image();
     FileChooserImages.images.up().applyTo(upDirImage);
-    upDirImage.setTitle(MSGS.upOneLevel());
+    upDirImage.setTitle(FileChooserEntryPoint.messages.getString("upOneLevel"));
     upDirImage.addMouseListener(new MouseListener() {
 
       public void onMouseDown(Widget sender, int x, int y) {
@@ -390,14 +391,14 @@ public class FileChooser extends VerticalPanel {
     }
     navigationBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
     navigationBar.add(upDirImage);
-    navigationBar.setCellWidth(upDirImage, "100%");	//$NON-NLS-1$
-    DOM.setStyleAttribute(upDirImage.getElement(), "margin-left", "4px");	//$NON-NLS-1$	//$NON-NLS-2$
-    navigationBar.setWidth("100%");	//$NON-NLS-1$
+    navigationBar.setCellWidth(upDirImage, "100%"); //$NON-NLS-1$
+    DOM.setStyleAttribute(upDirImage.getElement(), "margin-left", "4px"); //$NON-NLS-1$	//$NON-NLS-2$
+    navigationBar.setWidth("100%"); //$NON-NLS-1$
 
     locationBar.add(navigationBar);
     locationBar.setWidth("100%"); //$NON-NLS-1$
 
-    Label filenameLabel = new Label(MSGS.filename());
+    Label filenameLabel = new Label(FileChooserEntryPoint.messages.getString("filename"));
     filenameLabel.setWidth("550px"); //$NON-NLS-1$
     add(filenameLabel);
     fileNameTextBox.setWidth("300px"); //$NON-NLS-1$
@@ -439,11 +440,11 @@ public class FileChooser extends VerticalPanel {
 
     FlexTable filesListTable = new FlexTable();
     filesListTable.setCellSpacing(0);
-    Label nameLabel = new Label(MSGS.name(), false);
+    Label nameLabel = new Label(FileChooserEntryPoint.messages.getString("name"), false);
     nameLabel.setStyleName("fileChooserHeader"); //$NON-NLS-1$
-    Label typeLabel = new Label(MSGS.type(), false);
+    Label typeLabel = new Label(FileChooserEntryPoint.messages.getString("type"), false);
     typeLabel.setStyleName("fileChooserHeader"); //$NON-NLS-1$
-    Label dateLabel = new Label(MSGS.dateModified(), false);
+    Label dateLabel = new Label(FileChooserEntryPoint.messages.getString("dateModified"), false);
     dateLabel.setStyleName("fileChooserHeader"); //$NON-NLS-1$
 
     ElementUtils.preventTextSelection(nameLabel.getElement());
@@ -495,17 +496,17 @@ public class FileChooser extends VerticalPanel {
 
     final Label myNameLabel = new Label(finalFileName, false) {
       public void onBrowserEvent(Event event) {
-        switch(event.getTypeInt()){
-          case Event.ONCLICK:
-          case Event.ONDBLCLICK:
-            handleFileClicked(item, isDir, event, this.getElement());
-            break;
-          case Event.ONMOUSEOVER:
-            this.addStyleDependentName("over"); //$NON-NLS-1$
-            break;
-          case Event.ONMOUSEOUT:
-            this.removeStyleDependentName("over"); //$NON-NLS-1$
-            break;
+        switch (event.getTypeInt()) {
+        case Event.ONCLICK:
+        case Event.ONDBLCLICK:
+          handleFileClicked(item, isDir, event, this.getElement());
+          break;
+        case Event.ONMOUSEOVER:
+          this.addStyleDependentName("over"); //$NON-NLS-1$
+          break;
+        case Event.ONMOUSEOUT:
+          this.removeStyleDependentName("over"); //$NON-NLS-1$
+          break;
         }
       }
     };
@@ -526,7 +527,7 @@ public class FileChooser extends VerticalPanel {
       FileChooserImages.images.folder().applyTo(fileImage);
     } else {
       String fileName = attributeMap.get("name"); //$NON-NLS-1$
-      
+
       if (fileName.endsWith("waqr.xaction")) { //$NON-NLS-1$
         FileChooserImages.images.file_report().applyTo(fileImage);
       } else if (fileName.endsWith("analysisview.xaction")) { //$NON-NLS-1$
@@ -541,7 +542,7 @@ public class FileChooser extends VerticalPanel {
     fileNamePanel.add(myNameLabel);
     DOM.setStyleAttribute(myNameLabel.getElement(), "cursor", "default"); //$NON-NLS-1$ //$NON-NLS-2$
 
-    Label typeLabel = new Label(isDir ? MSGS.folder() : MSGS.file(), false);
+    Label typeLabel = new Label(isDir ? FileChooserEntryPoint.messages.getString("folder") : FileChooserEntryPoint.messages.getString("file"), false);
 
     ElementUtils.preventTextSelection(myNameLabel.getElement());
     ElementUtils.preventTextSelection(typeLabel.getElement());
@@ -611,10 +612,10 @@ public class FileChooser extends VerticalPanel {
       // highlight row
       if (lastSelectedFileElement != null) {
         com.google.gwt.dom.client.Element parentRow = ElementUtils.findElementAboveByTagName(lastSelectedFileElement, "table"); //$NON-NLS-1$
-        parentRow.getStyle().setProperty("background", "white");	//$NON-NLS-1$ //$NON-NLS-2$
+        parentRow.getStyle().setProperty("background", "white"); //$NON-NLS-1$ //$NON-NLS-2$
       }
       com.google.gwt.dom.client.Element parentRow = ElementUtils.findElementAboveByTagName(sourceElement, "table"); //$NON-NLS-1$
-      parentRow.getStyle().setProperty("background", "#B9B9B9");	//$NON-NLS-1$ //$NON-NLS-2$
+      parentRow.getStyle().setProperty("background", "#B9B9B9"); //$NON-NLS-1$ //$NON-NLS-2$
       lastSelectedFileElement = sourceElement;
     }
   }
@@ -668,7 +669,7 @@ public class FileChooser extends VerticalPanel {
         }
       }
     }
-    
+
     @SuppressWarnings("unchecked")
     HashMap<String, Object> attributeMap = (HashMap<String, Object>) selectedItem.getUserObject();
     TreeItem originalItem = (TreeItem) attributeMap.get("original"); //$NON-NLS-1$
@@ -752,15 +753,14 @@ public class FileChooser extends VerticalPanel {
   public void removeFileChooserListener(FileChooserListener listener) {
     listeners.remove(listener);
   }
-  
-  
+
   public FileFilter getFileFilter() {
-  
+
     return fileFilter;
   }
 
   public void setFileFilter(FileFilter fileFilter) {
-  
+
     this.fileFilter = fileFilter;
 
     repositoryTree = TreeBuilder.buildSolutionTree(solutionRepositoryDocument, showHiddenFiles, showLocalizedFileNames, fileFilter);
