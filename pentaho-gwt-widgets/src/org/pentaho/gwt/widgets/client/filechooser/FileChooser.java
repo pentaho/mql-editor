@@ -28,6 +28,8 @@ import org.pentaho.gwt.widgets.client.filechooser.images.FileChooserImages;
 import org.pentaho.gwt.widgets.client.utils.ElementUtils;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -95,6 +97,14 @@ public class FileChooser extends VerticalPanel {
 
   public FileChooser() {
     fileNameTextBox.getElement().setId("fileNameTextBox");
+    
+    // workaround webkit browsers quirk of not being able to set focus in a widget by clicking on it  
+    fileNameTextBox.addClickHandler(new ClickHandler() {      
+      public void onClick(ClickEvent event) {
+        fileNameTextBox.setFocus(true);
+      }
+    });
+    
     fileNameTextBox.addKeyboardListener(new KeyboardListener() {
 
       public void onKeyDown(Widget sender, char keyCode, int modifiers) {
