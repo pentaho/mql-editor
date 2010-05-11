@@ -129,4 +129,9 @@ public class ScheduleEditorWizardPanel extends AbstractWizardPanel {
   public String getRepeatInterval() {
     return scheduleEditor.getRepeatInSecs().toString();
   }
+
+  public void setFocus() {
+    scheduleEditor.setFocus();
+  }
+  
 }

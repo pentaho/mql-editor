@@ -88,7 +88,7 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
 
     };
     setCallback(callback);
-    fileChooser.addFileChooserListener(this);
+    fileChooser.addFileChooserListener(this);    
     fileChooser.initUI(false);
   }
 
@@ -203,6 +203,11 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
   public void center() {
     GlassPane.getInstance().show();
     super.center();
+    setFocus();
+  }
+  
+  private void setFocus() {
+    fileChooser.fileNameTextBox.setFocus(true);
   }
 
 }
