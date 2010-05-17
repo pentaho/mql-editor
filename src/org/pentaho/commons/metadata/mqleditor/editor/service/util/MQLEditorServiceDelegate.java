@@ -796,7 +796,7 @@ public class MQLEditorServiceDelegate {
         cond.setParameterized(true);
         for(Parameter p : query.getParameters()){
           if(p.getName().equals(paramKey)){
-            cond.setDefaultValue(p.getDefaultValue().toString());
+            cond.setDefaultValue(p.getDefaultValue() != null ? p.getDefaultValue().toString() : null);
             break;
           }
         }
