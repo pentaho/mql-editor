@@ -117,9 +117,12 @@ public class ElementUtils {
     return $doc.getElementsByTagName(name);
   }-*/;  
   
-  public static native void convertPNGs() /*-{
-  try{
-    $wnd.fixPNGs();
+  public static native void convertPNGs() 
+  /*-{
+    try {
+      if ($wnd.fixPNGs) {
+        $wnd.fixPNGs();
+      }
     } catch(e){alert("pngfix died: "+e);}
   }-*/;
   

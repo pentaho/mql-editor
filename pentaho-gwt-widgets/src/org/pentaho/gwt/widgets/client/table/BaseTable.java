@@ -118,7 +118,6 @@ public class BaseTable extends Composite {
       this.numberOfColumns = tableHeaderNames.length;
 
       if (selectionPolicy == null){
-        this.selectionPolicy = SelectionPolicy.DISABLED;
       }else{
         this.selectionPolicy = selectionPolicy;
       }
@@ -157,7 +156,7 @@ public class BaseTable extends Composite {
     String[][] simpleMessageRowAndColumnValues = new String[][]{{message, "&nbsp;"}}; //$NON-NLS-1$
     
     createTable(simpleMessageHeaderValues, simpleMessageColumnWidths, simpleMessageRowAndColumnValues, 
-        ScrollTable.ResizePolicy.FIXED_WIDTH, SelectionGrid.SelectionPolicy.DISABLED);
+        ScrollTable.ResizePolicy.FIXED_WIDTH, null);
     
     scrollTable.setSortingEnabled(false);
     scrollTable.setScrollPolicy(ScrollPolicy.DISABLED);
@@ -204,7 +203,7 @@ public class BaseTable extends Composite {
     tableHeader.setCellPadding(2);
     tableHeader.setCellSpacing(0);
     
-    if (this.selectionPolicy == SelectionPolicy.DISABLED){
+    if (this.selectionPolicy == null){
       tableHeader.setStylePrimaryName("disabled"); //$NON-NLS-1$
     }
   }
@@ -241,7 +240,11 @@ public class BaseTable extends Composite {
     // Set style
     dataGrid.setCellPadding(2);
     dataGrid.setCellSpacing(0);
-    dataGrid.setSelectionPolicy(selectionPolicy);
+    if (selectionPolicy == null) {
+      dataGrid.setSelectionPolicy(SelectionPolicy.ONE_ROW);
+    } else {
+      dataGrid.setSelectionPolicy(selectionPolicy);
+    }
 
     // Add table listeners
     for (TableListener listener : tableListeners){
@@ -257,7 +260,7 @@ public class BaseTable extends Composite {
     
     dataGrid.setColumnSorter(new BaseTableColumnSorter());
     
-    if (this.selectionPolicy == SelectionPolicy.DISABLED){
+    if (this.selectionPolicy == null){
       dataGrid.setStylePrimaryName("disabled"); //$NON-NLS-1$
     }
   }
@@ -307,7 +310,7 @@ public class BaseTable extends Composite {
         rowAndColumnValues[0][i] = "&nbsp;"; //$NON-NLS-1$
       }
       
-      dataGrid.setSelectionPolicy(SelectionGrid.SelectionPolicy.DISABLED);
+      dataGrid.setSelectionPolicy(SelectionGrid.SelectionPolicy.ONE_ROW);
       dataGrid.setStylePrimaryName("disabled"); //$NON-NLS-1$
     }
     
@@ -490,7 +493,7 @@ public class BaseTable extends Composite {
    * Deselect all selected rows in the data table.
    */
   public void deselectRows(){
-    dataGrid.deselectRows();
+    dataGrid.deselectAllRows();
   }
   
   public void onResize(){
