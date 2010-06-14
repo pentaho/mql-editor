@@ -4,9 +4,9 @@
 
     <configurations>
         <conf name="default"/>
-        <conf name="test" visibility="private"/>
         <conf name="source"/>
     	<conf name="runtime"/>
+        <conf name="test" visibility="private"/>
         <conf name="codegen" visibility="private"/>
         <conf name="codegen-mac" visibility="private" extends="codegen"/>
         <conf name="codegen-win" visibility="private" extends="codegen"/>
@@ -21,11 +21,11 @@
     <dependencies defaultconf="default->default">
 
 
-        <dependency org="com.google.gwt" name="gwt-servlet" rev="1.7.1" conf="default->default"/>
+        <dependency org="com.google.gwt" name="gwt-servlet" rev="2.0.3" conf="default->default"/>
 
 	    <!-- it doesn't matter what platform of gwt-dev we use here. GWT compile only cares about the API part of the jar -->
-    	<dependency org="com.google.gwt" name="gwt-dev"  rev="1.7.1" m:classifier="windows"  conf="codegen->default"/>        
-    	<dependency org="com.google.gwt" name="gwt-user" rev="1.7.1" conf="codegen->default" />
+    	<dependency org="com.google.gwt" name="gwt-dev"  rev="2.0.3" conf="codegen->default"/>        
+    	<dependency org="com.google.gwt" name="gwt-user" rev="2.0.3" conf="codegen->default" />
 
         <dependency org="pentaho" name="pentaho-mql-editor" rev="${project.revision}" conf="default->default" changing="true" transitive="false">
             <artifact name="pentaho-mql-editor"/>
@@ -64,10 +64,10 @@
             <artifact name="pentaho-gwt-widgets" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
 	    
-        <dependency org="org.zenica" name="gwt-datepicker" rev="r18" conf="default->default"/>
-        <dependency org="com.google.gwt" name="gwt-incubator" rev="1-5_Sept_04" conf="default->default"/>
-        <dependency org="com.allen_sauer" name="gwt-dnd" rev="2.5.6" conf="default->default"/>
-        <dependency org="com.google.code.gwtx" name="gwtx" rev="1.5-20081002" transitive="false" conf="default->default"/>
+        <dependency org="org.zenica" name="gwt-datepicker" rev="r30" conf="default->default"/>
+        <dependency org="com.google.gwt" name="gwt-incubator" rev="2.0.1" conf="default->default"/>
+        <dependency org="com.allen_sauer" name="gwt-dnd" rev="3.0.1" conf="default->default"/>
+        <dependency org="com.google.code.gwtx" name="gwtx" rev="1.5.2" transitive="false" conf="default->default"/>
 	    
     </dependencies>
 </ivy-module>
