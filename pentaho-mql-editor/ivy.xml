@@ -85,8 +85,8 @@
         <dependency org="pentaho" name="pentaho-xul-swing" rev="${dependency.pentaho-xul.revision}" conf="default->default"/>
         <dependency org="pentaho" name="pentaho-xul-swt" rev="${dependency.pentaho-xul.revision}" conf="default->default"/>
 
-    <dependency org="org.eclipse.core" name="commands" rev="3.3.0-I20070605-0010" transitive="false" conf="codegen->default"/>
-    <dependency org="org.eclipse.equinox" name="common" rev="3.3.0-v20070426" transitive="false" conf="codegen->default"/>
+    <dependency org="org.eclipse.core" name="commands" rev="3.3.0-I20070605-0010" transitive="false" conf="test->default"/>
+    <dependency org="org.eclipse.equinox" name="common" rev="3.3.0-v20070426" transitive="false" conf="test->default"/>
 
 
     </dependencies>
