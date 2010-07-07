@@ -26,11 +26,9 @@ import org.pentaho.gwt.widgets.client.dialogs.ResizableDialogBox;
 import org.pentaho.gwt.widgets.client.filechooser.FileChooser.FileChooserMode;
 import org.pentaho.gwt.widgets.client.utils.string.StringUtils;
 
-import com.google.gwt.xml.client.Document;
-
 public class FileChooserDialog extends ResizableDialogBox implements FileChooserListener {
 
-  private static final String ILLEGAL_NAME_CHARS = "\\\'/?%*:|\"<>&";
+  private static final String ILLEGAL_NAME_CHARS = "\\\'/?%*:|\"<>&"; //$NON-NLS-1$
   
   private ArrayList<FileChooserListener> listeners = new ArrayList<FileChooserListener>();
 
@@ -64,14 +62,15 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
     setCallback(callback);
   }
 
-  public FileChooserDialog(FileChooserMode mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal, String title, String okText) {
+  public FileChooserDialog(FileChooserMode mode, String selectedPath, RepositoryFileTree fileTree, boolean autoHide, boolean modal, String title, String okText) {
     super(title, okText, FileChooserEntryPoint.messages.getString("Cancel"), new FileChooser(), true); //$NON-NLS-1$
     fileChooser = (FileChooser) getContent();
     fileChooser.setWidth("100%"); //$NON-NLS-1$
     fileChooser.setMode(mode);
     fileChooser.setSelectedPath(selectedPath);
-    fileChooser.solutionRepositoryDocument = repositoryDocument;
-    fileChooser.repositoryTree = TreeBuilder.buildSolutionTree(repositoryDocument, fileChooser.showHiddenFiles, fileChooser.showLocalizedFileNames, filter);
+    fileChooser.fileTree = fileTree;
+    fileChooser.repositoryTree = TreeBuilder.buildSolutionTree(fileTree, fileChooser.showHiddenFiles, fileChooser.showLocalizedFileNames, filter);
+    fileChooser.selectedTreeItem = fileChooser.repositoryTree.getItem(0); 
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
         return isFileNameValid();
@@ -89,14 +88,14 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
     };
     setCallback(callback);
     fileChooser.addFileChooserListener(this);    
-    fileChooser.initUI(false);
+    fileChooser.initUI();
   }
 
-  public FileChooserDialog(FileChooserMode mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal) {
+  public FileChooserDialog(FileChooserMode mode, String selectedPath, RepositoryFileTree fileTree, boolean autoHide, boolean modal) {
     this(
         mode,
         selectedPath,
-        repositoryDocument,
+        fileTree,
         autoHide,
         modal,
         mode == FileChooserMode.OPEN ? FileChooserEntryPoint.messages.getString("Open") : FileChooserEntryPoint.messages.getString("Save"), mode == FileChooserMode.OPEN ? FileChooserEntryPoint.messages.getString("Open") : FileChooserEntryPoint.messages.getString("Save")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -110,14 +109,6 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
     if (listeners.contains(listener)) {
       listeners.remove(listener);
     }
-  }
-
-  public void setShowSearch(boolean showSearch) {
-    fileChooser.setShowSearch(showSearch);
-  }
-
-  public boolean isShowSearch() {
-    return fileChooser.isShowSearch();
   }
 
   public boolean doesSelectedFileExist() {
@@ -156,9 +147,9 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
 
     // don't allow saving in the root of the solution repository
     String solution = fileChooser.getSolution();
-    if (solution == null || solution.trim().length() == 0) {
+    if ((fileChooser.mode == FileChooserMode.SAVE) && ((solution == null || solution.trim().length() == 0))) {
       MessageDialogBox dialogBox = new MessageDialogBox(FileChooserEntryPoint.messages.getString("error"), FileChooserEntryPoint.messages
-          .getString("noSolutionSelected"), false, false, true);
+          .getString("noSolutionSelected"), false, false, true);//$NON-NLS-1$
       dialogBox.center();
       return false;
     }
@@ -166,30 +157,30 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
     final String fileName = getActualFileName();
     if (StringUtils.isEmpty(fileName)) {
       MessageDialogBox dialogBox = new MessageDialogBox(FileChooserEntryPoint.messages.getString("error"), FileChooserEntryPoint.messages
-          .getString("noFilenameEntered"), false, false, true);
+          .getString("noFilenameEntered"), false, false, true);//$NON-NLS-1$
       dialogBox.center();
       return false;
-    } else if (StringUtils.containsAnyChars(fileName, ILLEGAL_NAME_CHARS)) { //$NON-NLS-1$
+    } else if (StringUtils.containsAnyChars(fileName, ILLEGAL_NAME_CHARS)) { 
       MessageDialogBox dialogBox = new MessageDialogBox(FileChooserEntryPoint.messages.getString("error"), FileChooserEntryPoint.messages
-          .getString("invalidFilename"), false, false, true);
+          .getString("invalidFilename"), false, false, true);//$NON-NLS-1$
       dialogBox.center();
       return false;
     }
     return true;
   }
 
-  public void fileSelected(String solution, String path, String name, String localizedFileName) {
+  public void fileSelected(RepositoryFile file) {
     if (isFileNameValid()) {
       for (FileChooserListener listener : listeners) {
-        listener.fileSelected(solution, path, name, localizedFileName);
+        listener.fileSelected(file);
       }
       this.hide();
     }
   }
 
-  public void fileSelectionChanged(String solution, String path, String name) {
+  public void fileSelectionChanged(RepositoryFile file) {
     for (FileChooserListener listener : listeners) {
-      listener.fileSelectionChanged(solution, path, name);
+      listener.fileSelectionChanged(file);
     }
   }
 

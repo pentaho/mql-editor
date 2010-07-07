@@ -17,70 +17,56 @@
 package org.pentaho.gwt.widgets.client.filechooser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NodeList;
 
 public class TreeBuilder {
 
-  public static Tree buildSolutionTree(Document doc, boolean showHiddenFiles, boolean showLocalizedFileNames, FileFilter filter) {
+  public static Tree buildSolutionTree(RepositoryFileTree fileTree, boolean showHiddenFiles, boolean showLocalizedFileNames, FileFilter filter) {
     // build a tree structure to represent the document
     Tree repositoryTree = new Tree();
     // get document root item
-    Element solutionRoot = doc.getDocumentElement();
+    RepositoryFile rootFile = fileTree.getFile();
     TreeItem rootItem = new TreeItem();
-    rootItem.setText(solutionRoot.getAttribute("path")); //$NON-NLS-1$
-    HashMap<String, Object> attributeMap = new HashMap<String, Object>();
-    attributeMap.put("path", solutionRoot.getAttribute("path")); //$NON-NLS-1$ //$NON-NLS-2$
-    rootItem.setUserObject(attributeMap);
+    rootItem.setText(rootFile.getPath());
+    rootItem.setUserObject(fileTree);
     repositoryTree.addItem(rootItem);
     
     //default file filter that accepts anything
     if(filter == null){
       filter = new DefaultFileFilter();
     }
-    buildSolutionTree(rootItem, solutionRoot, showHiddenFiles, showLocalizedFileNames, filter);
+    buildSolutionTree(rootItem, fileTree, showHiddenFiles, showLocalizedFileNames, filter);
     return repositoryTree;
   }
 
-  private static void buildSolutionTree(TreeItem parentTreeItem, Element parentElement, boolean showHiddenFiles, boolean showLocalizedFileNames, FileFilter filter) {
-    NodeList children = parentElement.getChildNodes();
-    for (int i = 0; i < children.getLength(); i++) {
-      Element childElement = (Element) children.item(i);
-      boolean isVisible = "true".equals(childElement.getAttribute("visible")); //$NON-NLS-1$ //$NON-NLS-2$
-      boolean isDirectory = "true".equals(childElement.getAttribute("isDirectory")); //$NON-NLS-1$ //$NON-NLS-2$
+  private static void buildSolutionTree(TreeItem parentTreeItem, RepositoryFileTree fileTree, boolean showHiddenFiles, boolean showLocalizedFileNames, FileFilter filter) {
+    for (RepositoryFileTree repositoryFileTree: fileTree.getChildren()) {
+      RepositoryFile file = repositoryFileTree.getFile();
+      boolean isVisible = !file.isHidden();
+      boolean isDirectory = file.isFolder();
       
       if (isVisible || showHiddenFiles) {
-        String fileName = childElement.getAttribute("name"); //$NON-NLS-1$
+        String fileName = file.getName(); 
         if(filter.accept(fileName, isDirectory, isVisible) == false){
           continue;
         }
         
-        String localizedName = childElement.getAttribute("localized-name"); //$NON-NLS-1$
         TreeItem childTreeItem = new TreeItem();
+        // TODO There is no concept of filename and a localized filename  in the repository. Do we need this ?
         if (showLocalizedFileNames) {
-          childTreeItem.setText(localizedName);
+          childTreeItem.setText(fileName);
           childTreeItem.setTitle(fileName);
         } else {
           childTreeItem.setText(fileName);
-          childTreeItem.setTitle(localizedName);
+          childTreeItem.setTitle(fileName);
         }
 
         //ElementUtils.preventTextSelection(childTreeItem.getElement());
         
-        HashMap<String, Object> attributeMap = new HashMap<String, Object>();
-        attributeMap.put("name", fileName); //$NON-NLS-1$
-        attributeMap.put("localized-name", childElement.getAttribute("localized-name")); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put("description", childElement.getAttribute("description")); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put("lastModifiedDate", childElement.getAttribute("lastModifiedDate")); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put("visible", childElement.getAttribute("visible")); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put("isDirectory", childElement.getAttribute("isDirectory")); //$NON-NLS-1$ //$NON-NLS-2$
-        childTreeItem.setUserObject(attributeMap);
+        childTreeItem.setUserObject(repositoryFileTree);
 
         // find the spot in the parentTreeItem to insert the node (based on showLocalizedFileNames)
         if (parentTreeItem.getChildCount() == 0) {
@@ -121,7 +107,7 @@ public class TreeBuilder {
         }
 
         if (isDirectory) {
-          buildSolutionTree(childTreeItem, childElement, showHiddenFiles, showLocalizedFileNames, filter);
+          buildSolutionTree(childTreeItem, repositoryFileTree, showHiddenFiles, showLocalizedFileNames, filter);
         }
       }
     }
