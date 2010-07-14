@@ -27,23 +27,26 @@ import org.pentaho.gwt.widgets.client.table.ColumnComparators.BaseColumnComparat
 import org.pentaho.gwt.widgets.client.table.ColumnComparators.ColumnComparatorTypes;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.SourcesTableEvents;
 import com.google.gwt.user.client.ui.TableListener;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widgetideas.table.client.FixedWidthFlexTable;
 import com.google.gwt.widgetideas.table.client.FixedWidthGrid;
 import com.google.gwt.widgetideas.table.client.ScrollTable;
-import com.google.gwt.widgetideas.table.client.SelectionGrid;
 import com.google.gwt.widgetideas.table.client.SortableGrid;
+import com.google.gwt.widgetideas.table.client.SourceTableSelectionEvents;
 import com.google.gwt.widgetideas.table.client.TableSelectionListener;
 import com.google.gwt.widgetideas.table.client.ScrollTable.ResizePolicy;
-import com.google.gwt.widgetideas.table.client.ScrollTable.ScrollPolicy;
 import com.google.gwt.widgetideas.table.client.SelectionGrid.SelectionPolicy;
 import com.google.gwt.widgetideas.table.client.SortableGrid.ColumnSorter;
 import com.google.gwt.widgetideas.table.client.SortableGrid.ColumnSorterCallback;
@@ -52,16 +55,23 @@ import com.google.gwt.widgetideas.table.client.overrides.FlexTable.FlexCellForma
 import com.google.gwt.widgetideas.table.client.overrides.HTMLTable.CellFormatter;
 
 /**
- * Core reusable, feature-rich table widget for displaying tabular data that is based on a composite
- * of a ScrollTable and a FixedWidthGrid.  Instance-specific functionality and sizing/styling 
- * should be implemented in a subclass. 
+ * <p>
+ * Core reusable, table widget for displaying tabular data that is
+ * based on a composite of a ScrollTable and a FixedWidthGrid.
  * 
+ * <p>
  * Usage Notes:
- *   - You must call the populateTable or populateTableWithSimpleMessage method AFTER adding the widget
- *     to the DOM, otherwise the columns will not resize correctly.  If this is not possible, you
- *     can call the fillWidth method after it has been added to the DOM.
- *   - You may need to set the height to a non-percentage value to get the scrollbars to appear.
- *   - Never set the resize policy to FILL_WIDTH or FireFox will experience an ever growing table.
+ * 
+ * <p>
+ * <ul>
+ * <li>You must call the populateTable or populateTableWithSimpleMessage method
+ * AFTER having instanciated it.
+ * <li>It's always better to define the width and height right after
+ * instanciation.
+ * <li>Never set the resize policy to FILL_WIDTH or FireFox will experience an
+ * ever growing table.
+ * </ul>
+ * </p>
  */
 @SuppressWarnings("deprecation")
 public class BaseTable extends Composite {
@@ -82,12 +92,65 @@ public class BaseTable extends Composite {
   private int[] columnWidths;
   private int numberOfColumns;
   private SelectionPolicy selectionPolicy;
-
-  private List<TableListener> doubleClickListeners = new ArrayList<TableListener>();
-  private List<TableListener> tableListeners = new ArrayList<TableListener>();
-  private List<TableSelectionListener> tableSelectionListeners = new ArrayList<TableSelectionListener>();
   private BaseColumnComparator[] columnComparators;
-  
+
+  private final TableListener internalDoubleClickListener = new TableListener() {
+		public void onCellClicked(SourcesTableEvents sender, int row, int cell) {
+			for (TableListener listener : doubleClickListeners) {
+				listener.onCellClicked(sender, row, cell);
+			}
+		}
+	  };
+	  private List<TableListener> doubleClickListeners = new ArrayList<TableListener>();
+	  
+	  private final TableListener internalTableListener = new TableListener() {
+		public void onCellClicked(SourcesTableEvents sender, int row, int cell) {
+			for (TableListener listener : tableListeners) {
+				listener.onCellClicked(sender, row, cell);
+			}
+		}
+	  };
+	  private List<TableListener> tableListeners = new ArrayList<TableListener>();
+	 
+	  private final TableSelectionListener internalSelectionListener = new TableSelectionListener() {
+		public void onRowsSelected(SourceTableSelectionEvents sender, int firstRow, int numRows) {
+			for (TableSelectionListener listener : tableSelectionListeners) {
+				listener.onRowsSelected(sender, firstRow, numRows);
+			}
+		}
+		public void onRowUnhover(SourceTableSelectionEvents sender, int row) {
+			for (TableSelectionListener listener : tableSelectionListeners) {
+				listener.onRowUnhover(sender, row);
+			}
+		}
+		public void onRowHover(SourceTableSelectionEvents sender, int row) {
+			for (TableSelectionListener listener : tableSelectionListeners) {
+				listener.onRowHover(sender, row);
+			}
+		}
+		public void onRowDeselected(SourceTableSelectionEvents sender, int row) {
+			for (TableSelectionListener listener : tableSelectionListeners) {
+				listener.onRowDeselected(sender, row);
+			}
+		}
+		public void onCellUnhover(SourceTableSelectionEvents sender, int row, int cell) {
+			for (TableSelectionListener listener : tableSelectionListeners) {
+				listener.onCellUnhover(sender, row, cell);
+			}
+		}
+		public void onCellHover(SourceTableSelectionEvents sender, int row, int cell) {
+			for (TableSelectionListener listener : tableSelectionListeners) {
+				listener.onCellHover(sender, row, cell);
+			}
+		}
+		public void onAllRowsDeselected(SourceTableSelectionEvents sender) {
+			for (TableSelectionListener listener : tableSelectionListeners) {
+				listener.onAllRowsDeselected(sender);
+			}
+		}
+	  };
+	  private List<TableSelectionListener> tableSelectionListeners = new ArrayList<TableSelectionListener>();
+	  
   /**
    * Simple constructor. 
    */
@@ -133,37 +196,22 @@ public class BaseTable extends Composite {
         this.columnComparators = columnComparators;  
       }
     
-      initWidget(parentPanel);
-    
-      createTableWithShortMessage(MSGS.loading());
+      createTable(
+    		  tableHeaderNames, 
+    		  columnWidths, 
+    		  new Object[0][0], 
+    		  ResizePolicy.FIXED_WIDTH, 
+    		  selectionPolicy);
 
-      parentPanel.setWidth("100%"); //$NON-NLS-1$
-      scrollTable.setWidth("100%"); //$NON-NLS-1$
-      scrollTable.setScrollPolicy(ScrollPolicy.BOTH);
       this.parentPanel.add(scrollTable);
-      //this.fillWidth();
+
+      initWidget(parentPanel);
+
     }else{
       System.err.println(MSGS.tableHeaderInputError());
     }
   }
   
-  /**
-   * Creates a table with blank headers and a single row with a short message in it. 
-   */
-  private void createTableWithShortMessage(String message){
-    String[] simpleMessageHeaderValues = new String[]{"&nbsp;", "&nbsp;"}; //$NON-NLS-1$ //$NON-NLS-2$
-    int[] simpleMessageColumnWidths = new int[]{45, -1};
-    String[][] simpleMessageRowAndColumnValues = new String[][]{{message, "&nbsp;"}}; //$NON-NLS-1$
-    
-    createTable(simpleMessageHeaderValues, simpleMessageColumnWidths, simpleMessageRowAndColumnValues, 
-        ScrollTable.ResizePolicy.FIXED_WIDTH, null);
-    
-    scrollTable.setSortingEnabled(false);
-    scrollTable.setScrollPolicy(ScrollPolicy.DISABLED);
-
-    tableHeader.setStylePrimaryName("disabled"); //$NON-NLS-1$
-    dataGrid.setStylePrimaryName("disabled"); //$NON-NLS-1$
-  }
   
   /**
    * Creates a table with the given headers, column widths, and row/column values using the default
@@ -189,30 +237,44 @@ public class BaseTable extends Composite {
    * Creates and initializes the header for the table.
    */
   private void createTableHeader(String[] tableHeaderNames){
-    tableHeader = new FixedWidthFlexTable();
-    FlexCellFormatter cellFormatter = tableHeader.getFlexCellFormatter();
     
-    // Set header values and disable text selection
+	tableHeader = new FixedWidthFlexTable();
+
+	// Set header values and disable text selection
+    final FlexCellFormatter cellFormatter = tableHeader.getFlexCellFormatter();
     for (int i = 0; i < tableHeaderNames.length; i++){
       tableHeader.setHTML(0, i, tableHeaderNames[i]);
-      
       cellFormatter.setHorizontalAlignment(0, i, HasHorizontalAlignment.ALIGN_LEFT);
-      
     }
-    
-    tableHeader.setCellPadding(2);
-    tableHeader.setCellSpacing(0);
     
     if (this.selectionPolicy == null){
       tableHeader.setStylePrimaryName("disabled"); //$NON-NLS-1$
     }
+    
+    // Figure out the correct widths
+    // Defer it so the DOM has finished the layout.
+    DeferredCommand.addCommand(new Command() {
+        public void execute() {
+        	if (scrollTableWidth != null) {
+        		tableHeader.setWidth(scrollTableWidth);
+        	}
+        	if (columnWidths != null
+        			&& columnWidths.length > 0) 
+        	{
+	        	for (int i = 0; i < columnWidths.length; i++) {
+	        		tableHeader.setColumnWidth(i, columnWidths[i]);
+	        	}
+	        }
+        }
+    });
   }
   
   /**
    * Creates and initializes the data grid. 
    */
   private void createDataGrid(SelectionPolicy selectionPolicy){
-    dataGrid = new FixedWidthGrid(){
+    
+	dataGrid = new FixedWidthGrid(){
       @Override
       public void onBrowserEvent(Event event) {
         Element td = this.getEventTargetCell(event);
@@ -224,9 +286,7 @@ public class BaseTable extends Composite {
         
         switch (DOM.eventGetType(event)) {
           case Event.ONDBLCLICK: {
-            for (TableListener doubleClickListener : doubleClickListeners){
-              doubleClickListener.onCellClicked(this, row, column);
-            }
+        	  internalDoubleClickListener.onCellClicked(dataGrid, row, column);
           }
           default: {
             break;
@@ -236,10 +296,8 @@ public class BaseTable extends Composite {
         super.onBrowserEvent(event);
       }
     };
-    
+      
     // Set style
-    dataGrid.setCellPadding(2);
-    dataGrid.setCellSpacing(0);
     if (selectionPolicy == null) {
       dataGrid.setSelectionPolicy(SelectionPolicy.ONE_ROW);
     } else {
@@ -247,42 +305,58 @@ public class BaseTable extends Composite {
     }
 
     // Add table listeners
-    for (TableListener listener : tableListeners){
-      dataGrid.addTableListener(listener);
-    }
+    dataGrid.addTableListener(internalTableListener);
     
     // Add table selection listeners
-    for (TableSelectionListener listener : tableSelectionListeners){
-      dataGrid.addTableSelectionListener(listener);
-    }
+    dataGrid.addTableSelectionListener(internalSelectionListener);
     
-    dataGrid.sinkEvents(Event.ONDBLCLICK);
-    
+    dataGrid.sinkEvents(Event.ONDBLCLICK);    
     dataGrid.setColumnSorter(new BaseTableColumnSorter());
     
     if (this.selectionPolicy == null){
       dataGrid.setStylePrimaryName("disabled"); //$NON-NLS-1$
     }
+    
+    // Figure out the correct widths
+    // Defer it so the DOM has finished the layout.
+    DeferredCommand.addCommand(new Command() {
+        public void execute() {
+        	if (scrollTableWidth != null) {
+        		dataGrid.setWidth(scrollTableWidth);
+        	}
+        	if (columnWidths != null
+        			&& columnWidths.length > 0) 
+        	{
+	        	for (int i = 0; i < columnWidths.length; i++) {
+	        		dataGrid.setColumnWidth(i, columnWidths[i]);
+	        	}
+	        }
+        }
+    });
+    
+    DeferredCommand.addCommand(new Command() {
+        public void execute() {
+        	internalSelectionListener.onAllRowsDeselected(dataGrid);
+        }
+    });
   }
   
   /**
    * Creates and initializes the scroll table. 
    */
   private void createScrollTable(ResizePolicy resizePolicy){
-    scrollTable = new ScrollTable(dataGrid, tableHeader, (BaseTableImages)GWT.create(BaseTableImages.class));
+    
+	  scrollTable = 
+		  new ScrollTable(
+			  dataGrid, 
+			  tableHeader, 
+			  (BaseTableImages)GWT.create(
+				  BaseTableImages.class));
 
     scrollTable.setResizePolicy(resizePolicy);
+    scrollTable.setCellPadding(0);
+    scrollTable.setCellSpacing(0);
 
-    // Set style
-    if (scrollTableWidth != null){
-      scrollTable.setWidth(scrollTableWidth);
-    }else{
-      scrollTable.setWidth("100%"); //$NON-NLS-1$  
-    }
-    if (scrollTableHeight != null){
-      scrollTable.setHeight(scrollTableHeight);
-    }
-    
     // Set column comparators
     if (columnComparators != null){
       for (int i = 0; i < columnComparators.length; i++){
@@ -293,27 +367,19 @@ public class BaseTable extends Composite {
         }
       }
     }
+    if (this.scrollTableWidth != null) {
+    	this.setWidth(scrollTableWidth);
+    }
+    if (this.scrollTableHeight != null) {
+    	this.setHeight(scrollTableHeight);    	
+    }
   }
   
   /**
    * Populates the data grid with data then sets the column widths. 
    */
   private void populateDataGrid(int[] columnWidths, Object[][] rowAndColumnValues){
-    CellFormatter cellFormatter;
-    
-    // If values are invalid, create a blank/disabled row so that table headers will resize properly
-    // then set the style for this case
-    if (!isRowAndColumnValuesValid(rowAndColumnValues)){
-      rowAndColumnValues = new String[1][tableHeaderNames.length];
-      
-      for (int i = 0; i < tableHeaderNames.length; i++){
-        rowAndColumnValues[0][i] = "&nbsp;"; //$NON-NLS-1$
-      }
-      
-      dataGrid.setSelectionPolicy(SelectionGrid.SelectionPolicy.ONE_ROW);
-      dataGrid.setStylePrimaryName("disabled"); //$NON-NLS-1$
-    }
-    
+   
     // Set table values
     for (int i = 0; i < rowAndColumnValues.length; i++){
       for (int j = 0; j < rowAndColumnValues[i].length; j++){
@@ -326,6 +392,8 @@ public class BaseTable extends Composite {
             dataGrid.setWidget(i, j, (Widget)value);
           } else {
             System.err.print(MSGS.invalidDataGridTypeSet());
+            Window.alert(MSGS.invalidDataGridTypeSet());
+			return;
           }
         }
       }
@@ -341,9 +409,9 @@ public class BaseTable extends Composite {
       }
     }
     
-    cellFormatter = dataGrid.getCellFormatter();
     
     // Set cell styles/tooltip for data grid cells
+    final CellFormatter cellFormatter = dataGrid.getCellFormatter();
     for (int i = 0; i < rowAndColumnValues.length; i++){
       for (int j = 0; j < rowAndColumnValues[i].length; j++){
         Object value = rowAndColumnValues[i][j];
@@ -361,58 +429,31 @@ public class BaseTable extends Composite {
         }
       }
     }
+    
+    DeferredCommand.addCommand(new Command() {
+        public void execute() {
+        	internalSelectionListener.onAllRowsDeselected(dataGrid);
+        }
+    });
   }
   
-  /**
-   * Checks to see that row and column values are populated.
-   */
-  private boolean isRowAndColumnValuesValid(Object[][] rowAndColumnValues){
-    if (rowAndColumnValues == null || rowAndColumnValues.length == 0 || rowAndColumnValues[0].length == 0){
-      return false;
-    }
-    
-    for (int i = 0; i < rowAndColumnValues.length; i++){
-      for (int j = 0; j < rowAndColumnValues[i].length; j++){
-        if (rowAndColumnValues[i][j] != null){
-          return true;
-        }
-      }
-    }
-    
-    return false;
-  }
   
   /**
    * Creates the table using the default values specified in the constructor but with new data for
    * the rows. 
    */
   public void populateTable(Object[][] rowAndColumnValues){
-    parentPanel.clear();
+    
+	parentPanel.clear();
 
     createTable(tableHeaderNames, columnWidths, rowAndColumnValues);  
+    
     parentPanel.add(scrollTable);
     
-    // scrollTable.fillWidth(); is not sufficient, need explicitly set width
-    // http://code.google.com/p/google-web-toolkit-incubator/issues/detail?id=47
     scrollTable.fillWidth();
-    scrollTable.getHeaderTable().setWidth("100%"); //$NON-NLS-1$
-    scrollTable.getDataTable().setWidth("100%"); //$NON-NLS-1$
-    
+      
   }
   
-  /**
-   * Creates a table with a short message for the user.  Message may contain HTML.
-   */
-  public void populateTableWithSimpleMessage(String simpleMessage){
-    parentPanel.clear();
-    
-    createTableWithShortMessage(simpleMessage);
-    
-    parentPanel.add(scrollTable);
-    
-    scrollTable.fillWidth();    
-  }
-
   /**
    * Adds an additional table listener in addition to the default listener. 
    */
@@ -433,25 +474,7 @@ public class BaseTable extends Composite {
   public void addDoubleClickListener(TableListener listener){
     doubleClickListeners.add(listener);
   }
-    
-  /**
-   * Use setTableHeight instead.
-   */
-  @Deprecated
-  public void setHeight(String height){
-    this.scrollTableHeight = height;
-  }
   
-  /**
-   * Warning: You may need to set the height to a non-percentage value to get the scrollbars to appear.
-   */
-  public void setTableHeight(String height){
-    this.scrollTableHeight = height;
-  }
-  
-  public void setTableWidth(String width){
-    this.scrollTableWidth = width;
-  }
   
   /**
    * Gets the text within the specified cell.
@@ -478,16 +501,9 @@ public class BaseTable extends Composite {
    * Returns the set of selected row indexes.
    */
   public Set<Integer> getSelectedRows(){
-    return dataGrid.getSelectedRows();
+	return dataGrid.getSelectedRows();		
   }
   
-  /**
-   * Adjusts all column widths so they take up the maximum amount of space
-   * without needing a horizontal scroll bar. 
-   */
-  public void fillWidth(){
-    scrollTable.fillWidth();
-  }
   
   /**
    * Deselect all selected rows in the data table.
@@ -496,18 +512,16 @@ public class BaseTable extends Composite {
     dataGrid.deselectAllRows();
   }
   
-  public void onResize(){
-    if(scrollTable != null){
-      scrollTable.onResize(scrollTable.getOffsetWidth(), scrollTable.getOffsetHeight());
-    }
-  }
-  
   /**
    * Default column sorter for this class.
    */
   final class BaseTableColumnSorter extends ColumnSorter {
-    public void onSortColumn(SortableGrid grid,
-        ColumnSortList sortList, ColumnSorterCallback callback){
+    
+	public void onSortColumn(
+			SortableGrid grid,
+			ColumnSortList sortList, 
+			ColumnSorterCallback callback)
+	{
       
       // Get the primary column and sort order
       int column = sortList.getPrimaryColumn();
@@ -542,4 +556,46 @@ public class BaseTable extends Composite {
     }
   };
   
+  	/*
+  	 * (non-Javadoc)
+  	 * @see com.google.gwt.user.client.ui.UIObject#setWidth(java.lang.String)
+  	 */
+    @Override
+	public void setWidth(final String width) {
+		super.setWidth(width);
+		this.scrollTableWidth = width;
+		// It sounds silly to resize this way but we need to let the browser
+		// update the DOM before we recompute sizes. IE doesn't return
+		// correct values when you perform too many dynamically computed resizes.
+		DeferredCommand.addCommand(new Command() {
+            public void execute() {
+            	if (scrollTable != null) {
+            		scrollTable.setWidth(width);
+            		scrollTable.fillWidth();
+            		scrollTable.redraw();
+            	}
+            }
+        });
+	}
+	
+    /*
+     * (non-Javadoc)
+     * @see com.google.gwt.user.client.ui.UIObject#setHeight(java.lang.String)
+     */
+	@Override
+	public void setHeight(final String height) {
+		super.setHeight(height);
+		this.scrollTableHeight = height;
+		// It sounds silly to resize this way but we need to let the browser
+		// update the DOM before we recompute sizes. IE doesn't return
+		// correct values when you perform too many dynamically computed resizes.
+		DeferredCommand.addCommand(new Command() {
+            public void execute() {
+            	if (scrollTable != null) {
+            		scrollTable.setHeight(height);
+            		scrollTable.redraw();
+            	}
+            }
+        });
+	}
 }
