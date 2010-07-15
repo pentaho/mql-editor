@@ -227,7 +227,7 @@ public class BaseTable extends Composite {
   private void createTable(String[] tableHeaderNames, int[] columnWidths, Object[][] rowAndColumnValues, 
       ResizePolicy resizePolicy, SelectionPolicy selectionPolicy){
     
-    createTableHeader(tableHeaderNames);
+    createTableHeader(tableHeaderNames, columnWidths);
     createDataGrid(selectionPolicy);
     createScrollTable(resizePolicy);
     populateDataGrid(columnWidths, rowAndColumnValues);
@@ -236,7 +236,7 @@ public class BaseTable extends Composite {
   /**
    * Creates and initializes the header for the table.
    */
-  private void createTableHeader(String[] tableHeaderNames){
+  private void createTableHeader(String[] tableHeaderNames, final int[] columnWidths){
     
 	tableHeader = new FixedWidthFlexTable();
 
@@ -436,6 +436,48 @@ public class BaseTable extends Composite {
         }
     });
   }
+
+  /**
+   * Makes this table fill all available width.
+   */
+  public void fillWidth() {
+	  scrollTable.fillWidth();
+  }
+  
+  
+  /**
+   * Displays a message to the user in the table instead of
+   * data.
+   * Deprecated in favor of {@link BaseTable#showMessage(String)}
+   */
+  @Deprecated
+  public void populateTableWithSimpleMessage(final String message) {
+	  showMessage(message);
+  }
+  
+  /**
+   * Makes this table display a message instead of the column data.
+   * @param message The message to display.
+   */
+  public void showMessage(String message) {
+	
+	  	parentPanel.clear();
+	  
+	  	String[] simpleMessageHeaderValues = new String[]{"&nbsp;"}; //$NON-NLS-1$ //$NON-NLS-2$
+		String[][] simpleMessageRowAndColumnValues = new String[][]{{message, "&nbsp;"}}; //$NON-NLS-1$
+		
+		createTable(
+				simpleMessageHeaderValues, 
+				null, 
+				simpleMessageRowAndColumnValues, 
+				ResizePolicy.FIXED_WIDTH, 
+				selectionPolicy);
+		
+		parentPanel.add(scrollTable);
+
+		fillWidth();
+  }
+  
   
   
   /**
@@ -597,5 +639,24 @@ public class BaseTable extends Composite {
             	}
             }
         });
+	}
+	
+	
+	/**
+	 * Sets this widget to the desired height.
+	 * Deprecated signature. Use {@link BaseTable#setHeight(String)}
+	 */
+	@Deprecated
+	public void setTableHeight(final String height) {
+		setHeight(height);
+	}
+	
+	/**
+	 * Sets this widget to the desired height.
+	 * Deprecated signature. Use {@link BaseTable#setWidth(String)}
+	 */
+	@Deprecated
+	public void setTableWidth(final String width) {
+		setWidth(width);
 	}
 }
