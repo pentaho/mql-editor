@@ -269,11 +269,19 @@ public class BaseTable extends Composite {
     DeferredCommand.addCommand(new Command() {
       public void execute() {
         if (scrollTableWidth != null) {
-          tableHeader.setWidth(scrollTableWidth);
+          if (scrollTableWidth.endsWith("px")) {
+            // This dumb hack is to prevent the headers from spawning over
+            // the scroll bars when the width is defined as a px value.
+            int properWidth = Integer.valueOf(
+                scrollTableWidth.substring(0, scrollTableWidth.length()-2)) - 15;
+            tableHeader.setWidth(String.valueOf(properWidth));
+          } else {
+            tableHeader.setWidth(scrollTableWidth);
+          }
         }
         if (columnWidths != null && columnWidths.length > 0) {
           for (int i = 0; i < columnWidths.length; i++) {
-            tableHeader.setColumnWidth(i, columnWidths[i]);
+            tableHeader.setColumnWidth(i, columnWidths[i] - 15/columnWidths.length);
           }
         }
       }
@@ -334,7 +342,15 @@ public class BaseTable extends Composite {
     DeferredCommand.addCommand(new Command() {
       public void execute() {
         if (scrollTableWidth != null) {
-          dataGrid.setWidth(scrollTableWidth);
+          if (scrollTableWidth.endsWith("px")) {
+            // This dumb hack is to prevent the headers from spawning over
+            // the scroll bars when the width is defined as a px value.
+            int properWidth = Integer.valueOf(
+                scrollTableWidth.substring(0, scrollTableWidth.length()-2)) - 15;
+            dataGrid.setWidth(String.valueOf(properWidth));
+          } else {
+            dataGrid.setWidth(scrollTableWidth);
+          }
         }
         if (columnWidths != null && columnWidths.length > 0) {
           for (int i = 0; i < columnWidths.length; i++) {
