@@ -1,0 +1,123 @@
+.gwt-ScrollTable {
+	border: 1px solid #AAAAAA;
+}
+
+.gwt-ScrollTable .headerWrapper {
+	background: #c2cfa2 repeat-x scroll left bottom;
+}
+
+.gwt-ScrollTable .footerWrapper {
+	background: #88BBDD url(images/bg_header_gradient.gif) repeat-x scroll left bottom;
+	border-top: 1px solid #AAAAAA;
+}
+
+.gwt-ScrollTable .dataTable td {
+	overflow: hidden;
+	padding: 4px;
+	white-space: nowrap;
+}
+
+.gwt-ScrollTable .headerTable td {
+	font-weight: normal;
+	color: #000000;
+	border-right: 1px solid #AAAAAA;
+	font-size:12px;
+	overflow-x: hidden; 
+}
+
+.gwt-ScrollTable .headerTable-disabled td {
+	font-weight: normal;
+	color: #000000;
+	border-right: 0px;
+}
+
+.gwt-ScrollTable .dataTable tr {
+	background: white;
+}
+
+.gwt-ScrollTable .dataTable-disabled tr {
+	background: white;
+}
+
+.gwt-ScrollTable .dataTable td {
+	border-bottom: 1px solid #BEBEBE;
+}
+
+.gwt-ScrollTable .dataTable-disabled td {
+	border-bottom: 0px;
+}
+
+.gwt-ScrollTable .dataTable tr.hovering {
+	cursor: pointer;
+	cursor: hand;
+}
+
+.gwt-ScrollTable .dataTable-disabled tr.hovering {
+	cursor: default;
+}
+
+.gwt-ScrollTable .dataTable td.hovering {
+	cursor: pointer;
+	cursor: hand;
+}
+
+.gwt-ScrollTable .dataTable-disabled td.hovering {
+	cursor: default;
+}
+
+.gwt-ScrollTable .dataTable tr.selected {
+	background: #BEBEBE none repeat scroll 0% 0%;
+}
+
+.gwt-ScrollTable .pagingOptions {
+	background: #E8EEF7 none repeat scroll 0% 0%;
+	border-right: 1px solid #AAAAAA;
+	border-top: 1px solid #AAAAAA;
+	padding: 1px 0px;
+}
+
+.gwt-ScrollTable .pagingOptions .errorLabel {
+	color: red;
+}
+
+.gwt-CellEditor {
+	background: white none repeat scroll 0% 0%;
+	border: 3px solid #BEBEBE;
+	padding: 4px;
+}
+
+.gwt-CellEditor td {
+	padding: 4px;
+}
+
+.gwt-TabBar {
+
+}
+
+.gwt-TabBar .gwt-TabBarFirst {
+
+}
+
+.gwt-TabBar .gwt-TabBarRest {
+	
+}
+
+.gwt-TabBar .gwt-TabBarItem {
+	background: #EEEEEE none repeat scroll 0% 0%;
+	border-right: 1px solid blue;
+	border-top: 1px solid blue;
+	padding: 7px;
+}
+
+.gwt-TabBar .gwt-TabBarItem-selected {
+	background: #FFFF00 none repeat scroll 0% 0%;
+}
+
+.gwt-TabPanel {
+	
+}
+
+.gwt-TabPanelBottom {
+	border: 2px solid blue;
+	padding: 5px;
+}

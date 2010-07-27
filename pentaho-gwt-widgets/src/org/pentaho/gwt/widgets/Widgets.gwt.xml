@@ -23,6 +23,7 @@
       <stylesheet src='gwt-dnd.css' />
       <stylesheet src='Widgets.css' />
       <stylesheet src='toolbar.css' />
+      <stylesheet src='ScrollTable.css' />
       
       <!-- Specify the app entry point class.                   -->
 	  <entry-point class='org.pentaho.gwt.widgets.client.WidgetModule'/>
