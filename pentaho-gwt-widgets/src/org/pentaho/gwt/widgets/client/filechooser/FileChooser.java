@@ -154,7 +154,7 @@ public class FileChooser extends VerticalPanel {
   public void fetchRepositoryDocument(final IDialogCallback completedCallback) throws RequestException {
     RequestBuilder builder = null;
     if (GWT.isScript()) {
-      builder = new RequestBuilder(RequestBuilder.GET, "SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url,*.prpt"); //$NON-NLS-1$
+      builder = new RequestBuilder(RequestBuilder.GET, getWebAppRoot()+"SolutionRepositoryService?component=getSolutionRepositoryDoc&filter=*.xaction,*.url,*.prpt"); //$NON-NLS-1$
     } else {
       builder = new RequestBuilder(RequestBuilder.GET,
           "http://localhost:8080/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc&userid=joe&password=password"); //$NON-NLS-1$
@@ -513,6 +513,9 @@ public class FileChooser extends VerticalPanel {
           break;
         case Event.ONMOUSEOVER:
           this.addStyleDependentName("over"); //$NON-NLS-1$
+          if(isMobileSafari()){
+            handleFileClicked(item, isDir, event, this.getElement());
+          }
           break;
         case Event.ONMOUSEOUT:
           this.removeStyleDependentName("over"); //$NON-NLS-1$
@@ -573,6 +576,8 @@ public class FileChooser extends VerticalPanel {
       eventWeCareAbout = true;
     } else if ((DOM.eventGetType(event) & Event.ONCLICK) == Event.ONCLICK) {
       eventWeCareAbout = true;
+    } else if(isMobileSafari() && (DOM.eventGetType(event) & Event.ONMOUSEOVER) == Event.ONMOUSEOVER){
+      eventWeCareAbout = true;
     }
     if (eventWeCareAbout) {
       setFileSelected(true);
@@ -610,7 +615,7 @@ public class FileChooser extends VerticalPanel {
       }
     }
     // double click
-    if ((DOM.eventGetType(event) & Event.ONDBLCLICK) == Event.ONDBLCLICK) {
+    if ((DOM.eventGetType(event) & Event.ONDBLCLICK) == Event.ONDBLCLICK || (isMobileSafari() && (DOM.eventGetType(event) & Event.ONMOUSEOVER) == Event.ONMOUSEOVER)) {
       if (isDir) {
         initUI(false);
       } else {
@@ -822,4 +827,21 @@ public class FileChooser extends VerticalPanel {
     this.showSearch = showSearch;
     initUI(false);
   }
+
+  /**
+   * Safari Mobile behaves differently than browsers on a computer. These rules may extend to other mobile browsers.
+   * @return
+   */
+  public native boolean isMobileSafari()/*-{
+    return (window.orientation !== undefined);
+  }-*/;
+
+  public native String getWebAppRoot()/*-{
+    if($wnd.WEB_CONTEXT_BASE){
+      return $wnd.WEB_CONTEXT_BASE+"/";
+    }
+    return "";
+  }-*/;
+
+
 }

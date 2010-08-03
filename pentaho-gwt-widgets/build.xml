@@ -58,7 +58,7 @@
 	    </zip>
 	</target>
 	
-    <target name="dist" depends="jar, gwt-compile, package">
+    <target name="dist" depends="jar, gwt-compile, gwt-compile-filechooser, package">
     </target>
 
 

@@ -43,6 +43,7 @@ public class FileChooserEntryPoint implements EntryPoint, IResourceBundleLoadCal
    try {
      callback.fileSelected(solution, path, name, localizedFileName);
    } catch (ex) {
+     alert(ex);
    }
   }-*/;
   
@@ -59,7 +60,7 @@ public class FileChooserEntryPoint implements EntryPoint, IResourceBundleLoadCal
   }
   
   public void saveFileChooserDialog(final JavaScriptObject callback, String selectedPath) {
-    FileChooserDialog dialog = new FileChooserDialog(FileChooserMode.OPEN, selectedPath, false, true);
+    FileChooserDialog dialog = new FileChooserDialog(FileChooserMode.SAVE, selectedPath, false, true);
     dialog.addFileChooserListener(new FileChooserListener() {
       public void fileSelected(String solution, String path, String name, String localizedFileName) {
         notifyCallback(callback, solution, path, name, localizedFileName);

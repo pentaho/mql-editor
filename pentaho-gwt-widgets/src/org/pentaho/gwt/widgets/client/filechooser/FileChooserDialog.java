@@ -18,17 +18,13 @@ package org.pentaho.gwt.widgets.client.filechooser;
 
 import java.util.ArrayList;
 
-import org.pentaho.gwt.widgets.client.dialogs.GlassPane;
-import org.pentaho.gwt.widgets.client.dialogs.IDialogCallback;
-import org.pentaho.gwt.widgets.client.dialogs.IDialogValidatorCallback;
-import org.pentaho.gwt.widgets.client.dialogs.MessageDialogBox;
-import org.pentaho.gwt.widgets.client.dialogs.ResizableDialogBox;
+import org.pentaho.gwt.widgets.client.dialogs.*;
 import org.pentaho.gwt.widgets.client.filechooser.FileChooser.FileChooserMode;
 import org.pentaho.gwt.widgets.client.utils.string.StringUtils;
 
 import com.google.gwt.xml.client.Document;
 
-public class FileChooserDialog extends ResizableDialogBox implements FileChooserListener {
+public class FileChooserDialog extends PromptDialogBox implements FileChooserListener {
 
   private static final String ILLEGAL_NAME_CHARS = "\\\'/?%*:|\"<>&";
   
@@ -42,9 +38,10 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
   }
 
   public FileChooserDialog(FileChooserMode mode, String selectedPath, boolean autoHide, boolean modal, String title, String okText) {
-    super(title, okText, FileChooserEntryPoint.messages.getString("Cancel"), new FileChooser(mode, //$NON-NLS-1$
-        selectedPath), true);
-    fileChooser = (FileChooser) getContent();
+    super(title, okText, FileChooserEntryPoint.messages.getString("Cancel"), false, true);
+      
+    fileChooser = new FileChooser(mode, selectedPath);
+    this.setContent(fileChooser);
     fileChooser.setWidth("100%"); //$NON-NLS-1$
     setValidatorCallback(new IDialogValidatorCallback() {
       public boolean validate() {
@@ -62,11 +59,13 @@ public class FileChooserDialog extends ResizableDialogBox implements FileChooser
 
     };
     setCallback(callback);
+    fileChooser.addFileChooserListener(this);
   }
 
   public FileChooserDialog(FileChooserMode mode, String selectedPath, Document repositoryDocument, boolean autoHide, boolean modal, String title, String okText) {
-    super(title, okText, FileChooserEntryPoint.messages.getString("Cancel"), new FileChooser(), true); //$NON-NLS-1$
-    fileChooser = (FileChooser) getContent();
+    super(title, okText, FileChooserEntryPoint.messages.getString("Cancel"), false, true); //$NON-NLS-1$
+    fileChooser = new FileChooser();
+    setContent(fileChooser);
     fileChooser.setWidth("100%"); //$NON-NLS-1$
     fileChooser.setMode(mode);
     fileChooser.setSelectedPath(selectedPath);
