@@ -86,7 +86,7 @@ public class BaseTable extends Composite {
   private ScrollTable scrollTable;
 
   private FixedWidthFlexTable tableHeader;
-
+  
   private FixedWidthGrid dataGrid;
 
   private String[] tableHeaderNames;
@@ -198,6 +198,8 @@ public class BaseTable extends Composite {
       this.columnWidths = columnWidths;
       this.numberOfColumns = tableHeaderNames.length;
 
+      this.parentPanel.setWidth("100%");
+
       if (selectionPolicy == null) {
       } else {
         this.selectionPolicy = selectionPolicy;
@@ -217,6 +219,7 @@ public class BaseTable extends Composite {
       createTable(tableHeaderNames, columnWidths, new Object[0][0], ResizePolicy.FIXED_WIDTH, selectionPolicy);
 
       this.parentPanel.add(scrollTable);
+      scrollTable.fillWidth();
 
       initWidget(parentPanel);
 
@@ -238,8 +241,8 @@ public class BaseTable extends Composite {
    * Creates a table with the given headers, column widths, row/column values, and resize policy. 
    */
   private void createTable(String[] tableHeaderNames, int[] columnWidths, Object[][] rowAndColumnValues,
-      ResizePolicy resizePolicy, SelectionPolicy selectionPolicy) {
-
+      ResizePolicy resizePolicy, SelectionPolicy selectionPolicy) 
+  {
     createTableHeader(tableHeaderNames, columnWidths);
     createDataGrid(selectionPolicy);
     createScrollTable(resizePolicy);
@@ -258,34 +261,12 @@ public class BaseTable extends Composite {
     for (int i = 0; i < tableHeaderNames.length; i++) {
       tableHeader.setHTML(0, i, tableHeaderNames[i]);
       cellFormatter.setHorizontalAlignment(0, i, HasHorizontalAlignment.ALIGN_LEFT);
+      cellFormatter.setWordWrap(0, i, false);
     }
 
     if (this.selectionPolicy == null) {
       tableHeader.setStylePrimaryName("disabled"); //$NON-NLS-1$
     }
-
-    // Figure out the correct widths
-    // Defer it so the DOM has finished the layout.
-    DeferredCommand.addCommand(new Command() {
-      public void execute() {
-        if (scrollTableWidth != null) {
-          if (scrollTableWidth.endsWith("px")) {
-            // This dumb hack is to prevent the headers from spawning over
-            // the scroll bars when the width is defined as a px value.
-            int properWidth = Integer.valueOf(
-                scrollTableWidth.substring(0, scrollTableWidth.length()-2)) - 15;
-            tableHeader.setWidth(String.valueOf(properWidth));
-          } else {
-            tableHeader.setWidth(scrollTableWidth);
-          }
-        }
-        if (columnWidths != null && columnWidths.length > 0) {
-          for (int i = 0; i < columnWidths.length; i++) {
-            tableHeader.setColumnWidth(i, columnWidths[i] - 15/columnWidths.length);
-          }
-        }
-      }
-    });
   }
 
   /**
@@ -317,6 +298,8 @@ public class BaseTable extends Composite {
       }
     };
 
+    dataGrid.setWidth("100%");
+    
     // Set style
     if (selectionPolicy == null) {
       dataGrid.setSelectionPolicy(SelectionPolicy.ONE_ROW);
@@ -337,29 +320,6 @@ public class BaseTable extends Composite {
       dataGrid.setStylePrimaryName("disabled"); //$NON-NLS-1$
     }
 
-    // Figure out the correct widths
-    // Defer it so the DOM has finished the layout.
-    DeferredCommand.addCommand(new Command() {
-      public void execute() {
-        if (scrollTableWidth != null) {
-          if (scrollTableWidth.endsWith("px")) {
-            // This dumb hack is to prevent the headers from spawning over
-            // the scroll bars when the width is defined as a px value.
-            int properWidth = Integer.valueOf(
-                scrollTableWidth.substring(0, scrollTableWidth.length()-2)) - 15;
-            dataGrid.setWidth(String.valueOf(properWidth));
-          } else {
-            dataGrid.setWidth(scrollTableWidth);
-          }
-        }
-        if (columnWidths != null && columnWidths.length > 0) {
-          for (int i = 0; i < columnWidths.length; i++) {
-            dataGrid.setColumnWidth(i, columnWidths[i]);
-          }
-        }
-      }
-    });
-
     DeferredCommand.addCommand(new Command() {
       public void execute() {
         internalSelectionListener.onAllRowsDeselected(dataGrid);
@@ -373,6 +333,7 @@ public class BaseTable extends Composite {
   private void createScrollTable(ResizePolicy resizePolicy) {
 
     scrollTable = new ScrollTable(dataGrid, tableHeader, (BaseTableImages) GWT.create(BaseTableImages.class));
+    
 
     scrollTable.setResizePolicy(resizePolicy);
     scrollTable.setCellPadding(0);
@@ -394,6 +355,19 @@ public class BaseTable extends Composite {
     if (this.scrollTableHeight != null) {
       this.setHeight(scrollTableHeight);
     }
+    
+    if (columnWidths != null && columnWidths.length > 0) {
+      for (int i = 0; i < columnWidths.length; i++) {
+        if (columnWidths[i] > 0) {
+          scrollTable.setColumnWidth(i, columnWidths[i]);
+        }
+      }
+    }
+    
+    if (scrollTableWidth != null) {
+      scrollTable.setWidth(scrollTableWidth);
+    }
+    scrollTable.fillWidth();
   }
 
   /**
@@ -499,15 +473,9 @@ public class BaseTable extends Composite {
    * the rows. 
    */
   public void populateTable(Object[][] rowAndColumnValues) {
-
     parentPanel.clear();
-
     createTable(tableHeaderNames, columnWidths, rowAndColumnValues);
-
     parentPanel.add(scrollTable);
-
-    scrollTable.fillWidth();
-
   }
 
   /**
@@ -621,7 +589,7 @@ public class BaseTable extends Composite {
     DeferredCommand.addCommand(new Command() {
       public void execute() {
         if (scrollTable != null) {
-          scrollTable.setWidth(width);
+          parentPanel.setWidth(width);
           scrollTable.fillWidth();
           scrollTable.redraw();
         }
