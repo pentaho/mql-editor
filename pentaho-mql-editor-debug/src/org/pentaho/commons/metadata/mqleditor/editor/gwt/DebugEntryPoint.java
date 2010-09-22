@@ -135,15 +135,15 @@ public class DebugEntryPoint implements EntryPoint {
         editor.addMqlDialogListener(listener);
         
         Window.alert("showing dialog");
+        editor.show();
         editor.setSelectedDomainId(domainId);
         editor.setSelectedModelId(modelId);
-        editor.show();
         editor.removeMqlDialogListener(this);
       }
       
     });
-    editor.updateDomainList();
-    
+    editor.loadDomainById(domainId);
+
   }
   
 

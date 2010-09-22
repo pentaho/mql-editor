@@ -233,36 +233,49 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
           listener.onDialogReady();
         }
       }
-      
+
     });
   }
-  
+
+  public void loadDomainById(final String domainId) {
+    service.getDomainByName(domainId, new XulServiceCallback<MqlDomain>() {
+
+      @Override
+      public void success(MqlDomain mqlDomain) {
+        if (mqlDomain != null) {
+          List<MqlDomain> domains = new ArrayList<MqlDomain>();
+          domains.add(mqlDomain);
+          updateDomains(domains);
+          for(MqlDialogListener listener : listeners){
+            listener.onDialogReady();
+          }
+        } else {
+          Window.alert("could not find the requested domain - " + domainId);
+        }
+      }
+
+      @Override
+      public void error(String s, Throwable throwable) {
+        Window.alert("could not find the requested domain - " + domainId);
+      }
+    });
+  }
+
   private void setService(MQLEditorService service){
     this.service = service;
     previewController.setService(service);
     mainController.setService(service);
-    service.getMetadataDomains(new XulServiceCallback<List<MqlDomain>>() {
 
-      public void error(String message, Throwable error) {
-        Window.alert("could not get list of metadata domains");
-      }
+    for(MqlDialogListener listener : listeners){
+      listener.onDialogReady();
+    }
 
-      public void success(List<MqlDomain> domains) {
-        updateDomains(domains);
-        
-        for(MqlDialogListener listener : listeners){
-          listener.onDialogReady();
-        }
-        
-        try {
-          bundle = new ResourceBundle(GWT.getModuleBaseURL(),"mainFrame", true, GwtMqlEditor.this );
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-      
-    });
-    
+    try {
+      bundle = new ResourceBundle(GWT.getModuleBaseURL(),"mainFrame", true, GwtMqlEditor.this );
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
   }
   
   public void updateDomains(List<MqlDomain> domains) {

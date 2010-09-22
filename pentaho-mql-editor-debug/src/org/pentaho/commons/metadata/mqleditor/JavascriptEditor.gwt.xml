@@ -3,7 +3,7 @@ This module serves as the Debuging environment and default implementation for in
 
 -->
 
-<module>
+<module rename-to="JavascriptEditor">
 
   <inherits name='com.google.gwt.user.User'/>
     <inherits name='com.googlecode.gwtx.Java'/>
@@ -28,6 +28,10 @@ This module serves as the Debuging environment and default implementation for in
         <exclude name="**/MQLEditorServiceCWMDelegate*"/>
         <exclude name="**/MQLEditorServiceDelegate*"/>
         <exclude name="**/FormulaParser*"/>
+        <exclude name="**/OldSwtMqlEditor*"/>
+        <exclude name="**/MQLEditorServiceCWMImpl*"/>
+        <exclude name="**/AbstractMqlEditor*"/>
+
     </source>
     <public path="editor/xul"/>
     <entry-point class="org.pentaho.commons.metadata.mqleditor.editor.gwt.DebugEntryPoint"/>

@@ -11,6 +11,6 @@
   	
   <servlet-mapping>
     <servlet-name>MqlService</servlet-name>
-    <url-pattern>org.pentaho.commons.metadata.mqleditor.JavascriptEditor/gwtrpc/MqlService</url-pattern>
+    <url-pattern>JavascriptEditor/gwtrpc/MqlService</url-pattern>
   </servlet-mapping>
 </web-app>
