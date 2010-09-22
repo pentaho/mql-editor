@@ -11,7 +11,7 @@
       a:active{color:#ff0000}
     </style>
     <link rel='stylesheet' href='Mantle.css'>
-    <script language='javascript' src='org.pentaho.commons.metadata.mqleditor.JavascriptEditor.nocache.js'></script>
+    <script language='javascript' src='JavascriptEditor.nocache.js'></script>
   </head>
 
   <body>
@@ -38,6 +38,7 @@
 
       function showMQLEditor2(){
     	   openMqlEditorWithIDs("/org/pentaho/commons/metadata/mqleditor/sampleMql", "Orders", new function(){
+//         openMqlEditorWithIDs("default", "Steel-Wheels", new function(){
             this.onOk = function(json, mqlStr){
               alert(json+"\n\n\n"+mqlStr);
             }
