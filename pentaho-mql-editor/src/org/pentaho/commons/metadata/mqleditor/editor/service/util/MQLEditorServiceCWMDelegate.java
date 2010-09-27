@@ -348,6 +348,16 @@ public class MQLEditorServiceCWMDelegate {
         return domain;
       }
     }
+
+    // if it isn't found, refresh and try one more time
+    refreshMetadataDomains();
+
+    for (MqlDomain domain : domains) {
+      if (domain.getName().equals(name)) {
+        return domain;
+      }
+    }
+
     return null;
   }
 
