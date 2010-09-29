@@ -88,7 +88,7 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
   }
   
   public void setSavedQuery(Query savedQuery) {
-    mainController.setSavedQuery(savedQuery);  
+    mainController.setSavedQuery(savedQuery);
   }
   
   public String getMqlQuery(){
