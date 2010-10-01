@@ -219,23 +219,6 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
       e.printStackTrace();
     }
   }
-  
-  public void updateDomainList(){
-    service.refreshMetadataDomains(new XulServiceCallback<List<MqlDomain>>() {
-
-      public void error(String message, Throwable error) {
-        Window.alert("could not get list of metadata domains");
-      }
-
-      public void success(List<MqlDomain> domains) {
-        updateDomains(domains);
-        for(MqlDialogListener listener : listeners){
-          listener.onDialogReady();
-        }
-      }
-
-    });
-  }
 
   public void loadDomainById(final String domainId) {
     service.getDomainByName(domainId, new XulServiceCallback<MqlDomain>() {
