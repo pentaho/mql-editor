@@ -220,6 +220,29 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
     }
   }
 
+  /**
+   * @deprecated this causes all models to be downloaded to the client, an expensive operation.  it only exists to
+   * be compatible with trunk of dashboards until it is merged with changes from the 3.7 branch.  It will be removed
+   * once that happens.
+   */
+  @Deprecated
+  public void updateDomainList(){
+    service.refreshMetadataDomains(new XulServiceCallback<List<MqlDomain>>() {
+
+      public void error(String message, Throwable error) {
+        Window.alert("could not get list of metadata domains");
+      }
+
+      public void success(List<MqlDomain> domains) {
+        updateDomains(domains);
+        for(MqlDialogListener listener : listeners){
+          listener.onDialogReady();
+        }
+      }
+
+    });
+  }
+
   public void loadDomainById(final String domainId) {
     service.getDomainByName(domainId, new XulServiceCallback<MqlDomain>() {
 
