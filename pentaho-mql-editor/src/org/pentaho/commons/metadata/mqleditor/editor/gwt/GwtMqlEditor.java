@@ -66,7 +66,7 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
   private List<MqlDialogListener> listeners = new ArrayList<MqlDialogListener>();
   private MQLEditorService service;
   
-  public GwtMqlEditor(final MQLEditorService service, final AsyncConstructorListener constructorListener){
+  public GwtMqlEditor(final MQLEditorService service, final AsyncConstructorListener<GwtMqlEditor> constructorListener){
     mainController.setWorkspace(workspace);
     selectedColumnController.setWorkspace(workspace);
     constraintController.setWorkspace(workspace);
@@ -212,7 +212,7 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
       
       //RootPanel.get().add(runner.getRootPanel());
       if (constructorListener != null) {
-        constructorListener.asyncConstructorDone();
+        constructorListener.asyncConstructorDone(this);
       }
       
     } catch (Exception e) {
