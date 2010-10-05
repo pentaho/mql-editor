@@ -37,8 +37,8 @@
       }
 
       function showMQLEditor2(){
-    	   openMqlEditorWithIDs("/org/pentaho/commons/metadata/mqleditor/sampleMql", "Orders", new function(){
-//         openMqlEditorWithIDs("default", "Steel-Wheels", new function(){
+//    	   openMqlEditorWithIDs("/org/pentaho/commons/metadata/mqleditor/sampleMql", "Orders", new function(){
+         openMqlEditorWithIDs("Steel-Wheels", "Steel-Wheels", new function(){
             this.onOk = function(json, mqlStr){
               alert(json+"\n\n\n"+mqlStr);
             }
