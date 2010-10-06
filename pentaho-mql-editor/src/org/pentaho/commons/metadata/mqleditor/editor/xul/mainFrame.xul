@@ -16,13 +16,13 @@
     title="${preview.title}" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
     xmlns:pen="http://www.pentaho.org/2008/xul" height="300" width="400" resizable="true">
 
-    <vbox padding="10" flex="1">
+    <vbox id="previewTreeContainer" padding="10" flex="1">
       <tree editable="false" seltype="none" enableColumnDrag="false" 
         id="previewTree" flex="1">
         <treecols />
         <treechildren />
       </tree>
-      <hbox>
+      <hbox id="previewTreeLimitContainer">
         <spacer flex="1" />
         <label value="Limit:" />
         <textbox id="previewLimit" value="10" width="30" />
@@ -34,7 +34,7 @@
 
   <vbox id="mainPanel" padding="10" flex="1">
     <hbox flex="1">
-      <vbox flex="1">
+      <vbox id="outerDataModelContainer" flex="1">
         <vbox id="dataModelContainer" width="170">
           <label value="${business.domains}" />
           <menulist label="Domain" id="domainList" pen:binding="name"
@@ -87,7 +87,7 @@
       </vbox>
 
       <vbox id="tableContainer" flex="5">
-        <hbox>
+        <hbox id="selectedColumnButtonContainer" width="575">
           <label value="${select.columns}" flex="1" />
           <spacer flex="1" />
           <button id="colDown" disabled="true" onclick="selectedColumns.moveDown()"
@@ -108,7 +108,7 @@
         </tree>
 
 
-        <hbox>
+        <hbox id="conditionsButtonContainer" width="575">
           <label value="${conditions}" flex="1" />
           <spacer id="conditionsSpacer" flex="1" />
           <button id="conditionDown" disabled="true"
@@ -137,7 +137,7 @@
           <treechildren />
         </tree>
 
-        <hbox>
+        <hbox id="orderButtonContainer" width="575">
           <label value="${order.by}" flex="1" />
           <spacer flex="1" />
           <button id="orderDown" disabled="true" onclick="orderController.moveDown()"
