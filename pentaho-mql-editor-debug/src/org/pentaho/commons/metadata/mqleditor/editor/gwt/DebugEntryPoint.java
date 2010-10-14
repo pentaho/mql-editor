@@ -43,9 +43,9 @@ public class DebugEntryPoint implements EntryPoint {
 
     setupNativeHooks(this);
     
-    editor = new GwtMqlEditor(service, new AsyncConstructorListener() {
+    editor = new GwtMqlEditor(service, new AsyncConstructorListener<GwtMqlEditor>() {
 
-      public void asyncConstructorDone() {
+      public void asyncConstructorDone(GwtMqlEditor dialog) {
       }
     });
     

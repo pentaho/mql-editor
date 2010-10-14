@@ -66,7 +66,7 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
   private List<MqlDialogListener> listeners = new ArrayList<MqlDialogListener>();
   private MQLEditorService service;
   
-  public GwtMqlEditor(final MQLEditorService service, final AsyncConstructorListener constructorListener){
+  public GwtMqlEditor(final MQLEditorService service, final AsyncConstructorListener<GwtMqlEditor> constructorListener){
     mainController.setWorkspace(workspace);
     selectedColumnController.setWorkspace(workspace);
     constraintController.setWorkspace(workspace);
@@ -212,14 +212,20 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
       
       //RootPanel.get().add(runner.getRootPanel());
       if (constructorListener != null) {
-        constructorListener.asyncConstructorDone();
+        constructorListener.asyncConstructorDone(this);
       }
       
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
-  
+
+  /**
+   * @deprecated this causes all models to be downloaded to the client, an expensive operation.  it only exists to
+   * be compatible with trunk of dashboards until it is merged with changes from the 3.7 branch.  It will be removed
+   * once that happens.
+   */
+  @Deprecated
   public void updateDomainList(){
     service.refreshMetadataDomains(new XulServiceCallback<List<MqlDomain>>() {
 

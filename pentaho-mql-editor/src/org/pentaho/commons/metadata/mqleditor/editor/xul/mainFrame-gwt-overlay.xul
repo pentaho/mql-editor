@@ -39,4 +39,15 @@
   <vbox id="tableContainer" flex="5" height="330"/>
   
   <tree id="previewTree" height="210" width="386"/>
+
+  <vbox id="mainPanel" padding="10" flex="1" height="444"/>
+  <vbox id="buttonContainer" height="395"/>
+  <vbox id="tableContainer" flex="5" height="395"/>
+  <vbox id="previewTreeContainer" padding="10" flex="1" height="212"/>
+  <hbox id="previewTreeLimitContainer" height="33" />
+  <vbox id="outerDataModelContainer" flex="1" height="432"/>
+
+  <hbox id="selectedColumnButtonContainer" width="640"/>
+  <hbox id="conditionsButtonContainer" width="640"/>
+  <hbox id="orderButtonContainer" width="640"/>
 </overlay>
