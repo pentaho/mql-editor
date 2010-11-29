@@ -140,7 +140,8 @@ public enum Operator implements Serializable{
     
     switch(this){
       case EXACTLY_MATCHES:
-        retVal += objectName+" = " + value; //$NON-NLS-1$
+      case EQUAL:
+        retVal += "EQUALS(" + objectName + ";" + value + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         break;
       case CONTAINS:
         retVal += "CONTAINS("+objectName+";"+value+")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
