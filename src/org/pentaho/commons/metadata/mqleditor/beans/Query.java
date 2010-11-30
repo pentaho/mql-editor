@@ -44,7 +44,7 @@ public class Query implements MqlQuery {
   /**
    * Keys are parameter names; values are defaults for those parameters.
    */
-  private Map<String, String> defaultParameterMap;
+  private Map<String, Object> defaultParameterMap;
   
   public Query() {
     super();
@@ -103,11 +103,11 @@ public class Query implements MqlQuery {
     this.query = query;
   }
 
-  public Map<String, String> getDefaultParameterMap() {  
+  public Map<String, Object> getDefaultParameterMap() {
     return defaultParameterMap;
   }
 
-  public void setDefaultParameterMap(Map<String, String> defaultParameterMap) {
+  public void setDefaultParameterMap(Map<String, Object> defaultParameterMap) {
     this.defaultParameterMap = defaultParameterMap;
   }
   

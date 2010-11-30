@@ -447,7 +447,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     this.firePropertyChange("domains", null, domains);
   }
 
-  public Map<String, String> getDefaultParameterMap() {
+  public Map<String, Object> getDefaultParameterMap() {
     // TODO mlowery not sure what goes here
     throw new UnsupportedOperationException();
   }
