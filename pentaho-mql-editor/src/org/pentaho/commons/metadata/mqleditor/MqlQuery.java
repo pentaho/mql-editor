@@ -39,6 +39,6 @@ public interface MqlQuery extends Serializable{
   
   public String getMqlStr();
   
-  public Map<String, String> getDefaultParameterMap();
+  public Map<String, Object> getDefaultParameterMap();
   
 }
