@@ -121,7 +121,7 @@ public class ModelSerializerTest {
 
     mqlQuery.setOrders(orders);
 
-    Map<String, String> defaultParameterMap = new HashMap<String, String>();
+    Map<String, Object> defaultParameterMap = new HashMap<String, Object>();
 
     defaultParameterMap.put("myparameter", "myvalue3");
     mqlQuery.setDefaultParameterMap(defaultParameterMap);
