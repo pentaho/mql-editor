@@ -153,7 +153,7 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
       }
     }, new AsyncCallback<String[][]>() {
       public void onFailure(Throwable arg0) {
-        callback.error("error loading metadata domains: ", arg0);
+        callback.error("error previewing data: ", arg0);
       }
 
       public void onSuccess(String[][] arg0) {

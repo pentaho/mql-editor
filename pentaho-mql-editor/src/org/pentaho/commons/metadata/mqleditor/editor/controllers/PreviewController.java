@@ -105,10 +105,8 @@ public class PreviewController extends AbstractXulEventHandler {
     service.getPreviewData(workspace.getMqlQuery(), page, previewLimit, new XulServiceCallback<String[][]>() {
 
       public void error(String message, Throwable error) {
-        System.out.println(message);
-        error.printStackTrace();
         setPreviewData(new String[][]{});
-        openDialog();
+        MainController.showErrorDialog(cleanUpErrorMessage(error.getLocalizedMessage()));
       }
 
       public void success(String[][] retVal) {
@@ -134,9 +132,7 @@ public class PreviewController extends AbstractXulEventHandler {
     service.getPreviewData(workspace.getMqlQuery(), page, previewLimit, new XulServiceCallback<String[][]>() {
 
       public void error(String message, Throwable error) {
-        System.out.println(message);
-        error.printStackTrace();
-        setPreviewData(new String[][]{});
+        MainController.showErrorDialog(cleanUpErrorMessage(error.getLocalizedMessage()));
       }
 
       public void success(String[][] retVal) {
@@ -222,5 +218,11 @@ public class PreviewController extends AbstractXulEventHandler {
     this.previewLimit = previewLimit;
   }
   
-  
+  private String cleanUpErrorMessage(String errorMessage) {
+    if (errorMessage.startsWith("SqlOpenFormula.ERROR_")) {
+      return errorMessage.substring("SqlOpenFormula.ERROR_XXXX - ".length());
+    } else {
+      return errorMessage;
+    }
+  }
 }

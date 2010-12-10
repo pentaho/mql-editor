@@ -22,6 +22,7 @@ import org.pentaho.commons.metadata.mqleditor.MqlColumn;
 import org.pentaho.commons.metadata.mqleditor.*;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.pentaho.pms.core.exception.PentahoMetadataException;
 
 public interface MQLEditorGwtServiceAsync {
 

@@ -23,7 +23,7 @@ import org.pentaho.commons.metadata.mqleditor.*;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
-     
+
 public interface MQLEditorGwtService extends RemoteService{
 
   List<MqlDomain>  refreshMetadataDomains();
@@ -32,7 +32,7 @@ public interface MQLEditorGwtService extends RemoteService{
   String saveQuery(MqlQuery model);
   String serializeModel(MqlQuery query);
   MqlQuery deserializeModel(String serializedQuery);
-  String[][] getPreviewData(MqlQuery query, int page, int limit);
+  String[][] getPreviewData(MqlQuery query, int page, int limit) throws Exception;
 
 }
 

@@ -148,7 +148,7 @@ public class MQLEditorServiceDelegate {
 
   }
 
-  public String[][] getPreviewData(MqlQuery query, int page, int limit) {
+  public String[][] getPreviewData(MqlQuery query, int page, int limit) throws Exception {
     throw new NotImplementedException("Preview not implemented in the Deligate");
   }
 
