@@ -32,6 +32,7 @@ import org.pentaho.ui.xul.binding.Binding;
 import org.pentaho.ui.xul.binding.BindingConvertor;
 import org.pentaho.ui.xul.binding.BindingFactory;
 import org.pentaho.ui.xul.components.XulButton;
+import org.pentaho.ui.xul.components.XulLabel;
 import org.pentaho.ui.xul.components.XulMenuList;
 import org.pentaho.ui.xul.components.XulMessageBox;
 import org.pentaho.ui.xul.containers.XulDialog;
@@ -52,6 +53,8 @@ public class MainController extends AbstractXulEventHandler {
 	public static final int OK = 1;
 	
 	private int lastClicked = CANCELLED;
+
+  private static XulDialog errorDialog;
 
   private XulMenuList modelList;
   private XulMenuList domainList;
@@ -112,6 +115,8 @@ public class MainController extends AbstractXulEventHandler {
     fieldTable = (XulTree) document.getElementById("selectedColumnTree");
     dialog = (XulDialog) document.getElementById("mqlEditorDialog");
     acceptButton = (XulButton) document.getElementById("mqlEditorDialog_accept");
+
+    errorDialog = (XulDialog) document.getElementById("errorDialog");
 
     // bind the selections empty status to the ok button (i.e. if no selections, disable OK button)
     bf.setBindingType(Binding.Type.ONE_WAY);
@@ -360,5 +365,24 @@ public class MainController extends AbstractXulEventHandler {
       listeners.remove(listener);
     }
   }
-  
+
+  @Bindable
+  public static void showErrorDialog(String message) {
+    if (errorDialog == null) {
+      throw new IllegalStateException("Error dialog has not been loaded yet");
+    } else {
+      XulLabel msg = (XulLabel)errorDialog.getElementById("errorLabel");
+      msg.setValue(message);
+      errorDialog.show();
+    }
+  }
+
+  @Bindable
+  public static void closeErrorDialog(String message) {
+    if (errorDialog == null) {
+      throw new IllegalStateException("Error dialog has not been loaded yet");
+    } else {
+      errorDialog.hide();
+    }
+  }
 }
