@@ -780,7 +780,8 @@ public class MQLEditorServiceDelegate {
         cond.setParameterized(true);
         for(Parameter p : query.getParameters()){
           if(p.getName().equals(paramKey)){
-            cond.setDefaultValue(p.getDefaultValue() != null ? p.getDefaultValue().toString() : null);
+            // convert arrays back to vertical bar (pipe) delimited string to support multi-valued defaults
+            cond.setDefaultValue(getDisplayableDefaultValue(p));
             break;
           }
         }
@@ -830,4 +831,29 @@ public class MQLEditorServiceDelegate {
     
     return null;
   }
+
+  private String getDisplayableDefaultValue(Parameter p) {
+    if (p == null || p.getDefaultValue() == null) {
+      return null;
+    } else if (p.getDefaultValue() instanceof Object[]) {
+      Object[] values = (Object[])p.getDefaultValue();
+      StringBuilder sb = new StringBuilder();
+      for (Object value : values) {
+        if (sb.length() > 0) {
+          sb.append("|");
+        }
+        if (value.toString().contains("|")) {
+          sb.append("\"")
+            .append(value)
+            .append("\"");
+        } else {
+          sb.append(value);
+        }
+      }
+      return sb.toString();
+    } else {
+      return p.getDefaultValue().toString();
+    }
+  }
+
 }
