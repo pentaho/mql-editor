@@ -330,6 +330,11 @@ public class MQLEditorServiceDelegate {
   }
 
   public MqlDomain getDomainByName(String name) {
+	  
+	if(!name.endsWith(".xmi")) {
+	  name += "/metadata.xmi";	
+	}  	  
+	  
     for (MqlDomain domain : domains) {
       if (domain.getName().equals(name)) {
         return domain;
