@@ -114,6 +114,10 @@ public class ModelUtil {
         conditions.add(con);
       }
     }
+    
+    //  row limit
+    query.setLimit(uiQuery.getLimit());
+    
     query.setConditions(conditions);
     return query;
   }

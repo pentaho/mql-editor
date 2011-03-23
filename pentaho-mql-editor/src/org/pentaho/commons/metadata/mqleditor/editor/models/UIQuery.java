@@ -35,6 +35,8 @@ public class UIQuery implements MqlQuery {
 
   private String query;
   
+  private int limit;
+  
   /**
    * Keys are parameter names; values are defaults for those parameters.
    */
@@ -104,5 +106,12 @@ public class UIQuery implements MqlQuery {
   public void setDefaultParameterMap(Map<String, Object> defaultParameterMap) {
     this.defaultParameterMap = defaultParameterMap;
   }
+
+  public void setLimit(int limit) {
+     this.limit = limit;
+  }
   
+  public int getLimit() {
+     return limit;
+  } 
 }
