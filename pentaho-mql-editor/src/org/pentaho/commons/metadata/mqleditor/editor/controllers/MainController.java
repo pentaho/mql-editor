@@ -244,8 +244,8 @@ public class MainController extends AbstractXulEventHandler {
 
        @Override
        public Integer targetToSource(String value) {
-         if (!Const.isEmpty(value)) {
-           return Integer.parseInt(value);
+         if ( value !=null && value.length() > 0) {
+              return Integer.parseInt(value);
          }
          else {
            return -1;
