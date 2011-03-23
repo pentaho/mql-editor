@@ -27,6 +27,7 @@ import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumns;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
+import org.pentaho.di.core.Const;
 import org.pentaho.ui.xul.XulServiceCallback;
 import org.pentaho.ui.xul.binding.Binding;
 import org.pentaho.ui.xul.binding.BindingConvertor;
@@ -35,6 +36,7 @@ import org.pentaho.ui.xul.components.XulButton;
 import org.pentaho.ui.xul.components.XulLabel;
 import org.pentaho.ui.xul.components.XulMenuList;
 import org.pentaho.ui.xul.components.XulMessageBox;
+import org.pentaho.ui.xul.components.XulTextbox;
 import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
@@ -65,6 +67,7 @@ public class MainController extends AbstractXulEventHandler {
   private XulTree fieldTable;
   private XulTree conditionsTable;
   private XulTree ordersTable;
+  private XulTextbox limit;
   private XulDialog dialog;
   private MQLEditorService service;
   private List<MqlDialogListener> listeners = new ArrayList<MqlDialogListener>();
@@ -114,6 +117,7 @@ public class MainController extends AbstractXulEventHandler {
     ordersTable = (XulTree) document.getElementById("orderTable");
     fieldTable = (XulTree) document.getElementById("selectedColumnTree");
     dialog = (XulDialog) document.getElementById("mqlEditorDialog");
+    limit = (XulTextbox) document.getElementById("limit");
     acceptButton = (XulButton) document.getElementById("mqlEditorDialog_accept");
 
     errorDialog = (XulDialog) document.getElementById("errorDialog");
@@ -224,7 +228,32 @@ public class MainController extends AbstractXulEventHandler {
     bf.createBinding(workspace, "selections", fieldTable, "elements"); //$NON-NLS-1$ //$NON-NLS-2$
     bf.createBinding(workspace, "conditions", conditionsTable, "elements"); //$NON-NLS-1$ //$NON-NLS-2$
     bf.createBinding(workspace, "orders", ordersTable, "elements"); //$NON-NLS-1$ //$NON-NLS-2$
+    
+    bf.setBindingType(Binding.Type.BI_DIRECTIONAL);
+    bf.createBinding(workspace, "limit", limit, "value", new BindingConvertor<Integer, String>() {
 
+       @Override
+       public String sourceToTarget(Integer value) {
+          if (value > -1) {
+             return value.toString();
+          }
+          else {
+             return "";
+          }
+       }
+
+       @Override
+       public Integer targetToSource(String value) {
+         if (!Const.isEmpty(value)) {
+           return Integer.parseInt(value);
+         }
+         else {
+           return -1;
+         }
+       }
+
+     });
+    
     try {
       // Fires the population of the model listbox. This cascades down to the categories and columns. In essence, this
       // call initializes the entire UI.

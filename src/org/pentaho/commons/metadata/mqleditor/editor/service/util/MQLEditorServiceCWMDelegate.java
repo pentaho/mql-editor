@@ -603,6 +603,7 @@ public class MQLEditorServiceCWMDelegate {
     }
 
     query.setOrders(orders);
+    query.setLimit(fatQ.getLimit());
 
     return query;
   }
@@ -646,6 +647,7 @@ public class MQLEditorServiceCWMDelegate {
           }
           mqlQuery.setConstraints(constraints);
           mqlQuery.setOrder(getOrders(realModel, query.getOrders()));
+          mqlQuery.setLimit(query.getLimit());
 
           return mqlQuery;
         }

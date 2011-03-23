@@ -20,11 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.pentaho.commons.metadata.mqleditor.MqlColumn;
-import org.pentaho.commons.metadata.mqleditor.MqlCondition;
-import org.pentaho.commons.metadata.mqleditor.MqlDomain;
-import org.pentaho.commons.metadata.mqleditor.MqlModel;
-import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 
 public class Query implements MqlQuery {
@@ -34,13 +29,15 @@ public class Query implements MqlQuery {
   private List<Condition> conditions = new ArrayList<Condition>();
 
   private List<Order> orders = new ArrayList<Order>();
-
+  
+  private int limit = -1;
+  
   private Domain domain;
 
   private Model model;
 
   private String query;
-  
+    
   /**
    * Keys are parameter names; values are defaults for those parameters.
    */
@@ -110,5 +107,12 @@ public class Query implements MqlQuery {
   public void setDefaultParameterMap(Map<String, Object> defaultParameterMap) {
     this.defaultParameterMap = defaultParameterMap;
   }
+
+  public void setLimit(int limit) {
+     this.limit = limit;
+  }
   
+  public int getLimit() {
+     return limit;
+  }
 }

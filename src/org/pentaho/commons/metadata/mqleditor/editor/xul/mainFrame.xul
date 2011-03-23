@@ -168,6 +168,11 @@
           </treecols>
           <treechildren />
         </tree>
+        
+        <hbox id="limitContainer" width="575">
+        	<label value="${limit}" />
+        	<textbox id="limit" rows="1" size="20"/>
+        </hbox>
 
       </vbox>
     </hbox>

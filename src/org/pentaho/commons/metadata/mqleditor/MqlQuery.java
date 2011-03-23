@@ -33,6 +33,8 @@ public interface MqlQuery extends Serializable{
   
   public List<? extends MqlOrder> getOrders();
   
+  public int getLimit();
+    
   public MqlDomain getDomain();
   
   public MqlModel getModel();

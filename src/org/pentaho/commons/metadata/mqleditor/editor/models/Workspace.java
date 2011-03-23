@@ -19,21 +19,15 @@ package org.pentaho.commons.metadata.mqleditor.editor.models;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.pentaho.commons.metadata.mqleditor.MqlColumn;
-import org.pentaho.commons.metadata.mqleditor.MqlCondition;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlModel;
 import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
-import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
-import org.pentaho.commons.metadata.mqleditor.beans.Domain;
-import org.pentaho.commons.metadata.mqleditor.beans.Model;
-import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelUtil;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
@@ -52,6 +46,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   private List<UICategory> categories;
   private UICategory selectedCategory;
   private UIOrder selectedOrder;
+  private int limit;
   
   private UIColumn selectedColumn;
   private List<UIColumn> selectedColumns = new ArrayList<UIColumn>();
@@ -131,6 +126,11 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
         conditions.add(cond);
       }
     }
+    
+   if(thinWorkspace.getLimit() > -1) {
+      setLimit(thinWorkspace.getLimit());
+   }
+
   }
   
   @Bindable
@@ -141,6 +141,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     this.setOrders(new UIOrders());
     this.setSelections(new UIColumns());
     this.setConditions(new UIConditions());
+    this.setLimit(-1);
     setupListeners();
   }
   
@@ -410,6 +411,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     query.setColumns(cols);
     query.setOrders(orders);
     query.setConditions(conditions);
+    query.setLimit(limit);
     
     query.setMqlStr(this.getMqlStr());
     query.setDomain(this.selectedDomain);
@@ -471,7 +473,18 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
       }
     }
   }
+
   
+  @Bindable
+  public void setLimit(int limit) {
+     this.limit = limit;
+     this.firePropertyChange("limit", null, limit); //$NON-NLS-1$
+  }
+
+  @Bindable
+  public int getLimit() {
+     return limit;
+  }
 }
 
   
