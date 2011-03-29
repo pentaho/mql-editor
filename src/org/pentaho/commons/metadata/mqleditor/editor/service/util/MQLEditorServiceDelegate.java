@@ -528,6 +528,9 @@ public class MQLEditorServiceDelegate {
                 getOrderType(order.getOrderType()))
               );
           }
+          
+          queryObject.setLimit(query.getLimit());
+          
           return queryObject;
         }
       } catch (Throwable e) { // PMSFormulaException e) {
@@ -621,6 +624,8 @@ public class MQLEditorServiceDelegate {
     }
 
     query.setOrders(orders);
+    
+    query.setLimit(fatQ.getLimit());
 
     return query;
   }
@@ -664,7 +669,8 @@ public class MQLEditorServiceDelegate {
           }
           mqlQuery.setConstraints(constraints);
           mqlQuery.setOrder(getOrders(realModel, query.getOrders()));
-
+          mqlQuery.setLimit(query.getLimit());
+          
           return mqlQuery;
         }
       } catch (Throwable e) { // PMSFormulaException e) {
@@ -800,6 +806,8 @@ public class MQLEditorServiceDelegate {
       o.setOrderType(MqlOrder.Type.valueOf(ord.getType().toString().toUpperCase()));
       q.getOrders().add(o);
     }
+    
+    q.setLimit(query.getLimit());
     return q;
   }
   
