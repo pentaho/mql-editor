@@ -331,17 +331,10 @@ public class MQLEditorServiceDelegate {
 
   public MqlDomain getDomainByName(String name) {
 	  
-	if(!name.endsWith(".xmi")) {
-	  name += "/metadata.xmi";	
-	}  	  
-	  
-    for (MqlDomain domain : domains) {
-      if (domain.getName().equals(name)) {
-        return domain;
-      }
-    }
-
-    // if it isn't found, refresh and try one more time
+    // refresh the metadata domains for every request,
+    // we should not be caching this unless its flushable
+    // and per user (security issues, etc)
+    
     refreshMetadataDomains();
 
     for (MqlDomain domain : domains) {
