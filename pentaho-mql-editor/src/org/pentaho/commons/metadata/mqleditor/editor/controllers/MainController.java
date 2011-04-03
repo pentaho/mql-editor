@@ -240,10 +240,10 @@ public class MainController extends AbstractXulEventHandler {
 
                @Override
                public Integer targetToSource(String value) {
-         if ( value !=null && value.length() > 0) {
-              return Integer.parseInt(value);
-                  }
                   try {
+                     if (value.isEmpty()) {
+                        return -1;
+                     }
                      Integer returnInteger = Integer.parseInt(value);
                      return returnInteger;
                   } catch (NumberFormatException nfe) {
