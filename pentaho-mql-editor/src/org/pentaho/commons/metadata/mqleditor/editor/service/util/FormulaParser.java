@@ -16,6 +16,8 @@
  */
 package org.pentaho.commons.metadata.mqleditor.editor.service.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,10 +33,13 @@ public class FormulaParser {
   private static final String DATEVALUE = "DATEVALUE\\(([^\\)]*)";
   
   private static final String VALUE_EVAL = ".*\"(.*)\"";
+  // Matches the values of the IN function
+  private static final String VALUE_EVAL_IN = "[^\"]*\"([^\"]*)\";{0,1}";
 
   private static Pattern genericPat = Pattern.compile(GENERIC);
   private static Pattern wrappedPat = Pattern.compile(WRAPPED);
   private static Pattern valueEvalPat = Pattern.compile(VALUE_EVAL);
+  private static Pattern valueEvalInPat = Pattern.compile(VALUE_EVAL_IN);
   private static Pattern datevaluePat = Pattern.compile(DATEVALUE);
 
   private String functionName = null;
@@ -103,11 +108,37 @@ public class FormulaParser {
     c.setOperator(op);
     
     if(value != null) {
-       //Extracts the value contained inside double quotes in the string
-       Matcher matcher = valueEvalPat.matcher(value);
-       if(matcher.find()) {
-           value = matcher.group(1);
-       }
+      if (c.getOperator() == Operator.IN) { 
+        Matcher matcher = valueEvalInPat.matcher(value);
+        StringBuilder parsedVal = new StringBuilder();
+        List<String> values = new ArrayList<String>();
+        while (matcher.find()) {
+          values.add(matcher.group(1));
+        }
+        for (int i = 0; i < values.size(); i ++) {
+          if (i > 0) {
+            parsedVal.append("|");
+          }
+          final String v = values.get(i);
+          boolean quote = v.contains("|");
+          if (quote) {
+            parsedVal.append("\"");
+          }
+          parsedVal.append(v);
+          if (quote) {
+            parsedVal.append("\"");
+          }
+        }
+        if (parsedVal.length() != 0) {
+          value = parsedVal.toString();
+        }
+      } else {
+        //Extracts the value contained inside double quotes in the string
+        Matcher matcher = valueEvalPat.matcher(value);
+        if(matcher.find()) {
+          value = matcher.group(1);
+        }
+      }
     }
     c.setValue(value);
     

@@ -38,9 +38,10 @@ public enum Operator implements Serializable{
   ENDS_WITH("ends with", 0, true),
   
   IS_NULL("is null", 2, false), 
-  IS_NOT_NULL("is not null", 2, false);
+  IS_NOT_NULL("is not null", 2, false),
 
-  
+  IN("in", 0, true);
+
   private String strVal;
   // 0 = string
   // 1 = numeric
@@ -56,6 +57,14 @@ public enum Operator implements Serializable{
 
   public String toString() {
     return strVal;
+  }
+  
+  public int getOperatorType() {
+    return operatorType;
+  }
+  
+  public boolean getRequiresValue() {
+    return requiresValue;
   }
   
   public static Operator parse(String val){
@@ -89,7 +98,9 @@ public enum Operator implements Serializable{
       return Operator.IS_NULL;
     }  else if(val.equals("is not null")){
       return Operator.IS_NOT_NULL;
-    } 
+    }  else if(val.equals("in")){
+      return Operator.IN;
+    }
     
     // Actual generated Open Formula formula name is passed in from deserialization routine. Try to match those here.
     if(val.equals("CONTAINS")){
@@ -100,6 +111,8 @@ public enum Operator implements Serializable{
       return Operator.ENDS_WITH;
     } else if(val.equals("ISNA")){
       return Operator.IS_NULL;
+    } else if(val.equals("IN")){
+      return Operator.IN;
     }
     
     return Operator.EQUAL;
@@ -127,48 +140,5 @@ public enum Operator implements Serializable{
       }
     }
     return ops.toArray(new Operator[]{});
-  }
-  
-  public String formatCondition(String objectName, String value, boolean parameterized){
-    
-    if(parameterized){
-     value = "[param:"+value.replaceAll("[\\{\\}]","")+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    } else if (this.operatorType == 0 || this.operatorType == 2) {
-      value = "\"" + value + "\""; //$NON-NLS-1$ //$NON-NLS-2$ 
-    }
-    String retVal = ""; //$NON-NLS-1$
-    
-    switch(this){
-      case EXACTLY_MATCHES:
-      case EQUAL:
-        retVal += "EQUALS(" + objectName + ";" + value + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        break;
-      case CONTAINS:
-        retVal += "CONTAINS("+objectName+";"+value+")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        break;
-      case DOES_NOT_CONTAIN:
-        retVal += "NOT(CONTAINS("+objectName+";"+value+"))"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        break;
-      case BEGINS_WITH:
-        retVal += "BEGINSWITH("+objectName+";"+value+")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        break;
-      case ENDS_WITH:
-        retVal += "ENDSWITH("+objectName+";"+value+")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        break;
-      case IS_NULL:
-        retVal += "ISNA("+objectName+")"; //$NON-NLS-1$ //$NON-NLS-2$
-        break;
-      case IS_NOT_NULL:
-        retVal += "NOT(ISNA("+objectName+"))"; //$NON-NLS-1$ //$NON-NLS-2$
-        break;
-      default:
-        retVal = objectName + " " + this.toString(); //$NON-NLS-1$
-        if(this.requiresValue){
-          retVal += value;
-        }
-        break;
-    }
-    return retVal;
-    
   }
 }

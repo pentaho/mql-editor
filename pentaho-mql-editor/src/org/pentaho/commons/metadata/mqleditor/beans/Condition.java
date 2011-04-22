@@ -16,8 +16,6 @@
  */
 package org.pentaho.commons.metadata.mqleditor.beans;
 
-import java.util.List;
-
 import org.pentaho.commons.metadata.mqleditor.AggType;
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.CombinationType;
@@ -76,27 +74,6 @@ public class Condition implements MqlCondition {
 
   public boolean validate() {
     return true;   
-  }
-
-  public String getCondition(String objName) {
-    return getCondition(objName, true);
-  }
-
-  public String getCondition(String objName, boolean enforceParameters){
-    String val = this.value;
-    
-    // Date is a special case where we craft a formula function.
-    if(this.column.getType() == ColumnType.DATE){
-      if(this.isParameterized() && enforceParameters){
-        // Due to the fact that the value of a Date is a forumula function, the tokenizing of
-        // the value needs to happen here instead of letting the Operator class handle it.
-        val = "DATEVALUE("+"[param:"+value.replaceAll("[\\{\\}]","")+"]"+")";
-        return this.operator.formatCondition(objName, val, false);
-      } else {  
-        val = "DATEVALUE(\""+val+"\")";
-      }
-    }
-    return this.operator.formatCondition(objName, val, this.isParameterized() && enforceParameters);
   }
 
   public boolean isParameterized() {

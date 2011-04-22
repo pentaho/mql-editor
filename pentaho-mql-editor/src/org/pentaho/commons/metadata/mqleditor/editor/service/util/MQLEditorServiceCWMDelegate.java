@@ -23,8 +23,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.pentaho.commons.metadata.mqleditor.AggType;
@@ -36,7 +34,6 @@ import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlModel;
 import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
-import org.pentaho.commons.metadata.mqleditor.Operator;
 import org.pentaho.commons.metadata.mqleditor.beans.Category;
 import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
@@ -92,6 +89,8 @@ public class MQLEditorServiceCWMDelegate {
   private Map<String, SchemaMeta> modelIdToSchemaMetaMap = new HashMap<String, SchemaMeta>();
   
   private List<CWM> cwms;
+  
+  private final ConditionFormatter conditionFormatter = new ConditionFormatter(new OperatorFormatter());
 
   public MQLEditorServiceCWMDelegate(List<CWM> cwms, CwmSchemaFactoryInterface factory) {
     this.factory = factory;
@@ -404,7 +403,7 @@ public class MQLEditorServiceCWMDelegate {
       
       MQLWhereConditionModel where = new MQLWhereConditionModel(
           thinCondition.getCombinationType() == null ? "" : thinCondition.getCombinationType().toString(), //$NON-NLS-1$
-          col, thinCondition.getCondition("[" + cat.getId()+"."+col.getId() + "]", false));
+          col, conditionFormatter.getCondition(thinCondition, "[" + cat.getId()+"."+col.getId() + "]", false));
       conditions[i++] = where;
     }
     return conditions;
@@ -502,7 +501,7 @@ public class MQLEditorServiceCWMDelegate {
               queryObject.getParameters().add(new Parameter(condition.getValue().replaceAll("[\\{\\}]", ""), getDataType(condition.getColumn().getType()), condition.getDefaultValue()));
             }
             queryObject.getConstraints().add(
-                new Constraint(getComboType(condition.getCombinationType()), condition.getCondition(field))
+                new Constraint(getComboType(condition.getCombinationType()), conditionFormatter.getCondition(condition, field))
               );
           }
 
