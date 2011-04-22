@@ -115,6 +115,13 @@ public class WorkspaceTest {
     
     cond3.setValue("myparameter");
     conditions.add(cond3);
+    
+    Condition cond4 = new Condition();
+    cond4.setColumn(column);
+    cond4.setCombinationType(CombinationType.OR);
+    cond4.setOperator(Operator.IN);
+    cond4.setValue("testing;|\"test ing\"|\"Test|ing\""); //$NON-NLS-1$
+    conditions.add(cond4);
 
     mqlQuery.setConditions(conditions);
 

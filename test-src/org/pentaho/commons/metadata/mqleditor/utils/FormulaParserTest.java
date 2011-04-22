@@ -1,0 +1,106 @@
+/*
+ * This program is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License, version 2.1 as published by the Free Software
+ * Foundation.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * program; if not, you can obtain a copy at http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * or from the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * Copyright (c) 2009 Pentaho Corporation.  All rights reserved.
+ */
+package org.pentaho.commons.metadata.mqleditor.utils;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+import org.pentaho.commons.metadata.mqleditor.Operator;
+import org.pentaho.commons.metadata.mqleditor.editor.service.util.FormulaParser;
+
+public class FormulaParserTest {
+
+  @Test
+  public void parseEquals() {
+    final String formula = "EQUALS([CATEGORY.COLUMN];\"Value 1;with semicolon\")"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.EQUAL, parser.getCondition().getOperator());
+    assertEquals("Value 1;with semicolon", parser.getCondition().getValue()); //$NON-NLS-1$
+  }
+
+  @Test
+  public void parseIN_single() {
+    final String formula = "IN([CATEGORY.COLUMN];\"Value\")"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.IN, parser.getCondition().getOperator());
+    assertEquals("Value", parser.getCondition().getValue()); //$NON-NLS-1$
+  }
+
+  @Test
+  public void parseIN_single_with_space() {
+    final String formula = "IN([CATEGORY.COLUMN];\"Value 1\")"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.IN, parser.getCondition().getOperator());
+    // Not quoted since it's a single value
+    assertEquals("Value 1", parser.getCondition().getValue()); //$NON-NLS-1$
+  }
+
+  @Test
+  public void parseIN_single_with_semicolon() {
+    final String formula = "IN([CATEGORY.COLUMN];\"Value;1\")"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.IN, parser.getCondition().getOperator());
+    // Not quoted since it's a single value
+    assertEquals("Value;1", parser.getCondition().getValue()); //$NON-NLS-1$
+  }
+
+  @Test
+  public void parseIN_single_with_pipe() {
+    final String formula = "IN([CATEGORY.COLUMN];\"Value|1\")"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.IN, parser.getCondition().getOperator());
+    // Quoted since it contains the separator character (pipe)
+    assertEquals("\"Value|1\"", parser.getCondition().getValue()); //$NON-NLS-1$
+  }
+
+  @Test
+  public void parseIN_multiple() {
+    final String formula = "IN([CATEGORY.COLUMN];\"Value1\";\"Value 2\";\"Value;3\";\"Value|4\")"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.IN, parser.getCondition().getOperator());
+    assertEquals("Value1|Value 2|Value;3|\"Value|4\"", parser.getCondition().getValue()); //$NON-NLS-1$
+  }
+  
+  @Test
+  public void parseIN_parameterized() {
+    final String formula = "IN([CATEGORY.COLUMN];[param:test])"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.IN, parser.getCondition().getOperator());
+    assertEquals("[param:test]", parser.getCondition().getValue()); //$NON-NLS-1$
+  }
+}

@@ -12,6 +12,8 @@
   
     <inherits name="org.pentaho.ui.xul.Gwt"/>
     <source path="">
+    	<exclude name="**/AbstractMqlEditor*"/>
+        <exclude name="**/OldSwtMqlEditor*"/>
         <exclude name="**/SwingMqlEditor*"/>
         <exclude name="**/MQLEditorServiceDeligate*"/>
         <exclude name="**/MQLEditorServiceImpl*"/>
@@ -26,6 +28,8 @@
         <exclude name="**/FormulaParser*"/>
         <exclude name="**/CWMStartup*"/>
         <exclude name="**/Swt*"/>
+        <exclude name="**/ConditionFormatter*"/>
+        <exclude name="**/OperatorFormatter*"/>
     </source>
     <public path="editor/xul"/>
   

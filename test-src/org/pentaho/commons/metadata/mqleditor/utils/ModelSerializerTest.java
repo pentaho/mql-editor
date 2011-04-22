@@ -99,8 +99,8 @@ public class ModelSerializerTest {
     Condition cond2 = new Condition();
     cond2.setColumn(column);
     cond2.setCombinationType(CombinationType.OR);
-    cond2.setOperator(Operator.EQUAL);
-    cond2.setValue("myvalue2");
+    cond2.setOperator(Operator.IN);
+    cond2.setValue("myvalue2|\"my value2\"|\"my;value 2\"|my;value2"); //$NON-NLS-1$
     conditions.add(cond2);
 
     Condition cond3 = new Condition();

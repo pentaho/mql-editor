@@ -64,6 +64,8 @@ public class MQLEditorServiceDelegate {
   private CwmSchemaFactoryInterface factory;
 
   private IMetadataDomainRepository domainRepository;
+  
+  private final ConditionFormatter conditionFormatter = new ConditionFormatter(new OperatorFormatter());
 
   /**
    * Keeps track of where a particular model came from.
@@ -387,7 +389,7 @@ public class MQLEditorServiceDelegate {
       org.pentaho.pms.schema.BusinessColumn col = getColumn(model, thinCondition.getColumn());
       MQLWhereConditionModel where = new MQLWhereConditionModel(
           thinCondition.getCombinationType() == null ? "" : thinCondition.getCombinationType().toString(), //$NON-NLS-1$
-          col, thinCondition.getCondition("[" + col.toString() + "]"));
+          col, conditionFormatter.getCondition(thinCondition, "[" + col.toString() + "]"));
       conditions[i++] = where;
     }
     return conditions;
@@ -505,7 +507,7 @@ public class MQLEditorServiceDelegate {
               queryObject.getParameters().add(new Parameter(condition.getValue().replaceAll("[\\{\\}]", ""), getDataType(condition.getColumn().getType()), condition.getDefaultValue()));
             }
             queryObject.getConstraints().add(
-                new Constraint(getComboType(condition.getCombinationType()), condition.getCondition(field))
+                new Constraint(getComboType(condition.getCombinationType()), conditionFormatter.getCondition(condition, field))
               );
           }
 
