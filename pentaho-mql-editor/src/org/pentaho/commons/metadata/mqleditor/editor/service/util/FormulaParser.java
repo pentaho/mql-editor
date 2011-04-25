@@ -50,6 +50,8 @@ public class FormulaParser {
   private boolean notOperator = false;
   private String formula;
   private Condition c = new Condition();
+  private String[] valueArray;
+  private static final String[] EMPTY_STRING_ARRAY = new String[0];
   
   public FormulaParser(String formula){
     this.formula = formula;
@@ -113,24 +115,23 @@ public class FormulaParser {
         StringBuilder parsedVal = new StringBuilder();
         List<String> values = new ArrayList<String>();
         while (matcher.find()) {
-          values.add(matcher.group(1));
-        }
-        for (int i = 0; i < values.size(); i ++) {
-          if (i > 0) {
-            parsedVal.append("|");
+          if (parsedVal.length() > 0) {
+            parsedVal.append("|"); //$NON-NLS-1$
           }
-          final String v = values.get(i);
-          boolean quote = v.contains("|");
+          final String v = matcher.group(1);
+          boolean quote = v.contains("|"); //$NON-NLS-1$
           if (quote) {
-            parsedVal.append("\"");
+            parsedVal.append("\""); //$NON-NLS-1$
           }
           parsedVal.append(v);
+          values.add(v);
           if (quote) {
-            parsedVal.append("\"");
+            parsedVal.append("\""); //$NON-NLS-1$
           }
         }
         if (parsedVal.length() != 0) {
           value = parsedVal.toString();
+          valueArray = values.toArray(EMPTY_STRING_ARRAY);
         }
       } else {
         //Extracts the value contained inside double quotes in the string
@@ -138,6 +139,7 @@ public class FormulaParser {
         if(matcher.find()) {
           value = matcher.group(1);
         }
+        valueArray = new String[] { value };
       }
     }
     c.setValue(value);
@@ -152,6 +154,10 @@ public class FormulaParser {
   
   public Condition getCondition(){
     return c;
+  }
+  
+  public String[] getValueAsArray() {
+    return valueArray;
   }
   
   public String getColID(){
