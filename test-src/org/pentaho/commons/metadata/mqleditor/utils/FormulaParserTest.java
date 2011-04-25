@@ -17,6 +17,7 @@
 package org.pentaho.commons.metadata.mqleditor.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.pentaho.commons.metadata.mqleditor.Operator;
@@ -92,7 +93,7 @@ public class FormulaParserTest {
     assertEquals(Operator.IN, parser.getCondition().getOperator());
     assertEquals("Value1|Value 2|Value;3|\"Value|4\"", parser.getCondition().getValue()); //$NON-NLS-1$
   }
-  
+
   @Test
   public void parseIN_parameterized() {
     final String formula = "IN([CATEGORY.COLUMN];[param:test])"; //$NON-NLS-1$
@@ -102,5 +103,50 @@ public class FormulaParserTest {
     assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
     assertEquals(Operator.IN, parser.getCondition().getOperator());
     assertEquals("[param:test]", parser.getCondition().getValue()); //$NON-NLS-1$
+  }
+
+  @Test
+  public void getValuesAsArray_single() {
+    final String formula = "EQUALS([CATEGORY.COLUMN];\"value\")"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.EQUAL, parser.getCondition().getOperator());
+    assertEquals("value", parser.getCondition().getValue()); //$NON-NLS-1$
+    assertNotNull(parser.getValueAsArray());
+    assertEquals(1, parser.getValueAsArray().length);
+    assertEquals("value", parser.getValueAsArray()[0]); //$NON-NLS-1$
+  }
+
+  @Test
+  public void getValuesAsArray_multiple() {
+    final String formula = "IN([CATEGORY.COLUMN];\"Value1\";\"Value 2\";\"Value;3\";\"Value|4\")"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.IN, parser.getCondition().getOperator());
+    assertEquals("Value1|Value 2|Value;3|\"Value|4\"", parser.getCondition().getValue()); //$NON-NLS-1$
+    assertNotNull(parser.getValueAsArray());
+    assertEquals(4, parser.getValueAsArray().length);
+    assertEquals("Value1", parser.getValueAsArray()[0]); //$NON-NLS-1$
+    assertEquals("Value 2", parser.getValueAsArray()[1]); //$NON-NLS-1$
+    assertEquals("Value;3", parser.getValueAsArray()[2]); //$NON-NLS-1$
+    assertEquals("Value|4", parser.getValueAsArray()[3]); //$NON-NLS-1$
+  }
+
+  @Test
+  public void getValuesAsArray_no_value() {
+    final String formula = "ISNA([CATEGORY.COLUMN])"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.IS_NULL, parser.getCondition().getOperator());
+    assertEquals("", parser.getCondition().getValue()); //$NON-NLS-1$
+    assertNotNull(parser.getValueAsArray());
+    assertEquals(1, parser.getValueAsArray().length);
+    assertEquals("", parser.getValueAsArray()[0]); //$NON-NLS-1$
   }
 }
