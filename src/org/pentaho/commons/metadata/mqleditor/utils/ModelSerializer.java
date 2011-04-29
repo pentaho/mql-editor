@@ -128,7 +128,7 @@ public class ModelSerializer {
           reader.moveDown();
           Condition condition = new Condition();
           String combinationType = reader.getAttribute("combinationType");
-          condition.setCombinationType(StringUtils.isNotEmpty(combinationType) ? CombinationType.valueOf(combinationType) : null);
+          condition.setCombinationType(StringUtils.isNotEmpty(combinationType) ? CombinationType.getByName(combinationType) : null);
           String aggType = reader.getAttribute("selectedAggType");
           condition.setSelectedAggType(StringUtils.isNotEmpty(aggType) ? AggType.valueOf(aggType) : null);
           condition.setOperator(Operator.parse(reader.getAttribute("operator")));
