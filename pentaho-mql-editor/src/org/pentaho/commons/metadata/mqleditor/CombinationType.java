@@ -35,6 +35,14 @@ public enum CombinationType implements Serializable {
     return toStringVal;
   }
   
+  public static CombinationType getByName(String value) {
+	for(CombinationType type: CombinationType.values()) {
+	  if(type.toStringVal.equals(value)) {
+		return type;
+	  }
+	}
+    return null;
+  }
 }
 
   
