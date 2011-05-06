@@ -118,4 +118,12 @@ public class OperatorFormatterTest {
     String formatted = f.formatCondition(Operator.IN, objectName, "test", true); //$NON-NLS-1$
     assertEquals("IN([CAT.COL];[param:test])", formatted); //$NON-NLS-1$
   }
+  
+  @Test
+  public void formatGreaterThan() {
+    final OperatorFormatter f = new OperatorFormatter();
+    final String objectName = "[CAT.COL]"; //$NON-NLS-1$
+    String formatted = f.formatCondition(Operator.GREATER_THAN, objectName, "100", false); //$NON-NLS-1$
+    assertEquals("[CAT.COL] >100", formatted); //$NON-NLS-1$
+  }
 }
