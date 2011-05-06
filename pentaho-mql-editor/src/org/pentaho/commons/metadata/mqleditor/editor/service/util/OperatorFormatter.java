@@ -81,7 +81,7 @@ public class OperatorFormatter {
         retVal += "IN(" + objectName + ";" + value + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         break;
       default:
-        retVal = objectName + " " + this.toString(); //$NON-NLS-1$
+        retVal = objectName + " " + op.toString(); //$NON-NLS-1$
         if(op.getRequiresValue()){
           retVal += value;
         }
