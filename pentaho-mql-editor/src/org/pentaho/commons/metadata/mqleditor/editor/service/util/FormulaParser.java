@@ -132,6 +132,8 @@ public class FormulaParser {
         if (parsedVal.length() != 0) {
           value = parsedVal.toString();
           valueArray = values.toArray(EMPTY_STRING_ARRAY);
+        } else {
+          valueArray = new String[] { value };
         }
       } else {
         //Extracts the value contained inside double quotes in the string

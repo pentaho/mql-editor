@@ -149,4 +149,18 @@ public class FormulaParserTest {
     assertEquals(1, parser.getValueAsArray().length);
     assertEquals("", parser.getValueAsArray()[0]); //$NON-NLS-1$
   }
+  
+  @Test
+  public void getValuesAsArray_parameter() {
+    final String formula = "IN([CATEGORY.COLUMN];[param:p])"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.IN, parser.getCondition().getOperator());
+    assertEquals("[param:p]", parser.getCondition().getValue()); //$NON-NLS-1$
+    assertNotNull(parser.getValueAsArray());
+    assertEquals(1, parser.getValueAsArray().length);
+    assertEquals("[param:p]", parser.getValueAsArray()[0]); //$NON-NLS-1$
+  }
 }
