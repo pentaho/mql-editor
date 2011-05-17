@@ -80,17 +80,17 @@
         <spacer id="buttonContainerVerticalSpacer" height="27" />
         <vbox id="buttonVbox1" flex="1">
           <spacer flex="1" />
-          <button image="images/e_forward.gif" onclick="mainController.moveSelectionToFields()" />
+          <button image="images/move_arrow.png" onclick="mainController.moveSelectionToFields()" />
           <spacer flex="1" />
         </vbox>
         <vbox id="buttonVbox2" flex="1">
           <spacer flex="1" />
-          <button image="images/e_forward.gif" onclick="mainController.moveSelectionToConditions()" />
+          <button image="images/move_arrow.png" onclick="mainController.moveSelectionToConditions()" />
           <spacer flex="1" />
         </vbox>
         <vbox id="buttonVbox3" flex="1">
           <spacer flex="1" />
-          <button image="images/e_forward.gif" onclick="mainController.moveSelectionToOrders()" />
+          <button image="images/move_arrow.png" onclick="mainController.moveSelectionToOrders()" />
           <spacer flex="1" />
         </vbox>
       </vbox>
