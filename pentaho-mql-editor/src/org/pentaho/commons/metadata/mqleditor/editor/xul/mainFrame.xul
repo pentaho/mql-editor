@@ -6,14 +6,14 @@
   pen:cancelbuttonalign="right" ondialogextra1="previewController.showPreview()"
   ondialogaccept="mainController.saveQuery()" ondialogcancel="mainController.closeDialog()"
   title="${window.title}" width="855" height="505" resizable="true"
-  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  xmlns="http://www.pentaho.org/there.is.only.xul"
   xmlns:pen="http://www.pentaho.org/2008/xul"
   onload="mainController.init(), selectedColumns.init(), conditionsController.init(), orderController.init(), previewController.init()">
 
 
   <dialog id="previewDialog" buttonlabelcancel="${close}" buttons="cancel"
     ondialogcancel="previewController.closeDialog()" buttonalign="right"
-    title="${preview.title}" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    title="${preview.title}" xmlns="http://www.pentaho.org/there.is.only.xul"
     xmlns:pen="http://www.pentaho.org/2008/xul" height="300" width="400" resizable="true">
 
     <vbox id="previewTreeContainer" padding="10" flex="1">

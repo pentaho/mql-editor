@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <overlay 
-  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:pen="http://www.pentaho.org/2008/xul">
+  xmlns="http://www.pentaho.org/there.is.only.xul" xmlns:pen="http://www.pentaho.org/2008/xul">
   <!-- Mod size -->
   <vbox id="dataModelContainer" flex="0" visible="false"/>
   <vbox id="categoryTreeContainer" flex="0" height="395"/>
