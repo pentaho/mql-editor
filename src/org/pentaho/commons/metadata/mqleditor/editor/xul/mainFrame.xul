@@ -171,7 +171,7 @@
         
         <hbox id="limitContainer" width="575">
         	<label value="${limit}" />
-        	<textbox id="limit" rows="1" size="20"/>
+        	<textbox id="limit" rows="1" size="20" flex="1"/>
         </hbox>
 
       </vbox>
