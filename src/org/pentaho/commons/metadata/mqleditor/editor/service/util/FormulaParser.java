@@ -35,11 +35,13 @@ public class FormulaParser {
   private static final String VALUE_EVAL = ".*\"(.*)\"";
   // Matches the values of the IN function
   private static final String VALUE_EVAL_IN = "[^\"]*\"([^\"]*)\";{0,1}";
+  private static final String VALUE_EVAL_IN_NUMERIC = "\\s*([^;\\s]+)\\s*;{0,1}";
 
   private static Pattern genericPat = Pattern.compile(GENERIC);
   private static Pattern wrappedPat = Pattern.compile(WRAPPED);
   private static Pattern valueEvalPat = Pattern.compile(VALUE_EVAL);
   private static Pattern valueEvalInPat = Pattern.compile(VALUE_EVAL_IN);
+  private static Pattern valueEvalInNumericPat = Pattern.compile(VALUE_EVAL_IN_NUMERIC);
   private static Pattern datevaluePat = Pattern.compile(DATEVALUE);
 
   private String functionName = null;
@@ -110,8 +112,13 @@ public class FormulaParser {
     c.setOperator(op);
     
     if(value != null) {
-      if (c.getOperator() == Operator.IN) { 
-        Matcher matcher = valueEvalInPat.matcher(value);
+      if (c.getOperator() == Operator.IN) {
+        Matcher matcher = null;
+        if (value.startsWith("[param:") || value.contains("\"")) { // Poor attempt at determining if we're dealing with parsing numerics or strings
+          matcher = valueEvalInPat.matcher(value);
+        } else {
+          matcher = valueEvalInNumericPat.matcher(value);
+        }
         StringBuilder parsedVal = new StringBuilder();
         List<String> values = new ArrayList<String>();
         while (matcher.find()) {
