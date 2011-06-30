@@ -48,6 +48,19 @@ public class FormulaParserTest {
   }
 
   @Test
+  public void parseIN_single_numeric() {
+    final String formula = "IN([CATEGORY.COLUMN];100)"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.IN, parser.getCondition().getOperator());
+    assertEquals("100", parser.getCondition().getValue());
+    assertEquals(1, parser.getValueAsArray().length);
+    assertEquals("100", parser.getValueAsArray()[0]); //$NON-NLS-1$
+  }
+
+  @Test
   public void parseIN_single_with_space() {
     final String formula = "IN([CATEGORY.COLUMN];\"Value 1\")"; //$NON-NLS-1$
     final FormulaParser parser = new FormulaParser(formula);
@@ -57,6 +70,19 @@ public class FormulaParserTest {
     assertEquals(Operator.IN, parser.getCondition().getOperator());
     // Not quoted since it's a single value
     assertEquals("Value 1", parser.getCondition().getValue()); //$NON-NLS-1$
+  }
+
+  @Test
+  public void parseIN_single_numeric_with_spaces() {
+    final String formula = "IN([CATEGORY.COLUMN]; 100 )"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.IN, parser.getCondition().getOperator());
+    assertEquals("100", parser.getCondition().getValue());
+    assertEquals(1, parser.getValueAsArray().length);
+    assertEquals("100", parser.getValueAsArray()[0]); //$NON-NLS-1$
   }
 
   @Test
@@ -94,6 +120,20 @@ public class FormulaParserTest {
     assertEquals("Value1|Value 2|Value;3|\"Value|4\"", parser.getCondition().getValue()); //$NON-NLS-1$
   }
 
+  @Test
+  public void parseIN_multiple_numeric() {
+    final String formula = "IN([CATEGORY.COLUMN]; 100; 0; 30.3 )"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.IN, parser.getCondition().getOperator());
+    assertEquals(3, parser.getValueAsArray().length);
+    assertEquals("100", parser.getValueAsArray()[0]); //$NON-NLS-1$
+    assertEquals("0", parser.getValueAsArray()[1]); //$NON-NLS-1$
+    assertEquals("30.3", parser.getValueAsArray()[2]); //$NON-NLS-1$
+  }
+  
   @Test
   public void parseIN_parameterized() {
     final String formula = "IN([CATEGORY.COLUMN];[param:test])"; //$NON-NLS-1$
