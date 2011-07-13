@@ -338,13 +338,25 @@ public class MQLEditorServiceDelegate {
     // and per user (security issues, etc)
     
     refreshMetadataDomains();
-
+    
+    if (!name.endsWith(".xmi")) {
+      return matchLegacyDomainName(name);
+    }
     for (MqlDomain domain : domains) {
       if (domain.getName().equals(name)) {
         return domain;
       }
     }
 
+    return null;
+  }
+
+  private MqlDomain matchLegacyDomainName(String name) {
+    for (MqlDomain domain : domains) {
+      if (domain.getName().contains(name)) {
+        return domain;
+      }
+    }
     return null;
   }
 
