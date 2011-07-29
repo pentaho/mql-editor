@@ -78,6 +78,15 @@ public class Column implements MqlColumn {
   public AggType getSelectedAggType(){
     return this.selectedAggType;
   }
-  
-  
+
+  public Column clone() {
+    Column c = new Column();
+    c.setType(this.type);
+    c.setAggTypes(this.aggTypes);
+    c.setId(this.id);
+    c.setName(this.name);
+    c.setDefaultAggType(this.defaultAggType);
+    c.setSelectedAggType(this.selectedAggType);
+    return c;
+  }
 }

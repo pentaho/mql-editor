@@ -844,7 +844,12 @@ public class MQLEditorServiceDelegate {
     for(MqlCategory c : selectedModel.getCategories()){
       for(MqlColumn col : c.getBusinessColumns()){
         if(col.getId().equals(colId)){
-         return col;
+          //PRD-3542 - clone the columns to allow for more than one field with different aggregations.
+          if (col instanceof Column) {
+            return ((Column)col).clone();
+          } else {
+            return col;
+          }
         }
       }
     }
