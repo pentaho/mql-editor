@@ -26,7 +26,7 @@ import org.pentaho.commons.metadata.mqleditor.beans.Condition;
 
 public class FormulaParser {
 
-  private static final String WRAPPED = "([^\\(]*)\\(\\[([^\\]]*)\\];([^\\)]*)\\)";
+  private static final String WRAPPED = "([^\\(]*)\\(\\[([^\\]]*)\\];(.*)(?=\\))"; //$NON-NLS-1$
   private static final String GENERIC = "\\[([^\\]]*)\\]\\s*([><=]+)\\s*(.*)";
 
   // Special case for Datevalues, DATEVALUE([param:foo]) and DATEVALUE("2010-01-01");
