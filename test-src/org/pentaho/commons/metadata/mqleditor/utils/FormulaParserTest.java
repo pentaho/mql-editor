@@ -37,6 +37,32 @@ public class FormulaParserTest {
   }
 
   @Test
+  public void parseEqualsWithParenthesis_single() {
+    final String formula = "EQUALS([CATEGORY.COLUMN];\"Sale Manager (EMEA)\")"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.EQUAL, parser.getCondition().getOperator());
+    assertEquals("Sale Manager (EMEA)", parser.getCondition().getValue()); //$NON-NLS-1$
+    assertEquals(1, parser.getValueAsArray().length);
+    assertEquals("Sale Manager (EMEA)", parser.getValueAsArray()[0]); //$NON-NLS-1$
+  }
+
+  @Test
+  public void parseIN_WithParenthesis_multiple() {
+    final String formula = "IN([CATEGORY.COLUMN];\"Sale Manager (EMEA)\";\"(Test) - Test (1)\")"; //$NON-NLS-1$
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID()); //$NON-NLS-1$
+    assertEquals("COLUMN", parser.getColID()); //$NON-NLS-1$
+    assertEquals(Operator.IN, parser.getCondition().getOperator());
+    assertEquals(2, parser.getValueAsArray().length);
+    assertEquals("Sale Manager (EMEA)", parser.getValueAsArray()[0]); //$NON-NLS-1$
+    assertEquals("(Test) - Test (1)", parser.getValueAsArray()[1]); //$NON-NLS-1$
+  }
+
+  @Test
   public void parseIN_single() {
     final String formula = "IN([CATEGORY.COLUMN];\"Value\")"; //$NON-NLS-1$
     final FormulaParser parser = new FormulaParser(formula);
