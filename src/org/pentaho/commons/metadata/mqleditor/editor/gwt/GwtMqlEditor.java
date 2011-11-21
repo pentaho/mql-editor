@@ -140,7 +140,7 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
 
       try {
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "mainFrame-gwt-overlay.xul");
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, GWT.getModuleBaseURL() + "mainFrame-gwt-overlay.xul");
 
         try {
           Request response = builder.sendRequest(null, new RequestCallback() {
@@ -296,7 +296,7 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
   public void bundleLoaded(String bundleName) {
     try {
 
-      RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "mainFrame.xul");
+      RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, GWT.getModuleBaseURL() + "mainFrame.xul");
 
       try {
         Request response = builder.sendRequest(null, new RequestCallback() {
