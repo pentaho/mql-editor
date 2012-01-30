@@ -16,7 +16,10 @@
  */
 package org.pentaho.commons.metadata.mqleditor;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 
 import org.pentaho.commons.connection.IPentahoResultSet;
 import org.pentaho.commons.metadata.mqleditor.editor.SwingMqlEditor;
@@ -67,16 +70,20 @@ public class DebugSwingMqlEditor {
     new StandaloneSession();
 
     FileBasedMetadataDomainRepository repo = (FileBasedMetadataDomainRepository) PentahoSystem.get(IMetadataDomainRepository.class, null);
-    repo.setDomainFolder("resources/solution1/system/metadata/domains"); //$NON-NLS-1$
+//    repo.setDomainFolder("resources/solution1/system/metadata/domains"); //$NON-NLS-1$
     
     // Parse and add legacy CWM domain for testing purposes.
     XmiParser parser = new XmiParser();
     try {
-      InputStream inStr = SwingMqlEditor.class.getResourceAsStream("/metadata_steelwheels.xmi"); //$NON-NLS-1$
+//      DebugSwingMqlEditor test = new DebugSwingMqlEditor();
+//      InputStream inStr = SwingMqlEditor.class.getResourceAsStream("/metadata_steelwheels.xmi"); //$NON-NLS-1$
+//      InputStream inStr = DebugSwingMqlEditor.class.getResourceAsStream("org/pentaho/commons/metadata/mqleditor/sampleMql/metadata_steelwheels.xmi"); //$NON-NLS-1$
+      InputStream inStr = new FileInputStream(new File("src/org/pentaho/commons/metadata/mqleditor/sampleMql/metadata_steelwheels.xmi"));
       if(inStr != null){
         org.pentaho.metadata.model.Domain d = parser.parseXmi(inStr);
         d.setId("Steel-Wheels");  //$NON-NLS-1$
         repo.storeDomain(d, false);
+
         repo.reloadDomains();
         
       } else {

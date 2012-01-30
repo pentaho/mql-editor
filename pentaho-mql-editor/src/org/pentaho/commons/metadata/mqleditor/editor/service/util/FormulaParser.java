@@ -94,6 +94,7 @@ public class FormulaParser {
         functionName = m.group(1);
         fieldName = m.group(2);
         value = m.group(3);
+        value = checkValueAsDataTime(value);
       } 
     }
     
