@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.pentaho.commons.metadata.mqleditor.Operator;
 import org.pentaho.commons.metadata.mqleditor.editor.service.util.FormulaParser;
 
+import java.lang.String;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -243,5 +244,14 @@ public class FormulaParserTest {
     assertEquals(Operator.EQUAL, parser.getCondition().getOperator());
     assertEquals("[param:DateParam]", parser.getCondition().getValue()); //$NON-NLS-1$
   }
-  
+
+  @Test
+  public void parseAggregationType() {
+    String formula = "EQUALS([CATEGORY.COLUMN.AGG_TYPE];DATEVALUE([param:DateParam]))";
+    final FormulaParser parser = new FormulaParser(formula);
+
+    assertEquals("CATEGORY", parser.getCatID());
+    assertEquals("COLUMN", parser.getColID());
+    assertEquals("AGG_TYPE", parser.getAggType());
+  }
 }

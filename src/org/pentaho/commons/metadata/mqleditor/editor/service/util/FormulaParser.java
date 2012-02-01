@@ -49,6 +49,7 @@ public class FormulaParser {
   private String value = null;
   private String catId = null;
   private String colId = null;
+  private String aggType = null;
   private boolean notOperator = false;
   private String formula;
   private Condition c = new Condition();
@@ -154,11 +155,12 @@ public class FormulaParser {
     }
     c.setValue(value);
     
-    // Field is formatted as catId.colId
+    // Field is formatted as catId.colId.aggType
     if(fieldName != null && fieldName.indexOf(".") > -1){
       String[] pair = fieldName.split("\\.");
       catId = pair[0];
       colId = pair[1];
+      aggType = pair.length > 2 ? pair[2] : null;
     }
   }
   
@@ -175,5 +177,9 @@ public class FormulaParser {
   }
   public String getCatID(){
     return catId;
+  }
+
+  public String getAggType() {
+    return aggType;
   }
 }
