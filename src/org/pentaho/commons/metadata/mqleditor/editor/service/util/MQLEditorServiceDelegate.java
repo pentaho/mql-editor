@@ -788,6 +788,11 @@ public class MQLEditorServiceDelegate {
         }
       }
       
+      // PRD-3710
+      if(fp.getAggType() != null){
+        cond.setSelectedAggType(convertNewThinAggregationType(AggregationType.valueOf(fp.getAggType())));
+      }
+      
       cond.setCombinationType(CombinationType.valueOf(constraint.getCombinationType().name().toUpperCase()));
       String val = cond.getValue();
       
