@@ -16,8 +16,6 @@
  */
 package org.pentaho.commons.metadata.mqleditor;
 
-import java.io.InputStream;
-
 import org.pentaho.commons.connection.IPentahoResultSet;
 import org.pentaho.commons.metadata.mqleditor.editor.SwtMqlEditor;
 import org.pentaho.commons.metadata.mqleditor.editor.service.MQLEditorServiceImpl;
@@ -26,9 +24,9 @@ import org.pentaho.metadata.query.model.util.QueryXmlHelper;
 import org.pentaho.metadata.repository.FileBasedMetadataDomainRepository;
 import org.pentaho.metadata.repository.IMetadataDomainRepository;
 import org.pentaho.metadata.util.XmiParser;
-import org.pentaho.platform.api.data.IDatasourceService;
-import org.pentaho.platform.api.engine.ISolutionEngine;
+import org.pentaho.platform.api.data.IDBDatasourceService;
 import org.pentaho.platform.api.engine.IPentahoDefinableObjectFactory.Scope;
+import org.pentaho.platform.api.engine.ISolutionEngine;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.engine.core.system.StandaloneSession;
@@ -39,6 +37,10 @@ import org.pentaho.platform.plugin.services.connections.sql.SQLConnection;
 import org.pentaho.platform.repository.solution.filebased.FileBasedSolutionRepository;
 import org.pentaho.test.platform.engine.core.MicroPlatform;
 import org.pentaho.ui.xul.XulServiceCallback;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 /**
  * Default Swt implementation. This class requires a concreate Service
@@ -55,7 +57,7 @@ public class DebugSwtMqlEditor {
     microPlatform.define(IMetadataDomainRepository.class, FileBasedMetadataDomainRepository.class, Scope.GLOBAL);
     microPlatform.define("connection-SQL", SQLConnection.class); //$NON-NLS-1$
 
-    microPlatform.define(IDatasourceService.class, JndiDatasourceService.class, Scope.GLOBAL);
+    microPlatform.define(IDBDatasourceService.class, JndiDatasourceService.class, Scope.GLOBAL);
     // JNDI
     System.setProperty("java.naming.factory.initial", "org.osjava.sj.SimpleContextFactory"); //$NON-NLS-1$ //$NON-NLS-2$
     System.setProperty("org.osjava.sj.root", "resources/solution1/simple-jndi"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -65,12 +67,12 @@ public class DebugSwtMqlEditor {
     new StandaloneSession();
 
     FileBasedMetadataDomainRepository repo = (FileBasedMetadataDomainRepository) PentahoSystem.get(IMetadataDomainRepository.class, null);
-    repo.setDomainFolder("resources/solution1/system/metadata/domains"); //$NON-NLS-1$
+    //repo.setDomainFolder("resources/solution1/system/metadata/domains"); //$NON-NLS-1$
 
     // Parse and add legacy CWM domain for testing purposes.
     XmiParser parser = new XmiParser();
     try {
-      InputStream inStr = SwtMqlEditor.class.getResourceAsStream("/metadata_steelwheels.xmi"); //$NON-NLS-1$
+      InputStream inStr = new FileInputStream(new File("resources/metadata.xmi"));
       if (inStr != null) {
         org.pentaho.metadata.model.Domain d = parser.parseXmi(inStr);
         d.setId("Steel-Wheels"); //$NON-NLS-1$

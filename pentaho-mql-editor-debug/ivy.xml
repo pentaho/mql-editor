@@ -31,18 +31,18 @@
             <artifact name="pentaho-mql-editor"/>
             <artifact name="pentaho-mql-editor" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
-	    <dependency org="pentaho" name="pentaho-bi-platform-plugin-actions" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
-	        
-	    <dependency org="pentaho" name="pentaho-bi-platform-api" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-util" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-engine-core" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-engine-security" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-engine-services" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-repository" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-ui-foundation" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-bi-platform-test-foundation" rev="${dependency.bi-platform.revision}" changing="true" conf="default->default"/>
-	    
-	    
+
+	    <dependency org="pentaho" name="pentaho-platform-api" rev="${dependency.pentaho-platform.revision}" changing="true" conf="default->default"/>
+	    <dependency org="pentaho" name="pentaho-platform-core" rev="${dependency.pentaho-platform.revision}" changing="true" conf="default->default"/>
+	    <dependency org="pentaho" name="pentaho-platform-repository" rev="${dependency.pentaho-platform.revision}" changing="true" conf="default->default"/>
+
+        <dependency org="pentaho" name="pentaho-platform-core-test" rev="${dependency.pentaho-platform.revision}" changing="true" conf="default->default" transitive="false">
+            <artifact name="pentaho-platform-core-test"/>
+            <artifact name="pentaho-platform-core-test" type="source" ext="jar" m:classifier="sources"/>
+        </dependency>
+        <dependency org="pentaho" name="pentaho-platform-extensions" rev="${dependency.pentaho-platform.revision}" changing="true"
+                    conf="default->default" transitive="false"/>
+
         <dependency org="pentaho" name="pentaho-xul-core" rev="${dependency.pentaho-xul.revision}" conf="default->default" changing="true">
             <artifact name="pentaho-xul-core"/>
             <artifact name="pentaho-xul-core" type="source" ext="jar" m:classifier="sources"/>
@@ -68,6 +68,7 @@
         <dependency org="com.google.gwt" name="gwt-incubator" rev="2.0.1" conf="default->default"/>
         <dependency org="com.allen_sauer" name="gwt-dnd" rev="3.0.1" conf="default->default"/>
         <dependency org="com.google.code.gwtx" name="gwtx" rev="1.5.2" transitive="false" conf="default->default"/>
-	    
+        <dependency org="GWT-FX" name="GWT-FX" rev="0.5.0" conf="codegen->default" transitive="false"/>
+
     </dependencies>
 </ivy-module>
