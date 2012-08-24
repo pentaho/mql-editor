@@ -23,14 +23,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import junit.framework.Assert;
+
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.CombinationType;
+import org.pentaho.commons.metadata.mqleditor.MqlOrder.Type;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.Operator;
-import org.pentaho.commons.metadata.mqleditor.MqlOrder.Type;
 import org.pentaho.commons.metadata.mqleditor.beans.Category;
 import org.pentaho.commons.metadata.mqleditor.beans.Column;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
@@ -38,6 +42,8 @@ import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.beans.Model;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
+import org.pentaho.platform.util.JSONComparitor;
+
 
 /**
  * Unit test for {@link ModelSerializer}.
@@ -134,15 +140,23 @@ public class ModelSerializerTest {
 
   @Test
   public void testSerializeAndDeSerialize() {
-    
-    String serialized = ModelSerializer.serialize(mqlQuery);
-    System.out.println(serialized);
-    
-    MqlQuery deserialized = ModelSerializer.deSerialize(serialized);
-    //MqlQuery deserialized = ModelSerializer.deSerialize("{\"MQLQuery\":{\"cols\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"}]},\"conditions\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Condition\":[{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"},\"operator\":[\"EQUAL\"],\"value\":\"myvalue1\",\"comboType\":\"OR\",\"parameterized\":false},{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"},\"operator\":[\"EQUAL\"],\"value\":\"myvalue2\",\"comboType\":\"OR\",\"parameterized\":false},{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"},\"operator\":[\"EQUAL\"],\"value\":\"myparameter\",\"comboType\":\"OR\",\"parameterized\":true}]}],\"orders\":{\"org.pentaho.commons.metadata.mqleditor.beans.Order\":[{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"},\"orderType\":[\"ASC\"]}]},\"domain\":{\"id\":\"mydomain\",\"name\":\"mydomain\",\"models\":{\"org.pentaho.commons.metadata.mqleditor.beans.Model\":[{\"categories\":{\"org.pentaho.commons.metadata.mqleditor.beans.Category\":[{\"id\":\"mycategory\",\"name\":\"mycategory\",\"columns\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"}]}}]},\"id\":[\"mymodel\"],\"name\":\"mymodel\"}]}},\"model\":{\"categories\":{\"org.pentaho.commons.metadata.mqleditor.beans.Category\":[{\"id\":\"mycategory\",\"name\":\"mycategory\",\"columns\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":\"\"}]}}]},\"id\":[\"mymodel\"],\"name\":\"mymodel\"}}}");
-    
+     
+		String serialized = ModelSerializer.serialize(mqlQuery);
+		System.out.println(serialized);
 
-    
+		JSONObject jsoRef = null;
+		JSONObject jso = null;
+		String jsonRef = "{\"MQLQuery\":{\"cols\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"]}}],\"conditions\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Condition\":[{\"condition\":{\"@combinationType\":\"\",\"@defaultValue\":\"default\",\"@operator\":\"=\",\"@selectedAggType\":\"\",\"@value\":\"myvalue1\",\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"]}}},{\"condition\":{\"@combinationType\":\"OR\",\"@defaultValue\":\"null\",\"@operator\":\"in\",\"@selectedAggType\":\"\",\"@value\":\"myvalue2|\\\"my value2\\\"|\\\"my;value 2\\\"|my;value2\",\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"]}}},{\"condition\":{\"@combinationType\":\"OR\",\"@defaultValue\":\"null\",\"@operator\":\"=\",\"@selectedAggType\":\"\",\"@value\":\"myparameter\",\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"]}}}]}],\"orders\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Order\":{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"]},\"orderType\":\"ASC\"}}],\"limit\":-1,\"domain\":{\"@id\":\"mydomain\",\"@name\":\"mydomain\"},\"model\":{\"@id\":\"mymodel\",\"@name\":\"mymodel\"},\"defaultParameterMap\":[{\"entry\":{\"string\":[\"myparameter\",\"myvalue3\"]}}]}}";
+		     
+		try {
+			boolean isEqual = JSONComparitor.jsonEqual(jsonRef, serialized, null);
+			assertTrue(isEqual);
+		} catch (JSONException e) {
+			Assert.fail("Invalid JSON format");
+		}
+		
+    MqlQuery deserialized = ModelSerializer.deSerialize(serialized);
+        
     // spot check fields since Query doesn't implement equals!!!
     assertEquals(mqlQuery.getDomain().getName(), deserialized.getDomain().getName());
     assertEquals(mqlQuery.getModel().getName(), deserialized.getModel().getName());
@@ -161,5 +175,6 @@ public class ModelSerializerTest {
     assertNotNull(mqlQuery.getDefaultParameterMap().get("myparameter"));
     assertEquals(mqlQuery.getDefaultParameterMap().get("myparameter"), deserialized.getDefaultParameterMap().get("myparameter"));
   }
+
 
 }

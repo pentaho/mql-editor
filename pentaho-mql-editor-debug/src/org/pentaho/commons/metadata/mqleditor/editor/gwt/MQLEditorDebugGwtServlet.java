@@ -16,9 +16,7 @@
  */
 package org.pentaho.commons.metadata.mqleditor.editor.gwt;
 
-import java.io.InputStream;
-import java.util.List;
-
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.commons.connection.IPentahoResultSet;
@@ -26,14 +24,13 @@ import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtService;
 import org.pentaho.commons.metadata.mqleditor.editor.service.util.MQLEditorServiceDelegate;
-import org.pentaho.metadata.model.Domain;
 import org.pentaho.metadata.query.model.util.QueryXmlHelper;
 import org.pentaho.metadata.repository.FileBasedMetadataDomainRepository;
 import org.pentaho.metadata.repository.IMetadataDomainRepository;
 import org.pentaho.metadata.util.XmiParser;
-import org.pentaho.platform.api.data.IDatasourceService;
-import org.pentaho.platform.api.engine.ISolutionEngine;
+import org.pentaho.platform.api.data.IDBDatasourceService;
 import org.pentaho.platform.api.engine.IPentahoDefinableObjectFactory.Scope;
+import org.pentaho.platform.api.engine.ISolutionEngine;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.engine.core.system.StandaloneSession;
@@ -45,7 +42,8 @@ import org.pentaho.platform.repository.solution.filebased.FileBasedSolutionRepos
 import org.pentaho.pms.schema.SchemaMeta;
 import org.pentaho.test.platform.engine.core.MicroPlatform;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import java.io.InputStream;
+import java.util.List;
 
 public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQLEditorGwtService {
 
@@ -63,7 +61,7 @@ public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQ
     microPlatform.define(IMetadataDomainRepository.class, FileBasedMetadataDomainRepository.class, Scope.GLOBAL);
     microPlatform.define("connection-SQL", SQLConnection.class);
 
-    microPlatform.define(IDatasourceService.class, JndiDatasourceService.class, Scope.GLOBAL);
+    microPlatform.define(IDBDatasourceService.class, JndiDatasourceService.class, Scope.GLOBAL);
     // JNDI
     System.setProperty("java.naming.factory.initial", "org.osjava.sj.SimpleContextFactory"); //$NON-NLS-1$ //$NON-NLS-2$
     System.setProperty("org.osjava.sj.root", "resources/solution1/simple-jndi"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -73,7 +71,7 @@ public class MQLEditorDebugGwtServlet extends RemoteServiceServlet implements MQ
     new StandaloneSession();;
 
     FileBasedMetadataDomainRepository repo = (FileBasedMetadataDomainRepository) PentahoSystem.get(IMetadataDomainRepository.class, null);
-    repo.setDomainFolder("resources/solution1/system/metadata/domains"); //$NON-NLS-1$
+//    repo.setDomainFolder("resources/solution1/system/metadata/domains"); //$NON-NLS-1$
 
 
     // Parse and add legacy CWM domain for testing purposes.

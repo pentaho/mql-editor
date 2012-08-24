@@ -29,7 +29,7 @@ import org.pentaho.metadata.query.model.util.QueryXmlHelper;
 import org.pentaho.metadata.repository.FileBasedMetadataDomainRepository;
 import org.pentaho.metadata.repository.IMetadataDomainRepository;
 import org.pentaho.metadata.util.XmiParser;
-import org.pentaho.platform.api.data.IDatasourceService;
+import org.pentaho.platform.api.data.IDBDatasourceService;
 import org.pentaho.platform.api.engine.ISolutionEngine;
 import org.pentaho.platform.api.engine.IPentahoDefinableObjectFactory.Scope;
 import org.pentaho.platform.api.repository.ISolutionRepository;
@@ -60,7 +60,7 @@ public class DebugSwingMqlEditor {
     microPlatform.define(IMetadataDomainRepository.class, FileBasedMetadataDomainRepository.class, Scope.GLOBAL); 
     microPlatform.define("connection-SQL", SQLConnection.class);  //$NON-NLS-1$
 
-    microPlatform.define(IDatasourceService.class, JndiDatasourceService.class, Scope.GLOBAL);
+    microPlatform.define(IDBDatasourceService.class, JndiDatasourceService.class, Scope.GLOBAL);
     // JNDI
     System.setProperty("java.naming.factory.initial", "org.osjava.sj.SimpleContextFactory"); //$NON-NLS-1$ //$NON-NLS-2$
     System.setProperty("org.osjava.sj.root", "resources/solution1/simple-jndi"); //$NON-NLS-1$ //$NON-NLS-2$
