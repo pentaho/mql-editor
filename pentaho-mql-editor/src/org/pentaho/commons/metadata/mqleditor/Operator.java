@@ -40,7 +40,8 @@ public enum Operator implements Serializable{
   IS_NULL("is null", 2, false), 
   IS_NOT_NULL("is not null", 2, false),
 
-  IN("in", 0, true);
+  IN("in", 0, true),
+  NOT_EQUAL("<>", 1, true);
 
   private String strVal;
   // 0 = string
@@ -84,6 +85,8 @@ public enum Operator implements Serializable{
       return Operator.LESS_THAN;
     } else if(val.equals("<=")){
       return Operator.LESS_OR_EQUAL;
+    } else if (val.equals("<>")) {
+      return Operator.NOT_EQUAL;
     } else if(val.equals("exactly matches")){
       return Operator.EXACTLY_MATCHES;
     } else if(val.equals("contains")){

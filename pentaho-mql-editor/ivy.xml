@@ -46,7 +46,7 @@
         <!--  internal dependencies -->
         <dependency org="pentaho" name="pentaho-connections" rev="${dependency.pentaho-connections.revision}" conf="default->default"
                     changing="true"/>
-        <dependency org="pentaho-library" name="libformula" rev="${dependency.libformula.revision}" conf="default->default"/>
+        <dependency org="pentaho-library" name="libformula" rev="${dependency.reporting-library.revision}" conf="default->default"/>
         <dependency org="pentaho" name="pentaho-publisher" rev="${dependency.pentaho-pentaho-publisher.revision}" conf="default->default"/>
 
 
@@ -59,7 +59,6 @@
     	<dependency org="com.google.gwt" name="gwt-dev"  rev="2.0.3" conf="codegen->default"/>        
     	<dependency org="com.google.gwt" name="gwt-user" rev="2.0.3" conf="codegen->default" />
 
-        <dependency org="org.zenica" name="gwt-datepicker" rev="r30" conf="codegen->default"/>
         <dependency org="com.google.gwt" name="gwt-incubator" rev="2.0.1" conf="codegen->default"/>
         <dependency org="com.allen_sauer" name="gwt-dnd" rev="3.0.1" conf="codegen->default"/>
         <dependency org="GWT-FX" name="GWT-FX" rev="0.5.0" conf="codegen->default" transitive="false"/>
