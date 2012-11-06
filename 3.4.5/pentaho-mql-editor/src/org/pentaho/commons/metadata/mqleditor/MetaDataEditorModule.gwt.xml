@@ -1,0 +1,36 @@
+<!--
+  This is the generic GWT module from which concreate implementations are based. if you want to add MQL Editing
+  functionality to your GWT application, this is the module to inherit.
+-->
+<module>
+
+  <inherits name='com.google.gwt.user.User'/>
+    <inherits name='com.googlecode.gwtx.Java'/>
+  <inherits name='com.google.gwt.xml.XML'/>
+    <inherits name="org.pentaho.gwt.widgets.Widgets"/>
+    <inherits name="org.pentaho.gwt.widgets.login.Login"/>
+  
+    <inherits name="org.pentaho.ui.xul.Gwt"/>
+    <source path="">
+    	<exclude name="**/AbstractMqlEditor*"/>
+        <exclude name="**/OldSwtMqlEditor*"/>
+        <exclude name="**/SwingMqlEditor*"/>
+        <exclude name="**/MQLEditorServiceDeligate*"/>
+        <exclude name="**/MQLEditorServiceImpl*"/>
+        <exclude name="**/MQLEditorServiceCWMImpl*"/>
+        <exclude name="**/MQLEditorDebugGwtServlet*"/>
+        <exclude name="**/MQLEditorServiceDebugImpl*"/>
+        <exclude name="**/MQLEditorGwtServlet*"/>
+        <exclude name="**/MQLEditorServiceSyncImpl*"/>
+        <exclude name="**/ModelSerializer*"/>
+        <exclude name="**/MQLEditorServiceCWMDelegate*"/>
+        <exclude name="**/MQLEditorServiceDelegate*"/>
+        <exclude name="**/FormulaParser*"/>
+        <exclude name="**/CWMStartup*"/>
+        <exclude name="**/Swt*"/>
+        <exclude name="**/ConditionFormatter*"/>
+        <exclude name="**/OperatorFormatter*"/>
+    </source>
+    <public path="editor/xul"/>
+  
+ </module>
