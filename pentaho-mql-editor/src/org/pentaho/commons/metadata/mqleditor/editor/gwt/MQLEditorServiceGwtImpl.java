@@ -34,29 +34,35 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
   static org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtServiceAsync SERVICE;
 
   static {
-
     SERVICE = (org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtServiceAsync) GWT
         .create(org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtService.class);
     ServiceDefTarget endpoint = (ServiceDefTarget) SERVICE;
-    endpoint.setServiceEntryPoint(getBaseUrl() + "gwtrpc/MqlService");
+    endpoint.setServiceEntryPoint(getContextPath() + "gwtrpc/MqlService");
+  }
+  
+  public static String getContextPath() {
+	return readContextPath();
   }
 
-  private static String getBaseUrl() {
-    String baseUrl = GWT.getModuleBaseURL();
+  public static native String readContextPath()/*-{
+	if($wnd.CONTEXT_PATH){
+	  return $wnd.CONTEXT_PATH;
+	}
+    return "";
+  }-*/;
 
-    //
-    // Set the base url appropriately based on the context in which we are running this client
-    //
-    if (baseUrl.indexOf("content") > -1) {
-      // we are running the client in the context of a BI Server plugin, so
-      // point the request to the GWT rpc proxy servlet
-      baseUrl = baseUrl.substring(0, baseUrl.indexOf("content"));
-    }
-    return baseUrl;
+  public static String getFullyQualifiedUrl() {
+	return readFullQualifiedUrl();
   }
+
+  public static native String readFullQualifiedUrl()/*-{
+	if($wnd.FULLY_QUALIFIED_SERVER_URL){
+	  return $wnd.FULLY_QUALIFIED_SERVER_URL;
+	}
+    return "";
+  }-*/;
 
   public MQLEditorServiceGwtImpl() {
-
   }
 
   public void getDomainByName(final String name, final XulServiceCallback<MqlDomain> callback) {
