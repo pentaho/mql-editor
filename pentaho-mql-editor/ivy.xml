@@ -27,7 +27,7 @@
         <dependency org="commons-httpclient" name="commons-httpclient" rev="3.0.1" transitive="false"/>
         <dependency org="commons-vfs" name="commons-vfs" rev="1.0" transitive="false"/>
         <dependency org="log4j" name="log4j" rev="1.2.14"/>
-        <dependency org="jfree" name="jcommon" rev="1.0.14"/>
+        <dependency org="jfree" name="jcommon" rev="1.0.16"/>
         <dependency org="pentaho" name="pentaho-connections" rev="${dependency.pentaho-connections.revision}"
                     changing="true" transitive="false"/>
         <dependency org="pentaho" name="pentaho-metadata" rev="${dependency.pentaho-metadata.revision}" changing="true"
