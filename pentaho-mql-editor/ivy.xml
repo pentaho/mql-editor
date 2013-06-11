@@ -36,9 +36,9 @@
         <dependency org="pentaho-kettle" name="kettle-engine" rev="${dependency.kettle.revision}"/>
         <dependency org="pentaho-kettle" name="kettle-core"   rev="${dependency.kettle.revision}"/>
         <dependency org="dom4j" name="dom4j" rev="1.6.1" conf="default->default"/>
-        <dependency org="com.thoughtworks.xstream" name="xstream" rev="1.3.1"  conf="default->default"/>
+        <dependency org="com.thoughtworks.xstream" name="xstream" rev="${dependency.xstream.revision}"  conf="default->default"/>
         <dependency org="stax" name="stax" rev="1.2.0"  conf="default->default"/>
-        <dependency org="org.codehaus.jettison" name="jettison" rev="1.0.1" conf="default->default"/>
+        <dependency org="org.codehaus.jettison" name="jettison" rev="${dependency.jettison.revision}" conf="default->default"/>
         <dependency org="jaxen" name="jaxen" rev="1.1" transitive="false" conf="default->default"/>
 
 
