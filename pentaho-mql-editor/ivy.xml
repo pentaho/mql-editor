@@ -46,7 +46,6 @@
         <dependency org="pentaho" name="pentaho-connections" rev="${dependency.pentaho-connections.revision}" conf="default->default"
                     changing="true"/>
         <dependency org="pentaho-library" name="libformula" rev="${dependency.reporting-library.revision}" conf="default->default"/>
-        <dependency org="pentaho" name="pentaho-publisher" rev="${dependency.pentaho-pentaho-publisher.revision}" conf="default->default"/>
 
 
         <!--  Testing dependencies -->
