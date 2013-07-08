@@ -1,0 +1,133 @@
+<org.pentaho.metadata.model.Domain>
+  <properties/>
+  <id>simple_thin</id>
+  <physicalModels>
+    <org.pentaho.metadata.model.SqlPhysicalModel>
+      <properties/>
+      <datasource>SampleData</datasource>
+      <physicalTables>
+        <org.pentaho.metadata.model.SqlPhysicalTable>
+          <properties>
+            <entry>
+              <string>target_table_type</string>
+              <org.pentaho.metadata.model.concept.types.TargetTableType>INLINE_SQL</org.pentaho.metadata.model.concept.types.TargetTableType>
+            </entry>
+            <entry>
+              <string>target_table</string>
+              <string>select distinct customername from customers</string>
+            </entry>
+          </properties>
+          <id>PT1</id>
+          <model reference="../../.."/>
+          <physicalColumns>
+            <org.pentaho.metadata.model.SqlPhysicalColumn>
+              <properties>
+                <entry>
+                  <string>target_column_type</string>
+                  <org.pentaho.metadata.model.concept.types.TargetColumnType>COLUMN_NAME</org.pentaho.metadata.model.concept.types.TargetColumnType>
+                </entry>
+                <entry>
+                  <string>datatype</string>
+                  <org.pentaho.metadata.model.concept.types.DataType>STRING</org.pentaho.metadata.model.concept.types.DataType>
+                </entry>
+                <entry>
+                  <string>description</string>
+                  <org.pentaho.metadata.model.concept.types.LocalizedString>
+                    <localeStringMap>
+                      <entry>
+                        <string>en_US</string>
+                        <string>Customer Name Desc</string>
+                      </entry>
+                    </localeStringMap>
+                  </org.pentaho.metadata.model.concept.types.LocalizedString>
+                </entry>
+                <entry>
+                  <string>name</string>
+                  <org.pentaho.metadata.model.concept.types.LocalizedString>
+                    <localeStringMap>
+                      <entry>
+                        <string>en_US</string>
+                        <string>Customer Name</string>
+                      </entry>
+                    </localeStringMap>
+                  </org.pentaho.metadata.model.concept.types.LocalizedString>
+                </entry>
+                <entry>
+                  <string>target_column</string>
+                  <string>customername</string>
+                </entry>
+              </properties>
+              <id>PC1</id>
+              <table reference="../../.."/>
+            </org.pentaho.metadata.model.SqlPhysicalColumn>
+          </physicalColumns>
+        </org.pentaho.metadata.model.SqlPhysicalTable>
+      </physicalTables>
+    </org.pentaho.metadata.model.SqlPhysicalModel>
+  </physicalModels>
+  <logicalModels>
+    <org.pentaho.metadata.model.LogicalModel>
+      <properties>
+        <entry>
+          <string>description</string>
+          <org.pentaho.metadata.model.concept.types.LocalizedString>
+            <localeStringMap>
+              <entry>
+                <string>en_US</string>
+                <string>A Description of the Model</string>
+              </entry>
+            </localeStringMap>
+          </org.pentaho.metadata.model.concept.types.LocalizedString>
+        </entry>
+        <entry>
+          <string>name</string>
+          <org.pentaho.metadata.model.concept.types.LocalizedString>
+            <localeStringMap>
+              <entry>
+                <string>en_US</string>
+                <string>My Model</string>
+              </entry>
+            </localeStringMap>
+          </org.pentaho.metadata.model.concept.types.LocalizedString>
+        </entry>
+      </properties>
+      <id>MODEL</id>
+      <logicalTables>
+        <org.pentaho.metadata.model.LogicalTable>
+          <properties/>
+          <id>LT</id>
+          <physicalTable class="org.pentaho.metadata.model.SqlPhysicalTable" reference="../../../../../physicalModels/org.pentaho.metadata.model.SqlPhysicalModel/physicalTables/org.pentaho.metadata.model.SqlPhysicalTable"/>
+          <logicalColumns>
+            <org.pentaho.metadata.model.LogicalColumn>
+              <properties/>
+              <id>LC_CUSTOMERNAME</id>
+              <physicalColumn class="org.pentaho.metadata.model.SqlPhysicalColumn" reference="../../../../../../../physicalModels/org.pentaho.metadata.model.SqlPhysicalModel/physicalTables/org.pentaho.metadata.model.SqlPhysicalTable/physicalColumns/org.pentaho.metadata.model.SqlPhysicalColumn"/>
+            </org.pentaho.metadata.model.LogicalColumn>
+          </logicalColumns>
+        </org.pentaho.metadata.model.LogicalTable>
+      </logicalTables>
+      <categories>
+        <org.pentaho.metadata.model.Category>
+          <properties>
+            <entry>
+              <string>name</string>
+              <org.pentaho.metadata.model.concept.types.LocalizedString>
+                <localeStringMap>
+                  <entry>
+                    <string>en_US</string>
+                    <string>Category</string>
+                  </entry>
+                </localeStringMap>
+              </org.pentaho.metadata.model.concept.types.LocalizedString>
+            </entry>
+          </properties>
+          <id>CATEGORY</id>
+          <logicalColumns>
+            <org.pentaho.metadata.model.LogicalColumn reference="../../../../logicalTables/org.pentaho.metadata.model.LogicalTable/logicalColumns/org.pentaho.metadata.model.LogicalColumn"/>
+          </logicalColumns>
+        </org.pentaho.metadata.model.Category>
+      </categories>
+    </org.pentaho.metadata.model.LogicalModel>
+  </logicalModels>
+  <concepts/>
+</org.pentaho.metadata.model.Domain>

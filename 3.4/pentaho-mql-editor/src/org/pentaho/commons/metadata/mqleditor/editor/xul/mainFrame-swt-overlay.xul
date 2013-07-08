@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="file://E:/workspaces/sprint_workspace/pentaho-xul/test/resource/documents/xul.css" type="text/css"?>
+<overlay 
+  xmlns="http://www.pentaho.org/there.is.only.xul" xmlns:pen="http://www.pentaho.org/2008/xul">
+  <treecol id="combineColumn" type="combobox"/>
+  
+  <!-- padding in swt necessitates the increase in dialog height -->
+  <dialog id="mqlEditorDialog" height="650"/>
+  
+  <treecol id="defualtValCol" removeelement="true"/>
+
+</overlay>
