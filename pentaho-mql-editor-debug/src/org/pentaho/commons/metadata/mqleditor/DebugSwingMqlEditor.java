@@ -32,14 +32,12 @@ import org.pentaho.metadata.util.XmiParser;
 import org.pentaho.platform.api.data.IDBDatasourceService;
 import org.pentaho.platform.api.engine.ISolutionEngine;
 import org.pentaho.platform.api.engine.IPentahoDefinableObjectFactory.Scope;
-import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.engine.core.system.StandaloneSession;
 import org.pentaho.platform.engine.services.connection.datasource.dbcp.JndiDatasourceService;
 import org.pentaho.platform.engine.services.solution.SolutionEngine;
 import org.pentaho.platform.plugin.action.pentahometadata.MetadataQueryComponent;
 import org.pentaho.platform.plugin.services.connections.sql.SQLConnection;
-import org.pentaho.platform.repository.solution.filebased.FileBasedSolutionRepository;
 import org.pentaho.test.platform.engine.core.MicroPlatform;
 import org.pentaho.ui.xul.XulServiceCallback;
 
@@ -56,7 +54,6 @@ public class DebugSwingMqlEditor {
     // initialize micro platorm
     MicroPlatform microPlatform = new MicroPlatform("resources/solution1/"); //$NON-NLS-1$
     microPlatform.define(ISolutionEngine.class, SolutionEngine.class);
-    microPlatform.define(ISolutionRepository.class, FileBasedSolutionRepository.class);
     microPlatform.define(IMetadataDomainRepository.class, FileBasedMetadataDomainRepository.class, Scope.GLOBAL); 
     microPlatform.define("connection-SQL", SQLConnection.class);  //$NON-NLS-1$
 
