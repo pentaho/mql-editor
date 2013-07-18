@@ -170,9 +170,9 @@ public class MQLEditorServiceDelegate {
     cat.setName(c.getName(getLocale()));
     cat.setId(c.getId());
     for (LogicalColumn col : c.getLogicalColumns()) {
-      Boolean isHidden = (Boolean) col.getProperty("hidden");	
-      if(!isHidden) {	
-    	  cat.getBusinessColumns().add(createColumn(m, col));
+      boolean isHidden = (col.getProperty("hidden") != null) ? (Boolean) col.getProperty("hidden") : false;
+      if(!isHidden) {
+        cat.getBusinessColumns().add(createColumn(m, col));
       }
     }
 
