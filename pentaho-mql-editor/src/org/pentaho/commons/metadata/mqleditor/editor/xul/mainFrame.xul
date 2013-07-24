@@ -80,17 +80,17 @@
         <spacer id="buttonContainerVerticalSpacer" height="27" />
         <vbox id="buttonVbox1" flex="1">
           <spacer flex="1" />
-          <button image="images/move_arrow.png" onclick="mainController.moveSelectionToFields()" />
+          <button id="addColumnFieldBtn" image="images/move_arrow.png" pen:classname="icon-small icon-accum-add" onclick="mainController.moveSelectionToFields()" />
           <spacer flex="1" />
         </vbox>
         <vbox id="buttonVbox2" flex="1">
           <spacer flex="1" />
-          <button image="images/move_arrow.png" onclick="mainController.moveSelectionToConditions()" />
+          <button id="addConditionFieldBtn" image="images/move_arrow.png" pen:classname="icon-small icon-accum-add" onclick="mainController.moveSelectionToConditions()" />
           <spacer flex="1" />
         </vbox>
         <vbox id="buttonVbox3" flex="1">
           <spacer flex="1" />
-          <button image="images/move_arrow.png" onclick="mainController.moveSelectionToOrders()" />
+          <button id="addOrderByFieldBtn" image="images/move_arrow.png" pen:classname="icon-small icon-accum-add" onclick="mainController.moveSelectionToOrders()" />
           <spacer flex="1" />
         </vbox>
       </vbox>
@@ -100,11 +100,11 @@
           <label value="${select.columns}" flex="1" />
           <spacer flex="1" />
           <button id="colDown" disabled="true" onclick="selectedColumns.moveDown()"
-            image="images/move_down.gif" />
+            image="images/move_down.gif" pen:classname="pentaho-downbutton" />
           <button id="colUp" disabled="true" onclick="selectedColumns.moveUp()"
-            image="images/move_up.gif" />
+            image="images/move_up.gif" pen:classname="pentaho-upbutton" />
           <button id="colRemove" disabled="true" onclick="selectedColumns.remove()"
-            image="images/delete.png" />
+            image="images/delete.png" pen:classname="pentaho-deletebutton" />
         </hbox>
         <tree flex="1" editable="false" seltype="single"
           enableColumnDrag="false" id="selectedColumnTree" width="575">
@@ -121,11 +121,11 @@
           <label value="${conditions}" flex="1" />
           <spacer id="conditionsSpacer" flex="1" />
           <button id="conditionDown" disabled="true"
-            onclick="conditionsController.moveDown()" image="images/move_down.gif" />
+            onclick="conditionsController.moveDown()" image="images/move_down.gif" pen:classname="pentaho-downbutton" />
           <button id="conditionUp" disabled="true"
-            onclick="conditionsController.moveUp()" image="images/move_up.gif" />
+            onclick="conditionsController.moveUp()" image="images/move_up.gif" pen:classname="pentaho-upbutton" />
           <button id="conditionRemove" disabled="true"
-            onclick="conditionsController.remove()" image="images/delete.png" />
+            onclick="conditionsController.remove()" image="images/delete.png" pen:classname="pentaho-deletebutton" />
         </hbox>
         <tree flex="1" editable="true" seltype="single"
           enableColumnDrag="false" id="conditionsTree" width="575">
@@ -150,11 +150,11 @@
           <label value="${order.by}" flex="1" />
           <spacer flex="1" />
           <button id="orderDown" disabled="true" onclick="orderController.moveDown()"
-            image="images/move_down.gif" />
+            image="images/move_down.gif" pen:classname="pentaho-downbutton" />
           <button id="orderUp" disabled="true" onclick="orderController.moveUp()"
-            image="images/move_up.gif" />
+            image="images/move_up.gif" pen:classname="pentaho-upbutton" />
           <button id="orderRemove" disabled="true" onclick="orderController.remove()"
-            image="images/delete.png" />
+            image="images/delete.png" pen:classname="pentaho-deletebutton" />
         </hbox>
         <tree flex="1" editable="true" seltype="single"
           enableColumnDrag="false" id="orderTable" width="575">

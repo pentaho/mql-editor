@@ -7,17 +7,21 @@
   <!-- categoryTree height must be set to force scrolling -->
   <tree id="categoryTree" height="395"/>
 
-  <button id="colDown" image="images/thin_down.png" />
-  <button id="colUp" image="images/thin_up.png" />
-  <button id="colRemove" image="images/remove.png" />
+  <button id="addColumnFieldBtn" image="images/spacer.gif" />
+  <button id="addConditionFieldBtn" image="images/spacer.gif"  />
+  <button id="addOrderByFieldBtn" image="images/spacer.gif" />
+
+  <button id="colDown" image="images/spacer.gif"  />
+  <button id="colUp" image="images/spacer.gif" />
+  <button id="colRemove" image="images/spacer.gif" />
   
-  <button id="conditionDown" image="images/thin_down.png" />
-  <button id="conditionUp" image="images/thin_up.png" />
-  <button id="conditionRemove" image="images/remove.png" />
+  <button id="conditionDown" image="images/spacer.gif" />
+  <button id="conditionUp" image="images/spacer.gif" />
+  <button id="conditionRemove" image="images/spacer.gif" />
   
-  <button id="orderDown" image="images/thin_down.png" />
-  <button id="orderUp" image="images/thin_up.png" />
-  <button id="orderRemove" image="images/remove.png" />
+  <button id="orderDown" image="images/spacer.gif" />
+  <button id="orderUp" image="images/spacer.gif" />
+  <button id="orderRemove" image="images/spacer.gif" />
 
 
 
