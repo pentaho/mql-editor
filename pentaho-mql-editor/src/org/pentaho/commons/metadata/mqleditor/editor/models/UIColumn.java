@@ -37,6 +37,8 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
   private AggType defaultAggType;
 
   private AggType selectedAggType;
+
+  private boolean persistent;
   
   public UIColumn() {
 
@@ -50,6 +52,7 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
     col.aggTypes = aggTypes;
     col.defaultAggType = defaultAggType;
     col.selectedAggType = selectedAggType;
+    col.persistent = persistent;
     return col;
   }
 
@@ -61,6 +64,7 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
     this.aggTypes = col.getAggTypes();
     this.defaultAggType = col.getDefaultAggType();
     this.selectedAggType = col.getSelectedAggType();
+    this.persistent = col.isPersistent();
     
   }
   public String getId() {
@@ -143,7 +147,17 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
   public AggType getSelectedAggType(){
     return this.selectedAggType;
   }
-  
+
+  @Bindable
+  public boolean isPersistent() {
+    return persistent;
+  }
+
+  @Bindable
+  public void setPersistent( boolean persistent ) {
+    this.persistent = persistent;
+  }
+
   @Bindable
   public Vector getBindingAggTypes(){
     Vector v = new Vector();
@@ -168,6 +182,8 @@ public class UIColumn extends AbstractModelNode<UIColumn> implements MqlColumn {
     } else if(name.equals(other.getName()) == false){
       return false;
     } else if(selectedAggType != other.getSelectedAggType()){
+      return false;
+    } else if (persistent != other.isPersistent()) {
       return false;
     }
     

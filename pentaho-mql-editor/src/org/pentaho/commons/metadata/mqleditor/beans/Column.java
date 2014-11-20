@@ -31,6 +31,7 @@ public class Column implements MqlColumn {
   private List<AggType> aggTypes = new ArrayList<AggType>();
   private AggType defaultAggType;
   private AggType selectedAggType;
+  private boolean persistent;
   
   public String getId() {
     return this.id;
@@ -88,6 +89,15 @@ public class Column implements MqlColumn {
     c.setName(this.name);
     c.setDefaultAggType(this.defaultAggType);
     c.setSelectedAggType(this.selectedAggType);
+    c.setPersistent( this.persistent );
     return c;
+  }
+
+  public boolean isPersistent() {
+    return persistent;
+  }
+
+  public void setPersistent( boolean persistent ) {
+    this.persistent = persistent;
   }
 }

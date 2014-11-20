@@ -183,6 +183,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
         if(c.getId().equals(col.getId())){
           UIColumn column = (UIColumn)c.clone();
           column.setSelectedAggType(col.getSelectedAggType());
+          column.setPersistent( col.isPersistent() );
           return column;
         }
       }

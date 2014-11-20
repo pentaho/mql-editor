@@ -65,7 +65,8 @@ public class ModelUtil {
       col.setAggTypes(q.getAggTypes());
       col.setDefaultAggType(q.getDefaultAggType());
       col.setSelectedAggType(q.getSelectedAggType());
-      
+      col.setPersistent( q.isPersistent() );
+
       cols.add(col);
     }
     query.setColumns(cols);

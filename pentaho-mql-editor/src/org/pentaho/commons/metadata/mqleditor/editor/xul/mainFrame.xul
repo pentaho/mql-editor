@@ -41,6 +41,13 @@
     </vbox>
   </dialog>
 
+  <dialog id="denyRemoveColumnDialog" title="${deny.remove.column.dialog.title}" buttonlabelaccept="${deny.remove.column.dialog.button}"
+          buttons="accept" ondialogaccept="selectedColumns.closeDenyRemoveColumnDialog()" width="400" height="100" buttonalign="right">
+    <vbox id="denyRemoveColumnDialogContainer">
+      <label id="denyRemoveColumnLabel" value="${deny.remove.column.dialog.message}"/>
+    </vbox>
+  </dialog>
+
   <vbox id="mainPanel" padding="10" flex="1">
     <hbox flex="1">
       <vbox id="outerDataModelContainer" flex="1">

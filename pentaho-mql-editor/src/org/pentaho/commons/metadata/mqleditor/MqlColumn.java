@@ -39,4 +39,5 @@ public interface MqlColumn extends Serializable {
   
   public AggType getSelectedAggType();
 
+  public boolean isPersistent();
 }
