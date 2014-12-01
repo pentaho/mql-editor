@@ -78,6 +78,7 @@ public class ModelSerializerTest {
     column.setId("mycolumn");
     column.setName("mycolumn");
     column.setType(ColumnType.TEXT);
+    column.setPersistent( true );
 
     columns.add(column);
     cat.setBusinessColumns(columns);
@@ -147,7 +148,7 @@ public class ModelSerializerTest {
 
 		JSONObject jsoRef = null;
 		JSONObject jso = null;
-		String jsonRef = "{\"MQLQuery\":{\"cols\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"]}}],\"conditions\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Condition\":[{\"condition\":{\"@combinationType\":\"\",\"@defaultValue\":\"default\",\"@operator\":\"=\",\"@selectedAggType\":\"\",\"@value\":\"myvalue1\",\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"]}}},{\"condition\":{\"@combinationType\":\"OR\",\"@defaultValue\":\"null\",\"@operator\":\"in\",\"@selectedAggType\":\"\",\"@value\":\"myvalue2|\\\"my value2\\\"|\\\"my;value 2\\\"|my;value2\",\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"]}}},{\"condition\":{\"@combinationType\":\"OR\",\"@defaultValue\":\"null\",\"@operator\":\"=\",\"@selectedAggType\":\"\",\"@value\":\"myparameter\",\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"]}}}]}],\"orders\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Order\":{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"]},\"orderType\":\"ASC\"}}],\"limit\":-1,\"domain\":{\"@id\":\"mydomain\",\"@name\":\"mydomain\"},\"model\":{\"@id\":\"mymodel\",\"@name\":\"mymodel\"},\"defaultParameterMap\":[{\"entry\":{\"string\":[\"myparameter\",\"myvalue3\"]}}]}}";
+		String jsonRef = "{\"MQLQuery\":{\"cols\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"],\"persistent\":true}}],\"conditions\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Condition\":[{\"condition\":{\"@combinationType\":\"\",\"@defaultValue\":\"default\",\"@operator\":\"=\",\"@selectedAggType\":\"\",\"@value\":\"myvalue1\",\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"],\"persistent\":true}}},{\"condition\":{\"@combinationType\":\"OR\",\"@defaultValue\":\"null\",\"@operator\":\"in\",\"@selectedAggType\":\"\",\"@value\":\"myvalue2|\\\"my value2\\\"|\\\"my;value 2\\\"|my;value2\",\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"],\"persistent\":true}}},{\"condition\":{\"@combinationType\":\"OR\",\"@defaultValue\":\"null\",\"@operator\":\"=\",\"@selectedAggType\":\"\",\"@value\":\"myparameter\",\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"],\"persistent\":true}}}]}],\"orders\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Order\":{\"column\":{\"id\":\"mycolumn\",\"name\":\"mycolumn\",\"type\":\"TEXT\",\"aggTypes\":[\"\"],\"persistent\":true},\"orderType\":\"ASC\"}}],\"limit\":-1,\"domain\":{\"@id\":\"mydomain\",\"@name\":\"mydomain\"},\"model\":{\"@id\":\"mymodel\",\"@name\":\"mymodel\"},\"defaultParameterMap\":[{\"entry\":{\"string\":[\"myparameter\",\"myvalue3\"]}}]}}";
 		     
 		try {
 			boolean isEqual = JSONComparitor.jsonEqual(jsonRef, serialized, null);
@@ -162,6 +163,7 @@ public class ModelSerializerTest {
     assertEquals(mqlQuery.getDomain().getName(), deserialized.getDomain().getName());
     assertEquals(mqlQuery.getModel().getName(), deserialized.getModel().getName());
     assertEquals(mqlQuery.getColumns().get(0).getId(), deserialized.getColumns().get(0).getId());
+    assertEquals(mqlQuery.getColumns().get(0).isPersistent(), deserialized.getColumns().get(0).isPersistent());
     assertEquals(mqlQuery.getOrders().get(0).getColumn().getName(), deserialized.getOrders().get(0).getColumn()
         .getName());
     assertEquals(mqlQuery.getConditions().get(0).getColumn().getId(), deserialized.getConditions().get(0).getColumn()

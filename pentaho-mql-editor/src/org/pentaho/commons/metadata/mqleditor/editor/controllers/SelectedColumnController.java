@@ -17,10 +17,14 @@
 
 package org.pentaho.commons.metadata.mqleditor.editor.controllers;
 
+import com.google.gwt.user.client.Window;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
+import org.pentaho.ui.xul.XulException;
 import org.pentaho.ui.xul.binding.Binding;
 import org.pentaho.ui.xul.binding.BindingConvertor;
 import org.pentaho.ui.xul.binding.BindingFactory;
+import org.pentaho.ui.xul.components.XulMessageBox;
+import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
 import org.pentaho.ui.xul.stereotype.Bindable;
@@ -30,7 +34,8 @@ public class SelectedColumnController extends AbstractXulEventHandler {
   private XulTree columnTree;
   private Workspace workspace;
   private BindingFactory bf;
-  
+  private static XulDialog denyRemoveColumnDialog;
+
   @Bindable
   public void init(){
     columnTree = (XulTree) document.getElementById("selectedColumnTree");
@@ -51,6 +56,8 @@ public class SelectedColumnController extends AbstractXulEventHandler {
     bf.createBinding(columnTree,"selectedRows", "colUp", "disabled", buttonConvertor);
     bf.createBinding(columnTree,"selectedRows", "colDown", "disabled", buttonConvertor);
     bf.createBinding(columnTree,"selectedRows", "colRemove", "disabled", buttonConvertor);
+
+    denyRemoveColumnDialog = (XulDialog) document.getElementById( "denyRemoveColumnDialog");
   }
     
   public int getSelectedIndex() {
@@ -87,6 +94,14 @@ public class SelectedColumnController extends AbstractXulEventHandler {
     if(getSelectedIndex() < 0){
       return;
     }
+    if( workspace.getSelections().get( getSelectedIndex() ).isPersistent() ) {
+      if (denyRemoveColumnDialog == null) {
+        throw new IllegalStateException("Error dialog has not been loaded yet");
+      } else {
+        denyRemoveColumnDialog.show();
+      }
+      return;
+    }
     workspace.getSelections().remove(getSelectedIndex());
     columnTree.clearSelection();
   }
@@ -101,5 +116,14 @@ public class SelectedColumnController extends AbstractXulEventHandler {
   
   public void setBindingFactory(BindingFactory bf){
     this.bf = bf;
+  }
+
+  @Bindable
+  public static void closeDenyRemoveColumnDialog() {
+    if (denyRemoveColumnDialog == null) {
+      throw new IllegalStateException("Error dialog has not been loaded yet");
+    } else {
+      denyRemoveColumnDialog.hide();
+    }
   }
 }

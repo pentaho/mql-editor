@@ -77,6 +77,7 @@ public class WorkspaceTest {
     column.setId("mycolumn");
     column.setName("mycolumn");
     column.setType(ColumnType.TEXT);
+    column.setPersistent( true );
 
     columns.add(column);
     cat.setBusinessColumns(columns);
@@ -180,6 +181,8 @@ public class WorkspaceTest {
       for(int z=0; z< uiCol.getAggTypes().size(); z++){
         assertEquals(uiCol.getAggTypes().get(z), inCol.getAggTypes().get(z));
       }
+
+      assertEquals(uiCol.isPersistent(), inCol.isPersistent());
     }
     
   }
