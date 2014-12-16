@@ -46,6 +46,7 @@ import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelUtil;
 import org.pentaho.metadata.model.LogicalColumn;
 import org.pentaho.metadata.model.LogicalModel;
+import org.pentaho.metadata.model.concept.Property;
 import org.pentaho.metadata.model.concept.types.AggregationType;
 import org.pentaho.metadata.model.concept.types.DataType;
 import org.pentaho.metadata.query.model.Constraint;
@@ -499,7 +500,7 @@ public class MQLEditorServiceCWMDelegate {
             field += "]";
             
             if(condition.isParameterized()){
-              queryObject.getParameters().add(new Parameter(condition.getValue().replaceAll("[\\{\\}]", ""), getDataType(condition.getColumn().getType()), condition.getDefaultValue()));
+              queryObject.getParameters().add(new Parameter(condition.getValue().replaceAll("[\\{\\}]", ""), getDataType(condition.getColumn().getType()), new Property( condition.getDefaultValue()) ));
             }
             queryObject.getConstraints().add(
                 new Constraint(getComboType(condition.getCombinationType()), conditionFormatter.getCondition(condition, field))

@@ -25,6 +25,7 @@ import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelUtil;
 import org.pentaho.metadata.model.LogicalColumn;
 import org.pentaho.metadata.model.LogicalModel;
+import org.pentaho.metadata.model.concept.Property;
 import org.pentaho.metadata.model.concept.types.AggregationType;
 import org.pentaho.metadata.model.concept.types.DataType;
 import org.pentaho.metadata.query.model.Constraint;
@@ -171,7 +172,7 @@ public class MQLEditorServiceDelegate {
     cat.setName(c.getName(getLocale()));
     cat.setId(c.getId());
     for (LogicalColumn col : c.getLogicalColumns()) {
-      boolean isHidden = (col.getProperty("hidden") != null) ? (Boolean) col.getProperty("hidden") : false;
+      boolean isHidden = (col.getProperty("hidden") != null) ? (Boolean) col.getProperty("hidden").getValue() : false;
       if(!isHidden) {	
     	  cat.getBusinessColumns().add(createColumn(m, col));
       }
@@ -519,7 +520,7 @@ public class MQLEditorServiceDelegate {
             field += "]";
             
             if(condition.isParameterized()){
-              queryObject.getParameters().add(new Parameter(condition.getValue().replaceAll("[\\{\\}]", ""), getDataType(condition.getColumn().getType()), condition.getDefaultValue()));
+              queryObject.getParameters().add(new Parameter(condition.getValue().replaceAll("[\\{\\}]", ""), getDataType(condition.getColumn().getType()), new Property( condition.getDefaultValue() )));
             }
             queryObject.getConstraints().add(
                 new Constraint(getComboType(condition.getCombinationType()), conditionFormatter.getCondition(condition, field))
@@ -868,8 +869,8 @@ public class MQLEditorServiceDelegate {
   private String getDisplayableDefaultValue(Parameter p) {
     if (p == null || p.getDefaultValue() == null) {
       return null;
-    } else if (p.getDefaultValue() instanceof Object[]) {
-      Object[] values = (Object[])p.getDefaultValue();
+    } else if (p.getDefaultValue().getValue() instanceof Object[]) {
+      Object[] values = (Object[])p.getDefaultValue().getValue();
       StringBuilder sb = new StringBuilder();
       for (Object value : values) {
         if (sb.length() > 0) {
