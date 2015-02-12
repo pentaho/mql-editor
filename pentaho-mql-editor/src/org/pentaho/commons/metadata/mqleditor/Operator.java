@@ -12,37 +12,41 @@
 * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 * See the GNU Lesser General Public License for more details.
 *
-* Copyright (c) 2002-2013 Pentaho Corporation..  All rights reserved.
+* Copyright (c) 2002-2015 Pentaho Corporation..  All rights reserved.
 */
 
 package org.pentaho.commons.metadata.mqleditor;
+
+import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Operator is used in the definition of a @see MqlCondition 
+ * Operator is used in the definition of a @see MqlCondition
  */
 public enum Operator implements Serializable{
 
-  GREATER_THAN(">", 1, true), 
-  LESS_THAN("<", 1, true), 
-  EQUAL("=", 1, true), 
-  GREATOR_OR_EQUAL(">=", 1, true), 
-  LESS_OR_EQUAL("<=", 1, true), 
-  
-  EXACTLY_MATCHES("exactly matches", 0, true), 
-  CONTAINS("contains", 0, true), 
-  DOES_NOT_CONTAIN("does not contain", 0, true), 
-  BEGINS_WITH("begins with", 0, true), 
+  GREATER_THAN(">", 1, true),
+  LESS_THAN("<", 1, true),
+  EQUAL("=", 1, true),
+  GREATOR_OR_EQUAL(">=", 1, true),
+  LESS_OR_EQUAL("<=", 1, true),
+
+  EXACTLY_MATCHES("exactly matches", 0, true),
+  CONTAINS("contains", 0, true),
+  DOES_NOT_CONTAIN("does not contain", 0, true),
+  BEGINS_WITH("begins with", 0, true),
   ENDS_WITH("ends with", 0, true),
-  
-  IS_NULL("is null", 2, false), 
+
+  IS_NULL("is null", 2, false),
   IS_NOT_NULL("is not null", 2, false),
 
   IN("in", 0, true),
   NOT_EQUAL("<>", 1, true);
+
+  private static final String OPERATOR_PREFIX = "Operator.";
 
   private String strVal;
   // 0 = string
@@ -58,19 +62,23 @@ public enum Operator implements Serializable{
   }
 
   public String toString() {
-    return strVal;
+    if ( Workspace.getMessages() != null ) {
+      return Workspace.getMessages().getString( OPERATOR_PREFIX + name(), strVal );
+    } else {
+      return strVal;
+    }
   }
-  
+
   public int getOperatorType() {
     return operatorType;
   }
-  
+
   public boolean getRequiresValue() {
     return requiresValue;
   }
-  
+
   public static Operator parse(String val){
-    
+
     if(val == null || val.equals("")){
       return Operator.EQUAL;
     }
@@ -105,7 +113,7 @@ public enum Operator implements Serializable{
     }  else if(val.equals("in")){
       return Operator.IN;
     }
-    
+
     // Actual generated Open Formula formula name is passed in from deserialization routine. Try to match those here.
     if(val.equals("CONTAINS")){
       return Operator.CONTAINS;
@@ -118,14 +126,14 @@ public enum Operator implements Serializable{
     } else if(val.equals("IN")){
       return Operator.IN;
     }
-    
+
     return Operator.EQUAL;
   }
-  
+
   public boolean requiresValue(){
     return requiresValue;
   }
-  
+
   /**
    * Returns an array of types separated by whether or not they're string types
    * @param stringType
@@ -136,11 +144,11 @@ public enum Operator implements Serializable{
     List<Operator> ops = new ArrayList<Operator>();
     for(int i=0; i < vals.length; i++){
       if (vals[i].operatorType == 2) {
-        ops.add(vals[i]); 
+        ops.add(vals[i]);
       } else if(vals[i].operatorType == 0 && stringType){
-        ops.add(vals[i]); 
+        ops.add(vals[i]);
       } else if (vals[i].operatorType == 1 && !stringType) {
-        ops.add(vals[i]); 
+        ops.add(vals[i]);
       }
     }
     return ops.toArray(new Operator[]{});
