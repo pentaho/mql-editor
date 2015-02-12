@@ -12,7 +12,7 @@
 * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 * See the GNU Lesser General Public License for more details.
 *
-* Copyright (c) 2002-2013 Pentaho Corporation..  All rights reserved.
+* Copyright (c) 2002-2015 Pentaho Corporation..  All rights reserved.
 */
 
 package org.pentaho.commons.metadata.mqleditor.editor.models;
@@ -30,6 +30,7 @@ import org.pentaho.commons.metadata.mqleditor.MqlOrder;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
+import org.pentaho.commons.metadata.mqleditor.messages.IMqlMessages;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelUtil;
 import org.pentaho.ui.xul.XulEventSourceAdapter;
 import org.pentaho.ui.xul.stereotype.Bindable;
@@ -57,6 +58,8 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   private UIConditions conditions = new UIConditions();
   private UIOrders orders = new UIOrders();
   private String queryStr;
+
+  private static IMqlMessages messages;
   
   public Workspace(){
     setupListeners();
@@ -486,6 +489,14 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   @Bindable
   public int getLimit() {
      return limit;
+  }
+
+  public static void setMessages( IMqlMessages messagesInstance ) {
+    messages = messagesInstance;
+  }
+
+  public static IMqlMessages getMessages() {
+    return messages;
   }
 }
 
