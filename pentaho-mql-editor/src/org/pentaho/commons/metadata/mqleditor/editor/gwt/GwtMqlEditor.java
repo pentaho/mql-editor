@@ -12,7 +12,7 @@
 * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 * See the GNU Lesser General Public License for more details.
 *
-* Copyright (c) 2002-2013 Pentaho Corporation..  All rights reserved.
+* Copyright (c) 2002-2015 Pentaho Corporation..  All rights reserved.
 */
 
 package org.pentaho.commons.metadata.mqleditor.editor.gwt;
@@ -32,6 +32,7 @@ import org.pentaho.commons.metadata.mqleditor.editor.controllers.PreviewControll
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.SelectedColumnController;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
+import org.pentaho.commons.metadata.mqleditor.messages.GwtMqlMessages;
 import org.pentaho.gwt.widgets.client.utils.i18n.IResourceBundleLoadCallback;
 import org.pentaho.gwt.widgets.client.utils.i18n.ResourceBundle;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -136,8 +137,10 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
       } else {
         container = loader.loadXul(gwtDoc);
       }
-      
-      
+
+      final GwtMqlMessages messages =
+          new GwtMqlMessages( (ResourceBundle) container.getResourceBundles().get( 0 ) );
+      Workspace.setMessages( messages );
 
       try {
 
@@ -203,8 +206,8 @@ public class GwtMqlEditor implements IResourceBundleLoadCallback {
       
       previewController.setBindingFactory(bf);
       container.addEventHandler(previewController);
-      
-      
+
+
       runner.addContainer(container);
       
       runner.initialize();

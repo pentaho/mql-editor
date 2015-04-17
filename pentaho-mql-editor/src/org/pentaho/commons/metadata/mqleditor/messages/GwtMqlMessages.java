@@ -15,17 +15,18 @@
 * Copyright (c) 2002-2015 Pentaho Corporation..  All rights reserved.
 */
 
-package org.pentaho.commons.metadata.mqleditor;
+package org.pentaho.commons.metadata.mqleditor.messages;
 
-import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
+import org.pentaho.gwt.widgets.client.utils.i18n.ResourceBundle;
 
-public enum AggType {
-  SUM, COUNT, COUNT_DISTINCT, TOTAL, MIN, MAX, AVERAGE, NONE;
+public class GwtMqlMessages implements IMqlMessages {
+  private ResourceBundle messages;
 
-  private static final String AGG_TYPE_PREFIX = "AggType.";
+  public GwtMqlMessages( ResourceBundle messages ) {
+    this.messages = messages;
+  }
 
-  @Override public String toString() {
-    return Workspace.getMessages() == null ? name() : Workspace.getMessages().getString( AGG_TYPE_PREFIX + name(),
-        name() );
+  public String getString( String key, String defaultMessage, String... args ) {
+    return messages.getString( key, defaultMessage, args );
   }
 }
