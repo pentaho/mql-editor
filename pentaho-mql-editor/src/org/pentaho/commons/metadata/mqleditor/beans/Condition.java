@@ -1,19 +1,19 @@
 /*!
-* This program is free software; you can redistribute it and/or modify it under the
-* terms of the GNU Lesser General Public License, version 2.1 as published by the Free Software
-* Foundation.
-*
-* You should have received a copy of the GNU Lesser General Public License along with this
-* program; if not, you can obtain a copy at http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
-* or from the Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-*
-* This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-* without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-* See the GNU Lesser General Public License for more details.
-*
-* Copyright (c) 2002-2013 Pentaho Corporation..  All rights reserved.
-*/
+ * This program is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License, version 2.1 as published by the Free Software
+ * Foundation.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * program; if not, you can obtain a copy at http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * or from the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * Copyright (c) 2002-2013 Pentaho Corporation..  All rights reserved.
+ */
 
 package org.pentaho.commons.metadata.mqleditor.beans;
 
@@ -33,16 +33,16 @@ public class Condition implements MqlCondition {
   private String defaultValue;
   private AggType selectedAggType;
 
-  public Condition(){
-    
+  public Condition() {
+
   }
-  
+
   public Column getColumn() {
-    return this.column;    
+    return this.column;
   }
 
   public CombinationType getCombinationType() {
-    return this.comboType;  
+    return this.comboType;
   }
 
   public Operator getOperator() {
@@ -53,51 +53,51 @@ public class Condition implements MqlCondition {
     return this.value;
   }
 
-  public void setColumn(Column column) {
-    this.column = column;  
+  public void setColumn( Column column ) {
+    this.column = column;
 
-    if(column.getType() == ColumnType.TEXT && operator == Operator.EQUAL){
+    if ( column.getType() == ColumnType.TEXT && operator == Operator.EQUAL ) {
       operator = Operator.EXACTLY_MATCHES;
     }
   }
 
-  public void setCombinationType(CombinationType combinationType) {
+  public void setCombinationType( CombinationType combinationType ) {
     this.comboType = combinationType;
   }
 
-  public void setOperator(Operator operator) {
+  public void setOperator( Operator operator ) {
     this.operator = operator;
   }
 
-  public void setValue(String value) {
-   this.value = value;   
+  public void setValue( String value ) {
+    this.value = value;
   }
 
   public boolean validate() {
-    return true;   
+    return true;
   }
 
   public boolean isParameterized() {
     return parameterized;
   }
 
-  public void setParameterized(boolean parameterized) {
-   this.parameterized = parameterized;   
+  public void setParameterized( boolean parameterized ) {
+    this.parameterized = parameterized;
   }
 
-  public void setDefaultValue(String val){
+  public void setDefaultValue( String val ) {
     this.defaultValue = val;
   }
-  
-  public String getDefaultValue(){
+
+  public String getDefaultValue() {
     return this.defaultValue;
   }
 
-  public void setSelectedAggType(AggType aggType){
+  public void setSelectedAggType( AggType aggType ) {
     this.selectedAggType = aggType;
   }
-  
-  public AggType getSelectedAggType(){
+
+  public AggType getSelectedAggType() {
     return this.selectedAggType;
   }
 
