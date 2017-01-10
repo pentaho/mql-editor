@@ -12,39 +12,14 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
- * Copyright (c) 2002-2013 Pentaho Corporation..  All rights reserved.
+ * Copyright (c) 2002-2017 Pentaho Corporation..  All rights reserved.
  */
 
 package org.pentaho.commons.metadata.mqleditor.editor.service.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang.NotImplementedException;
-import org.pentaho.commons.metadata.mqleditor.AggType;
-import org.pentaho.commons.metadata.mqleditor.ColumnType;
-import org.pentaho.commons.metadata.mqleditor.CombinationType;
-import org.pentaho.commons.metadata.mqleditor.MqlCategory;
-import org.pentaho.commons.metadata.mqleditor.MqlColumn;
-import org.pentaho.commons.metadata.mqleditor.MqlCondition;
-import org.pentaho.commons.metadata.mqleditor.MqlDomain;
-import org.pentaho.commons.metadata.mqleditor.MqlModel;
-import org.pentaho.commons.metadata.mqleditor.MqlOrder;
-import org.pentaho.commons.metadata.mqleditor.MqlQuery;
-import org.pentaho.commons.metadata.mqleditor.Operator;
-import org.pentaho.commons.metadata.mqleditor.beans.Category;
-import org.pentaho.commons.metadata.mqleditor.beans.Column;
-import org.pentaho.commons.metadata.mqleditor.beans.Condition;
-import org.pentaho.commons.metadata.mqleditor.beans.Domain;
-import org.pentaho.commons.metadata.mqleditor.beans.Model;
-import org.pentaho.commons.metadata.mqleditor.beans.Order;
+import org.pentaho.commons.metadata.mqleditor.*;
+import org.pentaho.commons.metadata.mqleditor.beans.*;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelUtil;
@@ -57,11 +32,7 @@ import org.pentaho.metadata.query.model.Parameter;
 import org.pentaho.metadata.query.model.util.QueryXmlHelper;
 import org.pentaho.metadata.repository.IMetadataDomainRepository;
 import org.pentaho.pms.factory.CwmSchemaFactoryInterface;
-import org.pentaho.pms.mql.MQLQuery;
-import org.pentaho.pms.mql.MQLQueryImpl;
-import org.pentaho.pms.mql.OrderBy;
-import org.pentaho.pms.mql.Selection;
-import org.pentaho.pms.mql.WhereCondition;
+import org.pentaho.pms.mql.*;
 import org.pentaho.pms.schema.BusinessCategory;
 import org.pentaho.pms.schema.BusinessColumn;
 import org.pentaho.pms.schema.BusinessModel;
@@ -69,6 +40,10 @@ import org.pentaho.pms.schema.SchemaMeta;
 import org.pentaho.pms.schema.concept.types.aggregation.AggregationSettings;
 import org.pentaho.pms.schema.concept.types.datatype.DataTypeSettings;
 import org.pentaho.pms.util.UniqueList;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -844,6 +819,10 @@ public class MQLEditorServiceDelegate {
   }
 
   private AggType convertNewThinAggregationType( AggregationType aggregationType ) {
+    if ( aggregationType == null ) {
+      return AggType.NONE;
+    }
+
     switch ( aggregationType ) {
       case COUNT:
         return AggType.COUNT;
