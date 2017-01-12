@@ -53,7 +53,9 @@
         <!--  Testing dependencies -->
         <dependency org="junit" name="junit" rev="4.3.1" transitive="false" conf="test->default"/>
         <dependency org="com.google.gwt" name="gwt-servlet" rev="${dependency.gwt.revision}" conf="default->default"/>
-        <dependency org="pentaho" name="pentaho-platform-core-test" rev="${dependency.pentaho-platform.revision}" changing="true" conf="test->default"/>
+        <dependency org="pentaho" name="pentaho-platform-core" rev="${dependency.pentaho-platform.revision}" changing="true" conf="test->default">
+          <artifact name="pentaho-platform-core" type="jar" m:classifier="tests"/>
+        </dependency>
       
 	    <!-- it doesn't matter what platform of gwt-dev we use here. GWT compile only cares about the API part of the jar -->
     	<dependency org="com.google.gwt" name="gwt-dev"  rev="${dependency.gwt.revision}" conf="codegen->default"/>        
