@@ -22,9 +22,8 @@
 
         <!--  internal dependencies -->
         <dependency org="org.safehaus.jug" name="jug-lgpl" rev="2.0.0"/>
-        <!--  will not properly pull from ibiblio maven2. needs classifier of 'lgpl'
--->
-        <dependency org="commons-httpclient" name="commons-httpclient" rev="3.0.1" transitive="false"/>
+        <!--  will not properly pull from ibiblio maven2. needs classifier of 'lgpl'-->
+        
         <!-- explicit resolve for commons-lang to avoid downstream eviction issues in PRD of all things --> 
         <dependency org="commons-lang" name="commons-lang" rev="2.6" transitive="false"/>
         
