@@ -32,32 +32,32 @@
             <artifact name="pentaho-mql-editor" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
 
-	    <dependency org="pentaho" name="pentaho-platform-api" rev="${dependency.pentaho-platform.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-platform-core" rev="${dependency.pentaho-platform.revision}" changing="true" conf="default->default"/>
-	    <dependency org="pentaho" name="pentaho-platform-repository" rev="${dependency.pentaho-platform.revision}" changing="true" conf="default->default"/>
+	    <dependency org="pentaho" name="pentaho-platform-api" rev="${platform.version}" changing="true" conf="default->default"/>
+	    <dependency org="pentaho" name="pentaho-platform-core" rev="${platform.version}" changing="true" conf="default->default"/>
+	    <dependency org="pentaho" name="pentaho-platform-repository" rev="${platform.version}" changing="true" conf="default->default"/>
 
-        <dependency org="pentaho" name="pentaho-platform-core-test" rev="${dependency.pentaho-platform.revision}" changing="true" conf="default->default" transitive="false">
+        <dependency org="pentaho" name="pentaho-platform-core-test" rev="${platform.version}" changing="true" conf="default->default" transitive="false">
             <artifact name="pentaho-platform-core-test"/>
             <artifact name="pentaho-platform-core-test" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
-        <dependency org="pentaho" name="pentaho-platform-extensions" rev="${dependency.pentaho-platform.revision}" changing="true"
+        <dependency org="pentaho" name="pentaho-platform-extensions" rev="${platform.version}" changing="true"
                     conf="default->default" transitive="false"/>
 
-        <dependency org="pentaho" name="pentaho-xul-core" rev="${dependency.pentaho-xul.revision}" conf="default->default" changing="true">
+        <dependency org="pentaho" name="pentaho-xul-core" rev="${pentaho-xul.version}" conf="default->default" changing="true">
             <artifact name="pentaho-xul-core"/>
             <artifact name="pentaho-xul-core" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
         
-        <dependency org="pentaho" name="pentaho-xul-gwt" rev="${dependency.pentaho-xul.revision}"
+        <dependency org="pentaho" name="pentaho-xul-gwt" rev="${pentaho-xul.version}"
                     conf="default->default"
                     changing="true">
             <artifact name="pentaho-xul-gwt"/>
             <artifact name="pentaho-xul-gwt" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
-        <dependency org="pentaho" name="pentaho-xul-swing" rev="${dependency.pentaho-xul.revision}" conf="default->default"/>
-        <dependency org="pentaho" name="pentaho-xul-swt" rev="${dependency.pentaho-xul.revision}" conf="default->default"/>
+        <dependency org="pentaho" name="pentaho-xul-swing" rev="${pentaho-xul.version}" conf="default->default"/>
+        <dependency org="pentaho" name="pentaho-xul-swt" rev="${pentaho-xul.version}" conf="default->default"/>
         
-        <dependency org="pentaho" name="pentaho-gwt-widgets" rev="${dependency.pentaho-gwt-widgets.revision}"
+        <dependency org="pentaho" name="pentaho-gwt-widgets" rev="${pentaho-gwt-widgets.version}"
                     conf="default->default"
                     changing="true">
             <artifact name="pentaho-gwt-widgets"/>
