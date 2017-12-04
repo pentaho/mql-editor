@@ -65,11 +65,11 @@
         <dependency org="GWT-FX" name="GWT-FX" rev="0.5.0" conf="codegen->default" transitive="false"/>
         <dependency org="com.google.code.gwtx" name="gwtx" rev="1.5.2" transitive="false" conf="codegen->default"/>
 
-        <dependency org="pentaho" name="pentaho-gwt-widgets" rev="${pentaho-gwt-widgets.version}"
+        <dependency org="org.pentaho" name="commons-gwt-widgets" rev="${commons-gwt.version}"
                     conf="codegen->default"
                     changing="true">
-            <artifact name="pentaho-gwt-widgets"/>
-            <artifact name="pentaho-gwt-widgets" type="source" ext="jar" m:classifier="sources"/>
+            <artifact name="commons-gwt-widgets"/>
+            <artifact name="commons-gwt-widgets" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
 
         <dependency org="pentaho" name="pentaho-xul-gwt" rev="${pentaho-xul.version}"
