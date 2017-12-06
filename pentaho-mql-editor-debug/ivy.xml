@@ -57,11 +57,11 @@
         <dependency org="pentaho" name="pentaho-xul-swing" rev="${pentaho-xul.version}" conf="default->default"/>
         <dependency org="pentaho" name="pentaho-xul-swt" rev="${pentaho-xul.version}" conf="default->default"/>
         
-        <dependency org="pentaho" name="pentaho-gwt-widgets" rev="${pentaho-gwt-widgets.version}"
+        <dependency org="org.pentaho" name="commons-gwt-widgets" rev="${commons-gwt.version}"
                     conf="default->default"
                     changing="true">
-            <artifact name="pentaho-gwt-widgets"/>
-            <artifact name="pentaho-gwt-widgets" type="source" ext="jar" m:classifier="sources"/>
+            <artifact name="commons-gwt-widgets"/>
+            <artifact name="commons-gwt-widgets" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
 	    
         <dependency org="org.zenica" name="gwt-datepicker" rev="r30" conf="default->default"/>
