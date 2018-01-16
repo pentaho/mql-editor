@@ -43,20 +43,23 @@
         <dependency org="pentaho" name="pentaho-platform-extensions" rev="${platform.version}" changing="true"
                     conf="default->default" transitive="false"/>
 
-        <dependency org="pentaho" name="pentaho-xul-core" rev="${pentaho-xul.version}" conf="default->default" changing="true">
-            <artifact name="pentaho-xul-core"/>
-            <artifact name="pentaho-xul-core" type="source" ext="jar" m:classifier="sources"/>
+        <dependency org="org.pentaho" name="commons-xul-core" rev="${commons-xul.version}" conf="default->default" changing="true">
+            <artifact name="commons-xul-core"/>
+            <artifact name="commons-xul-core" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
         
-        <dependency org="pentaho" name="pentaho-xul-gwt" rev="${pentaho-xul.version}"
+        <dependency org="org.pentaho" name="commons-xul-gwt-impl" rev="${commons-xul.version}"
                     conf="default->default"
                     changing="true">
-            <artifact name="pentaho-xul-gwt"/>
-            <artifact name="pentaho-xul-gwt" type="source" ext="jar" m:classifier="sources"/>
+            <artifact name="commons-xul-gwt-impl"/>
+            <artifact name="commons-xul-gwt-impl" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
-        <dependency org="pentaho" name="pentaho-xul-swing" rev="${pentaho-xul.version}" conf="default->default"/>
-        <dependency org="pentaho" name="pentaho-xul-swt" rev="${pentaho-xul.version}" conf="default->default"/>
+        <dependency org="org.pentaho" name="commons-xul-swing" rev="${commons-xul.version}" conf="default->default"/>
+        <dependency org="org.pentaho" name="commons-xul-swt" rev="${commons-xul.version}" conf="default->default" transitive="false"/>
         
+        <!-- use to come from swt above, being platform specific this should never come transitively anyway -->
+        <dependency org="org.eclipse.swt" name="org.eclipse.swt.gtk.linux.x86_64" rev="4.6" conf="default->default" transitive="false"/>
+
         <dependency org="org.pentaho" name="commons-gwt-widgets" rev="${commons-gwt.version}"
                     conf="default->default"
                     changing="true">
