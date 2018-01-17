@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>pentaho-mql-editor-package</artifactId>
+  <version>8.1.0.0-SNAPSHOT</version>
+
+  <parent>
+    <groupId>org.pentaho</groupId>
+    <artifactId>pentaho-mql-editor</artifactId>
+    <version>8.1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <name>Pentaho MQL Editor Package</name>
+  <packaging>war</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.pentaho</groupId>
+      <artifactId>pentaho-mql-editor-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.pentaho</groupId>
+      <artifactId>pentaho-mql-editor-impl</artifactId>
+      <version>${project.version}</version>
+      <classifier>sources</classifier>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gwtx</groupId>
+      <artifactId>gwtx</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.pentaho</groupId>
+      <artifactId>commons-gwt-widgets</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <modules>
+            <module>org.pentaho.commons.metadata.mqleditor.MetaDataEditorModule</module>
+          </modules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
