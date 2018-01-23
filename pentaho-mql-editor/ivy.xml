@@ -31,7 +31,7 @@
         <dependency org="jfree" name="jcommon" rev="1.0.16"/>
         <dependency org="pentaho" name="pentaho-connections" rev="${pentaho-connections.version}"
                     changing="true" transitive="false"/>
-        <dependency org="pentaho" name="pentaho-metadata" rev="${pentaho-metadata.version}" changing="true"
+        <dependency org="org.pentaho" name="pentaho-metadata" rev="${pentaho-metadata.version}" changing="true"
                     transitive="false"/>
         <dependency org="pentaho" name="pentaho-cwm" rev="${pentaho-cwm.version}"/>
         <dependency org="pentaho-kettle" name="kettle-engine" rev="${pdi.version}"/>
