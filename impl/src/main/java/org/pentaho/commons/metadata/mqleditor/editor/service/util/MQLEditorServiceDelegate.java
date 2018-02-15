@@ -12,7 +12,7 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
- * Copyright (c) 2002-2017 Hitachi Vantara..  All rights reserved.
+ * Copyright (c) 2002-2018 Hitachi Vantara..  All rights reserved.
  */
 
 package org.pentaho.commons.metadata.mqleditor.editor.service.util;
@@ -365,7 +365,12 @@ public class MQLEditorServiceDelegate {
   }
 
   private MqlDomain matchLegacyDomainName( String name ) {
-    return domains.get( name );
+    for ( Map.Entry<String, MqlDomain> entry : domains.entrySet() ) {
+      if ( entry.getKey().startsWith( name ) ) {
+        return entry.getValue();
+      }
+    }
+    return null;
   }
 
   private org.pentaho.pms.schema.BusinessColumn[] getColumns( BusinessModel model, List<? extends MqlColumn> thincols ) {
