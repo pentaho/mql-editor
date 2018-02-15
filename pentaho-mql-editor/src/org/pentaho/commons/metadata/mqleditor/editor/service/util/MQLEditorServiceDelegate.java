@@ -365,7 +365,12 @@ public class MQLEditorServiceDelegate {
   }
 
   private MqlDomain matchLegacyDomainName( String name ) {
-    return domains.get( name );
+    for ( Map.Entry<String, MqlDomain> entry : domains.entrySet() ) {
+      if ( entry.getKey().startsWith( name ) ) {
+        return entry.getValue();
+      }
+    }
+    return null;
   }
 
   private org.pentaho.pms.schema.BusinessColumn[] getColumns( BusinessModel model, List<? extends MqlColumn> thincols ) {
