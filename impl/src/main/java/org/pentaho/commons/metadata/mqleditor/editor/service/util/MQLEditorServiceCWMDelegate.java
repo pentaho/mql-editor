@@ -12,7 +12,7 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
- * Copyright (c) 2002-2017 Hitachi Vantara..  All rights reserved.
+ * Copyright (c) 2002-2018 Hitachi Vantara..  All rights reserved.
  */
 
 package org.pentaho.commons.metadata.mqleditor.editor.service.util;
@@ -549,7 +549,7 @@ public class MQLEditorServiceCWMDelegate {
     // currently only called by the PME-editor in which case there's only one domain.
     BusinessModel model = null;
     for ( BusinessModel m : modelIdToSchemaMetaMap.get( fatQ.getModel().getId() ).getBusinessModels() ) {
-      if ( m.getId() == fatQ.getModel().getId() ) {
+      if ( m.getId().equals( fatQ.getModel().getId() ) ) {
         model = m;
       }
     }
