@@ -12,7 +12,7 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
- * Copyright (c) 2002-2017 Hitachi Vantara..  All rights reserved.
+ * Copyright (c) 2002-2019 Hitachi Vantara..  All rights reserved.
  */
 
 package org.pentaho.commons.metadata.mqleditor.utils;
@@ -47,7 +47,7 @@ public class ModelSerializer {
     xstreamWriter.registerConverter( new ConditionConverter() );
     xstreamWriter.registerConverter( new DomainConverter() );
     xstreamWriter.registerConverter( new ModelConverter() );
-
+    initWriterSecurity( xstreamWriter );
   }
 
   public static String serialize( MqlQuery model ) {
@@ -81,6 +81,13 @@ public class ModelSerializer {
             .deSerialize( "{\"MQLQuery\":{\"cols\":{\"org.pentaho.commons.metadata.mqleditor.beans.Column\":[{\"id\":\"BC_CUSTOMER_W_TER_CUSTOMERNUMBER\",\"name\":\"Customernumber\",\"type\":\"FLOAT\",\"aggTypes\":\"\"},{\"id\":\"BC_ORDERDETAILS_TOTAL\",\"name\":\"Total\",\"aggTypes\":\"\"},{\"id\":\"BC_ORDERS_STATUS\",\"name\":\"Status\",\"type\":\"TEXT\",\"aggTypes\":\"\"}]},\"conditions\":[{\"org.pentaho.commons.metadata.mqleditor.beans.Condition\":[{\"condition\":{\"@combinationType\":\"AND\",\"@defaultValue\":\"\",\"@operator\":\"=\",\"@selectedAggType\":\"\",\"@value\":\"131\",\"column\":{\"id\":\"BC_CUSTOMER_W_TER_CUSTOMERNUMBER\",\"name\":\"Customernumber\",\"type\":\"FLOAT\",\"aggTypes\":\"\"}}},{\"condition\":{\"@combinationType\":\"OR\",\"@defaultValue\":\"\",\"@operator\":\"=\",\"@selectedAggType\":\"\",\"@value\":\"145\",\"column\":{\"id\":\"BC_CUSTOMER_W_TER_CUSTOMERNUMBER\",\"name\":\"Customernumber\",\"type\":\"FLOAT\",\"aggTypes\":\"\"}}}]}],\"domain\":{\"@id\":\"default\",\"@name\":\"steel-wheels\"},\"model\":{\"@id\":\"BV_ORDERS\",\"@name\":\"Orders\"}}}" );
     System.out.println( "val: " + query.getConditions().get( 0 ).getValue() );
     int i = 0;
+  }
+
+  private static void initWriterSecurity( XStream chartWriter ) {
+    XStream.setupDefaultSecurity( chartWriter );
+    Class[] allowedTypes = new Class[]{ MqlQuery.class, Query.class };
+    chartWriter.allowTypes( allowedTypes );
+    chartWriter.allowTypesByWildcard( new String[]{ "org.pentaho.commons.metadata.mqleditor.beans.**" } );
   }
 
   private static class DummyConverter implements Converter {
