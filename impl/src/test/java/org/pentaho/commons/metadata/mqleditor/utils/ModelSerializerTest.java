@@ -12,7 +12,7 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
- * Copyright (c) 2002-2017 Hitachi Vantara..  All rights reserved.
+ * Copyright (c) 2002-2019 Hitachi Vantara..  All rights reserved.
  */
 
 package org.pentaho.commons.metadata.mqleditor.utils;
@@ -25,7 +25,6 @@ import java.util.Map;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
@@ -41,6 +40,12 @@ import org.pentaho.commons.metadata.mqleditor.beans.Model;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.platform.util.JSONComparitor;
+
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Unit test for {@link ModelSerializer}.
@@ -149,34 +154,54 @@ public class ModelSerializerTest {
 
     try {
       boolean isEqual = JSONComparitor.jsonEqual( jsonRef, serialized, null );
-      Assert.assertTrue( isEqual );
+      assertTrue( isEqual );
     } catch ( JSONException e ) {
-      Assert.fail( "Invalid JSON format" );
+      fail( "Invalid JSON format" );
     }
 
     MqlQuery deserialized = ModelSerializer.deSerialize( serialized );
 
     // spot check fields since Query doesn't implement equals!!!
-    Assert.assertEquals( mqlQuery.getDomain().getName(), deserialized.getDomain().getName() );
-    Assert.assertEquals( mqlQuery.getModel().getName(), deserialized.getModel().getName() );
-    Assert.assertEquals( mqlQuery.getColumns().get( 0 ).getId(), deserialized.getColumns().get( 0 ).getId() );
-    Assert.assertEquals( mqlQuery.getColumns().get( 0 ).isPersistent(), deserialized.getColumns().get( 0 )
+    assertEquals( mqlQuery.getDomain().getName(), deserialized.getDomain().getName() );
+    assertEquals( mqlQuery.getModel().getName(), deserialized.getModel().getName() );
+    assertEquals( mqlQuery.getColumns().get( 0 ).getId(), deserialized.getColumns().get( 0 ).getId() );
+    assertEquals( mqlQuery.getColumns().get( 0 ).isPersistent(), deserialized.getColumns().get( 0 )
         .isPersistent() );
-    Assert.assertEquals( mqlQuery.getOrders().get( 0 ).getColumn().getName(), deserialized.getOrders().get( 0 )
+    assertEquals( mqlQuery.getOrders().get( 0 ).getColumn().getName(), deserialized.getOrders().get( 0 )
         .getColumn().getName() );
-    Assert.assertEquals( mqlQuery.getConditions().get( 0 ).getColumn().getId(), deserialized.getConditions().get( 0 )
+    assertEquals( mqlQuery.getConditions().get( 0 ).getColumn().getId(), deserialized.getConditions().get( 0 )
         .getColumn().getId() );
-    Assert.assertEquals( mqlQuery.getConditions().get( 0 ).isParameterized(), deserialized.getConditions().get( 0 )
+    assertEquals( mqlQuery.getConditions().get( 0 ).isParameterized(), deserialized.getConditions().get( 0 )
         .isParameterized() );
-    Assert.assertEquals( mqlQuery.getConditions().get( 0 ).getDefaultValue(), deserialized.getConditions().get( 0 )
+    assertEquals( mqlQuery.getConditions().get( 0 ).getDefaultValue(), deserialized.getConditions().get( 0 )
         .getDefaultValue() );
 
-    Assert.assertEquals( mqlQuery.getConditions().get( 0 ).getCombinationType(), deserialized.getConditions().get( 0 )
+    assertEquals( mqlQuery.getConditions().get( 0 ).getCombinationType(), deserialized.getConditions().get( 0 )
         .getCombinationType() );
 
-    Assert.assertNotNull( mqlQuery.getDefaultParameterMap().get( "myparameter" ) );
-    Assert.assertEquals( mqlQuery.getDefaultParameterMap().get( "myparameter" ), deserialized.getDefaultParameterMap()
+    assertNotNull( mqlQuery.getDefaultParameterMap().get( "myparameter" ) );
+    assertEquals( mqlQuery.getDefaultParameterMap().get( "myparameter" ), deserialized.getDefaultParameterMap()
         .get( "myparameter" ) );
+  }
+
+  @Test
+  public void deSerializeWithAllowedClassTest() {
+    String serialized = ModelSerializer.serialize( mqlQuery );
+    MqlQuery res = ModelSerializer.deSerialize( serialized );
+    assertEquals( "mydomain", res.getDomain().getName() );
+  }
+
+  @Test
+  public void deSerializeWithUnallowedClassTest() {
+    String serialized = ModelSerializer.serialize( new MyQuery() );
+    MqlQuery res = ModelSerializer.deSerialize( serialized );
+    assertNull( res );
+  }
+
+  private class MyQuery extends Query {
+    public MyQuery() {
+      super();
+    }
   }
 
 }
