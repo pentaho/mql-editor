@@ -39,7 +39,6 @@
     <pentaho-cwm.version>1.5.4</pentaho-cwm.version>
     <pentaho-metadata.version>9.0.0.0-SNAPSHOT</pentaho-metadata.version>
     <platform.version>9.0.0.0-SNAPSHOT</platform.version>
-    <xstream.version>1.4.10</xstream.version>
     <license.licenseName>lgpl_v2_1</license.licenseName>
   </properties>
 
@@ -81,18 +80,6 @@
         <artifactId>gwt-user</artifactId>
         <version>${gwt-user.version}</version>
         <optional>true</optional>
-        <exclusions>
-          <exclusion>
-            <groupId>*</groupId>
-            <artifactId>*</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>com.thoughtworks.xstream</groupId>
-        <artifactId>xstream</artifactId>
-        <version>${xstream.version}</version>
-        <scope>compile</scope>
         <exclusions>
           <exclusion>
             <groupId>*</groupId>
