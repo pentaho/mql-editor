@@ -24,9 +24,9 @@
       </tree>
       <hbox id="previewTreeLimitContainer">
         <spacer flex="1" />
-        <label value="Limit:" />
+        <label value="${preview.limit}" />
         <textbox id="previewLimit" value="10" width="30" />
-        <button label="${update}" onclick="previewController.upateQuery()" />
+        <button label="${update}" onclick="previewController.updateQuery()" />
       </hbox>
     </vbox>
   </dialog>
