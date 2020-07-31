@@ -129,7 +129,7 @@ public class PreviewController extends AbstractXulEventHandler {
   }
 
   @Bindable
-  public void upateQuery() {
+  public void updateQuery() {
 
     service.getPreviewData( workspace.getMqlQuery(), page, previewLimit, new XulServiceCallback<String[][]>() {
 

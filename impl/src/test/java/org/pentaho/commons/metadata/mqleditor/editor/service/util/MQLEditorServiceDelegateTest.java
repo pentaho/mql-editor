@@ -56,7 +56,7 @@ public class MQLEditorServiceDelegateTest {
   }
 
   // Timeout is set in order to prevent test "hanging" it's not test expected scenario
-  @Test( timeout = 5000 )
+  @Test( timeout = 10000 )
   public void testConcurrency() throws Exception {
     String domainIdPrefix = "id";
     int repoSize = 100;
