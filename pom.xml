@@ -34,7 +34,7 @@
     <gwt-user.version>2.5.1</gwt-user.version>
     <gwtx.version>1.5.2</gwtx.version>
     <jettison.version>1.2</jettison.version>
-    <junit.version>4.3.1</junit.version>
+    <junit.version>4.13.1</junit.version>
     <pdi.version>9.2.0.0-SNAPSHOT</pdi.version>
     <pentaho-cwm.version>1.5.4</pentaho-cwm.version>
     <pentaho-metadata.version>9.2.0.0-SNAPSHOT</pentaho-metadata.version>
