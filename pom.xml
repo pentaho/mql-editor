@@ -30,7 +30,7 @@
     <commons-gwt.version>9.5.0.0-SNAPSHOT</commons-gwt.version>
     <commons-lang.version>2.6</commons-lang.version>
     <commons-xul.version>9.5.0.0-SNAPSHOT</commons-xul.version>
-    <jettison.version>1.2</jettison.version>
+    <jettison.version>1.5.4</jettison.version>
     <junit.version>4.3.1</junit.version>
     <pdi.version>9.5.0.0-SNAPSHOT</pdi.version>
     <pentaho-cwm.version>1.5.4</pentaho-cwm.version>
