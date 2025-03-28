@@ -553,6 +553,7 @@ public class MQLEditorServiceDelegate {
           }
 
           queryObject.setLimit( query.getLimit() );
+          queryObject.setDisableDistinct( query.isDisableDistinct() );
 
           return queryObject;
         }
@@ -827,6 +828,7 @@ public class MQLEditorServiceDelegate {
     }
 
     q.setLimit( query.getLimit() );
+    q.setDisableDistinct( query.getDisableDistinct() );
     return q;
   }
 

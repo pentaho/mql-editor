@@ -49,6 +49,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   private UICategory selectedCategory;
   private UIOrder selectedOrder;
   private int limit;
+  private boolean disableDistinct;
 
   private UIColumn selectedColumn;
   private List<UIColumn> selectedColumns = new ArrayList<UIColumn>();
@@ -133,6 +134,10 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
       setLimit( thinWorkspace.getLimit() );
     }
 
+    if ( thinWorkspace.isDisableDistinct() ) {
+      setDisableDistinct( thinWorkspace.isDisableDistinct() );
+    }
+
   }
 
   @Bindable
@@ -144,6 +149,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     this.setSelections( new UIColumns() );
     this.setConditions( new UIConditions() );
     this.setLimit( -1 );
+    this.setDisableDistinct( false );
     setupListeners();
   }
 
@@ -409,6 +415,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     query.setOrders( orders );
     query.setConditions( conditions );
     query.setLimit( limit );
+    query.setDisableDistinct( disableDistinct );
 
     query.setMqlStr( this.getMqlStr() );
     query.setDomain( this.selectedDomain );
@@ -486,5 +493,14 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
   public static IMqlMessages getMessages() {
     return messages;
+  }
+
+  public boolean isDisableDistinct() {
+    return disableDistinct;
+  }
+
+  public void setDisableDistinct( boolean disableDistinct ) {
+    this.disableDistinct = disableDistinct;
+    this.firePropertyChange( "disableDistinct", false, disableDistinct );
   }
 }

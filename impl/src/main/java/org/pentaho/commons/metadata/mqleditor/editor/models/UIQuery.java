@@ -43,6 +43,8 @@ public class UIQuery implements MqlQuery {
    */
   private Map<String, Object> defaultParameterMap;
 
+  private boolean disableDistinct;
+
   public UIQuery() {
     super();
   }
@@ -114,5 +116,13 @@ public class UIQuery implements MqlQuery {
 
   public int getLimit() {
     return limit;
+  }
+
+  @Override public boolean isDisableDistinct() {
+    return this.disableDistinct;
+  }
+
+  public void setDisableDistinct( boolean disableDistinct ) {
+    this.disableDistinct = disableDistinct;
   }
 }

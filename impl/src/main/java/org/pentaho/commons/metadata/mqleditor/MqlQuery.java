@@ -36,6 +36,8 @@ public interface MqlQuery extends Serializable {
 
   public int getLimit();
 
+  public boolean isDisableDistinct();
+
   public MqlDomain getDomain();
 
   public MqlModel getModel();

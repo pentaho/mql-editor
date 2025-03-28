@@ -608,6 +608,7 @@ public class MQLEditorServiceCWMDelegate {
 
     query.setOrders( orders );
     query.setLimit( fatQ.getLimit() );
+    query.setDisableDistinct( fatQ.getDisableDistinct() );
 
     return query;
   }
@@ -652,6 +653,7 @@ public class MQLEditorServiceCWMDelegate {
           mqlQuery.setConstraints( constraints );
           mqlQuery.setOrder( getOrders( realModel, query.getOrders() ) );
           mqlQuery.setLimit( query.getLimit() );
+          mqlQuery.setDisableDistinct( query.isDisableDistinct() );
 
           return mqlQuery;
         }

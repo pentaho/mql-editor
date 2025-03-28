@@ -33,6 +33,8 @@ public class Query implements MqlQuery {
 
   private int limit = -1;
 
+  private boolean disableDistinct = false;
+
   private Domain domain;
 
   private Model model;
@@ -115,5 +117,13 @@ public class Query implements MqlQuery {
 
   public int getLimit() {
     return limit;
+  }
+
+  public boolean isDisableDistinct() {
+    return disableDistinct;
+  }
+
+  public void setDisableDistinct( boolean disableDistinct ) {
+    this.disableDistinct = disableDistinct;
   }
 }
