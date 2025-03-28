@@ -114,6 +114,7 @@ public class ModelUtil {
 
     // row limit
     query.setLimit( uiQuery.getLimit() );
+    query.setDisableDistinct( uiQuery.isDisableDistinct() );
 
     query.setConditions( conditions );
     return query;
