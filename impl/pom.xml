@@ -12,7 +12,7 @@
   </parent>
 
   <artifactId>pentaho-mql-editor-impl</artifactId>
-  <version>9.3.0.9-885</version>
+  <version>9.3.0.9-C289</version>
   <packaging>jar</packaging>
   <dependencies>
     <!--  Compile  -->
