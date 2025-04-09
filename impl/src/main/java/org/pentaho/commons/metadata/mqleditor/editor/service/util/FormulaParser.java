@@ -104,7 +104,7 @@ public class FormulaParser {
 
     String errorMessage = "";
     if ( functionName == null) {
-       errorMessage = "Unsupported syntax in query: " + formula;
+       errorMessage = "Query syntax not supported by PRD Editor: " + formula;
     }
 
     Operator op = null;
