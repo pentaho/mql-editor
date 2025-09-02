@@ -72,8 +72,9 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>com.google.gwt</groupId>
+        <groupId>org.gwtproject</groupId>
         <artifactId>gwt-user</artifactId>
+        <version>${gwt.version}</version>
         <optional>true</optional>
         <exclusions>
           <exclusion>
@@ -199,17 +200,5 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>gwt-maven-plugin</artifactId>
-          <version>${gwt.version}</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
 
 </project>
