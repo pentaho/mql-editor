@@ -13,7 +13,16 @@
 
 package org.pentaho.commons.metadata.mqleditor.editor.service.util;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.pentaho.commons.metadata.mqleditor.AggType;
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.CombinationType;
@@ -55,7 +64,9 @@ import org.pentaho.pms.schema.concept.types.aggregation.AggregationSettings;
 import org.pentaho.pms.schema.concept.types.datatype.DataTypeSettings;
 import org.pentaho.pms.util.UniqueList;
 
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -75,6 +86,8 @@ import java.util.regex.Pattern;
  */
 
 public class MQLEditorServiceDelegate {
+
+  protected static Log log = LogFactory.getLog( MQLEditorServiceDelegate.class );
 
   private String locale = Locale.getDefault().toString();
 
@@ -516,24 +529,28 @@ public class MQLEditorServiceDelegate {
                     .getSelectedAggType() ) ) );
           }
 
-          for ( MqlCondition condition : query.getConditions() ) {
-            org.pentaho.metadata.model.Category view = findCategory( model, condition.getColumn() );
-            AggregationType type = getAggregationType( condition.getSelectedAggType() );
-            String field = "[";
-            field += view.getId() + "." + condition.getColumn().getId();
-            if ( type != null ) {
-              field += "." + type.toString();
-            }
-            field += "]";
+          if (query.getComplexConstraints() != null) {
+            queryObject.getConstraints().addAll(convertComplexConstraintsIntoConstraintList(query.getComplexConstraints()));
+          } else {
+            for ( MqlCondition condition : query.getConditions() ) {
+              org.pentaho.metadata.model.Category view = findCategory( model, condition.getColumn() );
+              AggregationType type = getAggregationType( condition.getSelectedAggType() );
+              String field = "[";
+              field += view.getId() + "." + condition.getColumn().getId();
+              if ( type != null ) {
+                field += "." + type.toString();
+              }
+              field += "]";
 
-            if ( condition.isParameterized() ) {
-              queryObject.getParameters().add(
+              if ( condition.isParameterized() ) {
+                queryObject.getParameters().add(
                   new Parameter( condition.getValue().replaceAll( "[\\{\\}]", "" ), getDataType( condition.getColumn()
-                      .getType() ), condition.getDefaultValue() ) );
-            }
-            queryObject.getConstraints().add(
+                    .getType() ), condition.getDefaultValue() ) );
+              }
+              queryObject.getConstraints().add(
                 new Constraint( getComboType( condition.getCombinationType() ), conditionFormatter.getCondition(
-                    condition, field ) ) );
+                  condition, field ) ) );
+            }
           }
 
           for ( MqlOrder order : query.getOrders() ) {
@@ -559,6 +576,81 @@ public class MQLEditorServiceDelegate {
 
     }
     return null;
+  }
+
+  private List<Constraint> convertComplexConstraintsIntoConstraintList( String complexConstraints ) {
+    List<Constraint> constraints = new ArrayList<>();
+    ConstraintsXml constraintsXml = new ConstraintsXml();
+    try {
+      JAXBContext jaxbContext = JAXBContext.newInstance(ConstraintsXml.class);
+      Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+
+      StringReader reader = new StringReader(complexConstraints);
+      constraintsXml = (ConstraintsXml) unmarshaller.unmarshal(reader);
+    } catch ( JAXBException e ) {
+      throw new RuntimeException( e );
+    }
+    for (ConstraintXml constraintXml: constraintsXml.getConstraintList()) {
+      constraints.add(new Constraint( org.pentaho.metadata.query.model.CombinationType.valueOf( constraintXml.operator), constraintXml.formula ));
+    }
+
+    return constraints;
+  }
+
+  @XmlRootElement(name = "constraints")
+  @XmlAccessorType(XmlAccessType.FIELD)
+  private static class ConstraintsXml {
+
+    @XmlElement(name="constraint")
+    private List<ConstraintXml> constraintList;
+
+    public ConstraintsXml( List<ConstraintXml> constraintList ) {
+      this.constraintList = constraintList;
+    }
+
+    public ConstraintsXml() {
+    }
+
+    public List<ConstraintXml> getConstraintList() {
+      return constraintList;
+    }
+
+    public void setConstraintList( List<ConstraintXml> constraintList ) {
+      this.constraintList = constraintList;
+    }
+  }
+
+  @XmlAccessorType( XmlAccessType.FIELD)
+  private static class ConstraintXml {
+    @XmlElement(name="operator")
+    private String operator;
+
+    @XmlElement(name="condition")
+    private String formula;
+
+    public ConstraintXml( String operator, String formula ) {
+      this.operator = operator;
+      this.formula = formula;
+    }
+
+    public ConstraintXml() {
+    }
+
+    public String getOperator() {
+      return operator;
+    }
+
+    public void setOperator( String operator ) {
+      this.operator = operator;
+    }
+
+    public String getFormula() {
+      return formula;
+    }
+
+    public void setFormula( String formula ) {
+      this.formula = formula;
+    }
   }
 
   private org.pentaho.metadata.query.model.Order.Type getOrderType( MqlOrder.Type type ) {
@@ -746,7 +838,8 @@ public class MQLEditorServiceDelegate {
 
   }
 
-  public MqlQuery convertModelToThin( org.pentaho.metadata.query.model.Query query ) {
+  // TODO instead of adding querystr, create method to create string from constraints?
+  public MqlQuery convertModelToThin( org.pentaho.metadata.query.model.Query query, String queryStr ) {
     Query q = new Query();
 
     String domainId = query.getDomain().getId();
@@ -780,40 +873,47 @@ public class MQLEditorServiceDelegate {
     }
 
     for ( org.pentaho.metadata.query.model.Constraint constraint : query.getConstraints() ) {
-      FormulaParser fp = new FormulaParser( constraint.getFormula() );
+      try {
+        FormulaParser fp = new FormulaParser( constraint.getFormula() );
 
-      Condition cond = fp.getCondition();
-      Outter: for ( MqlCategory cat : selectedModel.getCategories() ) {
-        for ( MqlColumn col : cat.getBusinessColumns() ) {
-          if ( col.getId().equals( fp.getColID() ) ) {
-            cond.setColumn( (Column) col );
-            break Outter;
+        Condition cond = fp.getCondition();
+        Outter: for ( MqlCategory cat : selectedModel.getCategories() ) {
+          for ( MqlColumn col : cat.getBusinessColumns() ) {
+            if ( col.getId().equals( fp.getColID() ) ) {
+              cond.setColumn( (Column) col );
+              break Outter;
+            }
           }
         }
-      }
 
-      // PRD-3710
-      if ( fp.getAggType() != null ) {
-        cond.setSelectedAggType( convertNewThinAggregationType( AggregationType.valueOf( fp.getAggType() ) ) );
-      }
+        // PRD-3710
+        if ( fp.getAggType() != null ) {
+          cond.setSelectedAggType( convertNewThinAggregationType( AggregationType.valueOf( fp.getAggType() ) ) );
+        }
 
-      cond.setCombinationType( CombinationType.valueOf( constraint.getCombinationType().name().toUpperCase() ) );
-      String val = cond.getValue();
+        cond.setCombinationType( CombinationType.valueOf( constraint.getCombinationType().name().toUpperCase() ) );
+        String val = cond.getValue();
 
-      // check to see if it was parameterized, if so resolve default and setup the condition properly
-      if ( val.indexOf( "[param:" ) == 0 ) {
-        String paramKey = val.substring( 7, val.length() - 1 );
-        cond.setValue( "{" + paramKey + "}" );
-        cond.setParameterized( true );
-        for ( Parameter p : query.getParameters() ) {
-          if ( p.getName().equals( paramKey ) ) {
-            // convert arrays back to vertical bar (pipe) delimited string to support multi-valued defaults
-            cond.setDefaultValue( getDisplayableDefaultValue( p ) );
-            break;
+        // check to see if it was parameterized, if so resolve default and setup the condition properly
+        if ( val.indexOf( "[param:" ) == 0 ) {
+          String paramKey = val.substring( 7, val.length() - 1 );
+          cond.setValue( "{" + paramKey + "}" );
+          cond.setParameterized( true );
+          for ( Parameter p : query.getParameters() ) {
+            if ( p.getName().equals( paramKey ) ) {
+              // convert arrays back to vertical bar (pipe) delimited string to support multi-valued defaults
+              cond.setDefaultValue( getDisplayableDefaultValue( p ) );
+              break;
+            }
           }
         }
+        q.getConditions().add( cond );
+      } catch ( Exception e ) {
+        log.warn("Could not parse all conditions, will use complexConstraints");
+        int constraintsStartIndex = queryStr.indexOf( "<constraints>" );
+        int constraintsEndIndex = queryStr.indexOf( "</constraints>" );
+        q.setComplexConstraints( queryStr.substring( constraintsStartIndex, constraintsEndIndex +  14) );
       }
-      q.getConditions().add( cond );
     }
 
     for ( org.pentaho.metadata.query.model.Order ord : query.getOrders() ) {

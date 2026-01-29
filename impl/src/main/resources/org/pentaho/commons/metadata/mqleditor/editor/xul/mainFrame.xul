@@ -134,6 +134,11 @@
           <toolbarbutton id="conditionRemove" disabled="true"
             onclick="conditionsController.remove()" image="images/delete.png" pen:classname="pentaho-deletebutton" />
         </toolbar>
+
+        <button id="advancedButton" label="Switch to Advanced..." onclick="mainController.switchAdvancedMode()"/>
+
+        <textbox id="complexConstraints" rows="5"/>
+
         <tree flex="1" editable="true" seltype="single"
           enableColumnDrag="false" id="conditionsTree" width="575">
           <treecols>

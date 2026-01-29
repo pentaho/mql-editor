@@ -54,6 +54,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   private UIConditions conditions = new UIConditions();
   private UIOrders orders = new UIOrders();
   private String queryStr;
+  private String complexConstraints;
 
   private static IMqlMessages messages;
 
@@ -130,6 +131,10 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
       setLimit( thinWorkspace.getLimit() );
     }
 
+    if (thinWorkspace.getComplexConstraints() != null ) {
+      setComplexConstraints(thinWorkspace.getComplexConstraints());
+    }
+
     if ( thinWorkspace.isDisableDistinct() ) {
       setDisableDistinct( thinWorkspace.isDisableDistinct() );
     }
@@ -145,6 +150,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     this.setSelections( new UIColumns() );
     this.setConditions( new UIConditions() );
     this.setLimit( -1 );
+    this.setComplexConstraints(null);
     this.setDisableDistinct( false );
     setupListeners();
   }
@@ -276,6 +282,11 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
   public List<UIColumn> getColumns() {
     return ( this.selectedCategory != null ) ? this.selectedCategory.getChildren() : null;
+  }
+
+  @Bindable
+  public String getComplexConstraints() {
+    return complexConstraints;
   }
 
   @Bindable
@@ -411,6 +422,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     query.setOrders( orders );
     query.setConditions( conditions );
     query.setLimit( limit );
+    query.setComplexConstraints(complexConstraints);
     query.setDisableDistinct( disableDistinct );
 
     query.setMqlStr( this.getMqlStr() );
@@ -476,6 +488,12 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   public void setLimit( int limit ) {
     this.limit = limit;
     this.firePropertyChange( "limit", null, limit ); //$NON-NLS-1$
+  }
+
+  @Bindable
+  public void setComplexConstraints( String complexConstraints ) {
+    this.complexConstraints = complexConstraints;
+    this.firePropertyChange( "complexConstraints", null, complexConstraints );
   }
 
   @Bindable

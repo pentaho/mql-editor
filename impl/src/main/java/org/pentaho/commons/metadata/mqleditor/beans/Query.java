@@ -37,6 +37,8 @@ public class Query implements MqlQuery {
 
   private String query;
 
+  private String complexConstraints;
+
   /**
    * Keys are parameter names; values are defaults for those parameters.
    */
@@ -48,6 +50,10 @@ public class Query implements MqlQuery {
 
   public List<Column> getColumns() {
     return cols;
+  }
+
+  public String getComplexConstraints() {
+    return complexConstraints;
   }
 
   public List<Condition> getConditions() {
@@ -69,6 +75,10 @@ public class Query implements MqlQuery {
   public void setColumns( List<Column> cols ) {
 
     this.cols = cols;
+  }
+
+  public void setComplexConstraints( String complexConstraints ) {
+    this.complexConstraints = complexConstraints;
   }
 
   public void setConditions( List<Condition> conditions ) {

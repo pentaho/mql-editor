@@ -21,6 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.beans.Domain;
+import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.ConditionsController;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.MainController;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.OrderController;
@@ -164,7 +165,7 @@ public abstract class AbstractMqlEditor {
       QueryXmlHelper helper = new QueryXmlHelper();
       Query queryObject = helper.fromXML( repo, query );
       org.pentaho.commons.metadata.mqleditor.beans.Query thinQuery =
-          (org.pentaho.commons.metadata.mqleditor.beans.Query) this.delegate.convertModelToThin( queryObject );
+          (org.pentaho.commons.metadata.mqleditor.beans.Query) this.delegate.convertModelToThin( queryObject, query );
       mainController.setSavedQuery( thinQuery );
     }
   }

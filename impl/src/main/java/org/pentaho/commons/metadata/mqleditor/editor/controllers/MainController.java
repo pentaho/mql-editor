@@ -35,6 +35,7 @@ import org.pentaho.ui.xul.components.XulMessageBox;
 import org.pentaho.ui.xul.components.XulTextbox;
 import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.containers.XulTree;
+import org.pentaho.ui.xul.dom.Element;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
 import org.pentaho.ui.xul.stereotype.Bindable;
 
@@ -67,7 +68,13 @@ public class MainController extends AbstractXulEventHandler {
   private MQLEditorService service;
   private List<MqlDialogListener> listeners = new ArrayList<MqlDialogListener>();
 
+  private XulButton advancedButton;
+  private XulButton conditionsButton;
+  private XulTextbox complexConstraints;
+
   private Query savedQuery;
+
+  private boolean showAdvancedMode;
 
   BindingFactory bf;
 
@@ -86,6 +93,11 @@ public class MainController extends AbstractXulEventHandler {
     }
     if ( savedQuery != null ) {
       workspace.wrap( savedQuery );
+      if ( savedQuery.getComplexConstraints() != null ) {
+        switchAdvancedMode();
+      } else {
+        complexConstraints.setVisible( false );
+      }
     }
   }
 
@@ -113,6 +125,9 @@ public class MainController extends AbstractXulEventHandler {
     dialog = (XulDialog) document.getElementById( "mqlEditorDialog" );
     limit = (XulTextbox) document.getElementById( "limit" );
     acceptButton = (XulButton) document.getElementById( "mqlEditorDialog_accept" );
+    advancedButton = (XulButton) document.getElementById( "advancedButton" );
+    conditionsButton = (XulButton) document.getElementById( "addConditionFieldBtn" );
+    complexConstraints = (XulTextbox) document.getElementById( "complexConstraints" );
 
     errorDialog = (XulDialog) document.getElementById( "errorDialog" );
 
@@ -230,6 +245,7 @@ public class MainController extends AbstractXulEventHandler {
     bf.createBinding( workspace, "conditions", conditionsTable, "elements" ); //$NON-NLS-1$ //$NON-NLS-2$
     bf.createBinding( workspace, "orders", ordersTable, "elements" ); //$NON-NLS-1$ //$NON-NLS-2$
     bf.setBindingType( Binding.Type.BI_DIRECTIONAL );
+    bf.createBinding( workspace, "complexConstraints", complexConstraints, "value");
     bf.createBinding( workspace, "limit", limit, "value", new BindingConvertor<Integer, String>() {
 
       @Override
@@ -314,6 +330,25 @@ public class MainController extends AbstractXulEventHandler {
     for ( int i = 0; i < listeners.size(); i++ ) {
       listeners.get( i ).onDialogCancel();
     }
+  }
+
+  @Bindable
+  public void switchAdvancedMode() {
+    if (!this.showAdvancedMode) {
+      advancedButton.setLabel("Switch to Default Editor...");
+      conditionsButton.setVisible( false ); // Slightly changes heights of the other arrows, is disabling it an option?
+      Element element = conditionsTable.getParent();
+      element.removeChild( conditionsTable );
+      complexConstraints.setVisible( true );
+    } else {
+      advancedButton.setLabel("Switch to Advanced...");
+      Element el = ordersTable.getParent();
+      el.addChildAt( conditionsTable, 3 );
+      conditionsTable.update();
+      conditionsButton.setVisible( true );
+      complexConstraints.setVisible( false );
+    }
+    this.showAdvancedMode = !this.showAdvancedMode;
   }
 
   @Bindable
