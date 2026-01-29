@@ -35,6 +35,7 @@ import org.pentaho.ui.xul.components.XulMessageBox;
 import org.pentaho.ui.xul.components.XulTextbox;
 import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.containers.XulTree;
+import org.pentaho.ui.xul.containers.XulVbox;
 import org.pentaho.ui.xul.dom.Element;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
 import org.pentaho.ui.xul.stereotype.Bindable;
@@ -60,6 +61,7 @@ public class MainController extends AbstractXulEventHandler {
   private XulButton acceptButton;
 
   private Workspace workspace;
+  private XulVbox tableContainer;
   private XulTree fieldTable;
   private XulTree conditionsTable;
   private XulTree ordersTable;
@@ -116,6 +118,7 @@ public class MainController extends AbstractXulEventHandler {
   }
 
   private void createBindings() {
+    tableContainer = (XulVbox) document.getElementById( "tableContainer" );
     modelList = (XulMenuList) document.getElementById( "modelList" );
     domainList = (XulMenuList) document.getElementById( "domainList" );
     categoryTree = (XulTree) document.getElementById( "categoryTree" );
@@ -337,13 +340,11 @@ public class MainController extends AbstractXulEventHandler {
     if (!this.showAdvancedMode) {
       advancedButton.setLabel("Switch to Default Editor...");
       conditionsButton.setVisible( false ); // Slightly changes heights of the other arrows, is disabling it an option?
-      Element element = conditionsTable.getParent();
-      element.removeChild( conditionsTable );
+      tableContainer.removeChild( conditionsTable );
       complexConstraints.setVisible( true );
     } else {
       advancedButton.setLabel("Switch to Advanced...");
-      Element el = ordersTable.getParent();
-      el.addChildAt( conditionsTable, 3 );
+      tableContainer.addChildAt( conditionsTable, 3 );
       conditionsTable.update();
       conditionsButton.setVisible( true );
       complexConstraints.setVisible( false );
