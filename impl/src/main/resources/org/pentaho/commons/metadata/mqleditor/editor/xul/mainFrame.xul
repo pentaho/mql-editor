@@ -137,7 +137,7 @@
 
         <button id="advancedButton" label="Switch to Advanced..." onclick="mainController.switchAdvancedMode()"/>
 
-        <textbox flex="1" id="complexConstraints" rows="5"/>
+        <textbox flex="1" id="complexConstraints" multiline="true"/>
 
         <tree flex="1" editable="true" seltype="single"
           enableColumnDrag="false" id="conditionsTree" width="575">
