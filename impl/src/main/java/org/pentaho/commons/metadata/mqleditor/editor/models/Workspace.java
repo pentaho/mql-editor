@@ -32,9 +32,7 @@ import org.pentaho.ui.xul.XulEventSourceAdapter;
 import org.pentaho.ui.xul.stereotype.Bindable;
 
 /**
- *
  * Main state model for the Mql Editor dialog
- * 
  */
 public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
@@ -131,8 +129,8 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
       setLimit( thinWorkspace.getLimit() );
     }
 
-    if (thinWorkspace.getComplexConstraints() != null ) {
-      setComplexConstraints(thinWorkspace.getComplexConstraints());
+    if ( thinWorkspace.getComplexConstraints() != null ) {
+      setComplexConstraints( thinWorkspace.getComplexConstraints() );
     }
 
     if ( thinWorkspace.isDisableDistinct() ) {
@@ -150,7 +148,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     this.setSelections( new UIColumns() );
     this.setConditions( new UIConditions() );
     this.setLimit( -1 );
-    this.setComplexConstraints(null);
+    this.setComplexConstraints( null );
     this.setDisableDistinct( false );
     setupListeners();
   }
@@ -422,7 +420,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     query.setOrders( orders );
     query.setConditions( conditions );
     query.setLimit( limit );
-    query.setComplexConstraints(complexConstraints);
+    query.setComplexConstraints( complexConstraints );
     query.setDisableDistinct( disableDistinct );
 
     query.setMqlStr( this.getMqlStr() );

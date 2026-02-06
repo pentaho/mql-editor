@@ -35,8 +35,8 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
 
   static {
     SERVICE =
-        (org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtServiceAsync) GWT
-            .create( org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtService.class );
+      (org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtServiceAsync) GWT
+        .create( org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtService.class );
     ServiceDefTarget endpoint = (ServiceDefTarget) SERVICE;
     endpoint.setServiceEntryPoint( getContextPath() + "gwtrpc/MqlService" );
   }
@@ -153,7 +153,7 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
   }
 
   public void getPreviewData( final MqlQuery query, final int page, final int limit,
-      final XulServiceCallback<String[][]> callback ) {
+                              final XulServiceCallback<String[][]> callback ) {
 
     AuthenticatedGwtServiceUtil.invokeCommand( new IAuthenticatedGwtCommand<String[][]>() {
       public void execute( AsyncCallback<String[][]> callback ) {
@@ -175,7 +175,7 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
 
   }
 
-  @Override public void convertComplexConstraintsIntoConditions( String complexConstraints,List<UICategory> categories,
+  @Override public void convertComplexConstraintsIntoConditions( String complexConstraints, List<UICategory> categories,
                                                                  XulServiceCallback<UIConditions> callback ) {
 
   }

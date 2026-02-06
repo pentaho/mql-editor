@@ -70,7 +70,6 @@ import org.pentaho.pms.util.UniqueList;
 
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -80,13 +79,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 
  * This delegate class provides the majority of functionality needed by an implementation of the MQLEditor Service. If
  * you wish to use this file as a starting point for your implementation you'll need to provide a CWM isntance and
  * CWMSchemaFactory
- *
+ * <p>
  * This delegate is used in the debug services provided in the base application.
- *
  */
 
 public class MQLEditorServiceDelegate {
@@ -386,16 +383,17 @@ public class MQLEditorServiceDelegate {
     return null;
   }
 
-  private org.pentaho.pms.schema.BusinessColumn[] getColumns( BusinessModel model, List<? extends MqlColumn> thincols ) {
-    org.pentaho.pms.schema.BusinessColumn[] cols = new org.pentaho.pms.schema.BusinessColumn[thincols.size()];
+  private org.pentaho.pms.schema.BusinessColumn[] getColumns( BusinessModel model,
+                                                              List<? extends MqlColumn> thincols ) {
+    org.pentaho.pms.schema.BusinessColumn[] cols = new org.pentaho.pms.schema.BusinessColumn[ thincols.size() ];
 
     int i = 0;
     for ( MqlColumn thincol : thincols ) {
       UniqueList list = model.getAllBusinessColumns();
       for ( Object col : list.getList() ) {
         if ( ( (BusinessColumn) col ).getId().equals( thincol.getId() ) ) {
-          cols[i] = (org.pentaho.pms.schema.BusinessColumn) col;
-          cols[i].setAggregationType( getAggregationSettings( thincol.getSelectedAggType() ) );
+          cols[ i ] = (org.pentaho.pms.schema.BusinessColumn) col;
+          cols[ i ].setAggregationType( getAggregationSettings( thincol.getSelectedAggType() ) );
           i++;
         }
       }
@@ -421,15 +419,15 @@ public class MQLEditorServiceDelegate {
   }
 
   private MQLWhereConditionModel[] getConditions( BusinessModel model, List<? extends MqlCondition> thinConditions ) {
-    MQLWhereConditionModel[] conditions = new MQLWhereConditionModel[thinConditions.size()];
+    MQLWhereConditionModel[] conditions = new MQLWhereConditionModel[ thinConditions.size() ];
     int i = 0;
     for ( MqlCondition thinCondition : thinConditions ) {
       org.pentaho.pms.schema.BusinessColumn col = getColumn( model, thinCondition.getColumn() );
       MQLWhereConditionModel where =
-          new MQLWhereConditionModel( thinCondition.getCombinationType() == null
-              ? "" : thinCondition.getCombinationType().toString(), //$NON-NLS-1$
-              col, conditionFormatter.getCondition( thinCondition, "[" + col.toString() + "]" ) );
-      conditions[i++] = where;
+        new MQLWhereConditionModel( thinCondition.getCombinationType() == null
+          ? "" : thinCondition.getCombinationType().toString(), //$NON-NLS-1$
+          col, conditionFormatter.getCondition( thinCondition, "[" + col.toString() + "]" ) );
+      conditions[ i++ ] = where;
     }
     return conditions;
   }
@@ -494,7 +492,7 @@ public class MQLEditorServiceDelegate {
         // As we are crafting an open formula function to handle dates, the parameter data type needs to be a String.
         // This will eventually be handled by the Metadata layer.
         return DataType.STRING;
-        // return DataType.DATE;
+      // return DataType.DATE;
       case FLOAT:
       case NUMERIC:
         return DataType.NUMERIC;
@@ -507,11 +505,11 @@ public class MQLEditorServiceDelegate {
   }
 
   private org.pentaho.metadata.query.model.Query convertQueryModel( org.pentaho.metadata.model.Domain thinDomain,
-      MqlQuery query ) {
+                                                                    MqlQuery query ) {
     LogicalModel model = thinDomain.findLogicalModel( query.getModel().getId() );
     if ( model != null ) {
       org.pentaho.metadata.query.model.Query queryObject =
-          new org.pentaho.metadata.query.model.Query( thinDomain, model );
+        new org.pentaho.metadata.query.model.Query( thinDomain, model );
       try {
         if ( query.getColumns().size() > 0 ) {
           for ( MqlColumn col : query.getColumns() ) {
@@ -529,12 +527,13 @@ public class MQLEditorServiceDelegate {
               return null;
             }
             queryObject.getSelections().add(
-                new org.pentaho.metadata.query.model.Selection( view, column, getAggregationType( col
-                    .getSelectedAggType() ) ) );
+              new org.pentaho.metadata.query.model.Selection( view, column, getAggregationType( col
+                .getSelectedAggType() ) ) );
           }
 
-          if (query.getComplexConstraints() != null) {
-            queryObject.getConstraints().addAll(convertComplexConstraintsIntoConstraintList(query.getComplexConstraints()));
+          if ( query.getComplexConstraints() != null ) {
+            queryObject.getConstraints()
+              .addAll( convertComplexConstraintsIntoConstraintList( query.getComplexConstraints() ) );
           } else {
             for ( MqlCondition condition : query.getConditions() ) {
               org.pentaho.metadata.model.Category view = findCategory( model, condition.getColumn() );
@@ -565,8 +564,8 @@ public class MQLEditorServiceDelegate {
               return null;
             }
             queryObject.getOrders().add(
-                new org.pentaho.metadata.query.model.Order( new org.pentaho.metadata.query.model.Selection( view,
-                    column, getAggregationType( order.getSelectedAggType() ) ), getOrderType( order.getOrderType() ) ) );
+              new org.pentaho.metadata.query.model.Order( new org.pentaho.metadata.query.model.Selection( view,
+                column, getAggregationType( order.getSelectedAggType() ) ), getOrderType( order.getOrderType() ) ) );
           }
 
           queryObject.setLimit( query.getLimit() );
@@ -589,26 +588,28 @@ public class MQLEditorServiceDelegate {
     List<Constraint> constraints = new ArrayList<>();
     ConstraintsXml constraintsXml = new ConstraintsXml();
     try {
-      JAXBContext jaxbContext = JAXBContext.newInstance(ConstraintsXml.class);
+      JAXBContext jaxbContext = JAXBContext.newInstance( ConstraintsXml.class );
       Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-      StringReader reader = new StringReader(complexConstraints);
-      constraintsXml = (ConstraintsXml) unmarshaller.unmarshal(reader);
+      StringReader reader = new StringReader( complexConstraints );
+      constraintsXml = (ConstraintsXml) unmarshaller.unmarshal( reader );
     } catch ( JAXBException e ) {
       throw new RuntimeException( e );
     }
-    for (ConstraintXml constraintXml: constraintsXml.getConstraintList()) {
-      constraints.add(new Constraint( org.pentaho.metadata.query.model.CombinationType.valueOf( constraintXml.operator), constraintXml.formula ));
+    for ( ConstraintXml constraintXml : constraintsXml.getConstraintList() ) {
+      constraints.add(
+        new Constraint( org.pentaho.metadata.query.model.CombinationType.valueOf( constraintXml.operator ),
+          constraintXml.formula ) );
     }
 
     return constraints;
   }
 
-  @XmlRootElement(name = "constraints")
-  @XmlAccessorType(XmlAccessType.FIELD)
+  @XmlRootElement( name = "constraints" )
+  @XmlAccessorType( XmlAccessType.FIELD )
   private static class ConstraintsXml {
 
-    @XmlElement(name="constraint")
+    @XmlElement( name = "constraint" )
     private List<ConstraintXml> constraintList;
 
     public ConstraintsXml( List<ConstraintXml> constraintList ) {
@@ -627,12 +628,12 @@ public class MQLEditorServiceDelegate {
     }
   }
 
-  @XmlAccessorType( XmlAccessType.FIELD)
+  @XmlAccessorType( XmlAccessType.FIELD )
   private static class ConstraintXml {
-    @XmlElement(name="operator")
+    @XmlElement( name = "operator" )
     private String operator;
 
-    @XmlElement(name="condition")
+    @XmlElement( name = "condition" )
     private String formula;
 
     public ConstraintXml( String operator, String formula ) {
@@ -661,14 +662,14 @@ public class MQLEditorServiceDelegate {
   }
 
   private org.pentaho.metadata.query.model.Order.Type getOrderType( MqlOrder.Type type ) {
-    return org.pentaho.metadata.query.model.Order.Type.values()[type.ordinal()];
+    return org.pentaho.metadata.query.model.Order.Type.values()[ type.ordinal() ];
   }
 
   private org.pentaho.metadata.query.model.CombinationType getComboType( CombinationType type ) {
     if ( type == null ) {
       return null;
     }
-    return org.pentaho.metadata.query.model.CombinationType.values()[type.ordinal()];
+    return org.pentaho.metadata.query.model.CombinationType.values()[ type.ordinal() ];
   }
 
   public MqlQuery convertModelToThin( MQLQuery fatQ ) {
@@ -770,7 +771,7 @@ public class MQLEditorServiceDelegate {
           mqlQuery = new MQLQueryImpl( meta, businessModel, null, meta.getActiveLocale() );
           List<Selection> selections = new ArrayList<Selection>();
           for ( int i = 0; i < businessColumns.length; i++ ) {
-            selections.add( new Selection( businessColumns[i], businessColumns[i].getAggregationType() ) );
+            selections.add( new Selection( businessColumns[ i ], businessColumns[ i ].getAggregationType() ) );
           }
 
           mqlQuery.setSelections( selections );
@@ -779,10 +780,12 @@ public class MQLEditorServiceDelegate {
           BusinessCategory rootCat = businessModel.getRootCategory();
           // mqlQuery.setDisableDistinct(!this.distinctSelections.getSelection());
           for ( int i = 0; i < wherelist.length; i++ ) {
-            BusinessCategory businessCategory = rootCat.findBusinessCategoryForBusinessColumn( wherelist[i].getField() );
+            BusinessCategory businessCategory =
+              rootCat.findBusinessCategoryForBusinessColumn( wherelist[ i ].getField() );
 
             constraints
-                .add( new WhereCondition( businessModel, wherelist[i].getOperator(), wherelist[i].getCondition() ) ); //$NON-NLS-1$
+              .add( new WhereCondition( businessModel, wherelist[ i ].getOperator(),
+                wherelist[ i ].getCondition() ) ); //$NON-NLS-1$
           }
           mqlQuery.setConstraints( constraints );
           mqlQuery.setOrder( getOrders( realModel, query.getOrders() ) );
@@ -884,7 +887,8 @@ public class MQLEditorServiceDelegate {
         FormulaParser fp = new FormulaParser( constraint.getFormula() );
 
         Condition cond = fp.getCondition();
-        Outter: for ( MqlCategory cat : selectedModel.getCategories() ) {
+        Outter:
+        for ( MqlCategory cat : selectedModel.getCategories() ) {
           for ( MqlColumn col : cat.getBusinessColumns() ) {
             if ( col.getId().equals( fp.getColID() ) ) {
               cond.setColumn( (Column) col );
@@ -916,10 +920,10 @@ public class MQLEditorServiceDelegate {
         }
         q.getConditions().add( cond );
       } catch ( Exception e ) {
-        log.warn("Could not parse all conditions, will use complexConstraints");
+        log.warn( "Could not parse all conditions, will use complexConstraints" );
         int constraintsStartIndex = queryStr.indexOf( "<constraints>" );
         int constraintsEndIndex = queryStr.indexOf( "</constraints>" );
-        q.setComplexConstraints( queryStr.substring( constraintsStartIndex, constraintsEndIndex +  14) );
+        q.setComplexConstraints( queryStr.substring( constraintsStartIndex, constraintsEndIndex + 14 ) );
       }
     }
 
@@ -999,8 +1003,8 @@ public class MQLEditorServiceDelegate {
     }
   }
 
-  public String convertConditionsIntoComplexConstraints(UIConditions conditions, List<UICategory> categories) {
-    if (conditions.isEmpty()) {
+  public String convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories ) {
+    if ( conditions.isEmpty() ) {
       return null;
     }
 
@@ -1010,11 +1014,12 @@ public class MQLEditorServiceDelegate {
     for ( UICondition condition : conditions ) {
       UICategory view = new UICategory();
 
-      Outer: for ( UICategory category : categories ) {
+      Outer:
+      for ( UICategory category : categories ) {
         for ( UIColumn lcol : category.getBusinessColumns() ) {
-         if ( lcol.getId().equals( condition.getColumn().getId() ) ) {
-           view = category;
-           break Outer;
+          if ( lcol.getId().equals( condition.getColumn().getId() ) ) {
+            view = category;
+            break Outer;
           }
         }
       }
@@ -1027,23 +1032,25 @@ public class MQLEditorServiceDelegate {
       }
       field += "]";
 
-        constraints.add(
-          new Constraint( getComboType( condition.getCombinationType() ), conditionFormatter.getCondition(
-            condition, field ) ) );
+      constraints.add(
+        new Constraint( getComboType( condition.getCombinationType() ), conditionFormatter.getCondition(
+          condition, field ) ) );
 
-        allConstraints += "<constraint>";
+      allConstraints += "<constraint>";
 
-          allConstraints = allConstraints.concat( "<operator>" + condition.getCombinationType().toString() + "</operator>" );
-        allConstraints = allConstraints.concat( "<condition>" +  conditionFormatter.getCondition(
-          condition, field ) +  "</condition>" );
-        allConstraints += "</constraint>";
-      }
+      allConstraints =
+        allConstraints.concat( "<operator>" + condition.getCombinationType().toString() + "</operator>" );
+      allConstraints = allConstraints.concat( "<condition>" + conditionFormatter.getCondition(
+        condition, field ) + "</condition>" );
+      allConstraints += "</constraint>";
+    }
     allConstraints = allConstraints.concat( "</constraints>" );
     return allConstraints;
   }
 
-  public UIConditions convertComplexConstraintsIntoConditions( String complexConstraints, List<UICategory> categories ) {
-    if (complexConstraints == null || complexConstraints.isEmpty() ) {
+  public UIConditions convertComplexConstraintsIntoConditions( String complexConstraints,
+                                                               List<UICategory> categories ) {
+    if ( complexConstraints == null || complexConstraints.isEmpty() ) {
       return new UIConditions();
     }
     try {
@@ -1052,11 +1059,12 @@ public class MQLEditorServiceDelegate {
       StringReader reader = new StringReader( complexConstraints );
       var constraintsXml = (ConstraintsXml) unmarshaller.unmarshal( reader );
       UIConditions conditions = new UIConditions();
-      for (ConstraintXml constraint: constraintsXml.getConstraintList()) {
+      for ( ConstraintXml constraint : constraintsXml.getConstraintList() ) {
         FormulaParser fp = new FormulaParser( constraint.getFormula() );
-        var parsedCondition =  fp.getCondition();
+        var parsedCondition = fp.getCondition();
         UIColumn uiCol = new UIColumn();
-        Outer: for ( UICategory cat :categories ) {
+        Outer:
+        for ( UICategory cat : categories ) {
           for ( UIColumn col : cat.getBusinessColumns() ) {
             if ( col.getId().equals( fp.getColID() ) ) {
               uiCol = col;
@@ -1065,11 +1073,11 @@ public class MQLEditorServiceDelegate {
           }
         }
         var condition = new UICondition();
-        condition.setOperator(  parsedCondition.getOperator() );
+        condition.setOperator( parsedCondition.getOperator() );
         condition.setValue( parsedCondition.getValue() );
-        condition.setCombinationType(  parsedCondition.getCombinationType() );
-        condition.setColumn(uiCol );
-        conditions.add(condition );
+        condition.setCombinationType( parsedCondition.getCombinationType() );
+        condition.setColumn( uiCol );
+        conditions.add( condition );
       }
       return conditions;
     } catch ( JAXBException e ) {

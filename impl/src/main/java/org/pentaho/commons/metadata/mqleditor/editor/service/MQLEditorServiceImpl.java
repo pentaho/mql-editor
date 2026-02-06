@@ -69,7 +69,8 @@ public class MQLEditorServiceImpl implements MQLEditorService {
     callback.success( delegate.deserializeModel( serializedQuery ) );
   }
 
-  public void convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories, XulServiceCallback<String> callback ) {
+  public void convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories,
+                                                       XulServiceCallback<String> callback ) {
     callback.success( delegate.convertConditionsIntoComplexConstraints( conditions, categories ) );
   }
 

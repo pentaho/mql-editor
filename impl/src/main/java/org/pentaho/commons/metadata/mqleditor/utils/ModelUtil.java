@@ -112,8 +112,8 @@ public class ModelUtil {
       }
     }
 
-    if (uiQuery.getComplexConstraints() != null) {
-      query.setComplexConstraints(uiQuery.getComplexConstraints());
+    if ( uiQuery.getComplexConstraints() != null ) {
+      query.setComplexConstraints( uiQuery.getComplexConstraints() );
     }
 
     // row limit

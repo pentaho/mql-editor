@@ -41,10 +41,8 @@ import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
 import org.pentaho.ui.xul.stereotype.Bindable;
 
 /**
- * 
  * This is the main XulEventHandler for the dialog. It sets up the main bindings for the user interface and responds to
  * some of the main UI events such as closing and accepting the dialog.
- * 
  */
 public class MainController extends AbstractXulEventHandler {
 
@@ -143,20 +141,20 @@ public class MainController extends AbstractXulEventHandler {
     // bind the selections empty status to the ok button (i.e. if no selections, disable OK button)
     bf.setBindingType( Binding.Type.ONE_WAY );
     final Binding acceptButtonBinding =
-        bf.createBinding( workspace, "selections", acceptButton, "!disabled",
-            new BindingConvertor<List<UIColumns>, Boolean>() {
+      bf.createBinding( workspace, "selections", acceptButton, "!disabled",
+        new BindingConvertor<List<UIColumns>, Boolean>() {
 
-              @Override
-              public Boolean sourceToTarget( List<UIColumns> value ) {
-                return value != null && !value.isEmpty();
-              }
+          @Override
+          public Boolean sourceToTarget( List<UIColumns> value ) {
+            return value != null && !value.isEmpty();
+          }
 
-              @Override
-              public List<UIColumns> targetToSource( Boolean value ) {
-                return null;
-              }
+          @Override
+          public List<UIColumns> targetToSource( Boolean value ) {
+            return null;
+          }
 
-            } );
+        } );
 
     // Bind the domain list to the domain menulist drop-down.
     bf.setBindingType( Binding.Type.ONE_WAY );
@@ -165,59 +163,59 @@ public class MainController extends AbstractXulEventHandler {
     // Bind the selected index from the domain drop-down to the selectedDomain in the workspace
     bf.setBindingType( Binding.Type.BI_DIRECTIONAL );
     bf.createBinding( domainList, "selectedIndex", workspace, "selectedDomain",
-        new BindingConvertor<Integer, UIDomain>() {
-          @Override
-          public UIDomain sourceToTarget( Integer value ) {
-            if ( value < 0 || value > workspace.getDomains().size() ) {
-              return null;
-            }
-            return workspace.getDomains().get( value );
+      new BindingConvertor<Integer, UIDomain>() {
+        @Override
+        public UIDomain sourceToTarget( Integer value ) {
+          if ( value < 0 || value > workspace.getDomains().size() ) {
+            return null;
           }
+          return workspace.getDomains().get( value );
+        }
 
-          @Override
-          public Integer targetToSource( UIDomain value ) {
-            return workspace.getDomains().indexOf( value );
-          }
-        } );
+        @Override
+        public Integer targetToSource( UIDomain value ) {
+          return workspace.getDomains().indexOf( value );
+        }
+      } );
 
     // Bind the selectedDomain to the list of models menulist drop-down
     bf.setBindingType( Binding.Type.ONE_WAY );
     Binding domainToList =
-        bf.createBinding( this.workspace, "selectedDomain", modelList, "elements",
-            new BindingConvertor<UIDomain, List<UIModel>>() {
+      bf.createBinding( this.workspace, "selectedDomain", modelList, "elements",
+        new BindingConvertor<UIDomain, List<UIModel>>() {
 
-              @Override
-              public List<UIModel> sourceToTarget( UIDomain value ) {
-                return value.getModels();
-              }
+          @Override
+          public List<UIModel> sourceToTarget( UIDomain value ) {
+            return value.getModels();
+          }
 
-              @Override
-              public UIDomain targetToSource( List<UIModel> value ) {
-                return null; // not used
-              }
+          @Override
+          public UIDomain targetToSource( List<UIModel> value ) {
+            return null; // not used
+          }
 
-            } );
+        } );
 
     // Bind the selected index of the model drop-down to the selectedModel in the workspace
     bf.setBindingType( Binding.Type.BI_DIRECTIONAL );
     Binding modelToList =
-        bf.createBinding( workspace, "selectedModel", modelList, "selectedIndex",
-            new BindingConvertor<UIModel, Integer>() {
+      bf.createBinding( workspace, "selectedModel", modelList, "selectedIndex",
+        new BindingConvertor<UIModel, Integer>() {
 
-              @Override
-              public Integer sourceToTarget( UIModel value ) {
-                return workspace.getSelectedDomain().getModels().indexOf( value );
-              }
+          @Override
+          public Integer sourceToTarget( UIModel value ) {
+            return workspace.getSelectedDomain().getModels().indexOf( value );
+          }
 
-              @Override
-              public UIModel targetToSource( Integer value ) {
-                if ( value < 0 ) {
-                  return null;
-                }
-                return workspace.getSelectedDomain().getModels().get( value );
-              }
+          @Override
+          public UIModel targetToSource( Integer value ) {
+            if ( value < 0 ) {
+              return null;
+            }
+            return workspace.getSelectedDomain().getModels().get( value );
+          }
 
-            } );
+        } );
 
     // Bind the available categories from the selected model to the category/column tree.
     bf.setBindingType( Binding.Type.ONE_WAY );
@@ -225,29 +223,29 @@ public class MainController extends AbstractXulEventHandler {
 
     // Bind the selected column from the tree to the workspace
     bf.createBinding( categoryTree, "absoluteSelectedRows", workspace, "selectedColumns",
-        new BindingConvertor<int[], List<UIColumn>>() {
-          @Override
-          public List<UIColumn> sourceToTarget( int[] array ) {
-            if ( array.length == 0 ) {
-              return null;
-            }
-            int value = array[0];
-            if ( value < 0 ) {
-              return null;
-            }
-            return workspace.getColumnsByPos( array );
+      new BindingConvertor<int[], List<UIColumn>>() {
+        @Override
+        public List<UIColumn> sourceToTarget( int[] array ) {
+          if ( array.length == 0 ) {
+            return null;
           }
+          int value = array[ 0 ];
+          if ( value < 0 ) {
+            return null;
+          }
+          return workspace.getColumnsByPos( array );
+        }
 
-          @Override
-          public int[] targetToSource( List<UIColumn> value ) {
-            int[] positions = new int[value.size()];
-            int i = 0;
-            for ( UIColumn col : value ) {
-              positions[i++] = workspace.getSelectedCategory().getChildren().indexOf( col );
-            }
-            return positions;
+        @Override
+        public int[] targetToSource( List<UIColumn> value ) {
+          int[] positions = new int[ value.size() ];
+          int i = 0;
+          for ( UIColumn col : value ) {
+            positions[ i++ ] = workspace.getSelectedCategory().getChildren().indexOf( col );
           }
-        } );
+          return positions;
+        }
+      } );
 
     // Bind the selected columns, conditions and orders to their respective tables
     bf.createBinding( workspace, "selections", fieldTable, "elements" ); //$NON-NLS-1$ //$NON-NLS-2$

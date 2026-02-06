@@ -25,7 +25,6 @@ import org.pentaho.ui.xul.XulServiceCallback;
 /**
  * Interface to the service that the MQL Editor uses for operation. Due to the fact that the MQL Editor may be run in
  * GWT, all service calls use an asynchronous pattern.
- *
  */
 public interface MQLEditorService {
   void refreshMetadataDomains( XulServiceCallback<List<MqlDomain>> callback );
@@ -42,7 +41,9 @@ public interface MQLEditorService {
 
   void getPreviewData( MqlQuery query, int page, int limit, XulServiceCallback<String[][]> callback );
 
-  void convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories, XulServiceCallback<String> callback );
+  void convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories,
+                                                XulServiceCallback<String> callback );
 
-  void convertComplexConstraintsIntoConditions( String complexConstraints, List<UICategory> categories, XulServiceCallback<UIConditions> callback );
+  void convertComplexConstraintsIntoConditions( String complexConstraints, List<UICategory> categories,
+                                                XulServiceCallback<UIConditions> callback );
 }
