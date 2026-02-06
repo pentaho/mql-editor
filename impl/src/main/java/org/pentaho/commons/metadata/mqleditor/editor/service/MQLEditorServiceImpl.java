@@ -17,10 +17,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.pentaho.commons.metadata.mqleditor.MqlCondition;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
-import org.pentaho.commons.metadata.mqleditor.beans.Condition;
 import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;

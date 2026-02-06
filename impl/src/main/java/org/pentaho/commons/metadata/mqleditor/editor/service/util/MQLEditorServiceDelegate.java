@@ -80,7 +80,7 @@ import java.util.regex.Pattern;
 
 /**
  * This delegate class provides the majority of functionality needed by an implementation of the MQLEditor Service. If
- * you wish to use this file as a starting point for your implementation you'll need to provide a CWM isntance and
+ * you wish to use this file as a starting point for your implementation you'll need to provide a CWM instance and
  * CWMSchemaFactory
  * <p>
  * This delegate is used in the debug services provided in the base application.
@@ -889,12 +889,12 @@ public class MQLEditorServiceDelegate {
         FormulaParser fp = new FormulaParser( constraint.getFormula() );
 
         Condition cond = fp.getCondition();
-        Outter:
+        Outer:
         for ( MqlCategory cat : selectedModel.getCategories() ) {
           for ( MqlColumn col : cat.getBusinessColumns() ) {
             if ( col.getId().equals( fp.getColID() ) ) {
               cond.setColumn( (Column) col );
-              break Outter;
+              break Outer;
             }
           }
         }

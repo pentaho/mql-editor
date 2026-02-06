@@ -95,8 +95,7 @@ public class MainController extends AbstractXulEventHandler {
       workspace.wrap( savedQuery );
       if ( savedQuery.getComplexConstraints() != null ) {
         advancedButton.setLabel( "Switch to Default Editor..." );
-        conditionsButton.setVisible(
-          false ); // Slightly changes heights of the other arrows, is disabling it an option?
+        conditionsButton.setVisible( false );
         workspace.getConditions().clear();
         tableContainer.removeChild( conditionsTable );
         complexConstraints.setVisible( true );
@@ -348,8 +347,7 @@ public class MainController extends AbstractXulEventHandler {
 
           public void success( String complexConstraintsStr ) {
             advancedButton.setLabel( "Switch to Default Editor..." );
-            conditionsButton.setVisible(
-              false ); // Slightly changes heights of the other arrows, is disabling it an option?
+            conditionsButton.setVisible( false );
             workspace.setComplexConstraints( complexConstraintsStr );
             workspace.getConditions().clear();
             tableContainer.removeChild( conditionsTable );

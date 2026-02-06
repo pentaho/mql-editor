@@ -21,7 +21,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.beans.Domain;
-import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.ConditionsController;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.MainController;
 import org.pentaho.commons.metadata.mqleditor.editor.controllers.OrderController;
