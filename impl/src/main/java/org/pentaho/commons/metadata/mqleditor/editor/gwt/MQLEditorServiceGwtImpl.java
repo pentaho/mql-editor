@@ -17,7 +17,10 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
+import org.pentaho.commons.metadata.mqleditor.beans.Condition;
 import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.gwt.widgets.login.client.AuthenticatedGwtServiceUtil;
 import org.pentaho.gwt.widgets.login.client.IAuthenticatedGwtCommand;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -165,6 +168,16 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
         callback.success( arg0 );
       }
     } );
+  }
+
+  @Override public void convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories,
+                                                                 XulServiceCallback<String> callback ) {
+
+  }
+
+  @Override public void convertComplexConstraintsIntoConditions( String complexConstraints,List<UICategory> categories,
+                                                                 XulServiceCallback<UIConditions> callback ) {
+
   }
 
   public void deserializeModel( final String serializedQuery, final XulServiceCallback<MqlQuery> callback ) {

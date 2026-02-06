@@ -21,6 +21,7 @@ import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.editor.MqlDialogListener;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumn;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumns;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
@@ -36,7 +37,6 @@ import org.pentaho.ui.xul.components.XulTextbox;
 import org.pentaho.ui.xul.containers.XulDialog;
 import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.containers.XulVbox;
-import org.pentaho.ui.xul.dom.Element;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
 import org.pentaho.ui.xul.stereotype.Bindable;
 
@@ -96,7 +96,13 @@ public class MainController extends AbstractXulEventHandler {
     if ( savedQuery != null ) {
       workspace.wrap( savedQuery );
       if ( savedQuery.getComplexConstraints() != null ) {
-        switchAdvancedMode();
+        advancedButton.setLabel( "Switch to Default Editor..." );
+        conditionsButton.setVisible(
+          false ); // Slightly changes heights of the other arrows, is disabling it an option?
+        workspace.getConditions().clear();
+        tableContainer.removeChild( conditionsTable );
+        complexConstraints.setVisible( true );
+        this.showAdvancedMode = true;
       } else {
         complexConstraints.setVisible( false );
       }
@@ -192,7 +198,7 @@ public class MainController extends AbstractXulEventHandler {
 
             } );
 
-    // Bind the selected index of the model dro-down the the selectedModel in the workspace
+    // Bind the selected index of the model drop-down to the selectedModel in the workspace
     bf.setBindingType( Binding.Type.BI_DIRECTIONAL );
     Binding modelToList =
         bf.createBinding( workspace, "selectedModel", modelList, "selectedIndex",
@@ -248,7 +254,7 @@ public class MainController extends AbstractXulEventHandler {
     bf.createBinding( workspace, "conditions", conditionsTable, "elements" ); //$NON-NLS-1$ //$NON-NLS-2$
     bf.createBinding( workspace, "orders", ordersTable, "elements" ); //$NON-NLS-1$ //$NON-NLS-2$
     bf.setBindingType( Binding.Type.BI_DIRECTIONAL );
-    bf.createBinding( workspace, "complexConstraints", complexConstraints, "value");
+    bf.createBinding( workspace, "complexConstraints", complexConstraints, "value" );
     bf.createBinding( workspace, "limit", limit, "value", new BindingConvertor<Integer, String>() {
 
       @Override
@@ -337,19 +343,51 @@ public class MainController extends AbstractXulEventHandler {
 
   @Bindable
   public void switchAdvancedMode() {
-    if (!this.showAdvancedMode) {
-      advancedButton.setLabel("Switch to Default Editor...");
-      conditionsButton.setVisible( false ); // Slightly changes heights of the other arrows, is disabling it an option?
-      tableContainer.removeChild( conditionsTable );
-      complexConstraints.setVisible( true );
+    if ( !this.showAdvancedMode ) {
+      var test = workspace.getCategories();
+      service.convertConditionsIntoComplexConstraints( workspace.getConditions(), workspace.getCategories(),
+        new XulServiceCallback<String>() {
+
+          public void success( String complexConstraintsStr ) {
+            advancedButton.setLabel( "Switch to Default Editor..." );
+            conditionsButton.setVisible(
+              false ); // Slightly changes heights of the other arrows, is disabling it an option?
+            workspace.setComplexConstraints( complexConstraintsStr );
+            workspace.getConditions().clear();
+            tableContainer.removeChild( conditionsTable );
+            complexConstraints.setVisible( true );
+          }
+
+          public void error( String message, Throwable error ) {
+            throw new IllegalStateException( "Formula is not supported in the Default Editor view" ); // TODO
+          }
+        }
+      );
     } else {
-      advancedButton.setLabel("Switch to Advanced...");
-      tableContainer.addChildAt( conditionsTable, 3 );
-      conditionsTable.update();
-      conditionsButton.setVisible( true );
-      complexConstraints.setVisible( false );
+      service.convertComplexConstraintsIntoConditions( workspace.getComplexConstraints(), workspace.getCategories(),
+        new XulServiceCallback<>() {
+
+          public void success( UIConditions conditions ) {
+            tableContainer.addChildAt( conditionsTable, 3 );
+            workspace.getConditions().clear();
+            if ( !conditions.isEmpty() ) {
+              workspace.setComplexConstraints( null );
+              workspace.setConditions( conditions );
+            }
+            advancedButton.setLabel( "Switch to Advanced..." );
+            conditionsButton.setVisible( true );
+            complexConstraints.setVisible( false );
+
+          }
+
+          public void error( String message, Throwable error ) {
+            showErrorDialog( "Your formula is not supported in the Default Editor view." );
+            throw new IllegalStateException( "Formula is not supported in the Default Editor view", error );
+          }
+        }
+      );
     }
-    this.showAdvancedMode = !this.showAdvancedMode;
+    showAdvancedMode = !showAdvancedMode;
   }
 
   @Bindable
@@ -438,7 +476,7 @@ public class MainController extends AbstractXulEventHandler {
   }
 
   @Bindable
-  public static void closeErrorDialog( String message ) {
+  public static void closeErrorDialog() {
     if ( errorDialog == null ) {
       throw new IllegalStateException( "Error dialog has not been loaded yet" );
     } else {

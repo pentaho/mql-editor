@@ -41,6 +41,10 @@ import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.beans.Model;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumn;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UICondition;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelUtil;
 import org.pentaho.metadata.model.LogicalColumn;
@@ -579,6 +583,9 @@ public class MQLEditorServiceDelegate {
   }
 
   private List<Constraint> convertComplexConstraintsIntoConstraintList( String complexConstraints ) {
+    if ( complexConstraints.length() == 0 ) {
+      return new ArrayList<>();
+    }
     List<Constraint> constraints = new ArrayList<>();
     ConstraintsXml constraintsXml = new ConstraintsXml();
     try {
@@ -989,6 +996,84 @@ public class MQLEditorServiceDelegate {
       return sb.toString();
     } else {
       return p.getDefaultValue().toString();
+    }
+  }
+
+  public String convertConditionsIntoComplexConstraints(UIConditions conditions, List<UICategory> categories) {
+    if (conditions.isEmpty()) {
+      return null;
+    }
+
+    String allConstraints = "<constraints>";
+
+    var constraints = new ArrayList<Constraint>();
+    for ( UICondition condition : conditions ) {
+      UICategory view = new UICategory();
+
+      Outer: for ( UICategory category : categories ) {
+        for ( UIColumn lcol : category.getBusinessColumns() ) {
+         if ( lcol.getId().equals( condition.getColumn().getId() ) ) {
+           view = category;
+           break Outer;
+          }
+        }
+      }
+
+      AggregationType type = getAggregationType( condition.getSelectedAggType() );
+      String field = "[";
+      field += view.getId() + "." + condition.getColumn().getId();
+      if ( type != null ) {
+        field += "." + type.toString();
+      }
+      field += "]";
+
+        constraints.add(
+          new Constraint( getComboType( condition.getCombinationType() ), conditionFormatter.getCondition(
+            condition, field ) ) );
+
+        allConstraints += "<constraint>";
+
+          allConstraints = allConstraints.concat( "<operator>" + condition.getCombinationType().toString() + "</operator>" );
+        allConstraints = allConstraints.concat( "<condition>" +  conditionFormatter.getCondition(
+          condition, field ) +  "</condition>" );
+        allConstraints += "</constraint>";
+      }
+    allConstraints = allConstraints.concat( "</constraints>" );
+    return allConstraints;
+  }
+
+  public UIConditions convertComplexConstraintsIntoConditions( String complexConstraints, List<UICategory> categories ) {
+    if (complexConstraints == null || complexConstraints.isEmpty() ) {
+      return new UIConditions();
+    }
+    try {
+      JAXBContext jaxbContext = JAXBContext.newInstance( ConstraintsXml.class );
+      Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+      StringReader reader = new StringReader( complexConstraints );
+      var constraintsXml = (ConstraintsXml) unmarshaller.unmarshal( reader );
+      UIConditions conditions = new UIConditions();
+      for (ConstraintXml constraint: constraintsXml.getConstraintList()) {
+        FormulaParser fp = new FormulaParser( constraint.getFormula() );
+        var parsedCondition =  fp.getCondition();
+        UIColumn uiCol = new UIColumn();
+        Outer: for ( UICategory cat :categories ) {
+          for ( UIColumn col : cat.getBusinessColumns() ) {
+            if ( col.getId().equals( fp.getColID() ) ) {
+              uiCol = col;
+              break Outer;
+            }
+          }
+        }
+        var condition = new UICondition();
+        condition.setOperator(  parsedCondition.getOperator() );
+        condition.setValue( parsedCondition.getValue() );
+        condition.setCombinationType(  parsedCondition.getCombinationType() );
+        condition.setColumn(uiCol );
+        conditions.add(condition );
+      }
+      return conditions;
+    } catch ( JAXBException e ) {
+      throw new RuntimeException( e );
     }
   }
 

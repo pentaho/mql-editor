@@ -493,7 +493,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   @Bindable
   public void setComplexConstraints( String complexConstraints ) {
     this.complexConstraints = complexConstraints;
-    this.firePropertyChange( "complexConstraints", null, complexConstraints );
+    this.firePropertyChange( "complexConstraints", "-1", complexConstraints ); // TODO deal with previous value
   }
 
   @Bindable

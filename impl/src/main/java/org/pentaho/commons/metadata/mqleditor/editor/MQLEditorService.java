@@ -17,6 +17,9 @@ import java.util.List;
 
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
+import org.pentaho.commons.metadata.mqleditor.beans.Condition;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.ui.xul.XulServiceCallback;
 
 /**
@@ -38,4 +41,8 @@ public interface MQLEditorService {
   void deserializeModel( String serializedQuery, XulServiceCallback<MqlQuery> callback );
 
   void getPreviewData( MqlQuery query, int page, int limit, XulServiceCallback<String[][]> callback );
+
+  void convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories, XulServiceCallback<String> callback );
+
+  void convertComplexConstraintsIntoConditions( String complexConstraints, List<UICategory> categories, XulServiceCallback<UIConditions> callback );
 }
