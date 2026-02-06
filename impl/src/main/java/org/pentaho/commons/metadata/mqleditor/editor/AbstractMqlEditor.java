@@ -166,7 +166,7 @@ public abstract class AbstractMqlEditor {
       QueryXmlHelper helper = new QueryXmlHelper();
       Query queryObject = helper.fromXML( repo, query );
       org.pentaho.commons.metadata.mqleditor.beans.Query thinQuery =
-        (org.pentaho.commons.metadata.mqleditor.beans.Query) this.delegate.convertModelToThin( queryObject, query );
+        (org.pentaho.commons.metadata.mqleditor.beans.Query) this.delegate.convertModelToThin( queryObject );
       mainController.setSavedQuery( thinQuery );
     }
   }

@@ -357,7 +357,7 @@ public class MainController extends AbstractXulEventHandler {
           }
 
           public void error( String message, Throwable error ) {
-            throw new IllegalStateException( "Formula is not supported in the Default Editor view" ); // TODO
+            throw new IllegalStateException( "A problem occurred while trying to switch to Advanced Editor", error );
           }
         }
       );

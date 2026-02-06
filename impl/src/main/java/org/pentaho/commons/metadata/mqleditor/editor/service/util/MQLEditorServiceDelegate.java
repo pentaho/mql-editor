@@ -90,6 +90,9 @@ public class MQLEditorServiceDelegate {
 
   protected static Log log = LogFactory.getLog( MQLEditorServiceDelegate.class );
 
+  private static final String XML_CONSTRAINTS_START_TAG = "<constraints>";
+  private static final String XML_CONSTRAINTS_END_TAG = "</constraints>";
+
   private String locale = Locale.getDefault().toString();
 
   private Map<String, MqlDomain> domains = new ConcurrentHashMap<>();
@@ -848,8 +851,7 @@ public class MQLEditorServiceDelegate {
 
   }
 
-  // TODO instead of adding querystr, create method to create string from constraints?
-  public MqlQuery convertModelToThin( org.pentaho.metadata.query.model.Query query, String queryStr ) {
+  public MqlQuery convertModelToThin( org.pentaho.metadata.query.model.Query query ) {
     Query q = new Query();
 
     String domainId = query.getDomain().getId();
@@ -921,9 +923,11 @@ public class MQLEditorServiceDelegate {
         q.getConditions().add( cond );
       } catch ( Exception e ) {
         log.warn( "Could not parse all conditions, will use complexConstraints" );
-        int constraintsStartIndex = queryStr.indexOf( "<constraints>" );
-        int constraintsEndIndex = queryStr.indexOf( "</constraints>" );
-        q.setComplexConstraints( queryStr.substring( constraintsStartIndex, constraintsEndIndex + 14 ) );
+        String queryString = new QueryXmlHelper().toXML( query );
+        int constraintsStartIndex = queryString.indexOf( XML_CONSTRAINTS_START_TAG );
+        int constraintsEndIndex = queryString.indexOf( XML_CONSTRAINTS_END_TAG );
+        q.setComplexConstraints(
+          queryString.substring( constraintsStartIndex, constraintsEndIndex + XML_CONSTRAINTS_END_TAG.length() ) );
       }
     }
 
