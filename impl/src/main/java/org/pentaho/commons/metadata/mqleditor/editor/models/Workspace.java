@@ -312,6 +312,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     condition.setColumn( col );
 
     conditions.add( condition );
+    this.firePropertyChange( "conditions", null, getConditions() );
   }
 
   public void addOrder( UIColumn col ) {
