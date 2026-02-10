@@ -111,6 +111,8 @@ public class MainController extends AbstractXulEventHandler {
   @Bindable
   public void init() {
     createBindings();
+    // Ensure that, by default, the complex constraints textbox does not show
+    complexConstraints.setVisible( false );
   }
 
   public void showDialog() {
