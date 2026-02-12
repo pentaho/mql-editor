@@ -19,8 +19,10 @@ import java.util.List;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.editor.MqlDialogListener;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumn;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumns;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UICondition;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIModel;
@@ -301,8 +303,23 @@ public class MainController extends AbstractXulEventHandler {
   @Bindable
   public void moveSelectionToConditions() {
     List<UIColumn> cols = workspace.getSelectedColumns();
-    for ( UIColumn col : cols ) {
-      workspace.addCondition( col );
+    if ( showAdvancedMode ) {
+      String complexConstrainsString = workspace.getComplexConstraints();
+      for ( UIColumn col : cols ) {
+        Outer: for ( UICategory category : workspace.getCategories() ) {
+          for ( UIColumn column : category.getChildren() ) {
+            if ( col.getId().equals(column.getId()) ) {
+              complexConstrainsString = complexConstrainsString.concat( "[" + category.getId() + "." + col.getId() + "]" );
+              break Outer;
+            }
+          }
+        }
+      }
+      workspace.setComplexConstraints( complexConstrainsString );
+    } else {
+      for ( UIColumn col : cols ) {
+        workspace.addCondition( col );
+      }
     }
   }
 
@@ -348,7 +365,6 @@ public class MainController extends AbstractXulEventHandler {
 
           public void success( String complexConstraintsStr ) {
             advancedButton.setLabel( "Switch to Default Editor..." );
-            conditionsButton.setVisible( false );
             workspace.setComplexConstraints( complexConstraintsStr );
             workspace.getConditions().clear();
             tableContainer.removeChild( conditionsTable );
@@ -372,7 +388,6 @@ public class MainController extends AbstractXulEventHandler {
               workspace.setConditions( conditions );
             }
             advancedButton.setLabel( "Switch to Advanced..." );
-            conditionsButton.setVisible( true );
             complexConstraints.setVisible( false );
 
           }
