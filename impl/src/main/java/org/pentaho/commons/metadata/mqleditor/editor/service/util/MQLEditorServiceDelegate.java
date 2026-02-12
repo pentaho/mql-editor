@@ -67,6 +67,7 @@ import org.pentaho.pms.schema.SchemaMeta;
 import org.pentaho.pms.schema.concept.types.aggregation.AggregationSettings;
 import org.pentaho.pms.schema.concept.types.datatype.DataTypeSettings;
 import org.pentaho.pms.util.UniqueList;
+import org.xml.sax.SAXParseException;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -576,6 +577,13 @@ public class MQLEditorServiceDelegate {
 
           return queryObject;
         }
+      } catch ( JAXBException e ) {
+        Throwable linkedException = e.getLinkedException();
+        String errorMessage = "Could not parse XML definition";
+        if ( linkedException instanceof SAXParseException ) {
+          errorMessage = errorMessage.concat( ": " + linkedException.getMessage() );
+        }
+        throw new IllegalStateException( errorMessage, e );
       } catch ( Throwable e ) { // PMSFormulaException e) {
         e.printStackTrace();
       }
@@ -584,7 +592,8 @@ public class MQLEditorServiceDelegate {
     return null;
   }
 
-  private List<Constraint> convertComplexConstraintsIntoConstraintList( String complexConstraints ) {
+  private List<Constraint> convertComplexConstraintsIntoConstraintList( String complexConstraints )
+    throws JAXBException {
     if ( complexConstraints.length() == 0 ) {
       return new ArrayList<>();
     }
@@ -597,7 +606,7 @@ public class MQLEditorServiceDelegate {
       StringReader reader = new StringReader( complexConstraints );
       constraintsXml = (ConstraintsXml) unmarshaller.unmarshal( reader );
     } catch ( JAXBException e ) {
-      throw new RuntimeException( e );
+      throw e; // Rethrowing exception to be dealt with in calling method
     }
     for ( ConstraintXml constraintXml : constraintsXml.getConstraintList() ) {
       constraints.add(

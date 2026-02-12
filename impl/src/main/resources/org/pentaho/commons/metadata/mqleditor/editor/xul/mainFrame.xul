@@ -35,9 +35,9 @@
   <!--     ERROR DIALOG: Dialog to display error text                                     -->
   <!--  ###############################################################################   -->
   <dialog id="errorDialog" title="${errorDialog.title}" buttonlabelaccept="${errorDialog.CLOSE}"
-    buttons="accept" ondialogaccept="mainController.closeErrorDialog()" width="400" height="100" buttonalign="right">
+    buttons="accept" ondialogaccept="mainController.closeErrorDialog()" width="400" height="150" buttonalign="right">
     <vbox id="errorDialogContainer">
-      <label id="errorLabel" value="${errorDialog.defaultLabel}"/>
+      <label id="errorLabel" value="${errorDialog.defaultLabel}" width="400" height="150"/>
     </vbox>
   </dialog>
 

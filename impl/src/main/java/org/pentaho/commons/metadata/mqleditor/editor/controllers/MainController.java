@@ -22,7 +22,6 @@ import org.pentaho.commons.metadata.mqleditor.editor.MqlDialogListener;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumn;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumns;
-import org.pentaho.commons.metadata.mqleditor.editor.models.UICondition;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIModel;
@@ -408,7 +407,7 @@ public class MainController extends AbstractXulEventHandler {
     service.saveQuery( workspace.getMqlQuery(), new XulServiceCallback<String>() {
 
       public void error( String message, Throwable error ) {
-        System.out.println( message );
+        showErrorDialog( message );
         error.printStackTrace();
       }
 

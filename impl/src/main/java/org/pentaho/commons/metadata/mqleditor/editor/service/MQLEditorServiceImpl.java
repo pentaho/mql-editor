@@ -52,7 +52,11 @@ public class MQLEditorServiceImpl implements MQLEditorService {
   }
 
   public void saveQuery( MqlQuery model, XulServiceCallback<String> callback ) {
-    callback.success( delegate.saveQuery( model ) );
+    try {
+      callback.success( delegate.saveQuery( model ) );
+    } catch ( Exception e ) {
+      callback.error( e.getMessage(), e );
+    }
   }
 
   public void serializeModel( MqlQuery query, XulServiceCallback<String> callback ) {
