@@ -40,8 +40,6 @@ import org.pentaho.ui.xul.containers.XulVbox;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
 import org.pentaho.ui.xul.stereotype.Bindable;
 
-import javax.swing.*;
-
 /**
  * This is the main XulEventHandler for the dialog. It sets up the main bindings for the user interface and responds to
  * some of the main UI events such as closing and accepting the dialog.
@@ -138,12 +136,6 @@ public class MainController extends AbstractXulEventHandler {
     advancedButton = (XulButton) document.getElementById( "advancedButton" );
     conditionsButton = (XulButton) document.getElementById( "addConditionFieldBtn" );
     complexConstraints = (XulTextbox) document.getElementById( "complexConstraints" );
-    // If we have a JScrollPane, we need to explicitly set the wrap attribute of the JTextArea inside
-    if ( complexConstraints.getTextControl() instanceof JScrollPane textControl ) {
-      JTextArea textArea = (JTextArea) textControl.getViewport().getView();
-      textArea.setLineWrap( true );
-      textArea.setWrapStyleWord( true );
-    }
 
     errorDialog = (XulDialog) document.getElementById( "errorDialog" );
 
