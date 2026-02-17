@@ -610,8 +610,8 @@ public class MQLEditorServiceDelegate {
     }
     for ( ConstraintXml constraintXml : constraintsXml.getConstraintList() ) {
       constraints.add(
-        new Constraint( org.pentaho.metadata.query.model.CombinationType.valueOf( constraintXml.operator ),
-          constraintXml.formula ) );
+        new Constraint( org.pentaho.metadata.query.model.CombinationType.valueOf( constraintXml.getOperator() ),
+          constraintXml.getFormula() ) );
     }
 
     return constraints;
@@ -1025,17 +1025,7 @@ public class MQLEditorServiceDelegate {
 
     var constraints = new ArrayList<Constraint>();
     for ( UICondition condition : conditions ) {
-      UICategory view = new UICategory();
-
-      Outer:
-      for ( UICategory category : categories ) {
-        for ( UIColumn lcol : category.getBusinessColumns() ) {
-          if ( lcol.getId().equals( condition.getColumn().getId() ) ) {
-            view = category;
-            break Outer;
-          }
-        }
-      }
+      UICategory view = getColumnCategoryByColumnId( categories, condition.getColumn().getId() );
 
       AggregationType type = getAggregationType( condition.getSelectedAggType() );
       String field = "[";
@@ -1053,8 +1043,8 @@ public class MQLEditorServiceDelegate {
 
       allConstraints =
         allConstraints.concat( "<operator>" + condition.getCombinationType().toString() + "</operator>" );
-      allConstraints = allConstraints.concat( "<condition>" + conditionFormatter.getCondition(
-        condition, field ) + "</condition>" );
+      String conditionStr = escapeXmlReservedCharacters( conditionFormatter.getCondition( condition, field ) );
+      allConstraints = allConstraints.concat( "<condition>" + conditionStr + "</condition>" );
       allConstraints += "</constraint>";
     }
     allConstraints = allConstraints.concat( "</constraints>" );
@@ -1075,16 +1065,7 @@ public class MQLEditorServiceDelegate {
       for ( ConstraintXml constraint : constraintsXml.getConstraintList() ) {
         FormulaParser fp = new FormulaParser( constraint.getFormula() );
         var parsedCondition = fp.getCondition();
-        UIColumn uiCol = new UIColumn();
-        Outer:
-        for ( UICategory cat : categories ) {
-          for ( UIColumn col : cat.getBusinessColumns() ) {
-            if ( col.getId().equals( fp.getColID() ) ) {
-              uiCol = col;
-              break Outer;
-            }
-          }
-        }
+        UIColumn uiCol = getColumnFromCategoriesById( categories, fp.getColID() );
         var condition = new UICondition();
         condition.setOperator( parsedCondition.getOperator() );
         condition.setValue( parsedCondition.getValue() );
@@ -1098,4 +1079,31 @@ public class MQLEditorServiceDelegate {
     }
   }
 
+  private UICategory getColumnCategoryByColumnId( List<UICategory> categories, String columnId ) {
+    for ( UICategory category : categories ) {
+      for ( UIColumn column : category.getBusinessColumns() ) {
+        if ( column.getId().equals( columnId ) ) {
+          return category;
+        }
+      }
+    }
+    return new UICategory();
+  }
+
+  private UIColumn getColumnFromCategoriesById( List<UICategory> categories, String columnId ) {
+    for ( UICategory cat : categories ) {
+      for ( UIColumn col : cat.getBusinessColumns() ) {
+        if ( col.getId().equals( columnId ) ) {
+          return col;
+        }
+      }
+    }
+    return new UIColumn();
+  }
+
+  // Created new method instead of using, for example apache's StringEscapeUtils.escapeXml() because we don't want to
+  // escape all XML reserved characters (reserved characters are <, >, &, "  and ', but we only want to escape < and >)
+  private String escapeXmlReservedCharacters( String xmlString ) {
+    return xmlString.replace( "<", "&lt;" ).replace( ">", "&gt;" );
+  }
 }

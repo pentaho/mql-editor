@@ -70,8 +70,7 @@ public abstract class AbstractMqlEditor {
     setService( new MQLEditorServiceImpl( repo ) );
   }
 
-  public AbstractMqlEditor( IMetadataDomainRepository repo, MQLEditorService service,
-                            MQLEditorServiceDelegate delegate ) {
+  public AbstractMqlEditor( IMetadataDomainRepository repo, MQLEditorService service, MQLEditorServiceDelegate delegate ) {
     init();
     this.repo = repo;
     setService( service );
@@ -165,7 +164,7 @@ public abstract class AbstractMqlEditor {
       QueryXmlHelper helper = new QueryXmlHelper();
       Query queryObject = helper.fromXML( repo, query );
       org.pentaho.commons.metadata.mqleditor.beans.Query thinQuery =
-        (org.pentaho.commons.metadata.mqleditor.beans.Query) this.delegate.convertModelToThin( queryObject );
+          (org.pentaho.commons.metadata.mqleditor.beans.Query) this.delegate.convertModelToThin( queryObject );
       mainController.setSavedQuery( thinQuery );
     }
   }
