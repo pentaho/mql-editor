@@ -15,6 +15,7 @@ package org.pentaho.commons.metadata.mqleditor.editor.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
@@ -70,7 +71,6 @@ public class MainController extends AbstractXulEventHandler {
   private List<MqlDialogListener> listeners = new ArrayList<MqlDialogListener>();
 
   private XulButton advancedButton;
-  private XulButton conditionsButton;
   private XulTextbox complexConstraints;
 
   private Query savedQuery;
@@ -134,7 +134,6 @@ public class MainController extends AbstractXulEventHandler {
     limit = (XulTextbox) document.getElementById( "limit" );
     acceptButton = (XulButton) document.getElementById( "mqlEditorDialog_accept" );
     advancedButton = (XulButton) document.getElementById( "advancedButton" );
-    conditionsButton = (XulButton) document.getElementById( "addConditionFieldBtn" );
     complexConstraints = (XulTextbox) document.getElementById( "complexConstraints" );
 
     errorDialog = (XulDialog) document.getElementById( "errorDialog" );
@@ -304,14 +303,8 @@ public class MainController extends AbstractXulEventHandler {
     if ( showAdvancedMode ) {
       String complexConstrainsString = workspace.getComplexConstraints();
       for ( UIColumn col : cols ) {
-        Outer: for ( UICategory category : workspace.getCategories() ) {
-          for ( UIColumn column : category.getChildren() ) {
-            if ( col.getId().equals(column.getId()) ) {
-              complexConstrainsString = complexConstrainsString.concat( "[" + category.getId() + "." + col.getId() + "]" );
-              break Outer;
-            }
-          }
-        }
+        String compositeColumnId = getCompositeColumnId( col.getId() );
+        complexConstrainsString = complexConstrainsString.concat( compositeColumnId );
       }
       workspace.setComplexConstraints( complexConstrainsString );
     } else {
@@ -363,11 +356,7 @@ public class MainController extends AbstractXulEventHandler {
 
           public void success( String complexConstraintsStr ) {
             advancedButton.setLabel( "Switch to Default Editor..." );
-            if ( complexConstraintsStr != null ) {
-            workspace.setComplexConstraints( complexConstraintsStr );
-            } else {
-              workspace.setComplexConstraints( "<constraints/>" );
-            }
+            workspace.setComplexConstraints( Objects.requireNonNullElse( complexConstraintsStr, "<constraints/>" ) );
             workspace.getConditions().clear();
             tableContainer.removeChild( conditionsTable );
             complexConstraints.setVisible( true );
@@ -496,5 +485,16 @@ public class MainController extends AbstractXulEventHandler {
     } else {
       errorDialog.hide();
     }
+  }
+
+  private String getCompositeColumnId( String wantedColumnId ) {
+    for ( UICategory category : workspace.getCategories() ) {
+      for ( UIColumn column : category.getChildren() ) {
+        if ( wantedColumnId.equals( column.getId() ) ) {
+          return "[" + category.getId() + "." + column.getId() + "]";
+        }
+      }
+    }
+    return "";
   }
 }
