@@ -608,7 +608,7 @@ public class MQLEditorServiceDelegate {
     } catch ( JAXBException e ) {
       throw e; // Rethrowing exception to be dealt with in calling method
     }
-    if (constraintsXml.getConstraintList() != null) {
+    if ( constraintsXml.getConstraintList() != null ) {
       for ( ConstraintXml constraintXml : constraintsXml.getConstraintList() ) {
         constraints.add(
           new Constraint( org.pentaho.metadata.query.model.CombinationType.valueOf( constraintXml.getOperator() ),
@@ -1062,7 +1062,7 @@ public class MQLEditorServiceDelegate {
       Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
       StringReader reader = new StringReader( complexConstraints );
       var constraintsXml = (ConstraintsXml) unmarshaller.unmarshal( reader );
-      if (constraintsXml.getConstraintList() == null || constraintsXml.getConstraintList().isEmpty()) {
+      if ( constraintsXml.getConstraintList() == null || constraintsXml.getConstraintList().isEmpty() ) {
         return new UIConditions();
       }
       UIConditions conditions = new UIConditions();
@@ -1074,7 +1074,7 @@ public class MQLEditorServiceDelegate {
         condition.setOperator( parsedCondition.getOperator() );
         condition.setValue( parsedCondition.getValue() );
         condition.setCombinationType( CombinationType.getByName( constraint.getOperator() ) );
-        if (fp.getAggType() != null ) {
+        if ( fp.getAggType() != null ) {
           condition.setSelectedAggType( convertNewThinAggregationType( AggregationType.valueOf( fp.getAggType() ) ) );
         }
         condition.setColumn( uiCol );
@@ -1109,8 +1109,9 @@ public class MQLEditorServiceDelegate {
   }
 
   // Created new method instead of using, for example apache's StringEscapeUtils.escapeXml() because we don't want to
-  // escape all XML reserved characters (reserved characters are <, >, &, "  and ', but we only want to escape < and >)
+  // escape all XML reserved characters (reserved characters are <, >, &, "  and ', but we only want to escape <, >
+  // and &)
   private String escapeXmlReservedCharacters( String xmlString ) {
-    return xmlString.replace( "<", "&lt;" ).replace( ">", "&gt;" );
+    return xmlString.replace( "&", "&amp;" ).replace( "<", "&lt;" ).replace( ">", "&gt;" );
   }
 }
