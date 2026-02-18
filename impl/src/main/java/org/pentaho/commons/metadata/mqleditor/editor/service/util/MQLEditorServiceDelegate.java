@@ -1073,7 +1073,10 @@ public class MQLEditorServiceDelegate {
         var condition = new UICondition();
         condition.setOperator( parsedCondition.getOperator() );
         condition.setValue( parsedCondition.getValue() );
-        condition.setCombinationType( parsedCondition.getCombinationType() );
+        condition.setCombinationType( CombinationType.getByName( constraint.getOperator() ) );
+        if (fp.getAggType() != null ) {
+          condition.setSelectedAggType( convertNewThinAggregationType( AggregationType.valueOf( fp.getAggType() ) ) );
+        }
         condition.setColumn( uiCol );
         conditions.add( condition );
       }
