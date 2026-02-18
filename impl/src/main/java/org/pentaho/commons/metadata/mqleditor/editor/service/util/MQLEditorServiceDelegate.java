@@ -608,12 +608,13 @@ public class MQLEditorServiceDelegate {
     } catch ( JAXBException e ) {
       throw e; // Rethrowing exception to be dealt with in calling method
     }
-    for ( ConstraintXml constraintXml : constraintsXml.getConstraintList() ) {
-      constraints.add(
-        new Constraint( org.pentaho.metadata.query.model.CombinationType.valueOf( constraintXml.getOperator() ),
-          constraintXml.getFormula() ) );
+    if (constraintsXml.getConstraintList() != null) {
+      for ( ConstraintXml constraintXml : constraintsXml.getConstraintList() ) {
+        constraints.add(
+          new Constraint( org.pentaho.metadata.query.model.CombinationType.valueOf( constraintXml.getOperator() ),
+            constraintXml.getFormula() ) );
+      }
     }
-
     return constraints;
   }
 
@@ -1061,6 +1062,9 @@ public class MQLEditorServiceDelegate {
       Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
       StringReader reader = new StringReader( complexConstraints );
       var constraintsXml = (ConstraintsXml) unmarshaller.unmarshal( reader );
+      if (constraintsXml.getConstraintList() == null || constraintsXml.getConstraintList().isEmpty()) {
+        return new UIConditions();
+      }
       UIConditions conditions = new UIConditions();
       for ( ConstraintXml constraint : constraintsXml.getConstraintList() ) {
         FormulaParser fp = new FormulaParser( constraint.getFormula() );

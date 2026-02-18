@@ -363,7 +363,11 @@ public class MainController extends AbstractXulEventHandler {
 
           public void success( String complexConstraintsStr ) {
             advancedButton.setLabel( "Switch to Default Editor..." );
+            if ( complexConstraintsStr != null ) {
             workspace.setComplexConstraints( complexConstraintsStr );
+            } else {
+              workspace.setComplexConstraints( "<constraints/>" );
+            }
             workspace.getConditions().clear();
             tableContainer.removeChild( conditionsTable );
             complexConstraints.setVisible( true );
