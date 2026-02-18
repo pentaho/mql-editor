@@ -96,7 +96,6 @@ public class MainController extends AbstractXulEventHandler {
       workspace.wrap( savedQuery );
       if ( savedQuery.getComplexConstraints() != null ) {
         advancedButton.setLabel( "Switch to Default Editor..." );
-        conditionsButton.setVisible( false );
         workspace.getConditions().clear();
         tableContainer.removeChild( conditionsTable );
         complexConstraints.setVisible( true );
