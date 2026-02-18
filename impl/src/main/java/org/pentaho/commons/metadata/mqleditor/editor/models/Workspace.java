@@ -56,6 +56,8 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
   private static IMqlMessages messages;
 
+  private static final String CONDITIONS_STR = "conditions";
+
   public Workspace() {
     setupListeners();
   }
@@ -161,7 +163,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
   private PropertyChangeListener conditionListener = new PropertyChangeListener() {
     public void propertyChange( PropertyChangeEvent evt ) {
-      Workspace.this.firePropertyChange( "conditions", null, getConditions() );
+      Workspace.this.firePropertyChange( CONDITIONS_STR, null, getConditions() );
     }
   };
 
@@ -312,7 +314,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     condition.setColumn( col );
 
     conditions.add( condition );
-    this.firePropertyChange( "conditions", null, getConditions() );
+    this.firePropertyChange( CONDITIONS_STR, null, getConditions() );
   }
 
   public void addOrder( UIColumn col ) {
@@ -356,7 +358,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   @Bindable
   public void setConditions( UIConditions conditions ) {
     this.conditions = conditions;
-    this.firePropertyChange( "conditions", null, getConditions() );
+    this.firePropertyChange( CONDITIONS_STR, null, getConditions() );
   }
 
   @Bindable

@@ -594,20 +594,17 @@ public class MQLEditorServiceDelegate {
 
   private List<Constraint> convertComplexConstraintsIntoConstraintList( String complexConstraints )
     throws JAXBException {
-    if ( complexConstraints.length() == 0 ) {
+    if ( complexConstraints.isEmpty() ) {
       return new ArrayList<>();
     }
     List<Constraint> constraints = new ArrayList<>();
-    ConstraintsXml constraintsXml = new ConstraintsXml();
-    try {
-      JAXBContext jaxbContext = JAXBContext.newInstance( ConstraintsXml.class );
-      Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+    ConstraintsXml constraintsXml;
 
-      StringReader reader = new StringReader( complexConstraints );
-      constraintsXml = (ConstraintsXml) unmarshaller.unmarshal( reader );
-    } catch ( JAXBException e ) {
-      throw e; // Rethrowing exception to be dealt with in calling method
-    }
+    JAXBContext jaxbContext = JAXBContext.newInstance( ConstraintsXml.class );
+    Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+
+    StringReader reader = new StringReader( complexConstraints );
+    constraintsXml = (ConstraintsXml) unmarshaller.unmarshal( reader );
     if ( constraintsXml.getConstraintList() != null ) {
       for ( ConstraintXml constraintXml : constraintsXml.getConstraintList() ) {
         constraints.add(
@@ -899,15 +896,7 @@ public class MQLEditorServiceDelegate {
         FormulaParser fp = new FormulaParser( constraint.getFormula() );
 
         Condition cond = fp.getCondition();
-        Outer:
-        for ( MqlCategory cat : selectedModel.getCategories() ) {
-          for ( MqlColumn col : cat.getBusinessColumns() ) {
-            if ( col.getId().equals( fp.getColID() ) ) {
-              cond.setColumn( (Column) col );
-              break Outer;
-            }
-          }
-        }
+        cond.setColumn( (Column) getMqlColumnFromCategoriesById( selectedModel.getCategories(), fp.getColID() ) );
 
         // PRD-3710
         if ( fp.getAggType() != null ) {
@@ -1022,34 +1011,29 @@ public class MQLEditorServiceDelegate {
       return null;
     }
 
-    String allConstraints = "<constraints>";
+    StringBuilder allConstraints = new StringBuilder( XML_CONSTRAINTS_START_TAG );
 
-    var constraints = new ArrayList<Constraint>();
     for ( UICondition condition : conditions ) {
+      allConstraints.append( "<constraint>" );
+
+      allConstraints.append( "<operator>" ).append( condition.getCombinationType().toString() ).append( "</operator>" );
+
       UICategory view = getColumnCategoryByColumnId( categories, condition.getColumn().getId() );
 
       AggregationType type = getAggregationType( condition.getSelectedAggType() );
       String field = "[";
       field += view.getId() + "." + condition.getColumn().getId();
       if ( type != null ) {
-        field += "." + type.toString();
+        field += "." + type;
       }
       field += "]";
-
-      constraints.add(
-        new Constraint( getComboType( condition.getCombinationType() ), conditionFormatter.getCondition(
-          condition, field ) ) );
-
-      allConstraints += "<constraint>";
-
-      allConstraints =
-        allConstraints.concat( "<operator>" + condition.getCombinationType().toString() + "</operator>" );
       String conditionStr = escapeXmlReservedCharacters( conditionFormatter.getCondition( condition, field ) );
-      allConstraints = allConstraints.concat( "<condition>" + conditionStr + "</condition>" );
-      allConstraints += "</constraint>";
+      allConstraints.append( "<condition>" ).append( conditionStr ).append( "</condition>" );
+
+      allConstraints.append( "</constraint>" );
     }
-    allConstraints = allConstraints.concat( "</constraints>" );
-    return allConstraints;
+    allConstraints.append( XML_CONSTRAINTS_END_TAG );
+    return allConstraints.toString();
   }
 
   public UIConditions convertComplexConstraintsIntoConditions( String complexConstraints,
@@ -1069,7 +1053,7 @@ public class MQLEditorServiceDelegate {
       for ( ConstraintXml constraint : constraintsXml.getConstraintList() ) {
         FormulaParser fp = new FormulaParser( constraint.getFormula() );
         var parsedCondition = fp.getCondition();
-        UIColumn uiCol = getColumnFromCategoriesById( categories, fp.getColID() );
+        UIColumn uiCol = getUiColumnFromCategoriesById( categories, fp.getColID() );
         var condition = new UICondition();
         condition.setOperator( parsedCondition.getOperator() );
         condition.setValue( parsedCondition.getValue() );
@@ -1097,7 +1081,7 @@ public class MQLEditorServiceDelegate {
     return new UICategory();
   }
 
-  private UIColumn getColumnFromCategoriesById( List<UICategory> categories, String columnId ) {
+  private UIColumn getUiColumnFromCategoriesById( List<UICategory> categories, String columnId ) {
     for ( UICategory cat : categories ) {
       for ( UIColumn col : cat.getBusinessColumns() ) {
         if ( col.getId().equals( columnId ) ) {
@@ -1106,6 +1090,17 @@ public class MQLEditorServiceDelegate {
       }
     }
     return new UIColumn();
+  }
+
+  private MqlColumn getMqlColumnFromCategoriesById( List<? extends MqlCategory> categories, String columnId ) {
+    for ( MqlCategory cat : categories ) {
+      for ( MqlColumn col : cat.getBusinessColumns() ) {
+        if ( col.getId().equals( columnId ) ) {
+          return col;
+        }
+      }
+    }
+    return new Column();
   }
 
   // Created new method instead of using, for example apache's StringEscapeUtils.escapeXml() because we don't want to
