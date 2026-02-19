@@ -870,6 +870,7 @@ public class MQLEditorServiceDelegate {
         int constraintsEndIndex = queryString.indexOf( XML_CONSTRAINTS_END_TAG );
         q.setComplexConstraints(
           queryString.substring( constraintsStartIndex, constraintsEndIndex + XML_CONSTRAINTS_END_TAG.length() ) );
+        break;
       }
     }
 
