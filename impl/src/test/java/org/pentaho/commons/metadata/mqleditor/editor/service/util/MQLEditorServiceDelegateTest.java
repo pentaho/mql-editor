@@ -16,6 +16,9 @@ package org.pentaho.commons.metadata.mqleditor.editor.service.util;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pentaho.commons.metadata.mqleditor.AggType;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumn;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UICondition;
 import org.pentaho.metadata.model.Domain;
 import org.pentaho.metadata.model.concept.types.AggregationType;
 import org.pentaho.metadata.model.concept.types.LocalizedString;
@@ -93,5 +96,32 @@ public class MQLEditorServiceDelegateTest {
       Assert.assertTrue( result.get() );
     }
     executorService.shutdown();
+  }
+
+  @Test
+  public void testConvertComplexConstraintsIntoConstraintList() {
+    MQLEditorServiceDelegate delegate = new MQLEditorServiceDelegate();
+    String complexConstraints = "<constraints><constraint><operator>AND</operator><condition>[CAT_ORDERS.BC_ORDERDETAILS_PRICEEACH] &lt;200</condition></constraint><constraint><operator>OR</operator><condition>[CAT_ORDERS.BC_ORDERDETAILS_TOTAL] &gt;500</condition></constraint></constraints>";
+    UICategory category = new UICategory();
+    UIColumn column1 = new UIColumn();
+    column1.setId( "BC_ORDERDETAILS_PRICEEACH" );
+    UIColumn column2 = new UIColumn();
+    column2.setId( "BC_ORDERDETAILS_TOTAL" );
+    category.setBusinessColumns( List.of(column1, column2) );
+
+    List<UICondition> conditions =
+      delegate.convertComplexConstraintsIntoConditions( complexConstraints,List.of(category));
+
+    Assert.assertEquals( 2, conditions.size() );
+
+    Assert.assertEquals( "200", conditions.get( 0 ).getValue() );
+    Assert.assertEquals( "<", conditions.get( 0 ).getOperator().toString() );
+    Assert.assertEquals( "AND", conditions.get( 0 ).getCombinationType().toString());
+    Assert.assertEquals( "BC_ORDERDETAILS_PRICEEACH", conditions.get( 0 ).getColumn().getId());
+
+    Assert.assertEquals( "500", conditions.get( 1 ).getValue() );
+    Assert.assertEquals( ">", conditions.get( 1 ).getOperator().toString() );
+    Assert.assertEquals( "OR", conditions.get( 1 ).getCombinationType().toString());
+    Assert.assertEquals( "BC_ORDERDETAILS_TOTAL", conditions.get( 1 ).getColumn().getId());
   }
 }
