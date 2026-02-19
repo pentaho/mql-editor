@@ -135,7 +135,7 @@
             onclick="conditionsController.remove()" image="images/delete.png" pen:classname="pentaho-deletebutton" />
         </toolbar>
 
-        <button id="advancedButton" label="Switch to Advanced..." onclick="mainController.switchAdvancedMode()"/>
+        <button id="advancedButton" label="${switchToAdvanced}" onclick="mainController.switchAdvancedMode()"/>
 
         <textbox flex="1" id="complexConstraints" multiline="true" pen:editingstyle="text/xml"/>
 
