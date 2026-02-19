@@ -39,22 +39,22 @@ public class MQLEditorServiceDelegateTest {
   public void convertNewThinAggregationTypeTest() {
     MQLEditorServiceDelegate mqlESD = new MQLEditorServiceDelegate();
 
-    Assert.assertEquals( mqlESD.convertNewThinAggregationType( null ), AggType.NONE );
+    Assert.assertEquals( AggType.NONE, mqlESD.convertNewThinAggregationType( null ) );
 
-    Assert.assertEquals( mqlESD.convertNewThinAggregationType( AggregationType.COUNT ), AggType.COUNT );
+    Assert.assertEquals( AggType.COUNT, mqlESD.convertNewThinAggregationType( AggregationType.COUNT ) );
 
-    Assert.assertEquals( mqlESD.convertNewThinAggregationType( AggregationType.COUNT_DISTINCT ),
-      AggType.COUNT_DISTINCT );
+    Assert.assertEquals( AggType.COUNT_DISTINCT,
+      mqlESD.convertNewThinAggregationType( AggregationType.COUNT_DISTINCT ) );
 
-    Assert.assertEquals( mqlESD.convertNewThinAggregationType( AggregationType.AVERAGE ), AggType.AVERAGE );
+    Assert.assertEquals( AggType.AVERAGE, mqlESD.convertNewThinAggregationType( AggregationType.AVERAGE ) );
 
-    Assert.assertEquals( mqlESD.convertNewThinAggregationType( AggregationType.MINIMUM ), AggType.MIN );
+    Assert.assertEquals( AggType.MIN, mqlESD.convertNewThinAggregationType( AggregationType.MINIMUM ) );
 
-    Assert.assertEquals( mqlESD.convertNewThinAggregationType( AggregationType.MAXIMUM ), AggType.MAX );
+    Assert.assertEquals( AggType.MAX, mqlESD.convertNewThinAggregationType( AggregationType.MAXIMUM ) );
 
-    Assert.assertEquals( mqlESD.convertNewThinAggregationType( AggregationType.SUM ), AggType.SUM );
+    Assert.assertEquals( AggType.SUM, mqlESD.convertNewThinAggregationType( AggregationType.SUM ) );
 
-    Assert.assertEquals( mqlESD.convertNewThinAggregationType( AggregationType.NONE ), AggType.NONE );
+    Assert.assertEquals( AggType.NONE, mqlESD.convertNewThinAggregationType( AggregationType.NONE ) );
   }
 
   // Timeout is set in order to prevent test "hanging" it's not test expected scenario
