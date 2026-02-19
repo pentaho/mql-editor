@@ -188,36 +188,32 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
 
   public void convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories,
                                                        XulServiceCallback<String> callback ) {
-    AuthenticatedGwtServiceUtil.invokeCommand( new IAuthenticatedGwtCommand<String>() {
-      public void execute( AsyncCallback<String> callback ) {
-        SERVICE.convertConditionsIntoComplexConstraints( conditions, categories, callback );
-      }
-    }, new AsyncCallback<String>() {
-      public void onFailure( Throwable arg0 ) {
-        callback.error( "error converting conditions: ", arg0 );
-      }
+    AuthenticatedGwtServiceUtil.invokeCommand(
+      (IAuthenticatedGwtCommand<String>) callback1 -> SERVICE.convertConditionsIntoComplexConstraints( conditions,
+        categories, callback1 ), new AsyncCallback<String>() {
+        public void onFailure( Throwable arg0 ) {
+          callback.error( "error converting conditions: ", arg0 );
+        }
 
-      public void onSuccess( String arg0 ) {
-        callback.success( arg0 );
-      }
-    } );
+        public void onSuccess( String arg0 ) {
+          callback.success( arg0 );
+        }
+      } );
   }
 
   public void convertComplexConstraintsIntoConditions( String complexConstraints, List<UICategory> categories,
                                                        XulServiceCallback<UIConditions> callback ) {
-    AuthenticatedGwtServiceUtil.invokeCommand( new IAuthenticatedGwtCommand<UIConditions>() {
-      public void execute( AsyncCallback<UIConditions> callback ) {
-        SERVICE.convertComplexConstraintsIntoConditions( complexConstraints, categories, callback );
-      }
-    }, new AsyncCallback<UIConditions>() {
-      public void onFailure( Throwable arg0 ) {
-        callback.error( "error converting conditions: ", arg0 );
-      }
+    AuthenticatedGwtServiceUtil.invokeCommand(
+      (IAuthenticatedGwtCommand<UIConditions>) callback1 -> SERVICE.convertComplexConstraintsIntoConditions(
+        complexConstraints, categories, callback1 ), new AsyncCallback<UIConditions>() {
+        public void onFailure( Throwable arg0 ) {
+          callback.error( "error converting conditions: ", arg0 );
+        }
 
-      public void onSuccess( UIConditions arg0 ) {
-        callback.success( arg0 );
-      }
-    } );
+        public void onSuccess( UIConditions arg0 ) {
+          callback.success( arg0 );
+        }
+      } );
   }
 
 }
