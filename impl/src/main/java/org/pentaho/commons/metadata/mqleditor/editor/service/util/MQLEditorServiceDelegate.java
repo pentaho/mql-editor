@@ -16,7 +16,6 @@ package org.pentaho.commons.metadata.mqleditor.editor.service.util;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
-import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -843,7 +842,7 @@ public class MQLEditorServiceDelegate {
         FormulaParser fp = new FormulaParser( constraint.getFormula() );
 
         Condition cond = fp.getCondition();
-        cond.setColumn( (Column) getMqlColumnFromCategoriesById( selectedModel.getCategories(), fp.getColID() ) );
+        cond.setColumn( (Column) getColumnFromCategoriesById( selectedModel.getCategories(), fp.getColID() ) );
 
         // PRD-3710
         if ( fp.getAggType() != null ) {
@@ -1000,7 +999,7 @@ public class MQLEditorServiceDelegate {
       for ( ConstraintXml constraint : constraintsXml.getConstraintList() ) {
         FormulaParser fp = new FormulaParser( constraint.getFormula() );
         var parsedCondition = fp.getCondition();
-        UIColumn uiCol = getUiColumnFromCategoriesById( categories, fp.getColID() );
+        UIColumn uiCol = (UIColumn) getColumnFromCategoriesById( categories, fp.getColID() );
         var condition = new UICondition();
         condition.setOperator( parsedCondition.getOperator() );
         condition.setValue( parsedCondition.getValue() );
@@ -1013,7 +1012,7 @@ public class MQLEditorServiceDelegate {
       }
       return conditions;
     } catch ( JAXBException e ) {
-      throw new RuntimeException( e );
+      throw new IllegalArgumentException( e );
     }
   }
 
@@ -1028,18 +1027,7 @@ public class MQLEditorServiceDelegate {
     return new UICategory();
   }
 
-  private UIColumn getUiColumnFromCategoriesById( List<UICategory> categories, String columnId ) {
-    for ( UICategory cat : categories ) {
-      for ( UIColumn col : cat.getBusinessColumns() ) {
-        if ( col.getId().equals( columnId ) ) {
-          return col;
-        }
-      }
-    }
-    return new UIColumn();
-  }
-
-  private MqlColumn getMqlColumnFromCategoriesById( List<? extends MqlCategory> categories, String columnId ) {
+  private MqlColumn getColumnFromCategoriesById( List<? extends MqlCategory> categories, String columnId ) {
     for ( MqlCategory cat : categories ) {
       for ( MqlColumn col : cat.getBusinessColumns() ) {
         if ( col.getId().equals( columnId ) ) {
