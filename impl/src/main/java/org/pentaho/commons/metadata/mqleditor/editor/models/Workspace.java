@@ -285,11 +285,6 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
 
   @Bindable
-  public String getComplexConstraints() {
-    return complexConstraints;
-  }
-
-  @Bindable
   public UIColumn getSelectedColumn() {
 
     return selectedColumn;
@@ -492,15 +487,20 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   }
 
   @Bindable
+  public int getLimit() {
+    return limit;
+  }
+
+  @Bindable
+  public String getComplexConstraints() {
+    return complexConstraints;
+  }
+
+  @Bindable
   public void setComplexConstraints( String complexConstraints ) {
     String prevVal = this.complexConstraints;
     this.complexConstraints = complexConstraints;
     this.firePropertyChange( "complexConstraints", prevVal, complexConstraints );
-  }
-
-  @Bindable
-  public int getLimit() {
-    return limit;
   }
 
   public static void setMessages( IMqlMessages messagesInstance ) {

@@ -96,11 +96,6 @@ public class FormulaParser {
       }
     }
 
-    String errorMessage = "";
-    if ( functionName == null) {
-       errorMessage = "Query syntax not supported by PRD Editor: " + formula;
-    }
-
     Operator op = Operator.parse( functionName.toUpperCase() );
 
     // handle special NOT() wrapped functions
