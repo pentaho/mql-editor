@@ -27,6 +27,7 @@ import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
+import org.pentaho.commons.metadata.mqleditor.messages.XulMessages;
 import org.pentaho.ui.xul.XulServiceCallback;
 import org.pentaho.ui.xul.binding.Binding;
 import org.pentaho.ui.xul.binding.BindingConvertor;
@@ -98,7 +99,7 @@ public class MainController extends AbstractXulEventHandler {
     if ( savedQuery != null ) {
       workspace.wrap( savedQuery );
       if ( savedQuery.getComplexConstraints() != null ) {
-        advancedButton.setLabel( "Switch to Default Editor..." );
+        advancedButton.setLabel( XulMessages.getString( "switchToDefault", "Switch to Default Editor..." ) );
         workspace.getConditions().clear();
         tableContainer.removeChild( conditionsTable );
         complexConstraints.setVisible( true );
@@ -358,7 +359,7 @@ public class MainController extends AbstractXulEventHandler {
         new XulServiceCallback<String>() {
 
           public void success( String complexConstraintsStr ) {
-            advancedButton.setLabel( "Switch to Default Editor..." );
+            advancedButton.setLabel( XulMessages.getString( "switchToDefault", "Switch to Default Editor..." ) );
             workspace.setComplexConstraints( Objects.requireNonNullElse( complexConstraintsStr, "<constraints/>" ) );
             workspace.getConditions().clear();
             tableContainer.removeChild( conditionsTable );
@@ -383,7 +384,7 @@ public class MainController extends AbstractXulEventHandler {
               workspace.setComplexConstraints( null );
               workspace.setConditions( conditions );
             }
-            advancedButton.setLabel( "Switch to Advanced..." );
+            advancedButton.setLabel( XulMessages.getString( "switchToAdvanced", "Switch to Advanced..." ) );
             complexConstraints.setVisible( false );
             showAdvancedMode = !showAdvancedMode;
           }
