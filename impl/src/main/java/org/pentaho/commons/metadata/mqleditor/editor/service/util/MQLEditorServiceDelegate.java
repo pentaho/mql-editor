@@ -1019,11 +1019,11 @@ public class MQLEditorServiceDelegate {
 
       allConstraints.append( "<operator>" ).append( condition.getCombinationType().toString() ).append( "</operator>" );
 
-      UICategory view = getColumnCategoryByColumnId( categories, condition.getColumn().getId() );
+      UICategory category = getColumnCategoryByColumnId( categories, condition.getColumn().getId() );
 
       AggregationType type = getAggregationType( condition.getSelectedAggType() );
       String field = "[";
-      field += view.getId() + "." + condition.getColumn().getId();
+      field += category.getId() + "." + condition.getColumn().getId();
       if ( type != null ) {
         field += "." + type;
       }
