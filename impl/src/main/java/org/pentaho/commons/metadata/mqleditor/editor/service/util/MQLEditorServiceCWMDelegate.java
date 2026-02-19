@@ -13,6 +13,7 @@
 
 package org.pentaho.commons.metadata.mqleditor.editor.service.util;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import org.apache.commons.lang.NotImplementedException;
 import org.pentaho.commons.metadata.mqleditor.AggType;
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
@@ -38,6 +42,12 @@ import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.beans.Model;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
+import org.pentaho.commons.metadata.mqleditor.editor.models.ConstraintXml;
+import org.pentaho.commons.metadata.mqleditor.editor.models.ConstraintsXml;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumn;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UICondition;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelSerializer;
 import org.pentaho.commons.metadata.mqleditor.utils.ModelUtil;
 import org.pentaho.metadata.model.LogicalColumn;
@@ -60,6 +70,7 @@ import org.pentaho.pms.schema.SchemaMeta;
 import org.pentaho.pms.schema.concept.types.aggregation.AggregationSettings;
 import org.pentaho.pms.schema.concept.types.datatype.DataTypeSettings;
 import org.pentaho.pms.util.UniqueList;
+import org.xml.sax.SAXParseException;
 
 /**
  * 
@@ -72,6 +83,9 @@ import org.pentaho.pms.util.UniqueList;
  */
 
 public class MQLEditorServiceCWMDelegate {
+
+  private static final String XML_CONSTRAINTS_START_TAG = "<constraints>";
+  private static final String XML_CONSTRAINTS_END_TAG = "</constraints>";
 
   private String locale = Locale.getDefault().toString();
 
@@ -487,26 +501,30 @@ public class MQLEditorServiceCWMDelegate {
                     .getSelectedAggType() ) ) );
           }
 
-          for ( MqlCondition condition : query.getConditions() ) {
-            org.pentaho.metadata.model.Category view = findCategory( model, condition.getColumn() );
-            AggregationType type = getAggregationType( condition.getSelectedAggType() );
-            String field = "[";
-            field += view.getId() + "." + condition.getColumn().getId();
-            if ( type != null ) {
-              field += "." + type.toString();
-            }
-            field += "]";
+          if ( query.getComplexConstraints() != null ) {
+            queryObject.getConstraints()
+              .addAll( convertComplexConstraintsIntoConstraintList( query.getComplexConstraints() ) );
+          } else {
+            for ( MqlCondition condition : query.getConditions() ) {
+              org.pentaho.metadata.model.Category view = findCategory( model, condition.getColumn() );
+              AggregationType type = getAggregationType( condition.getSelectedAggType() );
+              String field = "[";
+              field += view.getId() + "." + condition.getColumn().getId();
+              if ( type != null ) {
+                field += "." + type.toString();
+              }
+              field += "]";
 
-            if ( condition.isParameterized() ) {
-              queryObject.getParameters().add(
+              if ( condition.isParameterized() ) {
+                queryObject.getParameters().add(
                   new Parameter( condition.getValue().replaceAll( "[\\{\\}]", "" ), getDataType( condition.getColumn()
-                      .getType() ), condition.getDefaultValue() ) );
-            }
-            queryObject.getConstraints().add(
+                    .getType() ), condition.getDefaultValue() ) );
+              }
+              queryObject.getConstraints().add(
                 new Constraint( getComboType( condition.getCombinationType() ), conditionFormatter.getCondition(
-                    condition, field ) ) );
+                  condition, field ) ) );
+            }
           }
-
           for ( MqlOrder order : query.getOrders() ) {
             org.pentaho.metadata.model.Category view = findCategory( model, order.getColumn() );
             LogicalColumn column = view.findLogicalColumn( order.getColumn().getId() );
@@ -520,6 +538,14 @@ public class MQLEditorServiceCWMDelegate {
           }
           return queryObject;
         }
+      } catch ( JAXBException e ) {
+        Throwable linkedException = e.getLinkedException();
+        String errorMessage = "Could not parse XML definition";
+        if ( linkedException instanceof SAXParseException ) {
+          // Add more detail on why the parsing failed
+          errorMessage = errorMessage.concat( ": " + linkedException.getMessage() );
+        }
+        throw new IllegalStateException( errorMessage, e );
       } catch ( Throwable e ) { // PMSFormulaException e) {
         e.printStackTrace();
       }
@@ -670,6 +696,122 @@ public class MQLEditorServiceCWMDelegate {
 
   public MqlQuery deserializeModel( String serializedQuery ) {
     return ModelSerializer.deSerialize( serializedQuery );
+  }
+
+  public UIConditions convertComplexConstraintsIntoConditions( String complexConstraints,
+                                                               List<UICategory> categories ) {
+    if ( complexConstraints == null || complexConstraints.isEmpty() ) {
+      return new UIConditions();
+    }
+    try {
+      JAXBContext jaxbContext = JAXBContext.newInstance( ConstraintsXml.class );
+      Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+      StringReader reader = new StringReader( complexConstraints );
+      var constraintsXml = (ConstraintsXml) unmarshaller.unmarshal( reader );
+      if ( constraintsXml.getConstraintList() == null || constraintsXml.getConstraintList().isEmpty() ) {
+        return new UIConditions();
+      }
+      UIConditions conditions = new UIConditions();
+      for ( ConstraintXml constraint : constraintsXml.getConstraintList() ) {
+        FormulaParser fp = new FormulaParser( constraint.getFormula() );
+        var parsedCondition = fp.getCondition();
+        UIColumn uiCol = getUiColumnFromCategoriesById( categories, fp.getColID() );
+        var condition = new UICondition();
+        condition.setOperator( parsedCondition.getOperator() );
+        condition.setValue( parsedCondition.getValue() );
+        condition.setCombinationType( CombinationType.getByName( constraint.getOperator() ) );
+        if ( fp.getAggType() != null ) {
+          condition.setSelectedAggType(  AggregationType.valueOf( fp.getAggType() ) );
+        }
+        condition.setColumn( uiCol );
+        conditions.add( condition );
+      }
+      return conditions;
+    } catch ( JAXBException e ) {
+      throw new RuntimeException( e );
+    }
+  }
+
+  public String convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories ) {
+    if ( conditions.isEmpty() ) {
+      return null;
+    }
+
+    StringBuilder allConstraints = new StringBuilder( XML_CONSTRAINTS_START_TAG );
+
+    for ( UICondition condition : conditions ) {
+      allConstraints.append( "<constraint>" );
+
+      allConstraints.append( "<operator>" ).append( condition.getCombinationType().toString() ).append( "</operator>" );
+
+      UICategory category = getColumnCategoryByColumnId( categories, condition.getColumn().getId() );
+
+      AggregationType type = getAggregationType( condition.getSelectedAggType() );
+      String field = "[";
+      field += category.getId() + "." + condition.getColumn().getId();
+      if ( type != null ) {
+        field += "." + type;
+      }
+      field += "]";
+      String conditionStr = escapeXmlReservedCharacters( conditionFormatter.getCondition( condition, field ) );
+      allConstraints.append( "<condition>" ).append( conditionStr ).append( "</condition>" );
+
+      allConstraints.append( "</constraint>" );
+    }
+    allConstraints.append( XML_CONSTRAINTS_END_TAG );
+    return allConstraints.toString();
+  }
+
+  private List<Constraint> convertComplexConstraintsIntoConstraintList( String complexConstraints )
+    throws JAXBException {
+    if ( complexConstraints.isEmpty() ) {
+      return new ArrayList<>();
+    }
+    List<Constraint> constraints = new ArrayList<>();
+    ConstraintsXml constraintsXml;
+
+    JAXBContext jaxbContext = JAXBContext.newInstance( ConstraintsXml.class );
+    Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+
+    StringReader reader = new StringReader( complexConstraints );
+    constraintsXml = (ConstraintsXml) unmarshaller.unmarshal( reader );
+    if ( constraintsXml.getConstraintList() != null ) {
+      for ( ConstraintXml constraintXml : constraintsXml.getConstraintList() ) {
+        constraints.add(
+          new Constraint( org.pentaho.metadata.query.model.CombinationType.valueOf( constraintXml.getOperator() ),
+            constraintXml.getFormula() ) );
+      }
+    }
+    return constraints;
+  }
+
+  private UIColumn getUiColumnFromCategoriesById( List<UICategory> categories, String columnId ) {
+    for ( UICategory cat : categories ) {
+      for ( UIColumn col : cat.getBusinessColumns() ) {
+        if ( col.getId().equals( columnId ) ) {
+          return col;
+        }
+      }
+    }
+    return new UIColumn();
+  }
+
+  private UICategory getColumnCategoryByColumnId( List<UICategory> categories, String columnId ) {
+    for ( UICategory category : categories ) {
+      for ( UIColumn column : category.getBusinessColumns() ) {
+        if ( column.getId().equals( columnId ) ) {
+          return category;
+        }
+      }
+    }
+    return new UICategory();
+  }
+
+  // Created new method instead of using, for example apache's StringEscapeUtils.escapeXml() because we don't want to
+  // escape all XML reserved characters (reserved characters are <, >, &, "  and ', but we only want to escape <, >
+  // and &)
+  private String escapeXmlReservedCharacters( String xmlString ) {
+    return xmlString.replace( "&", "&amp;" ).replace( "<", "&lt;" ).replace( ">", "&gt;" );
   }
 
   private class MQLWhereConditionModel {

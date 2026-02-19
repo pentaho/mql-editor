@@ -41,6 +41,8 @@ import org.pentaho.commons.metadata.mqleditor.beans.Domain;
 import org.pentaho.commons.metadata.mqleditor.beans.Model;
 import org.pentaho.commons.metadata.mqleditor.beans.Order;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
+import org.pentaho.commons.metadata.mqleditor.editor.models.ConstraintXml;
+import org.pentaho.commons.metadata.mqleditor.editor.models.ConstraintsXml;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumn;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UICondition;
@@ -614,62 +616,6 @@ public class MQLEditorServiceDelegate {
       }
     }
     return constraints;
-  }
-
-  @XmlRootElement( name = "constraints" )
-  @XmlAccessorType( XmlAccessType.FIELD )
-  private static class ConstraintsXml {
-
-    @XmlElement( name = "constraint" )
-    private List<ConstraintXml> constraintList;
-
-    public ConstraintsXml( List<ConstraintXml> constraintList ) {
-      this.constraintList = constraintList;
-    }
-
-    public ConstraintsXml() {
-    }
-
-    public List<ConstraintXml> getConstraintList() {
-      return constraintList;
-    }
-
-    public void setConstraintList( List<ConstraintXml> constraintList ) {
-      this.constraintList = constraintList;
-    }
-  }
-
-  @XmlAccessorType( XmlAccessType.FIELD )
-  private static class ConstraintXml {
-    @XmlElement( name = "operator" )
-    private String operator;
-
-    @XmlElement( name = "condition" )
-    private String formula;
-
-    public ConstraintXml( String operator, String formula ) {
-      this.operator = operator;
-      this.formula = formula;
-    }
-
-    public ConstraintXml() {
-    }
-
-    public String getOperator() {
-      return operator;
-    }
-
-    public void setOperator( String operator ) {
-      this.operator = operator;
-    }
-
-    public String getFormula() {
-      return formula;
-    }
-
-    public void setFormula( String formula ) {
-      this.formula = formula;
-    }
   }
 
   private org.pentaho.metadata.query.model.Order.Type getOrderType( MqlOrder.Type type ) {

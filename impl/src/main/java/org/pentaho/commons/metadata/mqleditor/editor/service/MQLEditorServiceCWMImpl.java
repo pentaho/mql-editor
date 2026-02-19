@@ -64,14 +64,18 @@ public class MQLEditorServiceCWMImpl implements MQLEditorService {
     }
   }
 
-  @Override public void convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories,
-                                                                 XulServiceCallback<String> callback ) {
-
+  public void convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories,
+                                                       XulServiceCallback<String> callback ) {
+    callback.success( delegate.convertConditionsIntoComplexConstraints( conditions, categories ) );
   }
 
-  @Override public void convertComplexConstraintsIntoConditions( String complexConstraints, List<UICategory> categories,
-                                                                 XulServiceCallback<UIConditions> callback ) {
-
+  public void convertComplexConstraintsIntoConditions( String complexConstraints, List<UICategory> categories,
+                                                       XulServiceCallback<UIConditions> callback ) {
+    try {
+      callback.success( delegate.convertComplexConstraintsIntoConditions( complexConstraints, categories ) );
+    } catch ( Exception e ) {
+      callback.error( "Error converting complex constraints into conditions", e );
+    }
   }
 
   public void deserializeModel( String serializedQuery, XulServiceCallback<MqlQuery> callback ) {
