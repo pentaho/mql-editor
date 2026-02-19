@@ -581,6 +581,7 @@ public class MQLEditorServiceDelegate {
         Throwable linkedException = e.getLinkedException();
         String errorMessage = "Could not parse XML definition";
         if ( linkedException instanceof SAXParseException ) {
+          // Add more detail on why the parsing failed
           errorMessage = errorMessage.concat( ": " + linkedException.getMessage() );
         }
         throw new IllegalStateException( errorMessage, e );
