@@ -73,9 +73,9 @@ import org.pentaho.pms.util.UniqueList;
 import org.xml.sax.SAXParseException;
 
 /**
- * 
+ *
  * This delegate class provides the majority of functionality needed by an implementation of the MQLEditor Service. If
- * you wish to use this file as a starting point for your implementation you'll need to provide a CWM isntance and
+ * you wish to use this file as a starting point for your implementation you'll need to provide a CWM instance and
  * CWMSchemaFactory
  *
  * This delegate is used in the debug services provided in the base application.
@@ -721,7 +721,7 @@ public class MQLEditorServiceCWMDelegate {
         condition.setValue( parsedCondition.getValue() );
         condition.setCombinationType( CombinationType.getByName( constraint.getOperator() ) );
         if ( fp.getAggType() != null ) {
-          condition.setSelectedAggType(  AggregationType.valueOf( fp.getAggType() ) );
+          condition.setSelectedAggType( AggType.valueOf( fp.getAggType() ) );
         }
         condition.setColumn( uiCol );
         conditions.add( condition );
@@ -793,7 +793,7 @@ public class MQLEditorServiceCWMDelegate {
         }
       }
     }
-    return new UIColumn();
+    throw new IllegalArgumentException( "Column with id " + columnId + " not found" );
   }
 
   private UICategory getColumnCategoryByColumnId( List<UICategory> categories, String columnId ) {
@@ -804,7 +804,7 @@ public class MQLEditorServiceCWMDelegate {
         }
       }
     }
-    return new UICategory();
+    throw new IllegalArgumentException( "Category for column with id " + columnId + " not found" );
   }
 
   // Created new method instead of using, for example apache's StringEscapeUtils.escapeXml() because we don't want to

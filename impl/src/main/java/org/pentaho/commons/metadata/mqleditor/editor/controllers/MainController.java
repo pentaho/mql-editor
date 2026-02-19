@@ -41,6 +41,8 @@ import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.containers.XulVbox;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
 import org.pentaho.ui.xul.stereotype.Bindable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is the main XulEventHandler for the dialog. It sets up the main bindings for the user interface and responds to
@@ -50,6 +52,7 @@ public class MainController extends AbstractXulEventHandler {
 
   public static final int CANCELLED = 0;
   public static final int OK = 1;
+  private static final Logger log = LoggerFactory.getLogger( MainController.class );
 
   private int lastClicked = CANCELLED;
 
@@ -360,10 +363,12 @@ public class MainController extends AbstractXulEventHandler {
             workspace.getConditions().clear();
             tableContainer.removeChild( conditionsTable );
             complexConstraints.setVisible( true );
+            showAdvancedMode = !showAdvancedMode;
           }
 
           public void error( String message, Throwable error ) {
-            throw new IllegalStateException( "A problem occurred while trying to switch to Advanced Editor", error );
+            showErrorDialog( "A problem occurred while trying to switch to Advanced Editor" );
+            log.error( message, error );
           }
         }
       );
@@ -380,16 +385,16 @@ public class MainController extends AbstractXulEventHandler {
             }
             advancedButton.setLabel( "Switch to Advanced..." );
             complexConstraints.setVisible( false );
+            showAdvancedMode = !showAdvancedMode;
           }
 
           public void error( String message, Throwable error ) {
             showErrorDialog( "Your formula is not supported in the Default Editor view." );
-            throw new IllegalStateException( "Formula is not supported in the Default Editor view", error );
+            log.error( message, error );
           }
         }
       );
     }
-    showAdvancedMode = !showAdvancedMode;
   }
 
   @Bindable

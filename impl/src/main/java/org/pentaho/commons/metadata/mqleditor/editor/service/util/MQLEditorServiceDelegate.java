@@ -1021,7 +1021,7 @@ public class MQLEditorServiceDelegate {
         }
       }
     }
-    return new UICategory();
+    throw new IllegalArgumentException( "Category for column with id " + columnId + " not found" );
   }
 
   private MqlColumn getColumnFromCategoriesById( List<? extends MqlCategory> categories, String columnId ) {
@@ -1032,7 +1032,7 @@ public class MQLEditorServiceDelegate {
         }
       }
     }
-    return new Column();
+    throw new IllegalArgumentException( "Column with id " + columnId + " not found" );
   }
 
   // Created new method instead of using, for example apache's StringEscapeUtils.escapeXml() because we don't want to

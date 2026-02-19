@@ -95,7 +95,9 @@ public class FormulaParser {
         value = checkValueAsDataTime( value );
       }
     }
-
+    if ( functionName == null ) {
+      throw new IllegalArgumentException( "Unable to parse formula: " + formula );
+    }
     Operator op = Operator.parse( functionName.toUpperCase() );
 
     // handle special NOT() wrapped functions
