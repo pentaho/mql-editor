@@ -1001,7 +1001,11 @@ public class MQLEditorServiceDelegate {
         var condition = new UICondition();
         condition.setOperator( parsedCondition.getOperator() );
         condition.setValue( parsedCondition.getValue() );
-        condition.setCombinationType( CombinationType.getByName( constraint.getOperator() ) );
+        CombinationType combinationType = CombinationType.getByName( constraint.getOperator() );
+        if ( combinationType == null ) {
+          throw new IllegalArgumentException( "Unknown combination operator: " + constraint.getOperator() );
+        }
+        condition.setCombinationType( combinationType );
         if ( fp.getAggType() != null ) {
           condition.setSelectedAggType( convertNewThinAggregationType( AggregationType.valueOf( fp.getAggType() ) ) );
         }
