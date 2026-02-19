@@ -21,7 +21,6 @@ import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
-import org.pentaho.ui.xul.XulServiceCallback;
 
 public interface MQLEditorGwtServiceAsync {
 

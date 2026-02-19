@@ -728,7 +728,7 @@ public class MQLEditorServiceCWMDelegate {
       }
       return conditions;
     } catch ( JAXBException e ) {
-      throw new RuntimeException( e );
+      throw new IllegalArgumentException( e );
     }
   }
 
