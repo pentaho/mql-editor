@@ -380,7 +380,6 @@ public class MainController extends AbstractXulEventHandler {
             }
             advancedButton.setLabel( "Switch to Advanced..." );
             complexConstraints.setVisible( false );
-
           }
 
           public void error( String message, Throwable error ) {
