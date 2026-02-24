@@ -306,6 +306,9 @@ public class MainController extends AbstractXulEventHandler {
     List<UIColumn> cols = workspace.getSelectedColumns();
     if ( showAdvancedMode ) {
       String complexConstrainsString = workspace.getComplexConstraints();
+      if (complexConstrainsString == null) {
+        complexConstrainsString = "";
+      }
       for ( UIColumn col : cols ) {
         String compositeColumnId = getCompositeColumnId( col.getId() );
         complexConstrainsString = complexConstrainsString.concat( compositeColumnId );
