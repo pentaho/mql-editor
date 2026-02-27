@@ -20,6 +20,8 @@ import org.apache.commons.logging.LogFactory;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.commons.metadata.mqleditor.editor.service.util.MQLEditorServiceDelegate;
 import org.pentaho.metadata.repository.IMetadataDomainRepository;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -50,7 +52,11 @@ public class MQLEditorServiceImpl implements MQLEditorService {
   }
 
   public void saveQuery( MqlQuery model, XulServiceCallback<String> callback ) {
-    callback.success( delegate.saveQuery( model ) );
+    try {
+      callback.success( delegate.saveQuery( model ) );
+    } catch ( Exception e ) {
+      callback.error( e.getMessage(), e );
+    }
   }
 
   public void serializeModel( MqlQuery query, XulServiceCallback<String> callback ) {
@@ -65,4 +71,17 @@ public class MQLEditorServiceImpl implements MQLEditorService {
     callback.success( delegate.deserializeModel( serializedQuery ) );
   }
 
+  public void convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories,
+                                                       XulServiceCallback<String> callback ) {
+    callback.success( delegate.convertConditionsIntoComplexConstraints( conditions, categories ) );
+  }
+
+  public void convertComplexConstraintsIntoConditions( String complexConstraints, List<UICategory> categories,
+                                                       XulServiceCallback<UIConditions> callback ) {
+    try {
+      callback.success( delegate.convertComplexConstraintsIntoConditions( complexConstraints, categories ) );
+    } catch ( Exception e ) {
+      callback.error( "Error converting complex constraints into conditions", e );
+    }
+  }
 }
