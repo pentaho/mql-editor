@@ -18,6 +18,8 @@ import java.util.List;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.gwt.widgets.login.client.AuthenticatedGwtServiceUtil;
 import org.pentaho.gwt.widgets.login.client.IAuthenticatedGwtCommand;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -32,8 +34,8 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
 
   static {
     SERVICE =
-        (org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtServiceAsync) GWT
-            .create( org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtService.class );
+      (org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtServiceAsync) GWT
+        .create( org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtService.class );
     ServiceDefTarget endpoint = (ServiceDefTarget) SERVICE;
     endpoint.setServiceEntryPoint( getContextPath() + "gwtrpc/MqlService" );
   }
@@ -150,7 +152,7 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
   }
 
   public void getPreviewData( final MqlQuery query, final int page, final int limit,
-      final XulServiceCallback<String[][]> callback ) {
+                              final XulServiceCallback<String[][]> callback ) {
 
     AuthenticatedGwtServiceUtil.invokeCommand( new IAuthenticatedGwtCommand<String[][]>() {
       public void execute( AsyncCallback<String[][]> callback ) {
@@ -182,6 +184,36 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
       }
     } );
 
+  }
+
+  public void convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories,
+                                                       XulServiceCallback<String> callback ) {
+    AuthenticatedGwtServiceUtil.invokeCommand(
+      (IAuthenticatedGwtCommand<String>) callback1 -> SERVICE.convertConditionsIntoComplexConstraints( conditions,
+        categories, callback1 ), new AsyncCallback<String>() {
+        public void onFailure( Throwable arg0 ) {
+          callback.error( "error converting conditions: ", arg0 );
+        }
+
+        public void onSuccess( String arg0 ) {
+          callback.success( arg0 );
+        }
+      } );
+  }
+
+  public void convertComplexConstraintsIntoConditions( String complexConstraints, List<UICategory> categories,
+                                                       XulServiceCallback<UIConditions> callback ) {
+    AuthenticatedGwtServiceUtil.invokeCommand(
+      (IAuthenticatedGwtCommand<UIConditions>) callback1 -> SERVICE.convertComplexConstraintsIntoConditions(
+        complexConstraints, categories, callback1 ), new AsyncCallback<UIConditions>() {
+        public void onFailure( Throwable arg0 ) {
+          callback.error( "error converting conditions: ", arg0 );
+        }
+
+        public void onSuccess( UIConditions arg0 ) {
+          callback.success( arg0 );
+        }
+      } );
   }
 
 }
