@@ -32,7 +32,9 @@ import org.pentaho.ui.xul.XulEventSourceAdapter;
 import org.pentaho.ui.xul.stereotype.Bindable;
 
 /**
+ *
  * Main state model for the Mql Editor dialog
+ * 
  */
 public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
@@ -52,11 +54,8 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   private UIConditions conditions = new UIConditions();
   private UIOrders orders = new UIOrders();
   private String queryStr;
-  private String complexConstraints;
 
   private static IMqlMessages messages;
-
-  private static final String CONDITIONS_STR = "conditions";
 
   public Workspace() {
     setupListeners();
@@ -131,10 +130,6 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
       setLimit( thinWorkspace.getLimit() );
     }
 
-    if ( thinWorkspace.getComplexConstraints() != null ) {
-      setComplexConstraints( thinWorkspace.getComplexConstraints() );
-    }
-
     if ( thinWorkspace.isDisableDistinct() ) {
       setDisableDistinct( thinWorkspace.isDisableDistinct() );
     }
@@ -150,7 +145,6 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     this.setSelections( new UIColumns() );
     this.setConditions( new UIConditions() );
     this.setLimit( -1 );
-    this.setComplexConstraints( null );
     this.setDisableDistinct( false );
     setupListeners();
   }
@@ -163,7 +157,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
   private PropertyChangeListener conditionListener = new PropertyChangeListener() {
     public void propertyChange( PropertyChangeEvent evt ) {
-      Workspace.this.firePropertyChange( CONDITIONS_STR, null, getConditions() );
+      Workspace.this.firePropertyChange( "conditions", null, getConditions() );
     }
   };
 
@@ -309,7 +303,6 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     condition.setColumn( col );
 
     conditions.add( condition );
-    this.firePropertyChange( CONDITIONS_STR, null, getConditions() );
   }
 
   public void addOrder( UIColumn col ) {
@@ -353,7 +346,7 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   @Bindable
   public void setConditions( UIConditions conditions ) {
     this.conditions = conditions;
-    this.firePropertyChange( CONDITIONS_STR, null, getConditions() );
+    this.firePropertyChange( "conditions", null, getConditions() );
   }
 
   @Bindable
@@ -418,7 +411,6 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     query.setOrders( orders );
     query.setConditions( conditions );
     query.setLimit( limit );
-    query.setComplexConstraints( complexConstraints );
     query.setDisableDistinct( disableDistinct );
 
     query.setMqlStr( this.getMqlStr() );
@@ -489,18 +481,6 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
   @Bindable
   public int getLimit() {
     return limit;
-  }
-
-  @Bindable
-  public String getComplexConstraints() {
-    return complexConstraints;
-  }
-
-  @Bindable
-  public void setComplexConstraints( String complexConstraints ) {
-    String prevVal = this.complexConstraints;
-    this.complexConstraints = complexConstraints;
-    this.firePropertyChange( "complexConstraints", prevVal, complexConstraints );
   }
 
   public static void setMessages( IMqlMessages messagesInstance ) {

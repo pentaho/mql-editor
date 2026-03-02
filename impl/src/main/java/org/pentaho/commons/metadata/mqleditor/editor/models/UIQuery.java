@@ -22,8 +22,6 @@ public class UIQuery implements MqlQuery {
 
   private List<UIColumn> cols;
 
-  private String complexConstraints;
-
   private List<UICondition> conditions;
 
   private List<UIOrder> orders;
@@ -51,10 +49,6 @@ public class UIQuery implements MqlQuery {
     return cols;
   }
 
-  public String getComplexConstraints() {
-    return complexConstraints;
-  }
-
   public List<UICondition> getConditions() {
     return conditions;
   }
@@ -74,10 +68,6 @@ public class UIQuery implements MqlQuery {
   public void setColumns( List<UIColumn> cols ) {
 
     this.cols = cols;
-  }
-
-  public void setComplexConstraints( String complexConstraints ) {
-    this.complexConstraints = complexConstraints;
   }
 
   public void setConditions( List<UICondition> conditions ) {

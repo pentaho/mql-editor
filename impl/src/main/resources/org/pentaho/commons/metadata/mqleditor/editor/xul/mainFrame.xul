@@ -34,10 +34,10 @@
   <!--  ###############################################################################   -->
   <!--     ERROR DIALOG: Dialog to display error text                                     -->
   <!--  ###############################################################################   -->
-  <dialog id="errorDialog" title="${errorDialog.title}" buttonlabelaccept="${ok}"
-    buttons="accept" ondialogaccept="mainController.closeErrorDialog()" width="400" height="150" buttonalign="right">
+  <dialog id="errorDialog" title="${errorDialog.title}" buttonlabelaccept="${errorDialog.CLOSE}"
+    buttons="accept" ondialogaccept="mainController.closeErrorDialog()" width="400" height="100" buttonalign="right">
     <vbox id="errorDialogContainer">
-      <label id="errorLabel" value="${errorDialog.defaultLabel}" width="400" height="150"/>
+      <label id="errorLabel" value="${errorDialog.defaultLabel}"/>
     </vbox>
   </dialog>
 
@@ -134,11 +134,6 @@
           <toolbarbutton id="conditionRemove" disabled="true"
             onclick="conditionsController.remove()" image="images/delete.png" pen:classname="pentaho-deletebutton" />
         </toolbar>
-
-        <button id="advancedButton" label="${switchToAdvanced}" onclick="mainController.switchAdvancedMode()"/>
-
-        <textbox flex="1" id="complexConstraints" multiline="true" pen:editingstyle="text/xml"/>
-
         <tree flex="1" editable="true" seltype="single"
           enableColumnDrag="false" id="conditionsTree" width="575">
           <treecols>

@@ -112,10 +112,6 @@ public class ModelUtil {
       }
     }
 
-    if ( uiQuery.getComplexConstraints() != null ) {
-      query.setComplexConstraints( uiQuery.getComplexConstraints() );
-    }
-
     // row limit
     query.setLimit( uiQuery.getLimit() );
     query.setDisableDistinct( uiQuery.isDisableDistinct() );
