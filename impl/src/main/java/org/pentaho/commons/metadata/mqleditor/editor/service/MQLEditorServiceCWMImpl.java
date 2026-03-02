@@ -18,8 +18,6 @@ import java.util.List;
 import org.pentaho.commons.metadata.mqleditor.MqlDomain;
 import org.pentaho.commons.metadata.mqleditor.MqlQuery;
 import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
-import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
-import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.commons.metadata.mqleditor.editor.service.util.MQLEditorServiceCWMDelegate;
 import org.pentaho.pms.schema.SchemaMeta;
 import org.pentaho.ui.xul.XulServiceCallback;
@@ -61,20 +59,6 @@ public class MQLEditorServiceCWMImpl implements MQLEditorService {
       callback.success( previewData );
     } catch ( Exception e ) {
       callback.error( "error fetching results", e );
-    }
-  }
-
-  public void convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories,
-                                                       XulServiceCallback<String> callback ) {
-    callback.success( delegate.convertConditionsIntoComplexConstraints( conditions, categories ) );
-  }
-
-  public void convertComplexConstraintsIntoConditions( String complexConstraints, List<UICategory> categories,
-                                                       XulServiceCallback<UIConditions> callback ) {
-    try {
-      callback.success( delegate.convertComplexConstraintsIntoConditions( complexConstraints, categories ) );
-    } catch ( Exception e ) {
-      callback.error( "Error converting complex constraints into conditions", e );
     }
   }
 

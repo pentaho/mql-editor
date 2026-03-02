@@ -26,8 +26,6 @@ public interface MqlQuery extends Serializable {
 
   public List<? extends MqlColumn> getColumns();
 
-  public String getComplexConstraints();
-
   public List<? extends MqlCondition> getConditions();
 
   public List<? extends MqlOrder> getOrders();
