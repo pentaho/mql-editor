@@ -136,6 +136,7 @@
         </toolbar>
 
         <button id="advancedButton" label="${switchToAdvanced}" onclick="mainController.switchAdvancedMode()"/>
+        <button id="defaultButton" label="${switchToDefault}" onclick="mainController.switchAdvancedMode()"/>
 
         <textbox flex="1" id="complexConstraints" multiline="true" pen:editingstyle="text/xml"/>
 

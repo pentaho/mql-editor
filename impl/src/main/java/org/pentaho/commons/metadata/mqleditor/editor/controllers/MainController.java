@@ -15,7 +15,6 @@ package org.pentaho.commons.metadata.mqleditor.editor.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
@@ -27,7 +26,6 @@ import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
-import org.pentaho.commons.metadata.mqleditor.messages.XulMessages;
 import org.pentaho.ui.xul.XulServiceCallback;
 import org.pentaho.ui.xul.binding.Binding;
 import org.pentaho.ui.xul.binding.BindingConvertor;
@@ -42,8 +40,6 @@ import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.containers.XulVbox;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
 import org.pentaho.ui.xul.stereotype.Bindable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This is the main XulEventHandler for the dialog. It sets up the main bindings for the user interface and responds to
@@ -53,7 +49,6 @@ public class MainController extends AbstractXulEventHandler {
 
   public static final int CANCELLED = 0;
   public static final int OK = 1;
-  private static final Logger log = LoggerFactory.getLogger( MainController.class );
 
   private int lastClicked = CANCELLED;
 
@@ -75,6 +70,7 @@ public class MainController extends AbstractXulEventHandler {
   private List<MqlDialogListener> listeners = new ArrayList<MqlDialogListener>();
 
   private XulButton advancedButton;
+  private XulButton defaultButton;
   private XulTextbox complexConstraints;
 
   private Query savedQuery;
@@ -99,12 +95,15 @@ public class MainController extends AbstractXulEventHandler {
     if ( savedQuery != null ) {
       workspace.wrap( savedQuery );
       if ( savedQuery.getComplexConstraints() != null ) {
-        advancedButton.setLabel( XulMessages.getString( "switchToDefault", "Switch to Default Editor..." ) );
+        advancedButton.setVisible( false );
+        defaultButton.setVisible( true );
         workspace.getConditions().clear();
         tableContainer.removeChild( conditionsTable );
         complexConstraints.setVisible( true );
         this.showAdvancedMode = true;
       } else {
+        advancedButton.setVisible( true );
+        defaultButton.setVisible( false );
         complexConstraints.setVisible( false );
       }
     }
@@ -138,6 +137,7 @@ public class MainController extends AbstractXulEventHandler {
     limit = (XulTextbox) document.getElementById( "limit" );
     acceptButton = (XulButton) document.getElementById( "mqlEditorDialog_accept" );
     advancedButton = (XulButton) document.getElementById( "advancedButton" );
+    defaultButton = (XulButton) document.getElementById( "defaultButton" );
     complexConstraints = (XulTextbox) document.getElementById( "complexConstraints" );
 
     errorDialog = (XulDialog) document.getElementById( "errorDialog" );
@@ -306,7 +306,7 @@ public class MainController extends AbstractXulEventHandler {
     List<UIColumn> cols = workspace.getSelectedColumns();
     if ( showAdvancedMode ) {
       String complexConstrainsString = workspace.getComplexConstraints();
-      if (complexConstrainsString == null) {
+      if ( complexConstrainsString == null ) {
         complexConstrainsString = "";
       }
       for ( UIColumn col : cols ) {
@@ -362,8 +362,13 @@ public class MainController extends AbstractXulEventHandler {
         new XulServiceCallback<String>() {
 
           public void success( String complexConstraintsStr ) {
-            advancedButton.setLabel( XulMessages.getString( "switchToDefault", "Switch to Default Editor..." ) );
-            workspace.setComplexConstraints( Objects.requireNonNullElse( complexConstraintsStr, "<constraints/>" ) );
+            advancedButton.setVisible( false );
+            defaultButton.setVisible( true );
+            if ( complexConstraintsStr == null || complexConstraintsStr.isEmpty() ) {
+              workspace.setComplexConstraints( "<constraints/>" );
+            } else {
+              workspace.setComplexConstraints( complexConstraintsStr );
+            }
             workspace.getConditions().clear();
             tableContainer.removeChild( conditionsTable );
             complexConstraints.setVisible( true );
@@ -372,7 +377,6 @@ public class MainController extends AbstractXulEventHandler {
 
           public void error( String message, Throwable error ) {
             showErrorDialog( "A problem occurred while trying to switch to Advanced Editor" );
-            log.error( message, error );
           }
         }
       );
@@ -387,14 +391,14 @@ public class MainController extends AbstractXulEventHandler {
               workspace.setComplexConstraints( null );
               workspace.setConditions( conditions );
             }
-            advancedButton.setLabel( XulMessages.getString( "switchToAdvanced", "Switch to Advanced..." ) );
+            advancedButton.setVisible( true );
+            defaultButton.setVisible( false );
             complexConstraints.setVisible( false );
             showAdvancedMode = !showAdvancedMode;
           }
 
           public void error( String message, Throwable error ) {
             showErrorDialog( "Your formula is not supported in the Default Editor view." );
-            log.error( message, error );
           }
         }
       );
