@@ -393,6 +393,7 @@ public class MainController extends AbstractXulEventHandler {
             }
             advancedButton.setVisible( true );
             defaultButton.setVisible( false );
+            complexConstraints.setValue( null );
             complexConstraints.setVisible( false );
             showAdvancedMode = !showAdvancedMode;
           }
