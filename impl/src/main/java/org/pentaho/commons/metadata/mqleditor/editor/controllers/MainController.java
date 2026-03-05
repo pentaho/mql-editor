@@ -36,6 +36,7 @@ import org.pentaho.ui.xul.components.XulMenuList;
 import org.pentaho.ui.xul.components.XulMessageBox;
 import org.pentaho.ui.xul.components.XulTextbox;
 import org.pentaho.ui.xul.containers.XulDialog;
+import org.pentaho.ui.xul.containers.XulToolbar;
 import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.containers.XulVbox;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
@@ -112,7 +113,8 @@ public class MainController extends AbstractXulEventHandler {
   @Bindable
   public void init() {
     createBindings();
-    // Ensure that, by default, the complex constraints textbox does not show
+    // Ensure that, by default, the default mode button and complex constraints textbox do not show
+    defaultButton.setVisible( false );
     complexConstraints.setVisible( false );
   }
 
@@ -385,15 +387,16 @@ public class MainController extends AbstractXulEventHandler {
         new XulServiceCallback<>() {
 
           public void success( UIConditions conditions ) {
-            tableContainer.addChildAt( conditionsTable, 3 );
+            // Table will replace the complexConstraints textbox
+            int insertTableIndex = tableContainer.getChildNodes().indexOf( complexConstraints );
+            tableContainer.addChildAt( conditionsTable, insertTableIndex );
             workspace.getConditions().clear();
+            workspace.setComplexConstraints( null );
             if ( !conditions.isEmpty() ) {
-              workspace.setComplexConstraints( null );
               workspace.setConditions( conditions );
             }
             advancedButton.setVisible( true );
             defaultButton.setVisible( false );
-            complexConstraints.setValue( null );
             complexConstraints.setVisible( false );
             showAdvancedMode = !showAdvancedMode;
           }

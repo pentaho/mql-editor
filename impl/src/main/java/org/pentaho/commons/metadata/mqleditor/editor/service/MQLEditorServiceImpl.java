@@ -73,7 +73,11 @@ public class MQLEditorServiceImpl implements MQLEditorService {
 
   public void convertConditionsIntoComplexConstraints( UIConditions conditions, List<UICategory> categories,
                                                        XulServiceCallback<String> callback ) {
-    callback.success( delegate.convertConditionsIntoComplexConstraints( conditions, categories ) );
+    try {
+      callback.success( delegate.convertConditionsIntoComplexConstraints( conditions, categories ) );
+    } catch ( Exception e ) {
+      callback.error( "Error converting conditions into complex constraints", e );
+    }
   }
 
   public void convertComplexConstraintsIntoConditions( String complexConstraints, List<UICategory> categories,
