@@ -372,7 +372,7 @@ public class MainController extends AbstractXulEventHandler {
               workspace.setComplexConstraints( complexConstraintsStr );
             }
             workspace.getConditions().clear();
-            tableContainer.removeChild( conditionsTable );
+            tableContainer.removeComponent( conditionsTable );
             complexConstraints.setVisible( true );
             showAdvancedMode = !showAdvancedMode;
           }
@@ -389,7 +389,7 @@ public class MainController extends AbstractXulEventHandler {
           public void success( UIConditions conditions ) {
             // Table will replace the complexConstraints textbox
             int insertTableIndex = tableContainer.getChildNodes().indexOf( complexConstraints );
-            tableContainer.addChildAt( conditionsTable, insertTableIndex );
+            tableContainer.addComponentAt( conditionsTable, insertTableIndex );
             workspace.getConditions().clear();
             workspace.setComplexConstraints( null );
             if ( !conditions.isEmpty() ) {
