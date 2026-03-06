@@ -123,6 +123,8 @@
           <treechildren />
         </tree>
 
+        <button id="advancedButton" label="${switchToAdvanced}" onclick="mainController.switchAdvancedMode()"/>
+        <button id="defaultButton" label="${switchToDefault}" onclick="mainController.switchAdvancedMode()"/>
 
         <toolbar id="conditionsButtonContainer">
           <label value="${conditions}" flex="1" />
@@ -134,9 +136,6 @@
           <toolbarbutton id="conditionRemove" disabled="true"
             onclick="conditionsController.remove()" image="images/delete.png" pen:classname="pentaho-deletebutton" />
         </toolbar>
-
-        <button id="advancedButton" label="${switchToAdvanced}" onclick="mainController.switchAdvancedMode()"/>
-        <button id="defaultButton" label="${switchToDefault}" onclick="mainController.switchAdvancedMode()"/>
 
         <textbox flex="1" id="complexConstraints" multiline="true" pen:editingstyle="text/xml"/>
 
