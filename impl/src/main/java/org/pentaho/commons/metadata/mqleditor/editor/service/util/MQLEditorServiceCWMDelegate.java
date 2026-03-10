@@ -665,12 +665,20 @@ public class MQLEditorServiceCWMDelegate {
           BusinessCategory rootCat = businessModel.getRootCategory();
           MQLWhereConditionModel[] wherelist = getConditions( realModel, rootCat, query.getConditions() );
           ArrayList<WhereCondition> constraints = new ArrayList<WhereCondition>();
-          // mqlQuery.setDisableDistinct(!this.distinctSelections.getSelection());
-          for ( int i = 0; i < wherelist.length; i++ ) {
-            BusinessCategory businessCategory = rootCat.findBusinessCategoryForBusinessColumn( wherelist[i].getField() );
+          if ( wherelist.length != 0 ) {
+            // mqlQuery.setDisableDistinct(!this.distinctSelections.getSelection());
+            for ( int i = 0; i < wherelist.length; i++ ) {
+              BusinessCategory businessCategory = rootCat.findBusinessCategoryForBusinessColumn( wherelist[i].getField() );
 
-            constraints
+              constraints
                 .add( new WhereCondition( businessModel, wherelist[i].getOperator(), wherelist[i].getCondition() ) ); //$NON-NLS-1$
+            }
+          } else if ( query.getComplexConstraints() != null && !query.getComplexConstraints().isEmpty() ) {
+            List<Constraint> convertedConstraints = convertComplexConstraintsIntoConstraintList( query.getComplexConstraints() );
+            for ( Constraint c : convertedConstraints ) {
+              constraints
+                .add( new WhereCondition( businessModel, String.valueOf( c.getCombinationType() ), c.getFormula() ) );
+            }
           }
           mqlQuery.setConstraints( constraints );
           mqlQuery.setOrder( getOrders( realModel, query.getOrders() ) );

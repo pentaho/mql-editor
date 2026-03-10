@@ -371,8 +371,8 @@ public class MainController extends AbstractXulEventHandler {
             } else {
               workspace.setComplexConstraints( complexConstraintsStr );
             }
-            workspace.getConditions().clear();
             tableContainer.removeComponent( conditionsTable );
+            workspace.getConditions().clear();
             complexConstraints.setVisible( true );
             showAdvancedMode = !showAdvancedMode;
           }
