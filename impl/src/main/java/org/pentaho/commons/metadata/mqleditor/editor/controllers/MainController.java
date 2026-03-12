@@ -63,6 +63,7 @@ public class MainController extends AbstractXulEventHandler {
   private Workspace workspace;
   private XulVbox tableContainer;
   private XulTree fieldTable;
+  private XulToolbar conditionsButtonToolbar;
   private XulTree conditionsTable;
   private XulTree ordersTable;
   private XulTextbox limit;
@@ -132,6 +133,7 @@ public class MainController extends AbstractXulEventHandler {
     modelList = (XulMenuList) document.getElementById( "modelList" );
     domainList = (XulMenuList) document.getElementById( "domainList" );
     categoryTree = (XulTree) document.getElementById( "categoryTree" );
+    conditionsButtonToolbar = (XulToolbar) document.getElementById( "conditionsButtonContainer" );
     conditionsTable = (XulTree) document.getElementById( "conditionsTree" );
     ordersTable = (XulTree) document.getElementById( "orderTable" );
     fieldTable = (XulTree) document.getElementById( "selectedColumnTree" );
@@ -366,6 +368,10 @@ public class MainController extends AbstractXulEventHandler {
           public void success( String complexConstraintsStr ) {
             advancedButton.setVisible( false );
             defaultButton.setVisible( true );
+            // Not all implementations use the conditionsButtonToolbar
+            if ( conditionsButtonToolbar != null ) {
+              conditionsButtonToolbar.setVisible( false );
+            }
             if ( complexConstraintsStr == null || complexConstraintsStr.isEmpty() ) {
               workspace.setComplexConstraints( "<constraints/>" );
             } else {
@@ -387,6 +393,10 @@ public class MainController extends AbstractXulEventHandler {
         new XulServiceCallback<>() {
 
           public void success( UIConditions conditions ) {
+            // Not all implementations use the conditionsButtonToolbar
+            if ( conditionsButtonToolbar != null ) {
+              conditionsButtonToolbar.setVisible( true );
+            }
             // Table will replace the complexConstraints textbox
             int insertTableIndex = tableContainer.getChildNodes().indexOf( complexConstraints );
             tableContainer.addComponentAt( conditionsTable, insertTableIndex );

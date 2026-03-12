@@ -148,6 +148,9 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
     this.selectedColumns = new ArrayList<UIColumn>();
     this.setOrders( new UIOrders() );
     this.setSelections( new UIColumns() );
+//    if ( this.conditions != null ) {
+//      this.conditions.removePropertyChangeListener( conditionListener );
+//    }
     this.setConditions( new UIConditions() );
     this.setLimit( -1 );
     this.setComplexConstraints( null );
@@ -352,7 +355,15 @@ public class Workspace extends XulEventSourceAdapter implements MqlQuery {
 
   @Bindable
   public void setConditions( UIConditions conditions ) {
+    // Detach listener from the old instance
+    if ( this.conditions != null ) {
+      this.conditions.removePropertyChangeListener( conditionListener );
+    }
     this.conditions = conditions;
+    // Attach listener to the new instance
+    if ( this.conditions != null ) {
+      this.conditions.addPropertyChangeListener( conditionListener );
+    }
     this.firePropertyChange( CONDITIONS_STR, null, getConditions() );
   }
 
