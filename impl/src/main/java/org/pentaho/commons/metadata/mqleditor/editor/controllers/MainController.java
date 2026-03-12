@@ -19,8 +19,10 @@ import java.util.List;
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.editor.MqlDialogListener;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UICategory;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumn;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIColumns;
+import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
@@ -34,15 +36,15 @@ import org.pentaho.ui.xul.components.XulMenuList;
 import org.pentaho.ui.xul.components.XulMessageBox;
 import org.pentaho.ui.xul.components.XulTextbox;
 import org.pentaho.ui.xul.containers.XulDialog;
+import org.pentaho.ui.xul.containers.XulToolbar;
 import org.pentaho.ui.xul.containers.XulTree;
+import org.pentaho.ui.xul.containers.XulVbox;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
 import org.pentaho.ui.xul.stereotype.Bindable;
 
 /**
- * 
  * This is the main XulEventHandler for the dialog. It sets up the main bindings for the user interface and responds to
  * some of the main UI events such as closing and accepting the dialog.
- * 
  */
 public class MainController extends AbstractXulEventHandler {
 
@@ -59,7 +61,9 @@ public class MainController extends AbstractXulEventHandler {
   private XulButton acceptButton;
 
   private Workspace workspace;
+  private XulVbox tableContainer;
   private XulTree fieldTable;
+  private XulToolbar conditionsButtonToolbar;
   private XulTree conditionsTable;
   private XulTree ordersTable;
   private XulTextbox limit;
@@ -67,7 +71,13 @@ public class MainController extends AbstractXulEventHandler {
   private MQLEditorService service;
   private List<MqlDialogListener> listeners = new ArrayList<MqlDialogListener>();
 
+  private XulButton advancedButton;
+  private XulButton defaultButton;
+  private XulTextbox complexConstraints;
+
   private Query savedQuery;
+
+  private boolean showAdvancedMode;
 
   BindingFactory bf;
 
@@ -86,12 +96,27 @@ public class MainController extends AbstractXulEventHandler {
     }
     if ( savedQuery != null ) {
       workspace.wrap( savedQuery );
+      if ( savedQuery.getComplexConstraints() != null ) {
+        advancedButton.setVisible( false );
+        defaultButton.setVisible( true );
+        workspace.getConditions().clear();
+        tableContainer.removeChild( conditionsTable );
+        complexConstraints.setVisible( true );
+        this.showAdvancedMode = true;
+      } else {
+        advancedButton.setVisible( true );
+        defaultButton.setVisible( false );
+        complexConstraints.setVisible( false );
+      }
     }
   }
 
   @Bindable
   public void init() {
     createBindings();
+    // Ensure that, by default, the default mode button and complex constraints textbox do not show
+    defaultButton.setVisible( false );
+    complexConstraints.setVisible( false );
   }
 
   public void showDialog() {
@@ -104,35 +129,40 @@ public class MainController extends AbstractXulEventHandler {
   }
 
   private void createBindings() {
+    tableContainer = (XulVbox) document.getElementById( "tableContainer" );
     modelList = (XulMenuList) document.getElementById( "modelList" );
     domainList = (XulMenuList) document.getElementById( "domainList" );
     categoryTree = (XulTree) document.getElementById( "categoryTree" );
+    conditionsButtonToolbar = (XulToolbar) document.getElementById( "conditionsButtonContainer" );
     conditionsTable = (XulTree) document.getElementById( "conditionsTree" );
     ordersTable = (XulTree) document.getElementById( "orderTable" );
     fieldTable = (XulTree) document.getElementById( "selectedColumnTree" );
     dialog = (XulDialog) document.getElementById( "mqlEditorDialog" );
     limit = (XulTextbox) document.getElementById( "limit" );
     acceptButton = (XulButton) document.getElementById( "mqlEditorDialog_accept" );
+    advancedButton = (XulButton) document.getElementById( "advancedButton" );
+    defaultButton = (XulButton) document.getElementById( "defaultButton" );
+    complexConstraints = (XulTextbox) document.getElementById( "complexConstraints" );
 
     errorDialog = (XulDialog) document.getElementById( "errorDialog" );
 
     // bind the selections empty status to the ok button (i.e. if no selections, disable OK button)
     bf.setBindingType( Binding.Type.ONE_WAY );
     final Binding acceptButtonBinding =
-        bf.createBinding( workspace, "selections", acceptButton, "!disabled",
-            new BindingConvertor<List<UIColumns>, Boolean>() {
+      bf.createBinding( workspace, "selections", acceptButton, "!disabled",
+        new BindingConvertor<List<UIColumns>, Boolean>() {
 
-              @Override
-              public Boolean sourceToTarget( List<UIColumns> value ) {
-                return value != null && !value.isEmpty();
-              }
+          @Override
+          public Boolean sourceToTarget( List<UIColumns> value ) {
+            return value != null && !value.isEmpty();
+          }
 
-              @Override
-              public List<UIColumns> targetToSource( Boolean value ) {
-                return null;
-              }
+          @Override
+          public List<UIColumns> targetToSource( Boolean value ) {
+            return null;
+          }
 
-            } );
+        } );
 
     // Bind the domain list to the domain menulist drop-down.
     bf.setBindingType( Binding.Type.ONE_WAY );
@@ -141,59 +171,59 @@ public class MainController extends AbstractXulEventHandler {
     // Bind the selected index from the domain drop-down to the selectedDomain in the workspace
     bf.setBindingType( Binding.Type.BI_DIRECTIONAL );
     bf.createBinding( domainList, "selectedIndex", workspace, "selectedDomain",
-        new BindingConvertor<Integer, UIDomain>() {
-          @Override
-          public UIDomain sourceToTarget( Integer value ) {
-            if ( value < 0 || value > workspace.getDomains().size() ) {
-              return null;
-            }
-            return workspace.getDomains().get( value );
+      new BindingConvertor<Integer, UIDomain>() {
+        @Override
+        public UIDomain sourceToTarget( Integer value ) {
+          if ( value < 0 || value > workspace.getDomains().size() ) {
+            return null;
           }
+          return workspace.getDomains().get( value );
+        }
 
-          @Override
-          public Integer targetToSource( UIDomain value ) {
-            return workspace.getDomains().indexOf( value );
-          }
-        } );
+        @Override
+        public Integer targetToSource( UIDomain value ) {
+          return workspace.getDomains().indexOf( value );
+        }
+      } );
 
     // Bind the selectedDomain to the list of models menulist drop-down
     bf.setBindingType( Binding.Type.ONE_WAY );
     Binding domainToList =
-        bf.createBinding( this.workspace, "selectedDomain", modelList, "elements",
-            new BindingConvertor<UIDomain, List<UIModel>>() {
+      bf.createBinding( this.workspace, "selectedDomain", modelList, "elements",
+        new BindingConvertor<UIDomain, List<UIModel>>() {
 
-              @Override
-              public List<UIModel> sourceToTarget( UIDomain value ) {
-                return value.getModels();
-              }
+          @Override
+          public List<UIModel> sourceToTarget( UIDomain value ) {
+            return value.getModels();
+          }
 
-              @Override
-              public UIDomain targetToSource( List<UIModel> value ) {
-                return null; // not used
-              }
+          @Override
+          public UIDomain targetToSource( List<UIModel> value ) {
+            return null; // not used
+          }
 
-            } );
+        } );
 
-    // Bind the selected index of the model dro-down the the selectedModel in the workspace
+    // Bind the selected index of the model drop-down to the selectedModel in the workspace
     bf.setBindingType( Binding.Type.BI_DIRECTIONAL );
     Binding modelToList =
-        bf.createBinding( workspace, "selectedModel", modelList, "selectedIndex",
-            new BindingConvertor<UIModel, Integer>() {
+      bf.createBinding( workspace, "selectedModel", modelList, "selectedIndex",
+        new BindingConvertor<UIModel, Integer>() {
 
-              @Override
-              public Integer sourceToTarget( UIModel value ) {
-                return workspace.getSelectedDomain().getModels().indexOf( value );
-              }
+          @Override
+          public Integer sourceToTarget( UIModel value ) {
+            return workspace.getSelectedDomain().getModels().indexOf( value );
+          }
 
-              @Override
-              public UIModel targetToSource( Integer value ) {
-                if ( value < 0 ) {
-                  return null;
-                }
-                return workspace.getSelectedDomain().getModels().get( value );
-              }
+          @Override
+          public UIModel targetToSource( Integer value ) {
+            if ( value < 0 ) {
+              return null;
+            }
+            return workspace.getSelectedDomain().getModels().get( value );
+          }
 
-            } );
+        } );
 
     // Bind the available categories from the selected model to the category/column tree.
     bf.setBindingType( Binding.Type.ONE_WAY );
@@ -201,35 +231,36 @@ public class MainController extends AbstractXulEventHandler {
 
     // Bind the selected column from the tree to the workspace
     bf.createBinding( categoryTree, "absoluteSelectedRows", workspace, "selectedColumns",
-        new BindingConvertor<int[], List<UIColumn>>() {
-          @Override
-          public List<UIColumn> sourceToTarget( int[] array ) {
-            if ( array.length == 0 ) {
-              return null;
-            }
-            int value = array[0];
-            if ( value < 0 ) {
-              return null;
-            }
-            return workspace.getColumnsByPos( array );
+      new BindingConvertor<int[], List<UIColumn>>() {
+        @Override
+        public List<UIColumn> sourceToTarget( int[] array ) {
+          if ( array.length == 0 ) {
+            return null;
           }
+          int value = array[ 0 ];
+          if ( value < 0 ) {
+            return null;
+          }
+          return workspace.getColumnsByPos( array );
+        }
 
-          @Override
-          public int[] targetToSource( List<UIColumn> value ) {
-            int[] positions = new int[value.size()];
-            int i = 0;
-            for ( UIColumn col : value ) {
-              positions[i++] = workspace.getSelectedCategory().getChildren().indexOf( col );
-            }
-            return positions;
+        @Override
+        public int[] targetToSource( List<UIColumn> value ) {
+          int[] positions = new int[ value.size() ];
+          int i = 0;
+          for ( UIColumn col : value ) {
+            positions[ i++ ] = workspace.getSelectedCategory().getChildren().indexOf( col );
           }
-        } );
+          return positions;
+        }
+      } );
 
     // Bind the selected columns, conditions and orders to their respective tables
     bf.createBinding( workspace, "selections", fieldTable, "elements" ); //$NON-NLS-1$ //$NON-NLS-2$
     bf.createBinding( workspace, "conditions", conditionsTable, "elements" ); //$NON-NLS-1$ //$NON-NLS-2$
     bf.createBinding( workspace, "orders", ordersTable, "elements" ); //$NON-NLS-1$ //$NON-NLS-2$
     bf.setBindingType( Binding.Type.BI_DIRECTIONAL );
+    bf.createBinding( workspace, "complexConstraints", complexConstraints, "value" );
     bf.createBinding( workspace, "limit", limit, "value", new BindingConvertor<Integer, String>() {
 
       @Override
@@ -277,8 +308,20 @@ public class MainController extends AbstractXulEventHandler {
   @Bindable
   public void moveSelectionToConditions() {
     List<UIColumn> cols = workspace.getSelectedColumns();
-    for ( UIColumn col : cols ) {
-      workspace.addCondition( col );
+    if ( showAdvancedMode ) {
+      String complexConstrainsString = workspace.getComplexConstraints();
+      if ( complexConstrainsString == null ) {
+        complexConstrainsString = "";
+      }
+      for ( UIColumn col : cols ) {
+        String compositeColumnId = getCompositeColumnId( col.getId() );
+        complexConstrainsString = complexConstrainsString.concat( compositeColumnId );
+      }
+      workspace.setComplexConstraints( complexConstrainsString );
+    } else {
+      for ( UIColumn col : cols ) {
+        workspace.addCondition( col );
+      }
     }
   }
 
@@ -317,12 +360,72 @@ public class MainController extends AbstractXulEventHandler {
   }
 
   @Bindable
+  public void switchAdvancedMode() {
+    if ( !this.showAdvancedMode ) {
+      service.convertConditionsIntoComplexConstraints( workspace.getConditions(), workspace.getCategories(),
+        new XulServiceCallback<String>() {
+
+          public void success( String complexConstraintsStr ) {
+            advancedButton.setVisible( false );
+            defaultButton.setVisible( true );
+            // Not all implementations use the conditionsButtonToolbar
+            if ( conditionsButtonToolbar != null ) {
+              conditionsButtonToolbar.setVisible( false );
+            }
+            if ( complexConstraintsStr == null || complexConstraintsStr.isEmpty() ) {
+              workspace.setComplexConstraints( "<constraints/>" );
+            } else {
+              workspace.setComplexConstraints( complexConstraintsStr );
+            }
+            tableContainer.removeComponent( conditionsTable );
+            workspace.getConditions().clear();
+            complexConstraints.setVisible( true );
+            showAdvancedMode = !showAdvancedMode;
+          }
+
+          public void error( String message, Throwable error ) {
+            showErrorDialog( "A problem occurred while trying to switch to Advanced Editor" );
+          }
+        }
+      );
+    } else {
+      service.convertComplexConstraintsIntoConditions( workspace.getComplexConstraints(), workspace.getCategories(),
+        new XulServiceCallback<>() {
+
+          public void success( UIConditions conditions ) {
+            // Not all implementations use the conditionsButtonToolbar
+            if ( conditionsButtonToolbar != null ) {
+              conditionsButtonToolbar.setVisible( true );
+            }
+            // Table will replace the complexConstraints textbox
+            int insertTableIndex = tableContainer.getChildNodes().indexOf( complexConstraints );
+            tableContainer.addComponentAt( conditionsTable, insertTableIndex );
+            workspace.getConditions().clear();
+            workspace.setComplexConstraints( null );
+            if ( !conditions.isEmpty() ) {
+              workspace.setConditions( conditions );
+            }
+            advancedButton.setVisible( true );
+            defaultButton.setVisible( false );
+            complexConstraints.setVisible( false );
+            showAdvancedMode = !showAdvancedMode;
+          }
+
+          public void error( String message, Throwable error ) {
+            showErrorDialog( "Your formula is not supported in the Default Editor view." );
+          }
+        }
+      );
+    }
+  }
+
+  @Bindable
   public void saveQuery() {
     lastClicked = OK;
     service.saveQuery( workspace.getMqlQuery(), new XulServiceCallback<String>() {
 
       public void error( String message, Throwable error ) {
-        System.out.println( message );
+        showErrorDialog( message );
         error.printStackTrace();
       }
 
@@ -402,11 +505,22 @@ public class MainController extends AbstractXulEventHandler {
   }
 
   @Bindable
-  public static void closeErrorDialog( String message ) {
+  public static void closeErrorDialog() {
     if ( errorDialog == null ) {
       throw new IllegalStateException( "Error dialog has not been loaded yet" );
     } else {
       errorDialog.hide();
     }
+  }
+
+  private String getCompositeColumnId( String wantedColumnId ) {
+    for ( UICategory category : workspace.getCategories() ) {
+      for ( UIColumn column : category.getChildren() ) {
+        if ( wantedColumnId.equals( column.getId() ) ) {
+          return "[" + category.getId() + "." + column.getId() + "]";
+        }
+      }
+    }
+    return "";
   }
 }
