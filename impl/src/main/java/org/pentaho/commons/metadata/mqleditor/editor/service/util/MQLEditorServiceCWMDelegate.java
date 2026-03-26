@@ -26,6 +26,8 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.pentaho.commons.metadata.mqleditor.AggType;
 import org.pentaho.commons.metadata.mqleditor.ColumnType;
 import org.pentaho.commons.metadata.mqleditor.CombinationType;
@@ -70,8 +72,6 @@ import org.pentaho.pms.schema.SchemaMeta;
 import org.pentaho.pms.schema.concept.types.aggregation.AggregationSettings;
 import org.pentaho.pms.schema.concept.types.datatype.DataTypeSettings;
 import org.pentaho.pms.util.UniqueList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -86,7 +86,7 @@ public class MQLEditorServiceCWMDelegate {
 
   private static final String XML_CONSTRAINTS_START_TAG = "<constraints>";
   private static final String XML_CONSTRAINTS_END_TAG = "</constraints>";
-  private static final Logger log = LoggerFactory.getLogger( MQLEditorServiceCWMDelegate.class );
+  protected static Log log = LogFactory.getLog( MQLEditorServiceCWMDelegate.class );
 
   private String locale = Locale.getDefault().toString();
 
@@ -621,8 +621,12 @@ public class MQLEditorServiceCWMDelegate {
       String queryString = fatQ.getXML();
       int constraintsStartIndex = queryString.indexOf( XML_CONSTRAINTS_START_TAG );
       int constraintsEndIndex = queryString.indexOf( XML_CONSTRAINTS_END_TAG );
-      query.setComplexConstraints(
-        queryString.substring( constraintsStartIndex, constraintsEndIndex + XML_CONSTRAINTS_END_TAG.length() ) );
+      if ( constraintsStartIndex >= 0 && constraintsEndIndex >= 0 && constraintsEndIndex >= constraintsStartIndex ) {
+        query.setComplexConstraints(
+          queryString.substring( constraintsStartIndex, constraintsEndIndex + XML_CONSTRAINTS_END_TAG.length() ) );
+      } else {
+        log.warn( "Could not extract complexConstraints from query XML" );
+      }
     }
 
     List<Order> orders = new ArrayList<Order>();
@@ -677,9 +681,6 @@ public class MQLEditorServiceCWMDelegate {
           if ( wherelist.length != 0 ) {
             // mqlQuery.setDisableDistinct(!this.distinctSelections.getSelection());
             for ( int i = 0; i < wherelist.length; i++ ) {
-              BusinessCategory businessCategory =
-                rootCat.findBusinessCategoryForBusinessColumn( wherelist[ i ].getField() );
-
               constraints
                 .add( new WhereCondition( businessModel, wherelist[ i ].getOperator(),
                   wherelist[ i ].getCondition() ) ); //$NON-NLS-1$
