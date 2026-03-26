@@ -103,6 +103,10 @@ public class MainController extends AbstractXulEventHandler {
         tableContainer.removeChild( conditionsTable );
         complexConstraints.setVisible( true );
         this.showAdvancedMode = true;
+        // Not all implementations use the conditionsButtonToolbar
+        if ( conditionsButtonToolbar != null ) {
+          conditionsButtonToolbar.setVisible( false );
+        }
       } else {
         advancedButton.setVisible( true );
         defaultButton.setVisible( false );
@@ -120,8 +124,51 @@ public class MainController extends AbstractXulEventHandler {
   }
 
   public void showDialog() {
+    // Additional checks needed for GWT implementation
+    if ( workspace.getComplexConstraints() != null ) {
+      showAdvancedMode = true;
+      service.convertComplexConstraintsIntoConditions( workspace.getComplexConstraints(), workspace.getCategories(),
+        new XulServiceCallback<>() {
+
+          public void success( UIConditions conditions ) {
+            conditionsButtonToolbar.setVisible( true );
+            if ( !tableContainer.getChildNodes().contains( conditionsTable ) ) {
+              int insertTableIndex = tableContainer.getChildNodes().indexOf( complexConstraints );
+              tableContainer.addComponentAt( conditionsTable, insertTableIndex );
+            }
+            workspace.setComplexConstraints( null );
+            workspace.getConditions().clear();
+            if ( !conditions.isEmpty() ) {
+              workspace.setConditions( conditions );
+            }
+            conditionsTable.setVisible( true );
+            advancedButton.setVisible( true );
+            defaultButton.setVisible( false );
+            complexConstraints.setVisible( false );
+            showAdvancedMode = !showAdvancedMode;
+          }
+
+          public void error( String message, Throwable error ) {
+            // In this case do nothing, advanced mode will stay visible with the constraints
+            conditionsTable.setVisible( false );
+            conditionsButtonToolbar.setVisible( false );
+          }
+        }
+      );
+    } else {
+      if ( !tableContainer.getChildNodes().contains( conditionsTable ) ) {
+        int insertTableIndex = tableContainer.getChildNodes().indexOf( complexConstraints );
+        tableContainer.addComponentAt( conditionsTable, insertTableIndex );
+      }
+      conditionsTable.setVisible( true );
+      conditionsButtonToolbar.setVisible( true );
+      advancedButton.setVisible( true );
+      defaultButton.setVisible( false );
+      complexConstraints.setVisible( false );
+      showAdvancedMode = false;
+    }
     dialog.show();
-    conditionsTable.update();
+    //conditionsTable.update();
   }
 
   public void clearWorkspace() {
@@ -404,6 +451,9 @@ public class MainController extends AbstractXulEventHandler {
             workspace.setComplexConstraints( null );
             if ( !conditions.isEmpty() ) {
               workspace.setConditions( conditions );
+            }
+            if (!conditionsTable.isVisible()) {
+            conditionsTable.setVisible(  true ); // Needed for GWT implementation
             }
             advancedButton.setVisible( true );
             defaultButton.setVisible( false );
