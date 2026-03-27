@@ -168,7 +168,6 @@ public class MainController extends AbstractXulEventHandler {
       showAdvancedMode = false;
     }
     dialog.show();
-    //conditionsTable.update();
   }
 
   public void clearWorkspace() {
