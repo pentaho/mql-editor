@@ -30,7 +30,7 @@ public interface MQLEditorGwtService extends RemoteService {
 
   MqlDomain getDomainByName( String name );
 
-  String saveQuery( MqlQuery model );
+  String saveQuery( MqlQuery model ) throws IllegalStateException;
 
   String serializeModel( MqlQuery query );
 

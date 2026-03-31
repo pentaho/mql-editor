@@ -124,7 +124,11 @@ public class MQLEditorServiceGwtImpl implements MQLEditorService {
       }
     }, new AsyncCallback<String>() {
       public void onFailure( Throwable arg0 ) {
-        callback.error( "error loading metadata domains: ", arg0 );
+        if ( arg0.getMessage().contains( "Could not parse XML definition" ) ) {
+          callback.error( arg0.getMessage(), arg0 );
+        } else {
+          callback.error( "error loading metadata domains: ", arg0 );
+        }
       }
 
       public void onSuccess( String arg0 ) {
