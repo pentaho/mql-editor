@@ -21,8 +21,6 @@ import java.util.regex.Pattern;
 import org.pentaho.commons.metadata.mqleditor.Operator;
 import org.pentaho.commons.metadata.mqleditor.beans.Condition;
 
-import javax.swing.*;
-
 public class FormulaParser {
 
   private static final String WRAPPED = "([^\\(]*)\\(\\[([^\\]]*)\\];(.*)(?=\\))"; //$NON-NLS-1$
@@ -97,19 +95,10 @@ public class FormulaParser {
         value = checkValueAsDataTime( value );
       }
     }
-
-    String errorMessage = "";
-    if ( functionName == null) {
-       errorMessage = "Query syntax not supported by PRD Editor: " + formula;
+    if ( functionName == null ) {
+      throw new IllegalArgumentException( "Unable to parse formula: " + formula );
     }
-
-    Operator op = null;
-    try {
-      op = Operator.parse( functionName.toUpperCase() );
-    } catch ( Exception e ) {
-      JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Dialog", JOptionPane.ERROR_MESSAGE);
-      throw new RuntimeException( e );
-    }
+    Operator op = Operator.parse( functionName.toUpperCase() );
 
     // handle special NOT() wrapped functions
     if ( notOperator ) {
