@@ -103,10 +103,7 @@ public class MainController extends AbstractXulEventHandler {
         tableContainer.removeChild( conditionsTable );
         complexConstraints.setVisible( true );
         this.showAdvancedMode = true;
-        // Not all implementations use the conditionsButtonContainer
-        if ( conditionsButtonContainer != null ) {
-          conditionsButtonContainer.setVisible( false );
-        }
+        setOptionalVisible( conditionsButtonContainer, false );
       } else {
         advancedButton.setVisible( true );
         defaultButton.setVisible( false );
@@ -131,7 +128,7 @@ public class MainController extends AbstractXulEventHandler {
         new XulServiceCallback<>() {
 
           public void success( UIConditions conditions ) {
-            conditionsButtonContainer.setVisible( true );
+            setOptionalVisible( conditionsButtonContainer, true );
             if ( !tableContainer.getChildNodes().contains( conditionsTable ) ) {
               int insertTableIndex = tableContainer.getChildNodes().indexOf( complexConstraints );
               tableContainer.addComponentAt( conditionsTable, insertTableIndex );
@@ -151,7 +148,7 @@ public class MainController extends AbstractXulEventHandler {
           public void error( String message, Throwable error ) {
             // In this case do nothing, advanced mode will stay visible with the constraints
             conditionsTable.setVisible( false );
-            conditionsButtonContainer.setVisible( false );
+            setOptionalVisible( conditionsButtonContainer, false );
           }
         }
       );
@@ -161,7 +158,7 @@ public class MainController extends AbstractXulEventHandler {
         tableContainer.addComponentAt( conditionsTable, insertTableIndex );
       }
       conditionsTable.setVisible( true );
-      conditionsButtonContainer.setVisible( true );
+      setOptionalVisible( conditionsButtonContainer, true );
       advancedButton.setVisible( true );
       defaultButton.setVisible( false );
       complexConstraints.setVisible( false );
@@ -414,10 +411,7 @@ public class MainController extends AbstractXulEventHandler {
           public void success( String complexConstraintsStr ) {
             advancedButton.setVisible( false );
             defaultButton.setVisible( true );
-            // Not all implementations use the conditionsButtonContainer
-            if ( conditionsButtonContainer != null ) {
-              conditionsButtonContainer.setVisible( false );
-            }
+            setOptionalVisible( conditionsButtonContainer, false );
             if ( complexConstraintsStr == null || complexConstraintsStr.isEmpty() ) {
               workspace.setComplexConstraints( "<constraints/>" );
             } else {
@@ -439,10 +433,7 @@ public class MainController extends AbstractXulEventHandler {
         new XulServiceCallback<>() {
 
           public void success( UIConditions conditions ) {
-            // Not all implementations use the conditionsButtonContainer
-            if ( conditionsButtonContainer != null ) {
-              conditionsButtonContainer.setVisible( true );
-            }
+            setOptionalVisible( conditionsButtonContainer, true );
             // Table will replace the complexConstraints textbox
             int insertTableIndex = tableContainer.getChildNodes().indexOf( complexConstraints );
             tableContainer.addComponentAt( conditionsTable, insertTableIndex );
@@ -559,6 +550,12 @@ public class MainController extends AbstractXulEventHandler {
       throw new IllegalStateException( "Error dialog has not been loaded yet" );
     } else {
       errorDialog.hide();
+    }
+  }
+
+  private void setOptionalVisible( XulComponent component, boolean visible ) {
+    if ( component != null ) {
+      component.setVisible( visible );
     }
   }
 
