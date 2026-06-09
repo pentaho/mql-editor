@@ -13,9 +13,6 @@
 
 package org.pentaho.commons.metadata.mqleditor.editor.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.pentaho.commons.metadata.mqleditor.beans.Query;
 import org.pentaho.commons.metadata.mqleditor.editor.MQLEditorService;
 import org.pentaho.commons.metadata.mqleditor.editor.MqlDialogListener;
@@ -26,6 +23,7 @@ import org.pentaho.commons.metadata.mqleditor.editor.models.UIConditions;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIDomain;
 import org.pentaho.commons.metadata.mqleditor.editor.models.UIModel;
 import org.pentaho.commons.metadata.mqleditor.editor.models.Workspace;
+import org.pentaho.ui.xul.XulComponent;
 import org.pentaho.ui.xul.XulServiceCallback;
 import org.pentaho.ui.xul.binding.Binding;
 import org.pentaho.ui.xul.binding.BindingConvertor;
@@ -36,11 +34,13 @@ import org.pentaho.ui.xul.components.XulMenuList;
 import org.pentaho.ui.xul.components.XulMessageBox;
 import org.pentaho.ui.xul.components.XulTextbox;
 import org.pentaho.ui.xul.containers.XulDialog;
-import org.pentaho.ui.xul.containers.XulToolbar;
 import org.pentaho.ui.xul.containers.XulTree;
 import org.pentaho.ui.xul.containers.XulVbox;
 import org.pentaho.ui.xul.impl.AbstractXulEventHandler;
 import org.pentaho.ui.xul.stereotype.Bindable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the main XulEventHandler for the dialog. It sets up the main bindings for the user interface and responds to
@@ -63,7 +63,7 @@ public class MainController extends AbstractXulEventHandler {
   private Workspace workspace;
   private XulVbox tableContainer;
   private XulTree fieldTable;
-  private XulToolbar conditionsButtonToolbar;
+  private XulComponent conditionsButtonContainer;
   private XulTree conditionsTable;
   private XulTree ordersTable;
   private XulTextbox limit;
@@ -103,9 +103,9 @@ public class MainController extends AbstractXulEventHandler {
         tableContainer.removeChild( conditionsTable );
         complexConstraints.setVisible( true );
         this.showAdvancedMode = true;
-        // Not all implementations use the conditionsButtonToolbar
-        if ( conditionsButtonToolbar != null ) {
-          conditionsButtonToolbar.setVisible( false );
+        // Not all implementations use the conditionsButtonContainer
+        if ( conditionsButtonContainer != null ) {
+          conditionsButtonContainer.setVisible( false );
         }
       } else {
         advancedButton.setVisible( true );
@@ -131,7 +131,7 @@ public class MainController extends AbstractXulEventHandler {
         new XulServiceCallback<>() {
 
           public void success( UIConditions conditions ) {
-            conditionsButtonToolbar.setVisible( true );
+            conditionsButtonContainer.setVisible( true );
             if ( !tableContainer.getChildNodes().contains( conditionsTable ) ) {
               int insertTableIndex = tableContainer.getChildNodes().indexOf( complexConstraints );
               tableContainer.addComponentAt( conditionsTable, insertTableIndex );
@@ -151,7 +151,7 @@ public class MainController extends AbstractXulEventHandler {
           public void error( String message, Throwable error ) {
             // In this case do nothing, advanced mode will stay visible with the constraints
             conditionsTable.setVisible( false );
-            conditionsButtonToolbar.setVisible( false );
+            conditionsButtonContainer.setVisible( false );
           }
         }
       );
@@ -161,7 +161,7 @@ public class MainController extends AbstractXulEventHandler {
         tableContainer.addComponentAt( conditionsTable, insertTableIndex );
       }
       conditionsTable.setVisible( true );
-      conditionsButtonToolbar.setVisible( true );
+      conditionsButtonContainer.setVisible( true );
       advancedButton.setVisible( true );
       defaultButton.setVisible( false );
       complexConstraints.setVisible( false );
@@ -179,7 +179,7 @@ public class MainController extends AbstractXulEventHandler {
     modelList = (XulMenuList) document.getElementById( "modelList" );
     domainList = (XulMenuList) document.getElementById( "domainList" );
     categoryTree = (XulTree) document.getElementById( "categoryTree" );
-    conditionsButtonToolbar = (XulToolbar) document.getElementById( "conditionsButtonContainer" );
+    conditionsButtonContainer = document.getElementById( "conditionsButtonContainer" );
     conditionsTable = (XulTree) document.getElementById( "conditionsTree" );
     ordersTable = (XulTree) document.getElementById( "orderTable" );
     fieldTable = (XulTree) document.getElementById( "selectedColumnTree" );
@@ -414,9 +414,9 @@ public class MainController extends AbstractXulEventHandler {
           public void success( String complexConstraintsStr ) {
             advancedButton.setVisible( false );
             defaultButton.setVisible( true );
-            // Not all implementations use the conditionsButtonToolbar
-            if ( conditionsButtonToolbar != null ) {
-              conditionsButtonToolbar.setVisible( false );
+            // Not all implementations use the conditionsButtonContainer
+            if ( conditionsButtonContainer != null ) {
+              conditionsButtonContainer.setVisible( false );
             }
             if ( complexConstraintsStr == null || complexConstraintsStr.isEmpty() ) {
               workspace.setComplexConstraints( "<constraints/>" );
@@ -439,9 +439,9 @@ public class MainController extends AbstractXulEventHandler {
         new XulServiceCallback<>() {
 
           public void success( UIConditions conditions ) {
-            // Not all implementations use the conditionsButtonToolbar
-            if ( conditionsButtonToolbar != null ) {
-              conditionsButtonToolbar.setVisible( true );
+            // Not all implementations use the conditionsButtonContainer
+            if ( conditionsButtonContainer != null ) {
+              conditionsButtonContainer.setVisible( true );
             }
             // Table will replace the complexConstraints textbox
             int insertTableIndex = tableContainer.getChildNodes().indexOf( complexConstraints );

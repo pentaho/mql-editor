@@ -103,16 +103,16 @@
       </vbox>
 
       <vbox id="tableContainer" flex="5">
-        <toolbar id="selectedColumnButtonContainer">
+        <hbox id="selectedColumnButtonContainer" width="575">
           <label value="${select.columns}" flex="1" />
-          <toolbarspacer flex="1" />
-          <toolbarbutton id="colDown" disabled="true" onclick="selectedColumns.moveDown()"
+          <spacer flex="1" />
+          <button id="colDown" disabled="true" onclick="selectedColumns.moveDown()"
             image="images/move_down.gif" pen:classname="pentaho-downbutton" />
-          <toolbarbutton id="colUp" disabled="true" onclick="selectedColumns.moveUp()"
+          <button id="colUp" disabled="true" onclick="selectedColumns.moveUp()"
             image="images/move_up.gif" pen:classname="pentaho-upbutton" />
-          <toolbarbutton id="colRemove" disabled="true" onclick="selectedColumns.remove()"
+          <button id="colRemove" disabled="true" onclick="selectedColumns.remove()"
             image="images/delete.png" pen:classname="pentaho-deletebutton" />
-        </toolbar>
+        </hbox>
         <tree flex="1" editable="false" seltype="single"
           enableColumnDrag="false" id="selectedColumnTree" width="575">
           <treecols>
@@ -126,16 +126,16 @@
         <button id="advancedButton" label="${switchToAdvanced}" onclick="mainController.switchAdvancedMode()"/>
         <button id="defaultButton" label="${switchToDefault}" onclick="mainController.switchAdvancedMode()"/>
 
-        <toolbar id="conditionsButtonContainer">
+        <hbox id="conditionsButtonContainer" width="575">
           <label value="${conditions}" flex="1" />
-          <toolbarspacer id="conditionsSpacer" flex="1" />
-          <toolbarbutton id="conditionDown" disabled="true"
+          <spacer id="conditionsSpacer" flex="1" />
+          <button id="conditionDown" disabled="true"
             onclick="conditionsController.moveDown()" image="images/move_down.gif" pen:classname="pentaho-downbutton" />
-          <toolbarbutton id="conditionUp" disabled="true"
+          <button id="conditionUp" disabled="true"
             onclick="conditionsController.moveUp()" image="images/move_up.gif" pen:classname="pentaho-upbutton" />
-          <toolbarbutton id="conditionRemove" disabled="true"
+          <button id="conditionRemove" disabled="true"
             onclick="conditionsController.remove()" image="images/delete.png" pen:classname="pentaho-deletebutton" />
-        </toolbar>
+        </hbox>
 
         <textbox flex="1" id="complexConstraints" multiline="true" pen:editingstyle="text/xml"/>
 
@@ -158,16 +158,16 @@
           <treechildren />
         </tree>
 
-        <toolbar id="orderButtonContainer">
+        <hbox id="orderButtonContainer" width="575">
           <label value="${order.by}" flex="1" />
-          <toolbarspacer flex="1" />
-          <toolbarbutton id="orderDown" disabled="true" onclick="orderController.moveDown()"
+          <spacer flex="1" />
+          <button id="orderDown" disabled="true" onclick="orderController.moveDown()"
             image="images/move_down.gif" pen:classname="pentaho-downbutton" />
-          <toolbarbutton id="orderUp" disabled="true" onclick="orderController.moveUp()"
+          <button id="orderUp" disabled="true" onclick="orderController.moveUp()"
             image="images/move_up.gif" pen:classname="pentaho-upbutton" />
-          <toolbarbutton id="orderRemove" disabled="true" onclick="orderController.remove()"
+          <button id="orderRemove" disabled="true" onclick="orderController.remove()"
             image="images/delete.png" pen:classname="pentaho-deletebutton" />
-        </toolbar>
+        </hbox>
         <tree flex="1" editable="true" seltype="single"
           enableColumnDrag="false" id="orderTable" width="575">
           <treecols>
