@@ -28,7 +28,6 @@
 
   <properties>
     <commons-gwt.version>11.1.0.0-SNAPSHOT</commons-gwt.version>
-    <commons-lang.version>2.6</commons-lang.version>
     <commons-xul.version>11.1.0.0-SNAPSHOT</commons-xul.version>
     <junit.version>4.3.1</junit.version>
     <pdi.version>11.1.0.0-SNAPSHOT</pdi.version>
@@ -84,9 +83,9 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>commons-lang</groupId>
-        <artifactId>commons-lang</artifactId>
-        <version>${commons-lang.version}</version>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons-lang3.version}</version>
         <scope>compile</scope>
         <exclusions>
           <exclusion>
