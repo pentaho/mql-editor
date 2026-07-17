@@ -16,7 +16,6 @@ package org.pentaho.commons.metadata.mqleditor.editor.service.util;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.commons.metadata.mqleditor.AggType;
@@ -154,7 +153,7 @@ public class MQLEditorServiceDelegate {
   }
 
   public String[][] getPreviewData( MqlQuery query, int page, int limit ) {
-    throw new NotImplementedException( "Preview not implemented in the Deligate" );
+    throw new UnsupportedOperationException( "Preview not implemented in the Delegate" );
   }
 
   private Model createModel( BusinessModel m ) {
